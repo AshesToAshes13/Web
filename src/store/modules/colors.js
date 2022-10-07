@@ -23,8 +23,8 @@ const actions = {
       const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/marker'
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
-          commit(PUSH_MYCOLOR, [resp.data])
-          commit(PUSH_COLOR, [resp.data])
+          commit(PUSH_MYCOLOR, [data])
+          commit(PUSH_COLOR, [data])
           resolve(resp)
         })
         .catch((err) => {

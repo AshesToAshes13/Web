@@ -10,12 +10,28 @@ import store from '@/store/index.js'
 const state = {
   messages: [],
   files: [],
-  status: 'loading'
+  status: 'loading',
+  cards: {
+    status: 'loading',
+    cards: []
+  }
 }
 
 const getters = {}
 
 const actions = {
+  [CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS] ({ commit }, clientUid) {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_cards?uid_client=' + clientUid
+      axios({ url: url, method: 'GET' })
+        .then(resp => {
+          commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data.map((card) => { return JSON.parse(card.replace(/[\s]/gi, ' ')) }))
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+    })
+  },
   [CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST]: ({ commit, dispatch }, clientUid) => {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat?uid_client=' + clientUid
@@ -99,43 +115,36 @@ const actions = {
     const data = { uid: fileUid, key: 'deleted', value: 1 }
     commit(CLIENT_FILES_AND_MESSAGES.REMOVE_MESSAGE_LOCALLY, data)
   },
-  [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: ({ commit, dispatch }, data) => {
+  [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: async ({ commit, dispatch }, data) => {
     commit(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST)
     const messages = dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, data.clientUid)
     const files = dispatch(CLIENT_FILES_AND_MESSAGES.FILES_REQUEST, data.clientUid)
 
     const promises = [messages, files]
 
+    await Promise.all(promises)
+
     if (data.corpYandexInt) {
-      const yandexCorpMsgsSentFromUs = dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data)
-      const yandexCorpMsgsSentToUs = dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data)
-      promises.push(yandexCorpMsgsSentFromUs)
-      promises.push(yandexCorpMsgsSentToUs)
+      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
+      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
     }
 
     if (data.personalYandexInt) {
-      const yandexPersonalMsgsSentFromUs = dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data)
-      const yandexPersonalMsgsSentToUs = dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data)
-      promises.push(yandexPersonalMsgsSentFromUs)
-      promises.push(yandexPersonalMsgsSentToUs)
+      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
+        console.log('personal msgs from us', resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
+      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
+        console.log('personal msgs to us', resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
     }
 
-    return Promise.all(promises)
-      .then((resp) => {
-        console.log('msgs resp', resp)
-        console.log('int data', data)
-        console.log('promises', promises)
-        if (data.corpYandexInt && data.personalYandexInt) {
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[2].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[3].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[4].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[5].data)
-        } else if ((!data.personalYandexInt && data.corpYandexInt) || (data.personalYandexInt && !data.corpYandexInt)) {
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[2].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[3].data)
-        }
-        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
-      })
+    commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
   }
 }
 
@@ -164,6 +173,10 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     state.messages.push(data)
+  },
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
+    state.cards.status = 'success'
+    state.cards.cards = data
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
     state.messages = state.messages.filter((message) => !message.is_uploading)
@@ -214,6 +227,9 @@ const mutations = {
         state.messages.splice(i, 1)
       }
     }
+  },
+  [CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS]: (state) => {
+    state.cards.cards = []
   },
   addClientMessages (state, messagesArray) {
     state.messages = state.messages.concat(messagesArray)

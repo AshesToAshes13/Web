@@ -1,20 +1,20 @@
 <template>
-  <InspectorModalBox
-    v-model="showInspector"
-    button="warning"
-    has-button
-    has-cancel
-    button-label="Delete"
-    @delegated="showSlide = false"
-  />
-  <UploadAvatar
-    v-if="changeAvatar"
-    :img="uploadedAvatar"
-    :image-type="avatarType"
-    @close-window="changeAvatar = false"
-    @nextTask="nextTask"
-  />
   <DoitnowContent>
+    <InspectorModalBox
+      v-model="showInspector"
+      button="warning"
+      has-button
+      has-cancel
+      button-label="Delete"
+      @delegated="showSlide = false"
+    />
+    <UploadAvatar
+      v-if="changeAvatar"
+      :img="uploadedAvatar"
+      :image-type="avatarType"
+      @close-window="changeAvatar = false"
+      @nextTask="nextTask"
+    />
     <div class="flex justify-center w-full">
       <!-- welcome -->
       <div
@@ -183,10 +183,16 @@
         />
       </div>
     </div>
+    <template #buttons>
+      <DoitnowRightButtonPostpone
+        @postpone="onPostpone"
+      />
+    </template>
   </DoitnowContent>
 </template>
 <script>
 import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
+import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 
 import InspectorModalBox from '@/components/Inspector/InspectorModalBox.vue'
 import SlideBodyButton from './SlideBodyButton.vue'
@@ -194,8 +200,10 @@ import SlideBodyTitle from './SlideBodyTitle.vue'
 import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
 import * as SLIDES from '@/store/actions/slides.js'
 import UploadAvatar from '../UploadAvatar.vue'
+
 export default {
   components: {
+    DoitnowRightButtonPostpone,
     DoitnowContent,
     InspectorModalBox,
     SlideBodyButton,
@@ -206,13 +214,9 @@ export default {
     name: {
       type: String,
       default: 'text'
-    },
-    reminder: {
-      type: Date,
-      default: new Date()
     }
   },
-  emits: ['nextTask'],
+  emits: ['next'],
   data () {
     return {
       showInspector: false,
@@ -258,7 +262,7 @@ export default {
       }
     },
     nextTask () {
-      this.$emit('nextTask')
+      this.$emit('next')
     },
     clickSuccess () {
       this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'welcome', visible: false })
@@ -273,6 +277,23 @@ export default {
       this.nextTask()
       this.$router.push('/reglaments')
       this.$store.commit(NAVIGATOR_SUCCESS)
+    },
+    onPostpone (date) {
+      const year = String(date.getFullYear()).padStart(4, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      const seconds = String(date.getSeconds()).padStart(2, '0')
+      const dateStr = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+      //
+      const slide = {
+        name: this.name,
+        visible: true,
+        reminder: dateStr
+      }
+      this.$store.commit(SLIDES.CHANGE_VISIBLE, slide)
+      this.nextTask()
     }
   }
 }

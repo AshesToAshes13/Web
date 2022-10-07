@@ -90,6 +90,7 @@
       </div>
       <QuillEditor
         v-if="reglamentContent.length && !isTesting"
+        :key="reglamentContent"
         v-model:content="reglamentContent"
         content-type="html"
         :read-only="true"
@@ -315,6 +316,14 @@ export default {
           if (index !== -1) reglaments.items[index].needStartEdit = false
           //
           this.setEdit()
+        }
+      }
+    },
+    currReglament: {
+      deep: true,
+      handler: function (newCurrReglament) {
+        if (this.reglamentContent !== newCurrReglament?.content) {
+          this.reglamentContent = newCurrReglament?.content
         }
       }
     }

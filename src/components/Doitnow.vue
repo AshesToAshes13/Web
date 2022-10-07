@@ -31,8 +31,7 @@
           <DoitnowSlide
             v-if="isSlide"
             :name="firstTask.name"
-            :reminder="firstTask.reminder"
-            @nextTask="nextTask"
+            @next="nextTask"
           />
           <DoitnowReglament
             v-else-if="isReglament"
@@ -40,6 +39,7 @@
             :uid="firstTask.uid"
             :date="firstTask.lastDate"
             :last-change="firstTask.lastComment"
+            @next="nextTask"
           />
           <DoitnowCard
             v-else-if="isCard"
@@ -65,53 +65,6 @@
             @readTask="readTask"
           />
         </div>
-        <div
-          v-if="isReglament || isSlide"
-          class="flex-none flex mb-5 justify-end items-center self-start z-[1]"
-        >
-          <button
-            class="pt-[10px] pb-3 px-4 rounded-lg mr-2 hover:bg-gray-300 text-sm bg-opacity-70 font-medium text-center w-[200px] h-[40px] bg-white justify-center text-[#424242]"
-            @click="!postponeDate ? postponeTask(firstTask.reminder, timeArr[postponeIndex]) : postponeTask(postponeDate)"
-          >
-            Отложить на {{ !postponeDate ? timeArr[postponeIndex].name : transformPostponeDate }}
-          </button>
-          <PopMenu>
-            <span class="inline-block cursor-pointer w-[20px] text-center">
-              ▼
-            </span>
-            <template #menu>
-              <div
-                class="h-[155px] overflow-y-auto w-[220px] scroll-style"
-              >
-                <PopMenuItem
-                  v-for="(item, index) in timeArr"
-                  :key="item.index"
-                  @click="changePostponeIndex(index)"
-                >
-                  <div class="flex justify-between w-full items-center">
-                    <span
-                      class="truncate"
-                    >
-                      {{ item.name }}
-                    </span>
-                  </div>
-                </PopMenuItem>
-                <PopMenuItem
-                  @click.stop
-                >
-                  <SetDate
-                    class="hover:cursor-pointer"
-                    :name="'Назначить срок'"
-                    :date-begin="firstTask.date_begin"
-                    :date-end="firstTask.date_end"
-                    :date-text="'Сегодня'"
-                    @changeDates="setPostponeDate"
-                  />
-                </PopMenuItem>
-              </div>
-            </template>
-          </PopMenu>
-        </div>
       </div>
     </transition>
     <DoitnowEmpty
@@ -126,17 +79,12 @@ import * as FILES from '@/store/actions/taskfiles.js'
 import * as MSG from '@/store/actions/taskmessages.js'
 import * as TASK from '@/store/actions/tasks.js'
 import * as CARD from '@/store/actions/cards.js'
-import * as SLIDES from '@/store/actions/slides.js'
-import * as REGLAMENTS from '@/store/actions/reglaments.js'
 
 import DoitnowCard from '@/components/Doitnow/DoitnowCard.vue'
 import DoitnowSlide from '@/components/Doitnow/DoitnowSlide.vue'
 import DoitnowEmpty from '@/components/Doitnow/DoitnowEmpty.vue'
 import DoitnowTask from '@/components/Doitnow/DoitnowTask.vue'
 import DoitnowSkeleton from '@/components/Doitnow/DoitnowSkeleton.vue'
-import PopMenu from '@/components/Common/PopMenu.vue'
-import PopMenuItem from '@/components/Common/PopMenuItem.vue'
-import SetDate from '@/components/Doitnow/SetDate.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
@@ -155,10 +103,7 @@ export default {
     DoitnowTask,
     DoitnowReglament,
     NavBar,
-    DoitnowOnboarding,
-    PopMenu,
-    PopMenuItem,
-    SetDate
+    DoitnowOnboarding
   },
   data () {
     return {
@@ -170,8 +115,6 @@ export default {
       reglaments: [],
       childrens: [],
       isTaskMessagesLoading: false,
-      postponeIndex: 0,
-      postponeDate: '',
       isLoadingDoits: false
     }
   },
@@ -185,22 +128,6 @@ export default {
         this.reglaments.length +
         this.cards.length
       )
-    },
-    timeArr () {
-      return [{
-        value: 10,
-        name: '10 минут'
-      }, {
-        value: 1,
-        name: '1 час'
-      }, {
-        value: 3,
-        name: '3 часа'
-      },
-      {
-        value: 1,
-        name: 'Завтра'
-      }]
     },
     firstTask () {
       if (this.greetingSlides.length) {
@@ -262,18 +189,10 @@ export default {
     showLimitMessage () {
       const tarif = this.$store.state.user.user.tarif
       return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
-    },
-    transformPostponeDate () {
-      const date = new Date(this.postponeDate)
-      const day = String(date.getDate()).padStart(2, '0')
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      return `${day}.${month}.${date.getFullYear()}`
     }
   },
   watch: {
     firstTask (newtask) {
-      this.postponeDate = ''
-      this.postponeIndex = 0
       if (newtask && newtask.uid && !this.isReglament) {
         this.isTaskMessagesLoading = true
         this.$store.dispatch(TASK.GET_TASK_CHILDRENS, newtask.uid)
@@ -360,59 +279,6 @@ export default {
     pad2 (n) {
       return (n < 10 ? '0' : '') + n
     },
-    postponeTask (end, item) {
-      const dateEnd = end ? new Date(end) : new Date()
-      if (item) {
-        switch (item.name) {
-          case '10 минут':
-            dateEnd.setMinutes(dateEnd.getMinutes() + item.value)
-            break
-          case '1 час':
-            dateEnd.setHours(dateEnd.getHours() + item.value)
-            break
-          case '3 часа':
-            dateEnd.setHours(dateEnd.getHours() + item.value)
-            break
-          case 'Завтра':
-            dateEnd.setDate(dateEnd.getDate() + item.value)
-            break
-        }
-      }
-
-      const month = this.pad2(dateEnd.getMonth() + 1)
-      const day = this.pad2(dateEnd.getDate())
-      const year = String(dateEnd.getFullYear()).padStart(4, '0')
-      const hours = this.pad2(dateEnd.getHours())
-      const minutes = this.pad2(dateEnd.getMinutes())
-      const seconds = this.pad2(dateEnd.getSeconds())
-      const newDateEnd = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
-
-      if (this.isReglament) {
-        const reglamentReminder = {
-          uid_user: this.user?.current_user_uid,
-          uid_reglament: this.firstTask.uid,
-          reminder_date: newDateEnd
-        }
-        this.$store.dispatch(REGLAMENTS.SET_REGLAMENT_REMINDER, reglamentReminder).then((resp) => {
-          const reglament = this.$store.state.reglaments.reglaments[reglamentReminder.uid_reglament]
-          if (reglament) reglament.reminder = reglamentReminder.reminder_date
-        })
-        this.nextTask()
-        return
-      }
-      if (this.isSlide) {
-        const slide = {
-          name: this.firstTask.name,
-          visible: this.firstTask.visible,
-          reminder: newDateEnd
-        }
-        this.$store.commit(SLIDES.CHANGE_VISIBLE, slide)
-        this.nextTask()
-      }
-    },
-    setPostponeDate (date) {
-      this.postponeDate = date
-    },
     okToModal () {
       this.$store.commit(USER_VIEWED_MODAL, 'doitnow')
     },
@@ -457,10 +323,6 @@ export default {
       this.$store.commit('basic', { key: 'propertiesState', value: 'task' })
       this.$store.dispatch(TASK.SELECT_TASK, task)
       this.$store.dispatch('asidePropertiesToggle', true)
-    },
-    changePostponeIndex (index) {
-      this.postponeDate = ''
-      this.postponeIndex = index
     },
     onStartAnimation () {
       this.$refs.doitnow.classList.toggle('slide-in-parent')

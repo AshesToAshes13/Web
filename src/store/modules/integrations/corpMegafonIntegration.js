@@ -43,16 +43,69 @@ const actions = {
         })
     })
   },
-  [CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION]: ({ commit, dispatch }, organizationEmail) => {
+  [CORP_MEGAFON.MEGAFON_UPDATE_INTEGRATION]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + organizationEmail
-      axios({ url: url, method: 'GET' })
+      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + data.organizationEmail
+      const body = {
+        crmKey: data.crmKey,
+        atsKey: data.atsKey,
+        atsLink: data.atsLink,
+        megafonUsers: JSON.stringify(data.megafonUsers)
+      }
+      axios({ url: url, method: 'POST', data: body })
         .then((resp) => {
+          if (!resp.data.integration) {
+            return
+          }
           commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
             atsKey: resp.data.integration.atsKey,
             crmKey: resp.data.integration.crmKey,
             atsLink: resp.data.integration.atsLink,
             megafonUsers: resp.data.users
+          })
+          resolve(resp)
+        })
+        .catch((err) => {
+          console.log('ошибка при запросе организации')
+          reject(err)
+        })
+    })
+  },
+  [CORP_MEGAFON.GET_CALL_HISTORY]: ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + `megafon/${data.phone}/history`
+      const params = {
+        crmKey: data.crmKey
+      }
+
+      axios({ url: url, method: 'GET', params: params })
+        .then((resp) => {
+          resolve(resp)
+        })
+        .catch((err) => {
+          console.log('ошибка при запросе организации')
+          reject(err)
+        })
+    })
+  },
+  [CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION]: ({ commit, dispatch }, organizationEmail) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + organizationEmail
+      axios({ url: url, method: 'GET' })
+        .then((resp) => {
+          if (!Object.keys(resp.data.integration).length) {
+            return
+          }
+          commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
+            atsKey: resp.data.integration.ats_key,
+            crmKey: resp.data.integration.crm_key,
+            atsLink: resp.data.integration.ats_link,
+            megafonUsers: resp.data.users.map((user) => ({
+              id: user.id,
+              organizationEmail: user.organizationEmail,
+              uidUser: user.uid_user,
+              megafonUserLogin: user.megafon_user_login
+            }))
           })
           resolve(resp)
         })

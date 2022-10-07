@@ -105,6 +105,7 @@
       />
       <DoitnowChatMessages
         :task="task"
+        :is-task-messages-loading="isTaskMessagesLoading"
         :task-messages="taskMessages"
         :current-user-uid="user?.current_user_uid"
         :message-quote-user="messageQuoteUser"
@@ -119,34 +120,42 @@
         @readTask="readTask"
       />
     </div>
-    <!-- accept/redo/decline -->
     <div
       v-if="!task.mode"
-      class="flex ml-[10px] flex-col min-w-[200px] items-center"
+      class="flex ml-[10px] flex-col w-[221px] items-center"
     >
-      <DoitnowPostponeButton
+      <DoitnowRightButtonPostpone
         v-if="shouldShowAcceptButton && selectedTask.status !== 5"
-        :task="task"
-        :user="user"
-        :postpone-date="postponeDate"
-        :postpone-index="postponeIndex"
-        @postponeTask="postponeTask"
-        @changeDateEditingStatus="changeDateEditingStatus"
-        @changeDates="onChangeDates"
-        @changePostponeIndex="changePostponeIndex"
-        @changePostponeDate="changePostponeDate"
+        class="mb-2"
+        @postpone="onPostpone"
       />
-      <DoitnowAcceptButton
+      <DoitnowRightButton
         v-if="shouldShowAcceptButton"
-        :task="task"
-        :user="user"
-        @accept="accept"
+        :title="acceptButtonText"
+        icon="check"
+        class="mb-2"
+        @click="accept"
       />
-      <DoitnowRedoButton
-        v-if="shouldShowRedoButton"
-        :task="task"
-        :user="user"
-        @reDo="reDo"
+      <DoitnowRightButton
+        v-if="shouldShowRefineButton"
+        title="На доработку"
+        icon="redo"
+        class="mb-2"
+        @click="refine"
+      />
+      <DoitnowRightButton
+        v-if="shouldShowRejectButton"
+        title="Отклонить"
+        icon="cancel"
+        class="mb-2"
+        @click="reject"
+      />
+      <DoitnowRightButton
+        v-if="shouldShowCancelButton"
+        title="Отменить"
+        icon="cancel"
+        class="mb-2"
+        @click="cancel"
       />
       <PerformButton
         v-if="shouldShowPerformButton"
@@ -184,9 +193,8 @@ import PerformButton from '@/components/Doitnow/PerformButton.vue'
 import Checklist from '@/components/Doitnow/Checklist.vue'
 import DoitnowStatusModal from '@/components/Doitnow/DoitnowStatusModal.vue'
 import DoitnowChatMessages from '@/components/Doitnow/DoitnowChatMessages.vue'
-import DoitnowPostponeButton from '@/components/Doitnow/DoitnowPostponeButton.vue'
-import DoitnowAcceptButton from '@/components/Doitnow/DoitnowAcceptButton.vue'
-import DoitnowRedoButton from '@/components/Doitnow/DoitnowRedoButton.vue'
+import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
+import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowChangeAccessButton from '@/components/Doitnow/DoitnowChangeAccessButton.vue'
 import DoitnowOpenTask from '@/components/Doitnow/DoitnowOpenTask.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
@@ -212,10 +220,9 @@ export default {
     DoitnowOverdueInfo,
     DoitnowProjectInfo,
     Checklist,
-    DoitnowAcceptButton,
     DoitnowChangeAccessButton,
-    DoitnowPostponeButton,
-    DoitnowRedoButton,
+    DoitnowRightButtonPostpone,
+    DoitnowRightButton,
     DoitnowOpenTask,
     DoitnowStatusModal,
     contenteditable,
@@ -285,6 +292,16 @@ export default {
     }
   },
   computed: {
+    acceptButtonText () {
+      if (this.isCustomer && this.isPerformer) {
+        return 'Завершить'
+      } else if (this.isCustomer && !this.isPerformer) {
+        return 'Принять и завершить'
+      } else if (!this.isCustomer && this.isPerformer) {
+        return 'Готово к сдаче'
+      }
+      return 'Понятно'
+    },
     canEditChecklist () {
       return ((this.task?.type === 1 || this.task?.type === 2) && this.user.tarif !== 'free') || !this.$store.getters.isLicenseExpired
     },
@@ -296,6 +313,9 @@ export default {
     },
     taskMessagesAndFiles () {
       return this.$store.state.taskfilesandmessages.messages
+    },
+    isPerformer () {
+      return this.task.uid_performer === this.user?.current_user_uid
     },
     isCustomer () {
       return this.task.uid_customer === this.user?.current_user_uid
@@ -385,8 +405,14 @@ export default {
     shouldShowAcceptButton () {
       return this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
     },
-    shouldShowRedoButton () {
-      return this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
+    shouldShowRefineButton () {
+      return this.isCustomer && !this.isPerformer && this.task.status === TASK_STATUS.TASK_READY
+    },
+    shouldShowRejectButton () {
+      return !this.isCustomer && this.isPerformer
+    },
+    shouldShowCancelButton () {
+      return this.isCustomer
     },
     shouldShowPerformButton () {
       return this.task.status !== TASK_STATUS.NOTE && this.task.type !== TASK_STATUS.TASK_IN_WORK && (this.task.uid_customer === this.user?.current_user_uid || this.task.uid_customer === this.task.uid_performer)
@@ -670,49 +696,49 @@ export default {
         })
       this.nextTask()
     },
-    reDo () {
+    refine () {
       if (this.childrens?.length) {
-        if (this.task.uid_performer === this.user.current_user_uid && this.task.uid_customer === this.user.current_user_uid) {
-          this.lastSelectedStatus = TASK_STATUS.TASK_CANCELLED
-        }
-        if (this.task.uid_performer === this.user.current_user_uid && this.task.uid_customer !== this.user.current_user_uid) {
-          this.lastSelectedStatus = TASK_STATUS.TASK_REJECTED
-        }
-        if (this.task.uid_performer !== this.user.current_user_uid && this.task.uid_customer === this.user.current_user_uid) {
-          this.lastSelectedStatus = TASK_STATUS.TASK_REFINE
-        }
+        this.lastSelectedStatus = TASK_STATUS.TASK_REFINE
         this.changeStatus(this.lastSelectedStatus, true)
         return
       }
       this.readTask()
-      if (this.task.uid_performer === this.user?.current_user_uid && this.task.uid_customer === this.user?.current_user_uid) {
-        this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
-          uid: this.task.uid,
-          value: TASK_STATUS.TASK_CANCELLED
-        })
-        this.$emit('changeValue', { status: TASK_STATUS.TASK_CANCELLED })
+      this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
+        uid: this.task.uid,
+        value: TASK_STATUS.TASK_REFINE
+      })
+      this.$emit('changeValue', { status: TASK_STATUS.TASK_REFINE })
+      this.nextTask()
+    },
+    cancel () {
+      if (this.childrens?.length) {
+        this.lastSelectedStatus = TASK_STATUS.TASK_CANCELLED
+        this.changeStatus(this.lastSelectedStatus, true)
+        return
       }
-      if (this.task.uid_performer === this.user?.current_user_uid && this.task.uid_customer !== this.user?.current_user_uid) {
-        this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
-          uid: this.task.uid,
-          value: TASK_STATUS.TASK_REJECTED
-        })
-        this.$emit('changeValue', { status: TASK_STATUS.TASK_REJECTED })
+      this.readTask()
+      this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
+        uid: this.task.uid,
+        value: TASK_STATUS.TASK_CANCELLED
+      })
+      this.$emit('changeValue', { status: TASK_STATUS.TASK_CANCELLED })
+      this.nextTask()
+    },
+    reject () {
+      if (this.childrens?.length) {
+        this.lastSelectedStatus = TASK_STATUS.TASK_REJECTED
+        this.changeStatus(this.lastSelectedStatus, true)
+        return
       }
-      if (this.task.uid_performer !== this.user?.current_user_uid && this.task.uid_customer === this.user?.current_user_uid) {
-        this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
-          uid: this.task.uid,
-          value: TASK_STATUS.TASK_REFINE
-        })
-        this.$emit('changeValue', { status: TASK_STATUS.TASK_REFINE })
-      }
+      this.readTask()
+      this.$store.dispatch(TASK.CHANGE_TASK_STATUS, {
+        uid: this.task.uid,
+        value: TASK_STATUS.TASK_REJECTED
+      })
+      this.$emit('changeValue', { status: TASK_STATUS.TASK_REJECTED })
       this.nextTask()
     },
     accept () {
-      if (this.task.mode === 'slide') {
-        this.nextTask()
-        return
-      }
       if (this.childrens?.length) {
         this.showStatusModal = true
         if ((this.task.uid_performer === this.user.current_user_uid && this.task.uid_customer === this.user.current_user_uid) ||
@@ -789,6 +815,16 @@ export default {
     },
     onAnswerMessage (uid) {
       this.currentAnswerMessageUid = uid
+    },
+    onPostpone (date) {
+      const year = String(date.getFullYear()).padStart(4, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      const seconds = String(date.getSeconds()).padStart(2, '0')
+      const dateStr = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+      this.onChangeDates(dateStr, dateStr)
     },
     onChangeDates (begin, end) {
       const data = {

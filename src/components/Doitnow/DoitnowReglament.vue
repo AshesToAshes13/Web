@@ -25,15 +25,24 @@
         Пройти регламент
       </div>
     </button>
+    <template #buttons>
+      <DoitnowRightButtonPostpone
+        @postpone="onPostpone"
+      />
+    </template>
   </DoitnowContent>
 </template>
 
 <script>
+import * as REGLAMENTS from '@/store/actions/reglaments.js'
+
 import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
+import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 
 export default {
   components: {
-    DoitnowContent
+    DoitnowContent,
+    DoitnowRightButtonPostpone
   },
   props: {
     uid: {
@@ -53,6 +62,7 @@ export default {
       default: ''
     }
   },
+  emits: ['next'],
   computed: {
     dateCommon () {
       if (this.lastChange) return `${this.date}:`
@@ -64,6 +74,26 @@ export default {
       this.$router.push('/reglaments/' + this.uid)
       this.$store.state.reglaments.returnDoitnow = true
       this.$store.commit('NAVIGATOR_SUCCESS')
+    },
+    onPostpone (date) {
+      const year = String(date.getFullYear()).padStart(4, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      const seconds = String(date.getSeconds()).padStart(2, '0')
+      const dateStr = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+      //
+      const reglamentReminder = {
+        uid_user: this.$store.state.user?.user?.current_user_uid,
+        uid_reglament: this.uid,
+        reminder_date: dateStr
+      }
+      this.$store.dispatch(REGLAMENTS.SET_REGLAMENT_REMINDER, reglamentReminder).then((resp) => {
+        const reglament = this.$store.state.reglaments.reglaments[reglamentReminder.uid_reglament]
+        if (reglament) reglament.reminder = reglamentReminder.reminder_date
+      })
+      this.$emit('next')
     }
   }
 }

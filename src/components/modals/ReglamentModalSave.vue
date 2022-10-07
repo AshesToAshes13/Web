@@ -1,9 +1,7 @@
 <template>
   <ModalBox
-    ok="Сохранить"
     title="Сохранение регламента"
     class="flex-col w-[100px]"
-    @ok="onSave"
     @cancel="close"
   >
     <div class="flex flex-col">
@@ -57,7 +55,7 @@
           Очистить сотрудников прошедших регламент
         </div>
       </div>
-      <h2 class="text-[14px] mt-[-5px]">
+      <h2 class="text-[14px]">
         Добавить комментарий к изменениям
       </h2>
       <p
@@ -66,13 +64,25 @@
       >
         Поле комментарий не должно быть пустым
       </p>
-      <textarea
-        v-model="reglamentComment"
-        type="text"
-        class="bg-[#F4F5F7] rounded-[6px] min-h-[81px] scroll-style ml-1 mt-2 w-[300px] font-[500] px-2 text-[14px] leading-6 break-words"
-        placeholder="Комментарий"
-        spellcheck="false"
-      />
+      <form
+        class="flex flex-col w-full gap-[12px]"
+        @submit.prevent="onSave"
+      >
+        <textarea
+          v-model="reglamentComment"
+          type="text"
+          class="bg-[#F4F5F7] rounded-[6px] min-h-[81px] scroll-style ml-1 mt-2 w-[300px] font-[500] px-2 text-[14px] leading-6 break-words"
+          placeholder="Комментарий"
+          spellcheck="false"
+        />
+        <input
+          :value="!disabledButtons ? 'Сохранить' : 'Сохраняется...'"
+          type="submit"
+          class="focus:ring min-w-[90px] focus:outline-none inline-flex cursor-pointer whitespace-nowrap justify-center items-center duration-150 px-[12px] py-[10px] rounded-md bg-[#ff9123] text-white text-[13px] leading-[15px] font-medium font-roboto disabled:opacity-70 disabled:cursor-default"
+          :disabled="disabledButtons"
+          :class="{'cursor-default opacity-[0.5]': disabledButtons}"
+        >
+      </form>
     </div>
   </ModalBox>
 </template>
@@ -82,6 +92,12 @@ import * as REGLAMENTS from '@/store/actions/reglaments.js'
 export default {
   components: {
     ModalBox
+  },
+  props: {
+    disabledButtons: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['onSave', 'close', 'clearContributors'],
   data () {

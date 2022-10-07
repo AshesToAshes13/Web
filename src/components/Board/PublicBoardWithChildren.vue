@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen overflow-hidden">
     <div class="gap-[10px] font-roboto text-[16px] font-medium text-[#4C4C4D] text-center mt-3">
-      {{ boardName }}
+      <span>Доска: {{ boardName }}</span>
     </div>
     <div class="w-full h-[calc(100%-46px)] flex flex-col">
       <div class="mt-5 h-full min-h-0">

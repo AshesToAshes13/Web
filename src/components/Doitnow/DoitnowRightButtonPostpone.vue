@@ -7,44 +7,52 @@
       @save="onSetDate"
       @cancel="showSetDate = false"
     />
-    <div
-      class="flex-none flex items-center cursor-pointer bg-white hover:bg-[#0000000a] h-[40px] w-[200px] rounded-[8px] px-[20px] overflow-hidden"
-      @click="onPostpone"
-    >
-      <span
-        class="mx-auto font-roboto text-[#4C4C4D] text-[13px] truncate"
-      >
-        Отложить на {{ postpone }}
-        {{ title }}
-      </span>
-    </div>
     <PopMenu>
-      <span
-        class="flex-none inline-block cursor-pointer w-[20px] text-sm text-center"
+      <div
+        class="flex-none flex items-center cursor-pointer bg-white hover:bg-[#0000000a] h-[40px] w-[221px] rounded-[8px] px-[20px] overflow-hidden"
       >
-        ▼
-      </span>
+        <span
+          class="mx-auto font-roboto text-[#4C4C4D] text-[13px] truncate"
+        >
+          Отложить
+        </span>
+        <svg
+          class="flex-none"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M6.17239 8.40112C5.90299 8.67411 5.9059 9.11379 6.17889 9.38319L9.55667 12.7165C9.8119 12.9684 10.2169 12.9845 10.4914 12.7538L14.1506 9.67683C14.4442 9.43 14.4821 8.99193 14.2352 8.69838C13.9884 8.40484 13.5503 8.36697 13.2568 8.6138L10.0818 11.2835L7.15446 8.39462C6.88147 8.12522 6.44178 8.12813 6.17239 8.40112Z"
+            fill="#424242"
+          />
+        </svg>
+      </div>
       <template #menu>
-        <div class="h-[155px] overflow-y-auto w-[220px] scroll-style">
+        <div class="w-[203px]">
           <PopMenuItem
             @click="onSetPostpone({minutes: 10, days: 0})"
           >
-            10 минут
+            На 10 минут
           </PopMenuItem>
           <PopMenuItem
             @click="onSetPostpone({minutes: 60, days: 0})"
           >
-            1 час
+            На 1 час
           </PopMenuItem>
           <PopMenuItem
             @click="onSetPostpone({minutes: 180, days: 0})"
           >
-            3 часа
+            На 3 часа
           </PopMenuItem>
           <PopMenuItem
             @click="onSetPostpone({minutes: 0, days: 1})"
           >
-            Завтра
+            На завтра
           </PopMenuItem>
           <PopMenuItem
             @click="onSelectPostpone"
@@ -67,16 +75,6 @@ export default {
     DoitnowModalBoxSetDate,
     PopMenu,
     PopMenuItem
-  },
-  props: {
-    title: {
-      type: String,
-      default: ''
-    },
-    icon: {
-      type: String,
-      default: ''
-    }
   },
   emits: ['postpone'],
   data () {
@@ -122,6 +120,7 @@ export default {
     },
     onSetPostpone (value) {
       this.postponeValue = value
+      this.onPostpone()
     },
     onSelectPostpone () {
       // выбрать дату - через диалог
