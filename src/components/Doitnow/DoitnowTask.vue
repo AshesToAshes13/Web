@@ -166,15 +166,11 @@
         @changePerformer="onChangePerformer"
         @reAssign="onReAssignToUser"
       />
-      <DoitnowChangeAccessButton
-        v-if="shouldShowAccessButton"
-        :task="task"
-        @onChangeAccess="onChangeAccess"
-      />
-      <DoitnowOpenTask
-        v-if="shouldShowOpenTask"
-        :task="task"
-        @setTaskFromQueue="setTaskFromQueue"
+      <DoitnowRightButton
+        title="Открыть задачу"
+        icon="task-open"
+        class="mb-2"
+        @click="openTaskFromQueue"
       />
     </div>
   </div>
@@ -195,8 +191,6 @@ import DoitnowStatusModal from '@/components/Doitnow/DoitnowStatusModal.vue'
 import DoitnowChatMessages from '@/components/Doitnow/DoitnowChatMessages.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
-import DoitnowChangeAccessButton from '@/components/Doitnow/DoitnowChangeAccessButton.vue'
-import DoitnowOpenTask from '@/components/Doitnow/DoitnowOpenTask.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
 import DoitnowPerformerInfo from '@/components/Doitnow/DoitnowPerformerInfo.vue'
 import DoitnowDaysInfo from '@/components/Doitnow/DoitnowDaysInfo.vue'
@@ -220,10 +214,8 @@ export default {
     DoitnowOverdueInfo,
     DoitnowProjectInfo,
     Checklist,
-    DoitnowChangeAccessButton,
     DoitnowRightButtonPostpone,
     DoitnowRightButton,
-    DoitnowOpenTask,
     DoitnowStatusModal,
     contenteditable,
     TaskStatus,
@@ -416,12 +408,6 @@ export default {
     },
     shouldShowPerformButton () {
       return this.task.status !== TASK_STATUS.NOTE && this.task.type !== TASK_STATUS.TASK_IN_WORK && (this.task.uid_customer === this.user?.current_user_uid || this.task.uid_customer === this.task.uid_performer)
-    },
-    shouldShowAccessButton () {
-      return this.task.status !== TASK_STATUS.NOTE && (this.task.type !== TASK_STATUS.TASK_IN_WORK || this.task.emails.includes(this.user?.current_user_email)) && this.task.uid_customer !== this.user?.current_user_uid && this.task.uid_performer !== this.user?.current_user_uid && this.task.mode !== 'slide'
-    },
-    shouldShowOpenTask () {
-      return this.task.mode !== 'slide' || this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
     }
   },
   watch: {
@@ -496,7 +482,8 @@ export default {
       this.$emit('changeValue', { has_msgs: true })
       this.taskMsg = ''
     },
-    setTaskFromQueue (uid) {
+    openTaskFromQueue () {
+      const uid = this.task.uid
       this.$router.push('/task/' + uid)
       this.$store.state.tasks.taskFromQueue = uid
     },
@@ -676,24 +663,6 @@ export default {
     },
     nextTask () {
       this.$emit('nextTask')
-    },
-    onChangeAccess (checkEmails) {
-      let emails = checkEmails
-      if (Array.isArray(checkEmails)) {
-        emails = checkEmails.join('..')
-      }
-      const data = {
-        uid: this.task.uid,
-        value: emails
-      }
-      this.$store.dispatch(TASK.CHANGE_TASK_ACCESS, data)
-        .then(() => {
-          const data = {
-            emails: emails
-          }
-          this.$emit('changeValue', data)
-        })
-      this.nextTask()
     },
     refine () {
       if (this.childrens?.length) {
