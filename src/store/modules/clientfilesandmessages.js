@@ -99,43 +99,36 @@ const actions = {
     const data = { uid: fileUid, key: 'deleted', value: 1 }
     commit(CLIENT_FILES_AND_MESSAGES.REMOVE_MESSAGE_LOCALLY, data)
   },
-  [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: ({ commit, dispatch }, data) => {
+  [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: async ({ commit, dispatch }, data) => {
     commit(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST)
     const messages = dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, data.clientUid)
     const files = dispatch(CLIENT_FILES_AND_MESSAGES.FILES_REQUEST, data.clientUid)
 
     const promises = [messages, files]
 
+    await Promise.all(promises)
+
     if (data.corpYandexInt) {
-      const yandexCorpMsgsSentFromUs = dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data)
-      const yandexCorpMsgsSentToUs = dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data)
-      promises.push(yandexCorpMsgsSentFromUs)
-      promises.push(yandexCorpMsgsSentToUs)
+      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
+      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
     }
 
     if (data.personalYandexInt) {
-      const yandexPersonalMsgsSentFromUs = dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data)
-      const yandexPersonalMsgsSentToUs = dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data)
-      promises.push(yandexPersonalMsgsSentFromUs)
-      promises.push(yandexPersonalMsgsSentToUs)
+      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
+        console.log('personal msgs from us', resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
+      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
+        console.log('personal msgs to us', resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      })
     }
 
-    return Promise.all(promises)
-      .then((resp) => {
-        console.log('msgs resp', resp)
-        console.log('int data', data)
-        console.log('promises', promises)
-        if (data.corpYandexInt && data.personalYandexInt) {
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[2].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[3].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[4].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[5].data)
-        } else if ((!data.personalYandexInt && data.corpYandexInt) || (data.personalYandexInt && !data.corpYandexInt)) {
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[2].data)
-          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp[3].data)
-        }
-        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
-      })
+    commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
   }
 }
 
