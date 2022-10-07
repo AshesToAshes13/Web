@@ -122,44 +122,38 @@
     </div>
     <div
       v-if="!task.mode"
-      class="flex ml-[10px] flex-col w-[221px] items-center"
+      class="flex ml-[10px] flex-col gap-[6px] w-[221px]"
     >
       <DoitnowRightButtonPostpone
         v-if="shouldShowPostponeButton"
-        class="mb-2"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
         v-if="shouldShowAcceptButton"
         :title="acceptButtonText"
         icon="check"
-        class="mb-2"
         @click="accept"
       />
       <DoitnowRightButton
         v-if="shouldShowRefineButton"
         title="На доработку"
-        icon="redo"
-        class="mb-2"
+        icon="refine"
         @click="refine"
       />
       <DoitnowRightButton
         v-if="shouldShowRejectButton"
         title="Отклонить"
         icon="cancel"
-        class="mb-2"
         @click="reject"
       />
       <DoitnowRightButton
         v-if="shouldShowCancelButton"
         title="Отменить"
         icon="cancel"
-        class="mb-2"
         @click="cancel"
       />
-      <PerformButton
+      <DoitnowRightButtonPerform
         v-if="shouldShowPerformButton"
-        class="hover:cursor-pointer"
         :task-type="task.type"
         :current-user-uid="user?.current_user_uid"
         :performer-email="task.email_performer"
@@ -169,7 +163,6 @@
       <DoitnowRightButton
         title="Открыть задачу"
         icon="task-open"
-        class="mb-2"
         @click="openTaskFromQueue"
       />
     </div>
@@ -185,10 +178,10 @@ import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsComment
 import TaskStatus from '@/components/TasksList/TaskStatus.vue'
 
 // Doitnow components
-import PerformButton from '@/components/Doitnow/PerformButton.vue'
 import Checklist from '@/components/Doitnow/Checklist.vue'
 import DoitnowStatusModal from '@/components/Doitnow/DoitnowStatusModal.vue'
 import DoitnowChatMessages from '@/components/Doitnow/DoitnowChatMessages.vue'
+import DoitnowRightButtonPerform from '@/components/Doitnow/DoitnowRightButtonPerform.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
@@ -205,9 +198,9 @@ import * as FILES from '@/store/actions/taskfiles.js'
 
 export default {
   components: {
+    DoitnowRightButtonPerform,
     DoitnowCreateDateInfo,
     TaskPropsCommentEditor,
-    PerformButton,
     DoitnowCustomerInfo,
     DoitnowPerformerInfo,
     DoitnowDaysInfo,
