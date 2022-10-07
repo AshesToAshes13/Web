@@ -23,8 +23,8 @@
             <th>Email</th>
             <th>Комментарий</th>
           </tr>
-          <ClientsSkeleton v-if="status === 'loading'" />
-          <template v-if="status === 'success'">
+          <ClientsSkeleton v-if="status === 'loading' && !wasLoaded" />
+          <template v-if="status === 'success' || wasLoaded">
             <tr
               v-for="client in clients"
               :key="client?.uid"
@@ -96,7 +96,7 @@ export default {
     return {
       showAddClient: false,
       currentPage: 1,
-      wasLoaded: true
+      wasLoaded: false
     }
   },
   computed: {
@@ -134,7 +134,6 @@ export default {
     },
     async clients () {
       if (!this.wasLoaded) await this.requestClients()
-      this.wasLoaded = false
     },
     currentPageRouter () {
       this.requestClients()
@@ -166,7 +165,9 @@ export default {
       if (this.$route.query.search && !(this.$store.state.user.user.tarif === 'free' || this.$store.getters.isLicenseExpired)) {
         data.search = this.$route.query.search
       }
-      await this.$store.dispatch(CLIENTS.GET_CLIENTS, data)
+      await this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then(() => {
+        this.wasLoaded = true
+      })
       if (this.currentPageRouter > this.paging.pages) {
         this.currentPage = this.paging.pages
         this.changePage()
