@@ -136,7 +136,7 @@
         />
         <!-- Кнопка Метки -->
         <TaskPropsButtonTags
-          v-if="(selectedTask?.type === 1 || selectedTask?.type === 2 || selectedTask?.type === 3) && ((selectedTask?.uid_customer === user?.current_user_uid || selectedTask?.uid_performer === user?.current_user_uid) && (selectedTask?.status !== 1))"
+          v-if="(selectedTask?.type === 1 || selectedTask?.type === 2 || selectedTask?.type === 3) && selectedTask?.status !== 1 && (selectedTask?.uid_customer === user?.current_user_uid || selectedTask?.uid_customer !== user?.current_user_uid && selectedTask?.tags.length)"
           :selected-tags="selectedTask?.tags"
           :can-edit="selectedTask?.uid_customer === user?.current_user_uid"
           @changeTags="onChangeTags"
