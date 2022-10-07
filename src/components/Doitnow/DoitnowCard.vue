@@ -119,11 +119,14 @@
         @changeContact="onChangeClient"
       />
       <DoitnowRightButton
-        v-for="column in columnsArchive"
-        :key="column.UID"
-        :title="`Архивировать: ${column.Name}`"
+        title="Архивировать: успех"
         icon="archive"
-        @click="setColumn(column.UID)"
+        @click="onSetSuccess"
+      />
+      <DoitnowRightButton
+        title="Архивировать: отказ"
+        icon="archive"
+        @click="onSetReject"
       />
     </template>
   </DoitnowContent>
@@ -147,6 +150,7 @@ import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/
 import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
+import { CARD_STAGE } from '@/constants'
 
 export default {
   components: {
@@ -218,15 +222,6 @@ export default {
     },
     canEdit () {
       return this.currentBoard?.type_access !== 0
-    },
-    columnsArchive () {
-      return [{
-        UID: 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67',
-        Name: 'Успех'
-      }, {
-        UID: 'e70af5e2-6108-4c02-9a7d-f4efee78d28c',
-        Name: 'Отказ'
-      }]
     }
   },
   mounted () {
@@ -276,14 +271,19 @@ export default {
       this.clientName = name
       this.$store.dispatch(CHANGE_CARD_UID_CLIENT, { ...this.card, uid_client: this.clientUid, client_name: this.clientName })
     },
+    onSetSuccess () {
+      this.setColumn(CARD_STAGE.ARCHIVE_SUCCESS)
+    },
+    onSetReject () {
+      this.setColumn(CARD_STAGE.ARCHIVE_REJECT)
+    },
     setColumn (stageTo) {
-      this.$store
-        .dispatch(CARD.MOVE_ALL_CARDS, {
-          cards: [{ uid: this.card?.uid }], stageTo, boardTo: this.currentBoard?.uid
-        })
-        .then((resp) => {
-          this.$emit('next')
-        })
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+        cards: [{ uid: this.card?.uid }],
+        stageTo,
+        boardTo: this.currentBoard?.uid
+      })
+      this.$emit('next')
     }
   }
 }
