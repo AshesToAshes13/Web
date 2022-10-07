@@ -134,6 +134,7 @@ export default {
               name: 'Яндекс.Почта'
             }
           ],
+          // TODO: сделать userType константами с понятным названием вроде OWNER, ADMIN
           typeAccess: [1, 2, 3]
         },
         {
@@ -148,7 +149,7 @@ export default {
               name: 'Мегафон'
             }
           ],
-          typeAccess: [1, 2]
+          typeAccess: [1, 2, 3]
         }
       ]
     }

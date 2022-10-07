@@ -1,26 +1,40 @@
 import * as SLIDES from '@/store/actions/slides.js'
 
+function getCurrDateTimeString () {
+  const date = new Date()
+  const year = String(date.getFullYear()).padStart(4, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+}
+
 const state = {
   slides: [
     {
+      uid: 'welcome',
       name: 'welcome',
       mode: 'slide',
       visible:
         JSON.parse(localStorage.getItem('slides'))?.welcome?.visible ?? true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.welcome?.reminder ??
-        new Date()
+        getCurrDateTimeString()
     },
     {
+      uid: 'addAvatar',
       name: 'addAvatar',
       mode: 'slide',
       visible:
         JSON.parse(localStorage.getItem('slides'))?.addAvatar?.visible ?? true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.addAvatar?.reminder ??
-        new Date()
+        getCurrDateTimeString()
     },
     {
+      uid: 'addEmployees',
       name: 'addEmployees',
       mode: 'slide',
       visible:
@@ -28,9 +42,10 @@ const state = {
         true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.addEmployees?.reminder ??
-        new Date()
+        getCurrDateTimeString()
     },
     {
+      uid: 'addReglaments',
       name: 'addReglaments',
       mode: 'slide',
       visible:
@@ -38,9 +53,10 @@ const state = {
         true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.addReglaments?.reminder ??
-        new Date()
+        getCurrDateTimeString()
     },
     {
+      uid: 'delegateTasks',
       name: 'delegateTasks',
       mode: 'slide',
       visible:
@@ -48,7 +64,7 @@ const state = {
         true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.reminder ??
-        new Date()
+        getCurrDateTimeString()
     }
   ]
 }
@@ -59,32 +75,42 @@ const mutations = {
   [SLIDES.CHANGE_VISIBLE]: (state, value) => {
     for (let i = 0; i < state.slides.length; i++) {
       if (state.slides[i].name === value.name) {
+        const dateStr = getCurrDateTimeString()
+        // сохраняем в стейт
+        state.slides[i].visible = value.visible
+        state.slides[i].reminder = value.reminder || dateStr
+        // сохраняем в стору
         let data = {}
         try {
           data = JSON.parse(localStorage.getItem('slides'))
+          data[value.name].visible = value.visible
+          data[value.name].reminder = value.reminder || dateStr
         } catch (e) {
           data = {
             welcome: {
-              visible: true
+              visible: true,
+              reminder: dateStr
             },
             addAvatar: {
-              visible: true
+              visible: true,
+              reminder: dateStr
             },
             addEmployees: {
-              visible: true
+              visible: true,
+              reminder: dateStr
             },
             addReglaments: {
-              visible: true
+              visible: true,
+              reminder: dateStr
             },
             delegateTasks: {
-              visible: true
+              visible: true,
+              reminder: dateStr
             }
           }
+          data[value.name].visible = value.visible
+          data[value.name].reminder = value.reminder || dateStr
         }
-        data[value.name].visible = value.visible
-        data[value.name].reminder = value.reminder
-        state.slides[i].visible = value.visible
-        state.slides[i].reminder = value.reminder ?? new Date()
         localStorage.setItem('slides', JSON.stringify(data))
       }
     }

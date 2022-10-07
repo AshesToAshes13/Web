@@ -194,7 +194,7 @@
         @click="shouldShowInspector"
       />
       <EventAlert
-        v-if="$store.getters.isLicenseExpired"
+        v-if="licenseAlert"
         :tarif="user?.tarif"
       />
     </div>
@@ -230,6 +230,9 @@ export default {
     },
     activeTab () {
       return this.$store.state.navigator.submenu.activeTab
+    },
+    licenseAlert () {
+      return (this.$store.getters.isLicenseExpired && this.user?.tarif === 'alpha') || (this.user?.tarif === 'free' || this.user?.tarif === 'trial')
     }
   },
   watch: {

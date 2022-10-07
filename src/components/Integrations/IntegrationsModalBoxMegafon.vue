@@ -51,13 +51,13 @@
           class="mb-1 flex"
         >
           <EmployeesPopper
-            v-model="megafonUser.userUid"
+            v-model="megafonUser.uidUser"
             class="mr-2"
             :can-edit="true"
             :org-employees="orgEmployees"
           />
           <input
-            v-model="megafonUser.login"
+            v-model="megafonUser.megafonUserLogin"
             class="block bg-[#f4f5f7]/50 rounded-[6px] focus:ring-0 border w-full px-[5px] py-[3px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto"
           >
         </div>
@@ -110,7 +110,7 @@ export default {
   methods: {
     onSave (event) {
       event.preventDefault()
-      this.megafonUsers = this.megafonUsers.filter(user => user.userUid !== '' || user.login !== '')
+      this.megafonUsers = this.megafonUsers.filter(user => user.uidUser !== '' || user.megafonUserLogin !== '')
       this.$emit('onSave', {
         crmKey: this.crmKey,
         atsKey: this.atsKey,
@@ -123,8 +123,8 @@ export default {
     },
     onAddNewMegafonUser () {
       this.megafonUsers.push({
-        userUid: '',
-        login: ''
+        uidUser: '',
+        megafonUserLogin: ''
       })
     }
   }

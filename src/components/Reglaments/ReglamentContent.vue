@@ -322,8 +322,8 @@ export default {
     currReglament: {
       deep: true,
       handler: function (newCurrReglament) {
-        if (this.reglamentContent !== newCurrReglament.content) {
-          this.reglamentContent = newCurrReglament.content
+        if (this.reglamentContent !== newCurrReglament?.content) {
+          this.reglamentContent = newCurrReglament?.content
         }
       }
     }

@@ -83,10 +83,25 @@
     >
   </div>
 
+  <ClientCardSelectCardMessagesVue
+    v-if="cards.length"
+    :cards="cards"
+    @selectCard="selectCard"
+    @clearCardChat="clearCardChat"
+  />
+
+  <CardChat
+    v-if="cardMessages.length"
+    :messages="cardMessages"
+    :current-user-uid="user.current_user_uid"
+    :employees="employees"
+    :show-files-only="showFilesOnly"
+  />
+
   <!-- Chat skeleton -->
   <MessageSkeleton v-if="status=='loading'" />
   <ClientChat
-    v-if="status=='success'"
+    v-if="status=='success' && !cardMessages.length"
     :messages="clientMessages"
     :current-user-uid="user.current_user_uid"
     :employees="employees"
@@ -105,6 +120,7 @@
       @onClearQuote="currentQuote = false"
     />
     <ClientMessageInput
+      v-if="!cardMessages.length"
       v-model="clientMessageInputValue"
       :can-add-files="canAddFiles"
       @createClientMessage="createClientMessage"
@@ -124,8 +140,11 @@ import ClientChat from '@/components/Clients/ClientChat.vue'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput.vue'
 import ClientMessageInput from '@/components/Clients/ClientMessageInput.vue'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
+import ClientCardSelectCardMessagesVue from './ClientCardSelectCardMessages.vue'
+import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import { MESSAGES_REQUEST, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
 
 export default {
@@ -138,7 +157,9 @@ export default {
     PopMenu,
     ClientChat,
     ClientMessageQuoteUnderInput,
+    ClientCardSelectCardMessagesVue,
     ClientMessageInput,
+    CardChat,
     MessageSkeleton
   },
   data () {
@@ -163,7 +184,9 @@ export default {
     user () { return this.$store.state.user.user },
     employees () { return this.$store.state.employees.employees },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
-    clientMessages () { return this.$store.state.clientfilesandmessages.messages }
+    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
+    cards () { return this.$store.state.clientfilesandmessages.cards.cards },
+    cardMessages () { return this.$store.state.cardfilesandmessages.messages }
   },
   watch: {
     selectedClient (newval) {
@@ -178,6 +201,10 @@ export default {
   methods: {
     closeProperties () {
       this.$store.commit(CLIENTS.SELECT_CLIENT, null)
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS, [])
+      this.clearCardChat()
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     removeClient () {
@@ -189,6 +216,13 @@ export default {
       if (this.checkForm()) {
         this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
       }
+    },
+    selectCard (uid) {
+      this.$store.dispatch(MESSAGES_REQUEST, uid)
+    },
+    clearCardChat () {
+      this.$store.commit(REFRESH_FILES, [])
+      this.$store.commit(REFRESH_MESSAGES, [])
     },
     checkForm () {
       const { name, phone, email } = this.currClient

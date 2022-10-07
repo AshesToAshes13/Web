@@ -10,12 +10,28 @@ import store from '@/store/index.js'
 const state = {
   messages: [],
   files: [],
-  status: 'loading'
+  status: 'loading',
+  cards: {
+    status: 'loading',
+    cards: []
+  }
 }
 
 const getters = {}
 
 const actions = {
+  [CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS] ({ commit }, clientUid) {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_cards?uid_client=' + clientUid
+      axios({ url: url, method: 'GET' })
+        .then(resp => {
+          commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data.map((card) => { return JSON.parse(card.replace(/[\s]/gi, ' ')) }))
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+    })
+  },
   [CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST]: ({ commit, dispatch }, clientUid) => {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat?uid_client=' + clientUid
@@ -158,6 +174,10 @@ const mutations = {
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     state.messages.push(data)
   },
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
+    state.cards.status = 'success'
+    state.cards.cards = data
+  },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
     state.messages = state.messages.filter((message) => !message.is_uploading)
     state.messages.push(data)
@@ -207,6 +227,9 @@ const mutations = {
         state.messages.splice(i, 1)
       }
     }
+  },
+  [CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS]: (state) => {
+    state.cards.cards = []
   },
   addClientMessages (state, messagesArray) {
     state.messages = state.messages.concat(messagesArray)

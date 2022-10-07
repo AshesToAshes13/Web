@@ -31,21 +31,15 @@
         <span class="ml-[10px] font-[500]">Корпоративная интеграция через Мегафон</span>
       </div>
       <button
-        v-if="!isOrganizationIntegrated"
         class="mt-[10px] rounded-[10px] h-[40px] text-white bg-orange-300"
         @click="changeShowIntegrationState(true)"
       >
-        Интеграция
+        {{ isOrganizationIntegrated ? 'Редактировать' : 'Интеграция' }}
       </button>
       <div
-        v-else
+        v-if="isOrganizationIntegrated"
         class="flex flex-col"
       >
-        <button
-          class="mt-[10px] rounded-[10px] h-[40px] text-white bg-[#44944A]"
-        >
-          Уже интегрированно
-        </button>
         <button
           class="mt-[10px] rounded-[10px] h-[40px] text-white bg-[#CD5C5C]"
           @click="showRemoveIntegration(true)"
@@ -173,7 +167,7 @@ export default {
       return this.$store.state.employees.employees
     },
     canEdit () {
-      return this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2
+      return this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2 || true
     }
   },
   methods: {
@@ -187,18 +181,19 @@ export default {
         this.removeIntegrationModal = value
       }
     },
-    phoneIntegrate (integrationData) {
+    async phoneIntegrate (integrationData) {
       const data = {
         ...integrationData,
-        organizationEmail: this.$store.state.user.user.owner_email
+        organizationEmail: this.user.owner_email
       }
 
-      this.$store.dispatch(CORP_MEGAFON.MEGAFON_CREATE_INTEGRATION, data).then(() => {
+      try {
+        const action = !this.isOrganizationIntegrated ? CORP_MEGAFON.MEGAFON_CREATE_INTEGRATION : CORP_MEGAFON.MEGAFON_UPDATE_INTEGRATION
+        await this.$store.dispatch(action, data)
         this.changeShowIntegrationState(false)
-      })
-        .catch(err => {
-          this.error = err
-        })
+      } catch (ex) {
+        this.error = ex
+      }
     },
     removeIntegration () {
       this.$store.dispatch(CORP_MEGAFON.MEGAFON_REMOVE_CORP_INTEGRATION, this.user.owner_email)
