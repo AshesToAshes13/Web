@@ -125,7 +125,7 @@
       class="flex ml-[10px] flex-col w-[221px] items-center"
     >
       <DoitnowRightButtonPostpone
-        v-if="shouldShowAcceptButton && selectedTask.status !== 5"
+        v-if="shouldShowPostponeButton"
         class="mb-2"
         @postpone="onPostpone"
       />
@@ -308,9 +308,6 @@ export default {
     canCheckChecklist () {
       return ((this.canEditChecklist || this.task?.type === 3) && this.user.tarif !== 'free') || !this.$store.getters.isLicenseExpired
     },
-    selectedTask () {
-      return this.$store.state.tasks.selectedTask
-    },
     taskMessagesAndFiles () {
       return this.$store.state.taskfilesandmessages.messages
     },
@@ -401,6 +398,9 @@ export default {
     },
     shouldShowChecklist () {
       return this.task?.checklist || this.checklistshow || this.checklistSavedNow
+    },
+    shouldShowPostponeButton () {
+      return this.shouldShowAcceptButton && this.task.status !== TASK_STATUS.TASK_READY
     },
     shouldShowAcceptButton () {
       return this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
@@ -644,7 +644,6 @@ export default {
     deleteTaskMsg (uid) {
       this.$store.dispatch(MSG.DELETE_MESSAGE_REQUEST, { uid: uid })
         .then(() => {
-          this.$store.state.tasks.selectedTask.has_msgs = true
           this.$store.state.taskfilesandmessages.messages.find(message => message.uid === uid).deleted = 1
         })
     },
