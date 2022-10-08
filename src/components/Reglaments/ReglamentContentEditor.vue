@@ -107,8 +107,9 @@
             </ReglamentSmallButton>
           </div>
         </div>
-
+        <ReglamentContentEditorSkeleton v-if="reglamentContentSuccess === false" />
         <div
+          v-if="reglamentContentSuccess === true"
           class="flex justify-start gap-[8px] mr-3 leading-[30px] text-[13px] text-[#424242] flex-wrap"
         >
           <span class="font-medium">Отдел:</span>
@@ -220,7 +221,10 @@
         </div>
       </div>
     </div>
-    <div class="bg-white rounded-[28px]">
+    <div
+      v-if="reglamentContentSuccess === true"
+      class="bg-white rounded-[28px]"
+    >
       <!-- Пустой див для корректного поведения quill-tollbar'a-->
       <div>
         <QuillEditor
@@ -337,6 +341,7 @@ import ReglamentPropsMenuItemUser from '@/components/Reglaments/ReglamentPropsMe
 import EmployeeProfile from '../Employees/EmployeeProfile.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
+import ReglamentContentEditorSkeleton from '@/components/Reglaments/ReglamentContentEditorSkeleton.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import { NAVIGATOR_REMOVE_REGLAMENT } from '@/store/actions/navigator'
 import ReglamentQuestion from '@/components/Reglaments/ReglamentQuestion'
@@ -355,6 +360,7 @@ export default {
     ModalBoxDelete,
     PopMenuItem,
     ReglamentPropsMenuItemUser,
+    ReglamentContentEditorSkeleton,
     ReglamentQuestion,
     EmployeeProfile,
     ReglamentModalSave
