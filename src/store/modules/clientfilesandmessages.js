@@ -25,7 +25,8 @@ const actions = {
       const url = process.env.VUE_APP_INSPECTOR_API + 'clients_cards?uid_client=' + clientUid
       axios({ url: url, method: 'GET' })
         .then(resp => {
-          commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data.map((card) => { return JSON.parse(card.replace(/[\s]/gi, ' ')) }))
+          resp.data = resp.data.filter(item => { return typeof item !== 'string' })
+          commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data)
           resolve(resp)
         }).catch(err => {
           reject(err)
