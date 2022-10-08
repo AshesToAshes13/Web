@@ -47,8 +47,8 @@
         </ReglamentSmallButton>
       </router-link>
     </NavBar>
-    <ReglamentContentSkeleton v-if="reglamentSuccess === true" />
-    <div v-if="reglamentSuccess == false">
+    <ReglamentContentSkeleton v-if="reglamentSuccess === false" />
+    <div v-if="reglamentSuccess == true">
       <div
         v-if="!isTesting"
         class="p-7 bg-white rounded-[28px] hide-toolbar"
