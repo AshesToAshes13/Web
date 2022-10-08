@@ -55,7 +55,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexRemovePersonalIntegration?organization=' +
+        'yandexRemovePersonalIntegration?user=' +
         userEmail
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
