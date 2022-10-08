@@ -224,7 +224,7 @@
       <!-- Пустой див для корректного поведения quill-tollbar'a-->
       <div>
         <QuillEditor
-          v-if="reglamentContentSuccess === true"
+          v-if="reglamentContentSuccess"
           v-model:content="reglamentContent"
           content-type="html"
           :toolbar="'full'"
@@ -247,7 +247,7 @@
           <ReglamentQuestion
             :ref="question.uid"
             :question="question"
-            :reglament="reglament"
+            :reglament="currReglament"
             @deleteQuestion="onDeleteQuestion"
             @deleteAnswer="deleteAnswer"
             @addQuestion="onAddQuestion"
@@ -331,6 +331,13 @@
 
 <script>
 import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+import { uuidv4 } from '@/helpers/functions'
+import { NAVIGATOR_REMOVE_REGLAMENT } from '@/store/actions/navigator'
+import * as REGLAMENTS from '@/store/actions/reglaments'
+import * as QUESTIONS from '@/store/actions/reglament_questions'
+import * as ANSWER from '@/store/actions/reglament_answers'
 
 import ReglamentSmallButton from '@/components/Reglaments/ReglamentSmallButton.vue'
 import ReglamentPropsMenuItemUser from '@/components/Reglaments/ReglamentPropsMenuItemUser.vue'
@@ -338,13 +345,7 @@ import EmployeeProfile from '../Employees/EmployeeProfile.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
-import { NAVIGATOR_REMOVE_REGLAMENT } from '@/store/actions/navigator'
 import ReglamentQuestion from '@/components/Reglaments/ReglamentQuestion'
-import { uuidv4 } from '@/helpers/functions'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import * as REGLAMENTS from '@/store/actions/reglaments'
-import * as QUESTIONS from '@/store/actions/reglament_questions'
-import * as ANSWER from '@/store/actions/reglament_answers'
 import ReglamentModalSave from '../modals/ReglamentModalSave.vue'
 
 export default {
@@ -365,9 +366,7 @@ export default {
       currName: '',
       currDep: '',
       showConfirm: false,
-      currText: this.$store.state.reglaments.reglaments[this.$route.params.id].content ?? '',
       saveContentStatus: 1, // 1 - is saved, 2 error, 0 request processing
-      buttonSaveReglament: 1, // то же самое что и saveContentStatus, сделано для того, чтобы 2 кнопки не принимали 1 статус
       showEmployees: false,
       buttonDisabled: false,
       showSaveModal: false,
@@ -394,9 +393,6 @@ export default {
     },
     questions () {
       return this.$store?.state?.reglaments?.reglamentQuestions
-    },
-    reglament () {
-      return this.currReglament
     },
     currReglament () {
       return this.$store.state.reglaments.reglaments[this.$route.params.id]
@@ -464,7 +460,7 @@ export default {
       return 'Сохраняется'
     },
     disabledButtons () {
-      return this.buttonDisabled === true || this.saveContentStatus === 0
+      return this.buttonDisabled || this.saveContentStatus === 0
     }
   },
   mounted () {
@@ -505,7 +501,7 @@ export default {
       this.$store.commit(REGLAMENTS.REGLAMENT_SET_RIGHT_ANSWER, data)
     },
     clearContributors () {
-      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, this.reglament.uid)
+      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, this.currReglament.uid)
     },
     editorName (email) {
       return this.$store.state.employees.employeesByEmail[email]?.name
@@ -663,7 +659,7 @@ export default {
         const reglaments = this.$store.state.navigator.navigator.reglaments
         const index = reglaments.items.findIndex(item => item.uid === reglament.uid)
         if (index !== -1) reglaments.items[index] = reglament
-        if (this.$store.state.reglaments.hideSaveParams === false) {
+        if (!this.$store.state.reglaments.hideSaveParams) {
           this.$router.push('/reglaments/' + this.$route.params.id)
         } else {
           this.showSaveModal = false
@@ -700,7 +696,7 @@ export default {
         question.invalid = question.name === ''
 
         const checkOnEmptyRightAnswers = question.answers.find((answer) => {
-          return answer.is_right === true || answer.is_right === 1
+          return answer.is_right || answer.is_right === 1
         })
 
         if (!checkOnEmptyRightAnswers) {
@@ -737,7 +733,7 @@ export default {
     },
     removeReglament () {
       // копия регламента, нужна для NAVIGATOR_REMOVE_REGLAMENT, он при удалении регламента использовал greedSource.
-      const reglamentCopy = this.reglament
+      const reglamentCopy = this.currReglament
       this.buttonDisabled = true
       this.showConfirm = false
       this.$store.dispatch(REGLAMENTS.DELETE_REGLAMENT_REQUEST, this.currReglament.uid).then(() => {
