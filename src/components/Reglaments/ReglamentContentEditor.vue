@@ -368,7 +368,6 @@ export default {
       currText: this.$store.state.reglaments.reglaments[this.$route.params.id].content ?? '',
       saveContentStatus: 1, // 1 - is saved, 2 error, 0 request processing
       buttonSaveReglament: 1, // то же самое что и saveContentStatus, сделано для того, чтобы 2 кнопки не принимали 1 статус
-      isFormInvalid: false,
       showEmployees: false,
       buttonDisabled: false,
       showSaveModal: false,
@@ -627,6 +626,8 @@ export default {
       return this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, reglament)
     },
     clickSaveAndExitReglament () {
+      if (this.validateReglamentQuestions()) return
+
       this.$store.state.reglaments.hideSaveParams = false
 
       if (this.reglamentHistoryLength > 0) {
@@ -643,6 +644,7 @@ export default {
       }
     },
     saveOnClick () {
+      if (this.validateReglamentQuestions()) return
       this.$store.state.reglaments.hideSaveParams = true
       this.setEdit()
     },
@@ -654,15 +656,6 @@ export default {
       reglament.editors = [...this.currEditors]
 
       this.saveContentStatus = 0
-      this.isFormInvalid = false
-      this.firstInvalidQuestionUid = null
-      this.validateReglamentQuestions()
-      if (this.isFormInvalid && this.firstInvalidQuestionUid) {
-        this.gotoNode(this.firstInvalidQuestionUid)
-        this.saveContentStatus = 1
-        return
-      }
-
       this.saveReglament(reglament).then(() => {
         this.saveContentStatus = 1
         // обновляем регламент в сторе
@@ -700,6 +693,9 @@ export default {
       return `${day} ${month}, ${weekday}, ${hours}:${minutes}:${seconds}`
     },
     validateReglamentQuestions () {
+      let isFormInvalid = false
+      let firstInvalidQuestionUid = null
+
       for (const question of this.questions) {
         question.invalid = question.name === ''
 
@@ -710,28 +706,34 @@ export default {
         if (!checkOnEmptyRightAnswers) {
           question.invalid = true
           question.errorText = 'Отметьте как минимум один правильный ответ'
-          if (!this.isFormInvalid) {
-            this.isFormInvalid = true
+          if (!isFormInvalid) {
+            isFormInvalid = true
           }
-          if (!this.firstInvalidQuestionUid) {
-            this.firstInvalidQuestionUid = question.uid
+          if (!firstInvalidQuestionUid) {
+            firstInvalidQuestionUid = question.uid
           }
         }
 
-        if (!this.isFormInvalid && question.name === '') {
-          this.isFormInvalid = true
-          this.firstInvalidQuestionUid = question.uid
+        if (!isFormInvalid && question.name === '') {
+          isFormInvalid = true
+          firstInvalidQuestionUid = question.uid
         }
 
         for (const answer of question.answers) {
           answer.invalid = answer.name === ''
 
-          if (!this.isFormInvalid && answer.name === '') {
-            this.isFormInvalid = true
-            this.firstInvalidQuestionUid = question.uid
+          if (!isFormInvalid && answer.name === '') {
+            isFormInvalid = true
+            firstInvalidQuestionUid = question.uid
           }
         }
       }
+
+      if (isFormInvalid && firstInvalidQuestionUid) {
+        this.gotoNode(firstInvalidQuestionUid)
+        return true
+      }
+      return false
     },
     removeReglament () {
       // копия регламента, нужна для NAVIGATOR_REMOVE_REGLAMENT, он при удалении регламента использовал greedSource.
