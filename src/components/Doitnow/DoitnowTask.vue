@@ -122,59 +122,48 @@
     </div>
     <div
       v-if="!task.mode"
-      class="flex ml-[10px] flex-col w-[221px] items-center"
+      class="flex ml-[10px] flex-col gap-[6px] w-[221px]"
     >
       <DoitnowRightButtonPostpone
-        v-if="shouldShowAcceptButton && selectedTask.status !== 5"
-        class="mb-2"
+        v-if="shouldShowPostponeButton"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
         v-if="shouldShowAcceptButton"
         :title="acceptButtonText"
         icon="check"
-        class="mb-2"
         @click="accept"
       />
       <DoitnowRightButton
         v-if="shouldShowRefineButton"
         title="На доработку"
-        icon="redo"
-        class="mb-2"
+        icon="refine"
         @click="refine"
       />
       <DoitnowRightButton
         v-if="shouldShowRejectButton"
         title="Отклонить"
         icon="cancel"
-        class="mb-2"
         @click="reject"
       />
       <DoitnowRightButton
         v-if="shouldShowCancelButton"
         title="Отменить"
         icon="cancel"
-        class="mb-2"
         @click="cancel"
       />
-      <PerformButton
+      <DoitnowRightButtonPerform
         v-if="shouldShowPerformButton"
-        class="hover:cursor-pointer"
         :task-type="task.type"
         :current-user-uid="user?.current_user_uid"
         :performer-email="task.email_performer"
         @changePerformer="onChangePerformer"
         @reAssign="onReAssignToUser"
       />
-      <DoitnowChangeAccessButton
-        v-if="shouldShowAccessButton"
-        :task="task"
-        @onChangeAccess="onChangeAccess"
-      />
-      <DoitnowOpenTask
-        v-if="shouldShowOpenTask"
-        :task="task"
-        @setTaskFromQueue="setTaskFromQueue"
+      <DoitnowRightButton
+        title="Открыть задачу"
+        icon="task-open"
+        @click="openTaskFromQueue"
       />
     </div>
   </div>
@@ -189,14 +178,12 @@ import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsComment
 import TaskStatus from '@/components/TasksList/TaskStatus.vue'
 
 // Doitnow components
-import PerformButton from '@/components/Doitnow/PerformButton.vue'
 import Checklist from '@/components/Doitnow/Checklist.vue'
 import DoitnowStatusModal from '@/components/Doitnow/DoitnowStatusModal.vue'
 import DoitnowChatMessages from '@/components/Doitnow/DoitnowChatMessages.vue'
+import DoitnowRightButtonPerform from '@/components/Doitnow/DoitnowRightButtonPerform.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
-import DoitnowChangeAccessButton from '@/components/Doitnow/DoitnowChangeAccessButton.vue'
-import DoitnowOpenTask from '@/components/Doitnow/DoitnowOpenTask.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
 import DoitnowPerformerInfo from '@/components/Doitnow/DoitnowPerformerInfo.vue'
 import DoitnowDaysInfo from '@/components/Doitnow/DoitnowDaysInfo.vue'
@@ -211,19 +198,17 @@ import * as FILES from '@/store/actions/taskfiles.js'
 
 export default {
   components: {
+    DoitnowRightButtonPerform,
     DoitnowCreateDateInfo,
     TaskPropsCommentEditor,
-    PerformButton,
     DoitnowCustomerInfo,
     DoitnowPerformerInfo,
     DoitnowDaysInfo,
     DoitnowOverdueInfo,
     DoitnowProjectInfo,
     Checklist,
-    DoitnowChangeAccessButton,
     DoitnowRightButtonPostpone,
     DoitnowRightButton,
-    DoitnowOpenTask,
     DoitnowStatusModal,
     contenteditable,
     TaskStatus,
@@ -307,9 +292,6 @@ export default {
     },
     canCheckChecklist () {
       return ((this.canEditChecklist || this.task?.type === 3) && this.user.tarif !== 'free') || !this.$store.getters.isLicenseExpired
-    },
-    selectedTask () {
-      return this.$store.state.tasks.selectedTask
     },
     taskMessagesAndFiles () {
       return this.$store.state.taskfilesandmessages.messages
@@ -402,6 +384,9 @@ export default {
     shouldShowChecklist () {
       return this.task?.checklist || this.checklistshow || this.checklistSavedNow
     },
+    shouldShowPostponeButton () {
+      return this.shouldShowAcceptButton && this.task.status !== TASK_STATUS.TASK_READY
+    },
     shouldShowAcceptButton () {
       return this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
     },
@@ -416,12 +401,6 @@ export default {
     },
     shouldShowPerformButton () {
       return this.task.status !== TASK_STATUS.NOTE && this.task.type !== TASK_STATUS.TASK_IN_WORK && (this.task.uid_customer === this.user?.current_user_uid || this.task.uid_customer === this.task.uid_performer)
-    },
-    shouldShowAccessButton () {
-      return this.task.status !== TASK_STATUS.NOTE && (this.task.type !== TASK_STATUS.TASK_IN_WORK || this.task.emails.includes(this.user?.current_user_email)) && this.task.uid_customer !== this.user?.current_user_uid && this.task.uid_performer !== this.user?.current_user_uid && this.task.mode !== 'slide'
-    },
-    shouldShowOpenTask () {
-      return this.task.mode !== 'slide' || this.task.uid_customer === this.user?.current_user_uid || this.task.uid_performer === this.user?.current_user_uid
     }
   },
   watch: {
@@ -496,7 +475,8 @@ export default {
       this.$emit('changeValue', { has_msgs: true })
       this.taskMsg = ''
     },
-    setTaskFromQueue (uid) {
+    openTaskFromQueue () {
+      const uid = this.task.uid
       this.$router.push('/task/' + uid)
       this.$store.state.tasks.taskFromQueue = uid
     },
@@ -644,7 +624,6 @@ export default {
     deleteTaskMsg (uid) {
       this.$store.dispatch(MSG.DELETE_MESSAGE_REQUEST, { uid: uid })
         .then(() => {
-          this.$store.state.tasks.selectedTask.has_msgs = true
           this.$store.state.taskfilesandmessages.messages.find(message => message.uid === uid).deleted = 1
         })
     },
@@ -677,24 +656,6 @@ export default {
     },
     nextTask () {
       this.$emit('nextTask')
-    },
-    onChangeAccess (checkEmails) {
-      let emails = checkEmails
-      if (Array.isArray(checkEmails)) {
-        emails = checkEmails.join('..')
-      }
-      const data = {
-        uid: this.task.uid,
-        value: emails
-      }
-      this.$store.dispatch(TASK.CHANGE_TASK_ACCESS, data)
-        .then(() => {
-          const data = {
-            emails: emails
-          }
-          this.$emit('changeValue', data)
-        })
-      this.nextTask()
     },
     refine () {
       if (this.childrens?.length) {

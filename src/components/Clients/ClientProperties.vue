@@ -83,7 +83,7 @@
     >
   </div>
 
-  <ClientCardSelectCardMessagesVue
+  <ClientCardSelectCardMessages
     v-if="cards.length"
     :cards="cards"
     @selectCard="selectCard"
@@ -140,7 +140,7 @@ import ClientChat from '@/components/Clients/ClientChat.vue'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput.vue'
 import ClientMessageInput from '@/components/Clients/ClientMessageInput.vue'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
-import ClientCardSelectCardMessagesVue from './ClientCardSelectCardMessages.vue'
+import ClientCardSelectCardMessages from './ClientCardSelectCardMessages.vue'
 import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
@@ -157,7 +157,7 @@ export default {
     PopMenu,
     ClientChat,
     ClientMessageQuoteUnderInput,
-    ClientCardSelectCardMessagesVue,
+    ClientCardSelectCardMessages,
     ClientMessageInput,
     CardChat,
     MessageSkeleton
@@ -209,7 +209,7 @@ export default {
     },
     removeClient () {
       this.showConfirm = false
-      this.$store.dispatch(CLIENTS.REMOVE_CLIENT, this.selectedClient.uid)
+      this.$store.dispatch(CLIENTS.REMOVE_CLIENT, this.selectedClient)
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     updateClient () {
