@@ -51,7 +51,7 @@ export default {
   <video
     v-else-if="videoBlob"
     :key="videoBlob"
-    class="w-full h-full"
+    class="w-full h-screen"
     :src="videoBlob"
     autoplay
     controls
