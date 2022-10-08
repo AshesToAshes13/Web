@@ -61,7 +61,6 @@ export default createStore({
     isFieldFocusRegistered: false,
 
     /* Sample data (commonly used) */
-    clients: [],
     history: []
   },
   mutations: {
