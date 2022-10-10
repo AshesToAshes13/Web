@@ -105,6 +105,14 @@
         />
       </div>
     </div>
+    <DoitnowModalBoxBudget
+      v-if="showChangeCardBudget"
+      :value="card?.cost / 100"
+      :show="showChangeCardBudget"
+      title="Бюджет карточки"
+      @cancel="showChangeCardBudget = false"
+      @save="changeCardBudget"
+    />
     <template #buttons>
       <DoitnowRightButtonPostpone
         @postpone="onPostpone"
@@ -128,6 +136,12 @@
         icon="archive"
         @click="onSetReject"
       />
+      <DoitnowRightButtonBudget
+        :budget="card?.cost"
+        :can-edit="true"
+        @click="clickCardBudget"
+        @onWipeBudget="changeCardBudget"
+      />
     </template>
   </DoitnowContent>
 </template>
@@ -144,13 +158,16 @@ import DoitnowPropsColumn from '@/components/Doitnow/DoitnowPropsColumn.vue'
 import DoitnowPropsColumnItem from '@/components/Doitnow/DoitnowPropsColumnItem.vue'
 import DoitnowPropsColumnUser from '@/components/Doitnow/DoitnowPropsColumnUser.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
+import DoitnowRightButtonBudget from '@/components/Doitnow/DoitnowRightButtonBudget.vue'
+import DoitnowModalBoxBudget from '@/components/Doitnow/DoitnowModalBoxBudget.vue'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
-import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
+import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT, CHANGE_CARD_BUDGET } from '@/store/actions/cards'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
 import { CARD_STAGE } from '@/constants'
+import { CHANGE_TASK_COST } from '@/store/actions/tasks'
 
 export default {
   components: {
@@ -163,7 +180,9 @@ export default {
     DoitnowPropsColumnItem,
     DoitnowPropsColumnUser,
     DoitnowContent,
-    contenteditable
+    contenteditable,
+    DoitnowRightButtonBudget,
+    DoitnowModalBoxBudget
   },
   directives: {
     linkify
@@ -180,7 +199,8 @@ export default {
       title: this.card.name || '',
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
-      clientName: this.card.client_name || ''
+      clientName: this.card.client_name || '',
+      showChangeCardBudget: false
     }
   },
   computed: {
@@ -284,6 +304,16 @@ export default {
         boardTo: this.currentBoard?.uid
       })
       this.$emit('next')
+    },
+    clickCardBudget () {
+      this.showChangeCardBudget = true
+    },
+    changeCardBudget (budget) {
+      const data = { cardUid: this.card?.uid, budget: budget * 100 }
+      this.$store.dispatch(CHANGE_CARD_BUDGET, data).then((resp) => {
+        this.$store.commit(CHANGE_TASK_COST, resp.data.cost)
+        this.showChangeCardBudget = false
+      })
     }
   }
 }
