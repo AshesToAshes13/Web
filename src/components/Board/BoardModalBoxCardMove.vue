@@ -213,12 +213,15 @@ export default {
     boardsCanEdit () {
       const currentUserUid = this.user.current_user_uid
       return Object.values(this.$store.state.boards.boards).filter(
-        item => item.members[currentUserUid] === 1 || item.members[currentUserUid] === 2
+        item => {
+          console.log('item.members: ', item)
+          return item.members[currentUserUid] === 1 || item.members[currentUserUid] === 2
+        }
       )
     },
     myBoards () {
       const currentUserEmail = this.user.current_user_email.toLowerCase()
-      const arrMyBoards = this.boardsCanEdit.filter(board => board.email_creator.toLowerCase() === currentUserEmail)
+      const arrMyBoards = Object.values(this.$store.state.boards.boards).filter(board => board.email_creator.toLowerCase() === currentUserEmail)
       arrMyBoards.sort((board1, board2) => {
         let compare = board1.order - board2.order
         if (compare === 0) compare = board1.name.localeCompare(board2.name)
