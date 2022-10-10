@@ -27,6 +27,7 @@
         <span class="mb-1">Телефон</span>
         <input
           v-model="phone"
+          v-maska="'+7 (###) ###-##-##'"
           type="text"
           name="phone"
           :maxLength="maxLengthInput"
@@ -73,8 +74,12 @@
 <script>
 import ModalBox from '@/components/modals/ModalBox.vue'
 import { uuidv4 } from '@/helpers/functions'
+import { maska } from 'maska'
 
 export default {
+  directives: {
+    maska
+  },
   components: {
     ModalBox
   },
@@ -126,8 +131,7 @@ export default {
       return this.name.length > minNameLength && this.name.length < maxNameLength
     },
     validatePhoneField () {
-      // eslint-disable-next-line no-useless-escape
-      return this.phone.toLowerCase().match(/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/)
+      return this.phone.length === 18
     },
     validateEmailField () {
       return String(this.email)
@@ -146,27 +150,15 @@ export default {
       this.$emit('cancel')
     },
     onSave () {
-      if (!this.validateNameField) {
-        this.validationInputs.name = false
-      } else {
-        this.validationInputs.name = true
-      }
-      if (!this.validatePhoneField) {
-        this.validationInputs.phone = false
-      } else {
-        this.validationInputs.phone = true
-      }
-      if (!this.validateEmailField) {
-        this.validationInputs.email = false
-      } else {
-        this.validationInputs.email = true
-      }
+      this.validationInputs.name = this.validateNameField
+      this.validationInputs.phone = this.validatePhoneField
+      this.validationInputs.email = this.validateEmailField
 
       if (!this.validateForm) {
         const data = {
           uid: uuidv4(),
           name: this.name,
-          phone: this.phone,
+          phone: this.phone.replace(/[^a-zA-Z0-9+]/g, ''),
           email: this.email,
           comment: this.comment,
           date_create: new Date().toLocaleString()

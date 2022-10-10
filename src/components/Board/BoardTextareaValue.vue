@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full bg-white h-[41px] flex items-center rounded-[6px]">
+  <div class="w-full bg-white min-h-[41px] flex items-center rounded-[6px]">
     <textarea
       ref="inputValue"
       v-model="currentValue"
       type="text"
-      class="rounded-[6px] border border-[#4c4c4d] focus:ring-0 focus:border-[#ff9123] h-[41px] w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto resize-none"
+      class="rounded-[6px] border border-[#4c4c4d] focus:ring-0 focus:border-[#ff9123] min-h-[41px] w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto resize-none"
       :maxlength="maxlength"
       @keyup.enter="onSave"
       @keyup.esc="onCancel"
