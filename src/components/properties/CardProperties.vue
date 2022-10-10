@@ -57,6 +57,7 @@
       :card-name="selectedCard?.name"
       :can-edit="canEdit"
       @changeName="changeName"
+      @onPasteFile="onPasteEvent"
     />
 
     <div

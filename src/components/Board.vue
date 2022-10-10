@@ -302,10 +302,10 @@
           <!--кнопка добавить карточку -->
           <div
             v-if="column.AddCard && !isFiltered"
-            class="mt-2 h-[40px]"
+            class="mt-2 min-h-[41px]"
             data-dragscroll
           >
-            <BoardInputValue
+            <BoardTextareaValue
               v-if="showAddCard && column.UID === selectedColumn.UID"
               :show="showAddCard && column.UID === selectedColumn.UID"
               class="w-[254px]"
@@ -400,6 +400,7 @@ import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/sto
 import BoardInputValue from './Board/BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
+import BoardTextareaValue from './Board/BoardTextareaValue.vue'
 
 export default {
   directives: {
@@ -416,7 +417,8 @@ export default {
     BoardCard,
     draggable,
     BoardInputValue,
-    BoardModalBoxColumnBoardChange
+    BoardModalBoxColumnBoardChange,
+    BoardTextareaValue
   },
   props: {
     storeCards: {
