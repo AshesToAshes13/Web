@@ -126,6 +126,7 @@
     >
       <DoitnowRightButtonPostpone
         v-if="shouldShowPostponeButton"
+        :task-end-date="task.date_end"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
