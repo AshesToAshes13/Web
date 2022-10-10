@@ -44,6 +44,7 @@ export const UPDATE_TASK = 'UPDATE_TASK'
 export const HAS_MSGS = 'HAS_MSGS'
 export const ADD_TO_NEWTASKS = 'ADD_TO_NEWTASKS'
 export const MSG_EQUAL = 'MSG_EQUAL'
+export const CHANGE_TASK_UID_BOARD_AND_STAGE = 'CHANGE_TASK_UID_BOARD_AND_STAGE'
 // Tasks inner processes and events
 export const TASKS_SUCCESS = 'TASKS_SUCCESS'
 export const SUBTASKS_SUCCESS = 'SUBTASKS_SUCCESS'

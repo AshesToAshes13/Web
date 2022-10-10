@@ -186,6 +186,7 @@ import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
+import { CHANGE_TASK_UID_BOARD_AND_STAGE } from '@/store/actions/tasks'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
 import { CARD_STAGE } from '@/constants'
@@ -344,9 +345,9 @@ export default {
         cards: [{ uid: this.card.uid }],
         boardTo: position.boardUid,
         stageTo: position.stageUid
-      }).then(() => {
+      }).then((resp) => {
+        this.$store.commit(CHANGE_TASK_UID_BOARD_AND_STAGE, resp.data[0])
         this.showMoveCard = false
-        this.$emit('next')
       })
     }
   }
