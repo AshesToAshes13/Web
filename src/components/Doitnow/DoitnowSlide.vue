@@ -185,6 +185,7 @@
     </div>
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
     </template>
@@ -214,6 +215,10 @@ export default {
     name: {
       type: String,
       default: 'text'
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],

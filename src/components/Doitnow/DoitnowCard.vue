@@ -131,6 +131,7 @@
     </div>
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
@@ -196,6 +197,10 @@ export default {
     card: {
       type: Object,
       default: () => ({})
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],
