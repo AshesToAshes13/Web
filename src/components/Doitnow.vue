@@ -31,6 +31,7 @@
           <DoitnowSlide
             v-if="isSlide"
             :name="firstTask.name"
+            :is-animation-doitnow="isAnimationDoitnow"
             @next="nextTask"
           />
           <DoitnowReglament
@@ -39,11 +40,13 @@
             :uid="firstTask.uid"
             :date="firstTask.lastDate"
             :last-change="firstTask.lastComment"
+            :is-animation-doitnow="isAnimationDoitnow"
             @next="nextTask"
           />
           <DoitnowCard
             v-else-if="isCard"
             :card="firstTask"
+            :is-animation-doitnow="isAnimationDoitnow"
             @next="nextTask"
           />
           <DoitnowTask
@@ -56,6 +59,7 @@
             :user="user"
             :task-messages="taskMessages.slice().reverse()"
             :employees="employees"
+            :is-animation-doitnow="isAnimationDoitnow"
             :projects="projects"
             :tasks-count="tasksCount"
             :is-task-messages-loading="isTaskMessagesLoading"
@@ -115,7 +119,8 @@ export default {
       reglaments: [],
       childrens: [],
       isTaskMessagesLoading: false,
-      isLoadingDoits: false
+      isLoadingDoits: false,
+      isAnimationDoitnow: false
     }
   },
   computed: {
@@ -325,9 +330,11 @@ export default {
       this.$store.dispatch('asidePropertiesToggle', true)
     },
     onStartAnimation () {
+      this.isAnimationDoitnow = true
       this.$refs.doitnow.classList.toggle('slide-in-parent')
     },
     onEndAnimation () {
+      this.isAnimationDoitnow = false
       this.$refs.doitnow.classList.toggle('slide-in-parent')
     }
   }

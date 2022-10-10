@@ -1,9 +1,9 @@
 <template>
   <ModalBoxDelete
     v-if="showConfirm"
-    title="Удалить клиента"
+    title="Удалить контакт"
     class="break-words"
-    :text="`Вы действительно хотите удалить клиента ${selectedClient.name}?`"
+    :text="`Вы действительно хотите удалить контакт ${selectedClient.name}?`"
     @cancel="showConfirm = false"
     @yes="removeClient"
   />
@@ -56,6 +56,12 @@
       @blur="updateClient"
     >
     <div
+      v-if="!validateNumber"
+      class="mt-2 text-[11px] text-[#dc2626]"
+    >
+      Телефон не должен содержать ничего кроме цифр и начинаться со знака +
+    </div>
+    <div
       class="md:mt-[15px] xl:mt-[20px] 2xl:mt-[30px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
     >
       Email
@@ -68,6 +74,12 @@
       class="md:mt-[8px] xl:mt-[10px] 2xl:mt-[15px] p-0 font-roboto font-bold xl:text-[15px] 2xl:text-[18px] leading-[21px] text-[#424242] w-full border-none focus:ring-0 focus:outline-none"
       @blur="updateClient"
     >
+    <div
+      v-if="!validateEmail"
+      class="mt-2 text-[11px] text-[#dc2626]"
+    >
+      Поле содержит некоректные данные
+    </div>
     <div
       class="md:mt-[15px] xl:mt-[20px] 2xl:mt-[30px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
     >
@@ -92,6 +104,7 @@
 
   <CardChat
     v-if="cardMessages.length"
+    :card-name="cards[0]?.name"
     :messages="cardMessages"
     :current-user-uid="user.current_user_uid"
     :employees="employees"
@@ -99,6 +112,7 @@
   />
 
   <!-- Chat skeleton -->
+  <YandexIntegrationSkeleton v-if="yandexIntegrationStatus" />
   <MessageSkeleton v-if="status=='loading'" />
   <ClientChat
     v-if="status=='success' && !cardMessages.length"
@@ -130,6 +144,7 @@
   </div>
 </template>
 <script>
+import YandexIntegrationSkeleton from '@/components/TaskProperties/YandexIntegrationSkeleton.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import PopMenuHeader from '@/components/Common/PopMenuHeader.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
@@ -144,7 +159,6 @@ import ClientCardSelectCardMessages from './ClientCardSelectCardMessages.vue'
 import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import { MESSAGES_REQUEST, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
 
 export default {
@@ -155,6 +169,7 @@ export default {
     PopMenuHeader,
     ModalBoxDelete,
     PopMenu,
+    YandexIntegrationSkeleton,
     ClientChat,
     ClientMessageQuoteUnderInput,
     ClientCardSelectCardMessages,
@@ -180,13 +195,45 @@ export default {
     selectedClient () {
       return this.$store.state.clients.selectedClient ?? ''
     },
+    corpYandexIntegration () {
+      return this.$store.state.corpYandexIntegration.isIntegrated
+    },
+    corpMsgsLoading () {
+      return this.$store.state.corpYandexIntegration.isLoading
+    },
+    personalYandexIntegration () {
+      return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    personalMsgsLoading () {
+      return this.$store.state.personalYandexIntegration.isLoading
+    },
+    yandexIntegrationStatus () {
+      return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
+    },
     status () { return this.$store.state.clientfilesandmessages.status },
     user () { return this.$store.state.user.user },
     employees () { return this.$store.state.employees.employees },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
-    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
+    clientMessages () { return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages] },
     cards () { return this.$store.state.clientfilesandmessages.cards.cards },
-    cardMessages () { return this.$store.state.cardfilesandmessages.messages }
+    cardMessages () { return this.$store.state.cardfilesandmessages.messages },
+    validateNumber () {
+      const phone = this.currClient.phone
+      if (phone.length < 10) return false
+      const number = phone.slice(-10)
+      if (!isNaN(+number)) return false
+      const code = phone.slice(0, -10)
+      if (!code.startsWith('+')) return false
+      if (!isNaN(+code.slice(1))) return false
+      return code === '+7' || code === '+37'
+    },
+    validateEmail () {
+      return String(this.currClient.email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    }
   },
   watch: {
     selectedClient (newval) {
@@ -203,8 +250,7 @@ export default {
       this.$store.commit(CLIENTS.SELECT_CLIENT, null)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
-      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS, [])
-      this.clearCardChat()
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS)
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     removeClient () {
@@ -217,16 +263,9 @@ export default {
         this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
       }
     },
-    selectCard (uid) {
-      this.$store.dispatch(MESSAGES_REQUEST, uid)
-    },
-    clearCardChat () {
-      this.$store.commit(REFRESH_FILES, [])
-      this.$store.commit(REFRESH_MESSAGES, [])
-    },
     checkForm () {
-      const { name, phone, email } = this.currClient
-      return name.length && phone.length && email.length
+      const { name } = this.currClient
+      return name.length && this.validateNumber && this.validateEmail
     },
     createClientMessage () {
       // если лицензия истекла

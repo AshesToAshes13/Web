@@ -1,7 +1,7 @@
 <template>
   <section
     class="px-0 overflow-hidden"
-    :class="[ isFullScreen ? 'flex min-h-screen h-full justify-center' : '', lastRoute === 'login' ? 'items-center' : '']"
+    :class="[ isFullScreen ? 'flex min-h-screen h-full justify-center' : '', lastRoute === '/login' ? 'items-center' : '']"
   >
     <slot />
   </section>
@@ -11,7 +11,7 @@
 export default {
   computed: {
     lastRoute () {
-      return this.$router.currentRoute.value.name
+      return this.$route.path
     },
     isFullScreen () {
       return this.$store.state.isFullScreen

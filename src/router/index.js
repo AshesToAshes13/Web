@@ -1,12 +1,15 @@
-import { shouldRedirectToLogin, ifAuthenticated, ifRouteNotExists } from './utils'
-import boardRouter from './board'
-import taskRouter from './task'
-import settingsRouter from './settings'
 import accountRouter from './account'
-import reglamentRouter from './reglament'
-import projectRouter from './project'
-import clientRouter from './client'
 import authRouter from './auth'
+import boardRouter from './board'
+import clientRouter from './client'
+import projectRouter from './project'
+import reglamentRouter from './reglament'
+import settingsRouter from './settings'
+import taskRouter from './task'
+import {
+  ifAuthenticated,
+  ifRouteNotExists, shouldRedirectToLogin
+} from './utils'
 
 import Doitnow from '@/components/Doitnow.vue'
 import CardFile from '@/views/CardFile'
@@ -14,9 +17,9 @@ import ClientFile from '@/views/ClientFile'
 import Home from '@/views/Home'
 import TaskFile from '@/views/TaskFile'
 
+import CreatedBoardForm from '@/components/Board/CreatedBoardForm.vue'
 import Search from '@/components/Search/Search.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import CreatedBoardForm from '@/components/Board/CreatedBoardForm.vue'
 
 const routes = [
   {
@@ -30,7 +33,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Task file'
+      title: 'Файл задачи'
     },
     path: '/taskfile/:id',
     name: 'taskfile',
@@ -39,7 +42,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Card file'
+      title: 'Файл карточки'
     },
     path: '/cardfile/:id',
     name: 'cardfile',
@@ -48,7 +51,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Client file'
+      title: 'Файл контакта'
     },
     path: '/clientfile/:id',
     name: 'clientfile',
@@ -57,7 +60,8 @@ const routes = [
   },
   {
     meta: {
-      layout: Home
+      layout: Home,
+      title: 'Очередь'
     },
     path: '/doitnow',
     name: 'doitnow',
@@ -67,6 +71,7 @@ const routes = [
   {
     meta: {
       layout: Home,
+      title: 'Поиск',
       breadcrumb: {
         name: 'Поиск: '
       }
@@ -79,7 +84,10 @@ const routes = [
   {
     path: '/form/:board_id',
     name: 'createdBoardForm',
-    component: CreatedBoardForm
+    component: CreatedBoardForm,
+    meta: {
+      title: 'Форма доски'
+    }
   },
   ...authRouter,
   ...clientRouter,

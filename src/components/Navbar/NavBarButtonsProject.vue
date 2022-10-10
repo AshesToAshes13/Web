@@ -139,7 +139,7 @@ export default {
       return this.project?.email_creator === user.current_user_email
     },
     canDelete () {
-      return this.project?.email_creator === this.$store.state.user?.user?.current_user_email
+      return this.project?.email_creator.toLowerCase() === this.$store.state.user?.user?.current_user_email.toLowerCase()
     }
   },
   methods: {

@@ -12,12 +12,18 @@ export default [
       {
         path: 'help',
         name: 'help',
-        component: () => import('@/components/Settings/Support.vue')
+        component: () => import('@/components/Settings/Support.vue'),
+        meta: {
+          title: 'Помощь'
+        }
       },
       {
         path: 'integrations',
         name: 'integrations',
-        component: () => import('@/components/Settings/Integrations.vue')
+        component: () => import('@/components/Settings/Integrations.vue'),
+        meta: {
+          title: 'Интеграции'
+        }
       },
       {
         path: ':integrations_name',
@@ -25,44 +31,68 @@ export default [
           {
             path: 'corporationYandexMail',
             name: 'corporationYandexMail',
-            component: () => import('@/components/Integrations/CorpoIntegrationsYandex.vue')
+            component: () => import('@/components/Integrations/CorpoIntegrationsYandex.vue'),
+            meta: {
+              title: 'корп. Яндекс интеграция'
+            }
           },
           {
             path: 'corporateMegafon',
             name: 'corporateMegafon',
-            component: () => import('@/components/Integrations/CoproIntegrationsMegafon.vue')
+            component: () => import('@/components/Integrations/CoproIntegrationsMegafon.vue'),
+            meta: {
+              title: 'Мегафон интеграция'
+            }
           },
           {
             path: 'personalYandexMail',
             name: 'personalYandexMail',
-            component: () => import('@/components/Integrations/PersonalIntegrationsYandex.vue')
+            component: () => import('@/components/Integrations/PersonalIntegrationsYandex.vue'),
+            meta: {
+              title: 'перс. Яндекс интеграция'
+            }
           }
         ]
       },
       {
         path: 'tarif',
         name: 'tarif',
-        component: () => import('@/components/Settings/Tarif.vue')
+        component: () => import('@/components/Settings/Tarif.vue'),
+        meta: {
+          title: 'Тариф'
+        }
       },
       {
         path: 'options',
         name: 'options',
-        component: () => import('@/components/Settings/Options.vue')
+        component: () => import('@/components/Settings/Options.vue'),
+        meta: {
+          title: 'Настройки'
+        }
       },
       {
         path: 'tags',
         name: 'tags',
-        component: () => import('@/components/Tags/Tags.vue')
+        component: () => import('@/components/Tags/Tags.vue'),
+        meta: {
+          title: 'Метки'
+        }
       },
       {
         path: 'employees',
         name: 'employees',
-        component: () => import('@/components/Employees.vue')
+        component: () => import('@/components/Employees.vue'),
+        meta: {
+          title: 'Сотрудники'
+        }
       },
       {
         path: 'colors',
         name: 'colors',
-        component: () => import('@/components/Colors.vue')
+        component: () => import('@/components/Colors.vue'),
+        meta: {
+          title: 'Цвета'
+        }
       }
     ]
   }

@@ -3,7 +3,7 @@ import { ifNotAuthenticated } from './utils'
 export default [
   {
     meta: {
-      title: 'Login',
+      title: 'Авторизация',
       fullScreen: true
     },
     path: '/login',

@@ -302,13 +302,14 @@
           <!--кнопка добавить карточку -->
           <div
             v-if="column.AddCard && !isFiltered"
-            class="mt-2 h-[40px]"
+            class="mt-2 min-h-[41px]"
             data-dragscroll
           >
-            <BoardInputValue
+            <BoardTextareaValue
               v-if="showAddCard && column.UID === selectedColumn.UID"
               :show="showAddCard && column.UID === selectedColumn.UID"
               class="w-[254px]"
+              maxlength="50"
               @save="onAddNewCard"
               @cancel="showAddCard = false"
             />
@@ -400,6 +401,7 @@ import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/sto
 import BoardInputValue from './Board/BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
+import BoardTextareaValue from './Board/BoardTextareaValue.vue'
 
 export default {
   directives: {
@@ -416,7 +418,8 @@ export default {
     BoardCard,
     draggable,
     BoardInputValue,
-    BoardModalBoxColumnBoardChange
+    BoardModalBoxColumnBoardChange,
+    BoardTextareaValue
   },
   props: {
     storeCards: {
@@ -820,9 +823,9 @@ export default {
       this.$store.commit(REFRESH_MESSAGES)
       this.$store.commit(REFRESH_FILES)
       this.$store.commit(CARD.SELECT_CARD, card.uid)
-
       if (card?.uid_client !== '00000000-0000-0000-0000-000000000000' && card?.uid_client) {
         this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, card.uid_client)
+        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
       } else {
         this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
       }

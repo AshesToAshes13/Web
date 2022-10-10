@@ -4,7 +4,8 @@ import axios from 'axios'
 const state = {
   login: null,
   password: null,
-  isIntegrated: false
+  isIntegrated: false,
+  isLoading: false
 }
 
 const actions = {
@@ -80,6 +81,7 @@ const actions = {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
         'yandexGetPersonalMessagesSentFromUs'
+      commit(PERSONAL_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('personal sent from us success')
@@ -88,6 +90,9 @@ const actions = {
         .catch((err) => {
           console.log('ошибка при запросе imap')
           reject(err)
+        })
+        .finally(() => {
+          commit(PERSONAL_YANDEX.YANDEX_END_LOADING)
         })
     })
   },
@@ -103,6 +108,7 @@ const actions = {
       }
       const url =
         process.env.VUE_APP_INSPECTOR_API + 'yandexGetPersonalMessagesSentToUs'
+      commit(PERSONAL_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('personal sent to us success')
@@ -112,11 +118,20 @@ const actions = {
           console.log('ошибка при запросе imap')
           reject(err)
         })
+        .finally(() => {
+          commit(PERSONAL_YANDEX.YANDEX_END_LOADING)
+        })
     })
   }
 }
 
 const mutations = {
+  [PERSONAL_YANDEX.YANDEX_START_LOADING]: (state) => {
+    state.isLoading = true
+  },
+  [PERSONAL_YANDEX.YANDEX_END_LOADING]: (state) => {
+    state.isLoading = false
+  },
   [PERSONAL_YANDEX.YANDEX_CREATE_PERSONAL_EMAIL_INTEGRATION]: (state, data) => {
     state.isIntegrated = data
   },
