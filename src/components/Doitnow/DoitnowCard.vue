@@ -129,6 +129,14 @@
         />
       </div>
     </div>
+    <DoitnowModalBoxBudget
+      v-if="showChangeCardBudget"
+      :value="cardBudget"
+      :show="showChangeCardBudget"
+      title="Бюджет карточки"
+      @cancel="showChangeCardBudget = false"
+      @save="changeCardBudget"
+    />
     <DoitnowModalBoxCardMove
       v-if="showMoveCard"
       :show="showMoveCard"
@@ -161,6 +169,12 @@
         icon="archive"
         @click="onSetReject"
       />
+      <DoitnowRightButtonBudget
+        :budget="card?.cost"
+        :can-edit="true"
+        @click="clickCardBudget"
+        @onWipeBudget="changeCardBudget"
+      />
       <DoitnowRightButton
         title="Переместить"
         icon="move"
@@ -182,12 +196,14 @@ import DoitnowPropsColumn from '@/components/Doitnow/DoitnowPropsColumn.vue'
 import DoitnowPropsColumnItem from '@/components/Doitnow/DoitnowPropsColumnItem.vue'
 import DoitnowPropsColumnUser from '@/components/Doitnow/DoitnowPropsColumnUser.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
+import DoitnowRightButtonBudget from '@/components/Doitnow/DoitnowRightButtonBudget.vue'
+import DoitnowModalBoxBudget from '@/components/Doitnow/DoitnowModalBoxBudget.vue'
 import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
-import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
-import { CHANGE_TASK_UID_BOARD_AND_STAGE } from '@/store/actions/tasks'
+import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT, CHANGE_CARD_BUDGET } from '@/store/actions/cards'
+import { CHANGE_TASK_UID_BOARD_AND_STAGE, CHANGE_TASK_COST } from '@/store/actions/tasks'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
 import { CARD_STAGE } from '@/constants'
@@ -203,8 +219,10 @@ export default {
     DoitnowPropsColumnItem,
     DoitnowPropsColumnUser,
     DoitnowContent,
-    DoitnowModalBoxCardMove,
-    contenteditable
+    contenteditable,
+    DoitnowRightButtonBudget,
+    DoitnowModalBoxBudget,
+    DoitnowModalBoxCardMove
   },
   directives: {
     linkify
@@ -226,6 +244,7 @@ export default {
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
       clientName: this.card.client_name || '',
+      showChangeCardBudget: false,
       showMoveCard: false
     }
   },
@@ -341,6 +360,16 @@ export default {
         boardTo: this.currentBoard?.uid
       })
       this.$emit('next')
+    },
+    clickCardBudget () {
+      this.showChangeCardBudget = true
+    },
+    changeCardBudget (budget) {
+      const data = { cardUid: this.card?.uid, budget: budget * 100 }
+      this.$store.dispatch(CHANGE_CARD_BUDGET, data).then((resp) => {
+        this.$store.commit(CHANGE_TASK_COST, resp.data.cost)
+        this.showChangeCardBudget = false
+      })
     },
     onMove () {
       this.showMoveCard = true
