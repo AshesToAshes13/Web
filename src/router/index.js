@@ -30,7 +30,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Task file'
+      title: 'Файл задачи'
     },
     path: '/taskfile/:id',
     name: 'taskfile',
@@ -39,7 +39,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Card file'
+      title: 'Файл карточки'
     },
     path: '/cardfile/:id',
     name: 'cardfile',
@@ -48,7 +48,7 @@ const routes = [
   },
   {
     meta: {
-      title: 'Client file'
+      title: 'Файл клиента'
     },
     path: '/clientfile/:id',
     name: 'clientfile',
@@ -57,7 +57,8 @@ const routes = [
   },
   {
     meta: {
-      layout: Home
+      layout: Home,
+      title: 'Очередь'
     },
     path: '/doitnow',
     name: 'doitnow',
@@ -67,6 +68,7 @@ const routes = [
   {
     meta: {
       layout: Home,
+      title: 'Поиск',
       breadcrumb: {
         name: 'Поиск: '
       }
@@ -79,7 +81,10 @@ const routes = [
   {
     path: '/form/:board_id',
     name: 'createdBoardForm',
-    component: CreatedBoardForm
+    component: CreatedBoardForm,
+    meta: {
+      title: 'Форма доски'
+    }
   },
   ...authRouter,
   ...clientRouter,

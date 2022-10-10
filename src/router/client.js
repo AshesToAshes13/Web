@@ -4,7 +4,8 @@ import Home from '@/views/Home'
 export default [
   {
     meta: {
-      layout: Home
+      layout: Home,
+      title: 'Клиенты'
     },
     path: '/clients',
     name: 'clients',
