@@ -7,7 +7,20 @@ export default {
     },
     canEdit: Boolean
   },
-  emits: ['changeName']
+  emits: ['changeName', 'onPasteFile'],
+  methods: {
+    onPasteName (e) {
+      const items = (e.clipboardData || e.originalEvent.clipboardData)?.items
+      if (items) {
+        for (const item of items) {
+          if (item.kind === 'file') {
+            this.$emit('onPasteFile', e)
+            break
+          }
+        }
+      }
+    }
+  }
 }
 </script>
 <template>
@@ -16,6 +29,7 @@ export default {
     class="text-[18px] font-[700] my-[25px] text-[#424242] min-h-[24px] break-words"
     :contenteditable="canEdit"
     @blur="$emit('changeName', $event)"
+    @paste="onPasteName($event)"
     v-html="cardName?.replaceAll('\n','<br/>')"
   />
 </template>

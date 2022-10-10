@@ -51,6 +51,7 @@
         >
           Разорвать интеграцию
         </button>
+        <span class="bg-[#4a724d] mt-[10px] rounded-[10px] px-2 py-1 text-white font-[500]">Интеграция с: {{ corpLogin }}</span>
       </div>
     </div>
     <article class="mt-[30px]">
@@ -143,6 +144,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    corpLogin () {
+      return this.$store.state.corpYandexIntegration.login
     },
     isOrganizationIntegrated () {
       return this.$store.state.corpYandexIntegration.isIntegrated

@@ -78,7 +78,7 @@
 
 <script>
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
-// import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt.js'
+import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt.js'
 import * as PERSONAL_YANDEX from '@/store/actions/integrations/personalYandexInt.js'
 
 import MainMenu from '@/components/AsideMenu/MainMenu.vue'
@@ -172,6 +172,9 @@ export default {
   methods: {
     closeSubMenu () {
       this.$store.state.navigator.submenu.status = false
+      if (this.$route.name === 'clients') {
+        this.$store.state.navigator.submenu.activeTab = 'clients'
+      }
     },
     initApplication () {
       const fm = document.createElement('script')
@@ -215,7 +218,7 @@ export default {
       }
     },
     getIntegrations () {
-      // this.$store.dispatch(CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION, this.user.owner_email)
+      this.$store.dispatch(CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION, this.user.owner_email)
       this.$store.dispatch(CORP_YANDEX.YANDEX_GET_ORGANIZATION_LOGIN_AND_PASS, this.user.owner_email)
       this.$store.dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_LOGIN_AND_PASS, this.user.current_user_email)
     },
