@@ -1,9 +1,9 @@
 <template>
   <ModalBoxDelete
     v-if="showConfirm"
-    title="Удалить клиента"
+    title="Удалить контакт"
     class="break-words"
-    :text="`Вы действительно хотите удалить клиента ${selectedClient.name}?`"
+    :text="`Вы действительно хотите удалить контакт ${selectedClient.name}?`"
     @cancel="showConfirm = false"
     @yes="removeClient"
   />

@@ -140,9 +140,6 @@ export default {
     showInviteModalBox () {
       if (this.$store.state.navigator.navigator?.invite_me?.uid && this.$store.state.navigator.navigator?.invite_me?.uid !== '00000000-0000-0000-0000-000000000000') return true
       return false
-    },
-    documentTitleName () {
-      return this.$route.name
     }
   },
   watch: {
