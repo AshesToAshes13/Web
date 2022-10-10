@@ -105,6 +105,14 @@
         />
       </div>
     </div>
+    <DoitnowModalBoxCardMove
+      v-if="showMoveCard"
+      :show="showMoveCard"
+      :stage-uid="card.uid_stage"
+      :board-uid="card.uid_board"
+      @cancel="showMoveCard = false"
+      @changePosition="onChangeCardPosition"
+    />
     <template #buttons>
       <DoitnowRightButtonPostpone
         @postpone="onPostpone"
@@ -128,6 +136,11 @@
         icon="archive"
         @click="onSetReject"
       />
+      <DoitnowRightButton
+        title="Переместить"
+        icon="move"
+        @click="onMove"
+      />
     </template>
   </DoitnowContent>
 </template>
@@ -144,6 +157,7 @@ import DoitnowPropsColumn from '@/components/Doitnow/DoitnowPropsColumn.vue'
 import DoitnowPropsColumnItem from '@/components/Doitnow/DoitnowPropsColumnItem.vue'
 import DoitnowPropsColumnUser from '@/components/Doitnow/DoitnowPropsColumnUser.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
+import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
@@ -163,6 +177,7 @@ export default {
     DoitnowPropsColumnItem,
     DoitnowPropsColumnUser,
     DoitnowContent,
+    DoitnowModalBoxCardMove,
     contenteditable
   },
   directives: {
@@ -180,7 +195,8 @@ export default {
       title: this.card.name || '',
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
-      clientName: this.card.client_name || ''
+      clientName: this.card.client_name || '',
+      showMoveCard: false
     }
   },
   computed: {
@@ -284,6 +300,19 @@ export default {
         boardTo: this.currentBoard?.uid
       })
       this.$emit('next')
+    },
+    onMove () {
+      this.showMoveCard = true
+    },
+    onChangeCardPosition (position) {
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+        cards: [{ uid: this.card.uid }],
+        boardTo: position.boardUid,
+        stageTo: position.stageUid
+      }).then(() => {
+        this.showMoveCard = false
+        this.$emit('next')
+      })
     }
   }
 }
