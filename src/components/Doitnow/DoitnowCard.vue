@@ -71,20 +71,44 @@
         <DoitnowPropsColumnItem
           v-if="clientName"
           key-title="Контакт:"
-          :value-text="clientName"
         >
-          <svg
-            width="13"
-            height="14"
-            viewBox="0 0 13 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.5631 7.94595C11.1349 7.56757 10.6352 7.18919 10.1356 6.96216C10.0642 6.96216 9.99287 6.88649 9.9215 6.88649C9.70737 6.88649 9.49325 7.03784 9.3505 7.26487C9.27912 7.41622 9.27912 7.64324 9.3505 7.7946C9.42187 7.94595 9.49325 8.0973 9.636 8.0973C10.0642 8.24865 10.4211 8.55135 10.778 8.85405C11.1349 9.23243 11.349 9.68649 11.349 10.2162V12.4108C11.349 12.6378 11.2062 12.7135 11.0635 12.7135H1.99887C1.78475 12.7135 1.71337 12.5622 1.71337 12.4108V10.2162C1.71337 9.68649 1.9275 9.23243 2.28437 8.85405C2.71262 8.47568 4.06875 7.49189 6.4955 7.49189C8.42262 7.49189 10.0642 5.82703 10.0642 3.78378C10.0642 1.74054 8.494 0 6.4955 0C4.56837 0 2.92675 1.66487 2.92675 3.70811C2.92675 4.76757 3.355 5.75135 4.06875 6.50811C2.64125 6.88649 1.78475 7.56757 1.42787 7.94595C0.856875 8.47568 0.5 9.30811 0.5 10.2162V12.4108C0.5 13.3189 1.21375 14 1.99887 14H10.9921C11.8486 14 12.491 13.2432 12.491 12.4108V10.2162C12.5624 9.30811 12.2055 8.47568 11.5631 7.94595ZM6.4955 6.20541C5.21075 6.20541 4.14012 5.07027 4.14012 3.70811C4.14012 2.34595 5.21075 1.21081 6.4955 1.21081C7.78025 1.21081 8.85087 2.34595 8.85087 3.70811C8.85087 5.07027 7.85162 6.20541 6.4955 6.20541Z"
-              fill="#4C4C4D"
-            />
-          </svg>
+          <template #value>
+            <svg
+              width="13"
+              height="14"
+              viewBox="0 0 13 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.5631 7.94595C11.1349 7.56757 10.6352 7.18919 10.1356 6.96216C10.0642 6.96216 9.99287 6.88649 9.9215 6.88649C9.70737 6.88649 9.49325 7.03784 9.3505 7.26487C9.27912 7.41622 9.27912 7.64324 9.3505 7.7946C9.42187 7.94595 9.49325 8.0973 9.636 8.0973C10.0642 8.24865 10.4211 8.55135 10.778 8.85405C11.1349 9.23243 11.349 9.68649 11.349 10.2162V12.4108C11.349 12.6378 11.2062 12.7135 11.0635 12.7135H1.99887C1.78475 12.7135 1.71337 12.5622 1.71337 12.4108V10.2162C1.71337 9.68649 1.9275 9.23243 2.28437 8.85405C2.71262 8.47568 4.06875 7.49189 6.4955 7.49189C8.42262 7.49189 10.0642 5.82703 10.0642 3.78378C10.0642 1.74054 8.494 0 6.4955 0C4.56837 0 2.92675 1.66487 2.92675 3.70811C2.92675 4.76757 3.355 5.75135 4.06875 6.50811C2.64125 6.88649 1.78475 7.56757 1.42787 7.94595C0.856875 8.47568 0.5 9.30811 0.5 10.2162V12.4108C0.5 13.3189 1.21375 14 1.99887 14H10.9921C11.8486 14 12.491 13.2432 12.491 12.4108V10.2162C12.5624 9.30811 12.2055 8.47568 11.5631 7.94595ZM6.4955 6.20541C5.21075 6.20541 4.14012 5.07027 4.14012 3.70811C4.14012 2.34595 5.21075 1.21081 6.4955 1.21081C7.78025 1.21081 8.85087 2.34595 8.85087 3.70811C8.85087 5.07027 7.85162 6.20541 6.4955 6.20541Z"
+                fill="#4C4C4D"
+              />
+            </svg>
+            {{ clientName }}
+            <span
+              v-if="clientPhone"
+              class="font-normal"
+            >
+              <a
+                :href="`tel:${clientPhone}`"
+                target="_blank"
+              >
+                {{ clientPhone }}
+              </a>
+            </span>
+            <span
+              v-if="clientEmail"
+              class="font-normal whitespace-nowrap"
+            >
+              &lt;<a
+                :href="`mailto:${clientEmail}`"
+                target="_blank"
+              >
+                {{ clientEmail }}
+              </a>&gt;
+            </span>
+          </template>
         </DoitnowPropsColumnItem>
       </DoitnowPropsColumn>
       <TaskPropsCommentEditor
@@ -105,8 +129,17 @@
         />
       </div>
     </div>
+    <DoitnowModalBoxCardMove
+      v-if="showMoveCard"
+      :show="showMoveCard"
+      :stage-uid="card.uid_stage"
+      :board-uid="card.uid_board"
+      @cancel="showMoveCard = false"
+      @changePosition="onChangeCardPosition"
+    />
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
@@ -119,11 +152,19 @@
         @changeContact="onChangeClient"
       />
       <DoitnowRightButton
-        v-for="column in columnsArchive"
-        :key="column.UID"
-        :title="`Архивировать: ${column.Name}`"
+        title="Архивировать: успех"
         icon="archive"
-        @click="setColumn(column.UID)"
+        @click="onSetSuccess"
+      />
+      <DoitnowRightButton
+        title="Архивировать: отказ"
+        icon="archive"
+        @click="onSetReject"
+      />
+      <DoitnowRightButton
+        title="Переместить"
+        icon="move"
+        @click="onMove"
       />
     </template>
   </DoitnowContent>
@@ -141,12 +182,15 @@ import DoitnowPropsColumn from '@/components/Doitnow/DoitnowPropsColumn.vue'
 import DoitnowPropsColumnItem from '@/components/Doitnow/DoitnowPropsColumnItem.vue'
 import DoitnowPropsColumnUser from '@/components/Doitnow/DoitnowPropsColumnUser.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
+import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
+import { CHANGE_TASK_UID_BOARD_AND_STAGE } from '@/store/actions/tasks'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
+import { CARD_STAGE } from '@/constants'
 
 export default {
   components: {
@@ -159,6 +203,7 @@ export default {
     DoitnowPropsColumnItem,
     DoitnowPropsColumnUser,
     DoitnowContent,
+    DoitnowModalBoxCardMove,
     contenteditable
   },
   directives: {
@@ -168,6 +213,10 @@ export default {
     card: {
       type: Object,
       default: () => ({})
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],
@@ -176,13 +225,20 @@ export default {
       title: this.card.name || '',
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
-      clientName: this.card.client_name || ''
+      clientName: this.card.client_name || '',
+      showMoveCard: false
     }
   },
   computed: {
     user () {
       const userEmail = this.card?.user?.toLowerCase() || ''
       return this.$store.state.employees.employeesByEmail[userEmail]
+    },
+    clientPhone () {
+      return ''
+    },
+    clientEmail () {
+      return ''
     },
     remind () {
       if (!this.card?.date_reminder) return ''
@@ -218,15 +274,6 @@ export default {
     },
     canEdit () {
       return this.currentBoard?.type_access !== 0
-    },
-    columnsArchive () {
-      return [{
-        UID: 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67',
-        Name: 'Успех'
-      }, {
-        UID: 'e70af5e2-6108-4c02-9a7d-f4efee78d28c',
-        Name: 'Отказ'
-      }]
     }
   },
   mounted () {
@@ -274,16 +321,39 @@ export default {
       const [uid, name] = payload
       this.clientUid = uid
       this.clientName = name
-      this.$store.dispatch(CHANGE_CARD_UID_CLIENT, { ...this.card, uid_client: this.clientUid, client_name: this.clientName })
+      this.$store.dispatch(
+        CHANGE_CARD_UID_CLIENT, {
+          ...this.card,
+          uid_client: this.clientUid,
+          client_name: this.clientName
+        })
+    },
+    onSetSuccess () {
+      this.setColumn(CARD_STAGE.ARCHIVE_SUCCESS)
+    },
+    onSetReject () {
+      this.setColumn(CARD_STAGE.ARCHIVE_REJECT)
     },
     setColumn (stageTo) {
-      this.$store
-        .dispatch(CARD.MOVE_ALL_CARDS, {
-          cards: [{ uid: this.card?.uid }], stageTo, boardTo: this.currentBoard?.uid
-        })
-        .then((resp) => {
-          this.$emit('next')
-        })
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+        cards: [{ uid: this.card?.uid }],
+        stageTo,
+        boardTo: this.currentBoard?.uid
+      })
+      this.$emit('next')
+    },
+    onMove () {
+      this.showMoveCard = true
+    },
+    onChangeCardPosition (position) {
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+        cards: [{ uid: this.card.uid }],
+        boardTo: position.boardUid,
+        stageTo: position.stageUid
+      }).then((resp) => {
+        this.$store.commit(CHANGE_TASK_UID_BOARD_AND_STAGE, resp.data[0])
+        this.showMoveCard = false
+      })
     }
   }
 }

@@ -16,12 +16,18 @@ export default [
       {
         path: '',
         name: 'allProjects',
-        component: () => import('@/components/Projects.vue')
+        component: () => import('@/components/Projects.vue'),
+        meta: {
+          title: 'Все проекты'
+        }
       },
       {
         path: ':project_id',
         name: 'project',
-        component: () => import('@/components/Projects/ProjectWithChildren.vue')
+        component: () => import('@/components/Projects/ProjectWithChildren.vue'),
+        meta: {
+          title: 'Проект'
+        }
       }
     ]
   }

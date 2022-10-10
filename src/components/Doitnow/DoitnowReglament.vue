@@ -1,6 +1,6 @@
 <template>
   <DoitnowContent>
-    <div class="font-roboto text-center text-[#424242] text-[25px] font-bold">
+    <div class="font-roboto text-center text-[#424242] text-[25px] mx-[64px] font-bold">
       Пройти регламент "{{ name }}"
     </div>
     <div
@@ -27,6 +27,7 @@
     </button>
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
     </template>
@@ -60,6 +61,10 @@ export default {
     lastChange: {
       type: String,
       default: ''
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],

@@ -194,7 +194,11 @@ export default {
       this.boardCards.forEach((cardGroup) => {
         if (cardGroup.cards) {
           cardGroup.cards.forEach((card) => {
-            const dateMove = new Date(card.date_move)
+            let dateMoveString = card.date_move
+            if (dateMoveString[dateMoveString.length - 1] !== 'Z') {
+              dateMoveString = dateMoveString + 'Z'
+            }
+            const dateMove = new Date(dateMoveString)
             if (dateMove.getFullYear() === this.selectedYear && dateMove.getMonth() === this.selectedMonth) {
               if (card.uid_stage === CARD_STAGE.ARCHIVE_SUCCESS) {
                 const member = this.getMemberByUser(card.user)

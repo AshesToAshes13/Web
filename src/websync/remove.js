@@ -86,7 +86,7 @@ export default function processRemove (obj) {
     case TYPES.TYPE_OBJECT_CARD_MSG:
       break
     case TYPES.TYPE_OBJECT_CLIENT:
-      removeClient(obj.uid)
+      removeClient(obj.obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_FILE:
       break

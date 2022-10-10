@@ -1,10 +1,11 @@
-import { shouldRedirectToLogin } from './utils'
 import Home from '@/views/Home'
+import { shouldRedirectToLogin } from './utils'
 
 export default [
   {
     meta: {
-      layout: Home
+      layout: Home,
+      title: 'Контакты'
     },
     path: '/clients',
     name: 'clients',

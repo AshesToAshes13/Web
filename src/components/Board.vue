@@ -45,6 +45,14 @@
       @cancel="showMoveCard = false"
       @changePosition="onChangeCardPosition"
     />
+    <BoardModalBoxColumnBoardChange
+      v-if="showChangeColumnBoard"
+      :show="showChangeColumnBoard"
+      :stage-uid="selectedColumn"
+      :board-uid="selectedColumn.uid_board"
+      @cancel="showChangeColumnBoard = false"
+      @changePosition="onChangeColumnBoard"
+    />
     <BoardModalBoxCardMove
       v-if="showMoveAllCards"
       :show="showMoveAllCards"
@@ -153,7 +161,14 @@
                     icon="move"
                     @click="clickMoveColumn(column, $event)"
                   >
-                    Переместить
+                    Изменить позицию
+                  </PopMenuItem>
+                  <PopMenuItem
+                    v-if="column.CanEditStage"
+                    icon="move"
+                    @click="clickChangeColumnBoard(column, $event)"
+                  >
+                    Переместить в другую доску
                   </PopMenuItem>
                   <PopMenuItem
                     v-if="column.CanEditStage"
@@ -384,6 +399,7 @@ import * as CARD from '@/store/actions/cards'
 import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import BoardInputValue from './Board/BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
 
 export default {
   directives: {
@@ -399,7 +415,8 @@ export default {
     BoardSkeleton,
     BoardCard,
     draggable,
-    BoardInputValue
+    BoardInputValue,
+    BoardModalBoxColumnBoardChange
   },
   props: {
     storeCards: {
@@ -428,6 +445,7 @@ export default {
       currentCard: null,
       dragCardParam: null,
       showMoveCard: false,
+      showChangeColumnBoard: false,
       showMoveAllCards: false,
       columnUid: '',
       dragColumnParam: null,
@@ -734,6 +752,10 @@ export default {
       this.selectedColumn = column
       this.showMoveColumn = true
     },
+    clickChangeColumnBoard (column, e) {
+      this.selectedColumn = column
+      this.showChangeColumnBoard = true
+    },
     onChangeColumnPosition (order) {
       this.showMoveColumn = false
       if (this.selectedColumn) {
@@ -798,9 +820,9 @@ export default {
       this.$store.commit(REFRESH_MESSAGES)
       this.$store.commit(REFRESH_FILES)
       this.$store.commit(CARD.SELECT_CARD, card.uid)
-
       if (card?.uid_client !== '00000000-0000-0000-0000-000000000000' && card?.uid_client) {
         this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, card.uid_client)
+        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
       } else {
         this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
       }
@@ -881,6 +903,29 @@ export default {
           this.closeProperties()
           this.$store.state.cards.selectedCardUid = null
         }
+      })
+    },
+    onChangeColumnBoard (position) {
+      this.showChangeColumnBoard = false
+      const data = {
+        stageUid: this.selectedColumn.UID,
+        stage: this.selectedColumn,
+        boardTo: position.boardUid,
+        boardUid: this.boardUid
+      }
+      const cards = this.getColumnCards(this.selectedColumn).map(card => {
+        return {
+          uid: card.uid
+        }
+      })
+      this.$store.dispatch(BOARD.CHANGE_STAGE_BOARD, data).then((resp) => {
+        const lastStage = resp.data.stages[resp.data.stages.length - 1].UID
+        this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+          cards: cards,
+          boardTo: position.boardUid,
+          stageTo: lastStage
+        })
+        this.$store.dispatch(CARD.BOARD_CARDS_DELETE_STAGE, data)
       })
     },
     onChangeAllCardsPosition (position) {

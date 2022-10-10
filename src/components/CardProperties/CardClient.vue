@@ -1,7 +1,7 @@
 <template>
   <ModalBoxAddClient
     v-if="showAddClient"
-    title="Добавить клиента"
+    title="Добавить контакт"
     :card-email="cardEmail"
     :card-phone="cardPhone"
     @cancel="showAddClient = false"
@@ -16,7 +16,6 @@
       class="text-[12px] py-[5px] font-[500] bg-[#F4F5F7] text-[#575758]"
       :class="{ 'cursor-pointer': canEdit, 'flex items-center hover:bg-[#0000000a] h-[40px] px-[20px] rounded-[8px]': isQueue, 'px-[8px] rounded-[6px]': !isQueue }"
     >
-      <!-- Empty label for responsible user -->
       <div
         v-if="!isClientSet"
         class="flex items-center"

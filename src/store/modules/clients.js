@@ -40,12 +40,12 @@ const actions = {
         })
     })
   },
-  [CLIENTS.REMOVE_CLIENT]: ({ commit, dispatch }, clientUid) => {
+  [CLIENTS.REMOVE_CLIENT]: ({ commit, dispatch }, client) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clients?uid=' + clientUid
-      axios({ url: url, method: 'DELETE' })
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients?uid=' + client.uid
+      axios({ url: url, method: 'DELETE', data: { organization: client.organization } })
         .then((resp) => {
-          commit(CLIENTS.REMOVE_CLIENT, clientUid)
+          commit(CLIENTS.REMOVE_CLIENT, client.uid)
           resolve(resp)
         })
         .catch((err) => {
