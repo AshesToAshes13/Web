@@ -13,6 +13,8 @@ const state = {
   status: 'loading',
   cards: {
     status: 'loading',
+    messages: [],
+    files: [],
     cards: []
   }
 }
@@ -20,18 +22,42 @@ const state = {
 const getters = {}
 
 const actions = {
-  [CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS] ({ commit }, clientUid) {
+  [CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS] ({ commit, dispatch }, clientUid) {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'clients_cards?uid_client=' + clientUid
       axios({ url: url, method: 'GET' })
         .then(resp => {
-          resp.data = resp.data.filter(item => { return typeof item !== 'string' })
+          resp.data = resp.data.filter(item => { return item?.uid })
           commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data)
+          dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_MESSAGES, resp.data).then(msgs => {
+            const messages = []
+            msgs.forEach(messageGroup => {
+              if (messageGroup.length) {
+                messageGroup.forEach(message => {
+                  messages.push(message)
+                })
+              }
+            })
+            commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MESSAGES_SUCCESS, messages)
+          })
           resolve(resp)
         }).catch(err => {
           reject(err)
         })
     })
+  },
+  [CLIENT_FILES_AND_MESSAGES.GET_CARDS_MESSAGES] ({ commit, state }, cards) {
+    return Promise.all(cards.map((card) => {
+      return new Promise((resolve, reject) => {
+        const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsmsgs/bycard?uid=' + card.uid
+        axios({ url: url, method: 'GET' })
+          .then(resp => {
+            resolve(resp.data.msgs)
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    }))
   },
   [CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST]: ({ commit, dispatch }, clientUid) => {
     return new Promise((resolve, reject) => {
@@ -228,6 +254,9 @@ const mutations = {
         state.messages.splice(i, 1)
       }
     }
+  },
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MESSAGES_SUCCESS]: (state, msgs) => {
+    state.cards.messages = msgs
   },
   [CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS]: (state) => {
     state.cards.cards = []
