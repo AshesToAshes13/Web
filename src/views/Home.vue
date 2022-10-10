@@ -172,6 +172,9 @@ export default {
   methods: {
     closeSubMenu () {
       this.$store.state.navigator.submenu.status = false
+      if (this.$route.name === 'clients') {
+        this.$store.state.navigator.submenu.activeTab = 'clients'
+      }
     },
     initApplication () {
       const fm = document.createElement('script')
