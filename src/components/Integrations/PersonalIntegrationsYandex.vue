@@ -51,6 +51,7 @@
         >
           Разорвать интеграцию
         </button>
+        <span class="bg-[#4a724d] mt-[10px] rounded-[10px] px-2 py-1 text-white font-[500]">Интеграция с: {{ persLogin }}</span>
       </div>
     </div>
     <article class="mt-[30px]">
@@ -146,6 +147,9 @@ export default {
     },
     isPersonalIntegrated () {
       return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    persLogin () {
+      return this.$store.state.personalYandexIntegration.login
     }
   },
   methods: {
