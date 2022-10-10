@@ -2,6 +2,7 @@
   <ModalBox
     :title="title"
     ok="Сохранить"
+    :disabled="!currentValue"
     @ok="onSave"
     @cancel="onCancel"
   >

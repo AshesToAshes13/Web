@@ -31,7 +31,15 @@ export default {
   emits: ['clickRemoveButton', 'toggleShowOnlyFiles'],
   computed: {
     employees () { return this.$store.state.employees.employees },
-    cardDateCreate () { return new Date(this.dateCreate).toLocaleString() }
+    cardDateCreate () {
+      let dateCreateString = this.dateCreate
+      if (!dateCreateString) {
+        dateCreateString = new Date().toISOString()
+      } else if (dateCreateString[dateCreateString.length - 1] !== 'Z') {
+        dateCreateString = dateCreateString + 'Z'
+      }
+      return new Date(dateCreateString).toLocaleString()
+    }
   }
 }
 </script>

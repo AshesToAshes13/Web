@@ -89,7 +89,7 @@
             <ul class="list-inside list-disc">
               <li>В поле "Имя вашей CRM" введите "LeaderTask CRM"</li>
               <li>В поле "Адрес вашей CRM" введите "https://api.leadertask.ru/megafon"</li>
-              <li>В поле "Ключ для авторизации в вашей CRM" введите любую строку</li>
+              <li>В поле "Ключ для авторизации в вашей CRM" введите строку "{{ ownerKey }}"</li>
             </ul>
             <img
               class="block max-w-[800px]"
@@ -168,6 +168,9 @@ export default {
     },
     canEdit () {
       return this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2 || true
+    },
+    ownerKey () {
+      return this.$store.getters.getOwnerEmployee?.uid || ''
     }
   },
   methods: {
@@ -184,7 +187,8 @@ export default {
     async phoneIntegrate (integrationData) {
       const data = {
         ...integrationData,
-        organizationEmail: this.user.owner_email
+        organizationEmail: this.user.owner_email,
+        crmKey: this.ownerKey
       }
 
       try {

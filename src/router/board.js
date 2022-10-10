@@ -17,7 +17,10 @@ export default [
       {
         path: '',
         name: 'board',
-        component: () => import('@/components/Boards')
+        component: () => import('@/components/Boards'),
+        meta: {
+          title: 'Доски'
+        }
       },
       {
         path: ':board_id',
@@ -25,23 +28,35 @@ export default [
           {
             path: '',
             name: 'boardWithChildren',
-            component: () => import('@/components/Board/BoardWithChildren.vue')
+            component: () => import('@/components/Board/BoardWithChildren.vue'),
+            meta: {
+              title: 'Доска'
+            }
           },
           {
             path: 'archive',
             name: 'boardArchive',
             component: () => import('@/components/Board/BoardWithChildren.vue'),
-            props: { showArchive: true }
+            props: { showArchive: true },
+            meta: {
+              title: 'Архив доски'
+            }
           },
           {
             path: 'stats',
             name: 'boardStats',
-            component: () => import('@/components/BoardStats.vue')
+            component: () => import('@/components/BoardStats.vue'),
+            meta: {
+              title: 'Статистика доски'
+            }
           },
           {
             path: 'form_settings',
             name: 'boardWithForm',
-            component: () => import('@/components/Board/BoardWithForm.vue')
+            component: () => import('@/components/Board/BoardWithForm.vue'),
+            meta: {
+              title: 'Форма доски'
+            }
           }
         ]
       }

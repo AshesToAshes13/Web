@@ -12,7 +12,11 @@ const state = {
   selectedEmployee: null
 }
 
-const getters = {}
+const getters = {
+  getOwnerEmployee (state) {
+    return Object.values(state.employees).find((emp) => emp.type === 1)
+  }
+}
 
 const actions = {
   [EMPLOYEE.CREATE_EMPLOYEE_REQUEST]: ({ commit, dispatch }, data) => {
