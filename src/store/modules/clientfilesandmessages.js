@@ -259,7 +259,12 @@ const mutations = {
     state.cards.messages = msgs
   },
   [CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS]: (state) => {
-    state.cards.cards = []
+    state.cards = {
+      status: 'loading',
+      messages: [],
+      files: [],
+      cards: []
+    }
   },
   addClientMessages (state, messagesArray) {
     state.messages = state.messages.concat(messagesArray)

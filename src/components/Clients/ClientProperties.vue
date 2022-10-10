@@ -157,7 +157,6 @@ import ClientCardSelectCardMessages from './ClientCardSelectCardMessages.vue'
 import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import { MESSAGES_REQUEST, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
 
 export default {
@@ -227,8 +226,7 @@ export default {
       this.$store.commit(CLIENTS.SELECT_CLIENT, null)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
-      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS, [])
-      this.clearCardChat()
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS)
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     removeClient () {
@@ -240,13 +238,6 @@ export default {
       if (this.checkForm()) {
         this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
       }
-    },
-    selectCard (uid) {
-      this.$store.dispatch(MESSAGES_REQUEST, uid)
-    },
-    clearCardChat () {
-      this.$store.commit(REFRESH_FILES, [])
-      this.$store.commit(REFRESH_MESSAGES, [])
     },
     checkForm () {
       const { name } = this.currClient

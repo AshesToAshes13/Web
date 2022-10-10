@@ -25,24 +25,6 @@ export default {
       type: Array,
       required: true
     }
-  },
-  emits: ['selectCard', 'clearCardChat'],
-  computed: {
-    selectOptions () {
-      return this.cards.map(card => ({
-        value: card.uid,
-        label: card.name
-      }))
-    }
-  },
-  methods: {
-    selectOption () {
-      if (this.$refs.selectedOption.value === 'clientchat' || !this.$refs.selectedOption.value) {
-        this.$emit('clearCardChat')
-      } else {
-        this.$emit('selectCard', this.$refs.selectedOption.value)
-      }
-    }
   }
 }
 </script>
