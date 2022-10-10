@@ -11,14 +11,6 @@
 import { setLocalStorageItem } from '@/store/helpers/functions'
 
 export default {
-  watch: {
-    $route: {
-      immediate: true,
-      handler (to, from) {
-        document.title = to.meta.title || 'Some Default Title'
-      }
-    }
-  },
   mounted () {
     this.checkCidParam()
   },

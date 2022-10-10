@@ -21,7 +21,7 @@
         :class="{ 'text-left': !message.isMyMessage, 'text-right': message.isMyMessage }"
       >
         <span class="w-[300px] overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
-          {{ employees[message.uid_creator].name }}
+          {{ cardName && cardName + ' | ' }} {{ employees[message.uid_creator].name }}
         </span>
       </div>
 
@@ -102,6 +102,10 @@ export default {
     inDoitnow: {
       type: Boolean,
       default: false
+    },
+    cardName: {
+      type: String,
+      default: ''
     }
   },
   emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile'],

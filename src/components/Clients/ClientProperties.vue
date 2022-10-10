@@ -1,9 +1,9 @@
 <template>
   <ModalBoxDelete
     v-if="showConfirm"
-    title="Удалить клиента"
+    title="Удалить контакт"
     class="break-words"
-    :text="`Вы действительно хотите удалить клиента ${selectedClient.name}?`"
+    :text="`Вы действительно хотите удалить контакт ${selectedClient.name}?`"
     @cancel="showConfirm = false"
     @yes="removeClient"
   />
@@ -59,7 +59,7 @@
       v-if="!validateNumber"
       class="mt-2 text-[11px] text-[#dc2626]"
     >
-      Поле содержит некоректные данные
+      Телефон не должен содержать ничего кроме цифр и начинаться со знака +
     </div>
     <div
       class="md:mt-[15px] xl:mt-[20px] 2xl:mt-[30px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
@@ -104,6 +104,7 @@
 
   <CardChat
     v-if="cardMessages.length"
+    :card-name="cards[0]?.name"
     :messages="cardMessages"
     :current-user-uid="user.current_user_uid"
     :employees="employees"
@@ -156,7 +157,6 @@ import ClientCardSelectCardMessages from './ClientCardSelectCardMessages.vue'
 import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import { MESSAGES_REQUEST, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
 
 export default {
@@ -196,12 +196,18 @@ export default {
     user () { return this.$store.state.user.user },
     employees () { return this.$store.state.employees.employees },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
-    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
+    clientMessages () { return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages] },
     cards () { return this.$store.state.clientfilesandmessages.cards.cards },
     cardMessages () { return this.$store.state.cardfilesandmessages.messages },
     validateNumber () {
       const phone = this.currClient.phone
-      return !isNaN(+phone.slice(1)) && phone.length === 12 && phone.startsWith('+7')
+      if (phone.length < 10) return false
+      const number = phone.slice(-10)
+      if (!isNaN(+number)) return false
+      const code = phone.slice(0, -10)
+      if (!code.startsWith('+')) return false
+      if (!isNaN(+code.slice(1))) return false
+      return code === '+7' || code === '+37'
     },
     validateEmail () {
       return String(this.currClient.email)
@@ -226,8 +232,7 @@ export default {
       this.$store.commit(CLIENTS.SELECT_CLIENT, null)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
-      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS, [])
-      this.clearCardChat()
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS)
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     removeClient () {
@@ -239,13 +244,6 @@ export default {
       if (this.checkForm()) {
         this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
       }
-    },
-    selectCard (uid) {
-      this.$store.dispatch(MESSAGES_REQUEST, uid)
-    },
-    clearCardChat () {
-      this.$store.commit(REFRESH_FILES, [])
-      this.$store.commit(REFRESH_MESSAGES, [])
     },
     checkForm () {
       const { name } = this.currClient
