@@ -59,7 +59,7 @@
       v-if="!validateNumber"
       class="mt-2 text-[11px] text-[#dc2626]"
     >
-      Поле содержит некоректные данные
+      Телефон не должен содержать ничего кроме цифр и начинаться со знака +
     </div>
     <div
       class="md:mt-[15px] xl:mt-[20px] 2xl:mt-[30px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
@@ -201,7 +201,13 @@ export default {
     cardMessages () { return this.$store.state.cardfilesandmessages.messages },
     validateNumber () {
       const phone = this.currClient.phone
-      return !isNaN(+phone.slice(1)) && phone.length === 12 && phone.startsWith('+7')
+      if (phone.length < 10) return false
+      const number = phone.slice(-10)
+      if (!isNaN(+number)) return false
+      const code = phone.slice(0, -10)
+      if (!code.startsWith('+')) return false
+      if (!isNaN(+code.slice(1))) return false
+      return code === '+7' || code === '+37'
     },
     validateEmail () {
       return String(this.currClient.email)
