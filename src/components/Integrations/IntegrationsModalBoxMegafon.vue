@@ -35,14 +35,6 @@
         >
       </div>
       <div class="mb-3 flex flex-col">
-        <span class="mb-1">Ключ для авторизации в ЛидерТаск CRM</span>
-        <input
-          v-model="crmKey"
-          type="text"
-          class="bg-[#f4f5f7]/50 rounded-[6px] focus:ring-0 border w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto"
-        >
-      </div>
-      <div class="mb-3 flex flex-col">
         <span class="mb-1">Пользователи Мегафон</span>
         <span class="mb-1 text-[11px]">Установите пользователям ЛидерТаск их логины из ЛК Мегафон</span>
         <div
@@ -98,7 +90,6 @@ export default {
     return {
       atsKey: this.$store.state.corpMegafonIntegration.atsKey,
       atsLink: this.$store.state.corpMegafonIntegration.atsLink,
-      crmKey: this.$store.state.corpMegafonIntegration.crmKey,
       megafonUsers: this.$store.state.corpMegafonIntegration.megafonUsers
     }
   },
@@ -112,7 +103,6 @@ export default {
       event.preventDefault()
       this.megafonUsers = this.megafonUsers.filter(user => user.uidUser !== '' || user.megafonUserLogin !== '')
       this.$emit('onSave', {
-        crmKey: this.crmKey,
         atsKey: this.atsKey,
         atsLink: this.atsLink,
         megafonUsers: this.megafonUsers
