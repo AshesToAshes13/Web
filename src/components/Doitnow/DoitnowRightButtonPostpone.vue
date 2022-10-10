@@ -7,7 +7,9 @@
       @save="onSetDate"
       @cancel="showSetDate = false"
     />
-    <PopMenu>
+    <PopMenu
+      :disabled="isAnimationDoitnow"
+    >
       <div
         class="flex-none flex items-center cursor-pointer bg-white hover:bg-[#0000000a] h-[40px] w-[221px] rounded-[8px] px-[20px] overflow-hidden"
       >
@@ -80,6 +82,10 @@ export default {
     taskEndDate: {
       type: String,
       default: ''
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['postpone'],

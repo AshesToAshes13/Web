@@ -27,6 +27,7 @@
     </button>
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
     </template>
@@ -60,6 +61,10 @@ export default {
     lastChange: {
       type: String,
       default: ''
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],

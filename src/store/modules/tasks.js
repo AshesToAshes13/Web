@@ -1251,6 +1251,10 @@ const mutations = {
   [TASK.CHANGE_TASK_COST]: (state, cost) => {
     state.selectedTask.cost = cost
   },
+  [TASK.CHANGE_TASK_UID_BOARD_AND_STAGE]: (state, task) => {
+    state.selectedTask.uid_board = task.uid_board
+    state.selectedTask.uid_stage = task.uid_stage
+  },
   [TASK.REMOVE_TAG_REQUEST]: (state, uid) => {
     visitChildren([state.tags[uid]], (value) => delete state.tags[value.uid])
     delete state.tags[uid]

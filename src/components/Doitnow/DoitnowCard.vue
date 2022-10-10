@@ -137,8 +137,17 @@
       @cancel="showChangeCardBudget = false"
       @save="changeCardBudget"
     />
+    <DoitnowModalBoxCardMove
+      v-if="showMoveCard"
+      :show="showMoveCard"
+      :stage-uid="card.uid_stage"
+      :board-uid="card.uid_board"
+      @cancel="showMoveCard = false"
+      @changePosition="onChangeCardPosition"
+    />
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
       <DoitnowRightButton
@@ -166,6 +175,11 @@
         @click="clickCardBudget"
         @onWipeBudget="changeCardBudget"
       />
+      <DoitnowRightButton
+        title="Переместить"
+        icon="move"
+        @click="onMove"
+      />
     </template>
   </DoitnowContent>
 </template>
@@ -184,14 +198,15 @@ import DoitnowPropsColumnUser from '@/components/Doitnow/DoitnowPropsColumnUser.
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
 import DoitnowRightButtonBudget from '@/components/Doitnow/DoitnowRightButtonBudget.vue'
 import DoitnowModalBoxBudget from '@/components/Doitnow/DoitnowModalBoxBudget.vue'
+import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import { CREATE_FILES_REQUEST, FETCH_FILES_AND_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { CHANGE_CARD_COMMENT, CHANGE_CARD_UID_CLIENT, CHANGE_CARD_BUDGET } from '@/store/actions/cards'
+import { CHANGE_TASK_UID_BOARD_AND_STAGE, CHANGE_TASK_COST } from '@/store/actions/tasks'
 import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
 import { CARD_STAGE } from '@/constants'
-import { CHANGE_TASK_COST } from '@/store/actions/tasks'
 
 export default {
   components: {
@@ -206,7 +221,8 @@ export default {
     DoitnowContent,
     contenteditable,
     DoitnowRightButtonBudget,
-    DoitnowModalBoxBudget
+    DoitnowModalBoxBudget,
+    DoitnowModalBoxCardMove
   },
   directives: {
     linkify
@@ -215,6 +231,10 @@ export default {
     card: {
       type: Object,
       default: () => ({})
+    },
+    isAnimationDoitnow: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['next'],
@@ -224,7 +244,8 @@ export default {
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
       clientName: this.card.client_name || '',
-      showChangeCardBudget: false
+      showChangeCardBudget: false,
+      showMoveCard: false
     }
   },
   computed: {
@@ -348,6 +369,19 @@ export default {
       this.$store.dispatch(CHANGE_CARD_BUDGET, data).then((resp) => {
         this.$store.commit(CHANGE_TASK_COST, resp.data.cost)
         this.showChangeCardBudget = false
+      })
+    },
+    onMove () {
+      this.showMoveCard = true
+    },
+    onChangeCardPosition (position) {
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, {
+        cards: [{ uid: this.card.uid }],
+        boardTo: position.boardUid,
+        stageTo: position.stageUid
+      }).then((resp) => {
+        this.$store.commit(CHANGE_TASK_UID_BOARD_AND_STAGE, resp.data[0])
+        this.showMoveCard = false
       })
     }
   }

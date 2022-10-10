@@ -141,6 +141,39 @@
           fill="#4C4C4D"
         />
       </svg>
+      <svg
+        v-if="icon === 'move'"
+        class="flex-none m-[2px]"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.8 5.7L2 7.5L3.8 9.3"
+          fill="#7E7E80"
+        />
+        <path
+          d="M6.2 3.3L8 1.5L9.8 3.3"
+          fill="#7E7E80"
+        />
+        <path
+          d="M9.8 11.7L8 13.5L6.2 11.7"
+          fill="#7E7E80"
+        />
+        <path
+          d="M12.2 5.7L14 7.5L12.2 9.3"
+          fill="#7E7E80"
+        />
+        <path
+          d="M3.8 5.7L2 7.5M2 7.5L3.8 9.3M2 7.5H14M6.2 3.3L8 1.5M8 1.5L9.8 3.3M8 1.5V13.5M9.8 11.7L8 13.5M8 13.5L6.2 11.7M12.2 5.7L14 7.5M14 7.5L12.2 9.3"
+          stroke="#7E7E80"
+          stroke-width="1.3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
     </div>
     <span
       class="font-roboto text-[#4C4C4D] text-[13px] truncate"
