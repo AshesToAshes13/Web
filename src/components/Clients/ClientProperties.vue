@@ -104,6 +104,7 @@
 
   <CardChat
     v-if="cardMessages.length"
+    :card-name="cards[0]?.name"
     :messages="cardMessages"
     :current-user-uid="user.current_user_uid"
     :employees="employees"
