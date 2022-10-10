@@ -1,6 +1,6 @@
 <template>
   <DoitnowContent>
-    <div class="font-roboto text-center text-[#424242] text-[25px] font-bold">
+    <div class="font-roboto text-center text-[#424242] text-[25px] mx-[64px] font-bold">
       Пройти регламент "{{ name }}"
     </div>
     <div
