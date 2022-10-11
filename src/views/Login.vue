@@ -207,6 +207,7 @@ import { maska } from 'maska'
 import * as SLIDES from '@/store/actions/slides.js'
 import * as TASK from '@/store/actions/tasks'
 import { CREATE_COLOR_REQUEST } from '@/store/actions/colors'
+import * as PROJECT from '@/store/actions/projects'
 
 export default {
   directives: {
@@ -369,7 +370,7 @@ export default {
             uppercase: 0,
             order: 0,
             default: 0,
-            email_creator: this.user.current_user_email,
+            email_creator: data.email,
             uid: uuidv4(),
             name: 'Синий',
             bold: 0,
@@ -382,7 +383,7 @@ export default {
             uppercase: 0,
             order: 0,
             default: 0,
-            email_creator: this.user.current_user_email,
+            email_creator: data.email,
             uid: uuidv4(),
             name: 'Желтый',
             bold: 0,
@@ -396,7 +397,7 @@ export default {
             uppercase: 0,
             order: 0,
             default: 0,
-            email_creator: this.user.current_user_email,
+            email_creator: data.email,
             uid: uuidv4(),
             name: 'Зеленый',
             bold: 0,
@@ -404,13 +405,37 @@ export default {
           }
           this.$store.dispatch(CREATE_COLOR_REQUEST, thirdColor)
 
+          // демо-проект
+          const project = {
+            uid: uuidv4(),
+            name: 'Как это работает',
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            email_creator: data.email,
+            order: 1,
+            comment: '',
+            plugin: '',
+            collapsed: 0,
+            isclosed: 0,
+            group: 0,
+            show: 1,
+            favorite: 0,
+            quiet: 0,
+            members: [data.email],
+            children: [],
+            bold: 0
+          }
+          this.$store.dispatch(PROJECT.CREATE_PROJECT_REQUEST, project).then((res) => {
+          // заполняем недостающие параметры
+            project.global_property_uid = '431a3531-a77a-45c1-8035-f0bf75c32641'
+          })
+
           // демо-задача в Сегодня
           const tags = [firstTag.uid]
           const todayTask = {
             uid: uuidv4(),
-            uid_parent: this.user.current_user_uid,
-            uid_customer: this.user.current_user_uid,
-            uid_project: '00000000-0000-0000-0000-000000000000',
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
             status: 0,
             email_performer: '',
             type: 1,
