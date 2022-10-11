@@ -194,11 +194,16 @@ const mutations = {
     }
   },
   [CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL]: (state, data) => {
+    console.log('data from req', data)
     for (let i = 0; i < data.length; i++) {
+      if (data[i].html.lastIndexOf('--')) {
+        data[i].html = data[i].html.slice(0, data[i].html.lastIndexOf('--'))
+      }
       state.messages.push({
         date_create: data[i].date,
-        msg: data[i].text,
+        msg: data[i].html,
         emailSender: data[i].from.value[0].address,
+        subject: data[i].subject,
         uid_message: uuidv4(),
         isYandex: true
       })
