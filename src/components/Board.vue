@@ -309,7 +309,6 @@
               v-if="showAddCard && column.UID === selectedColumn.UID"
               :show="showAddCard && column.UID === selectedColumn.UID"
               class="w-[254px]"
-              maxlength="50"
               @save="onAddNewCard"
               @cancel="showAddCard = false"
             />
