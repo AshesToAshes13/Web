@@ -245,7 +245,7 @@ const mutations = {
 
     const cardsLength = messages.length === files.length ? messages.length : messages.length > files.length ? messages.length : files.length
     const cardsFilesAndMessages = []
-    console.log(messages, files)
+
     for (let i = 0; i < cardsLength; i++) {
       cardsFilesAndMessages.push([...messages[i], ...files[i].data.files])
     }

@@ -198,7 +198,7 @@ export default {
       this.$store.commit(CLIENTS_CHAT.REFRESH_FILES)
       this.$store.commit(REFRESH_FILES, [])
       this.$store.commit(REFRESH_MESSAGES, [])
-      this.$store.commit(REFRESH_CARDS, [])
+      this.$store.commit(REFRESH_CARDS)
 
       const data = {
         clientUid: client.uid,
