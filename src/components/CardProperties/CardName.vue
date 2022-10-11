@@ -10,6 +10,9 @@ export default {
   emits: ['changeName', 'onPasteFile'],
   methods: {
     onPasteName (e) {
+      e.preventDefault()
+      const text = e.clipboardData.getData('text/plain')
+      window.document.execCommand('insertText', false, text)
       const items = (e.clipboardData || e.originalEvent.clipboardData)?.items
       if (items) {
         for (const item of items) {
