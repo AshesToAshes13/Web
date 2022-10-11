@@ -16,52 +16,63 @@
       <div
         class="my-[40px] h-[calc(100%-60px)] overflow-y-auto grow scroll-style"
       >
-        <table class="pb-[40px] px-[20px] relative">
-          <tr class="table-header">
-            <th>Имя</th>
-            <th>Номер телефона</th>
-            <th>Email</th>
-            <th>Комментарий</th>
-          </tr>
-          <ClientsSkeleton v-if="status === 'loading'" />
-          <template v-if="status === 'success'">
-            <tr
-              v-for="client in clients"
-              :key="client?.uid"
-              :class="client?.uid === selectedClient?.uid ? 'bg-[#F4F5F7]' : ''"
-              @click.stop="showClientProperties(client)"
-            >
-              <td>
-                <div class="content max-w-[150px] xl:max-w-[250px]">
-                  <span class="truncate">
-                    {{ client.name }}
-                  </span>
-                </div>
-              </td>
-              <td>
-                <div class="content max-w-[150px] xl:max-w-[250px]">
-                  <span class="truncate">
-                    {{ client.phone }}
-                  </span>
-                </div>
-              </td>
-              <td>
-                <div class="content max-w-[150px] xl:max-w-[250px]">
-                  <span class="truncate">
-                    {{ client.email }}
-                  </span>
-                </div>
-              </td>
-              <td>
-                <div class="content max-w-[150px] xl:max-w-[250px]">
-                  <span class="truncate">
-                    {{ client.comment }}
-                  </span>
-                </div>
-              </td>
+        <div
+          v-if="clientUndefined"
+        >
+          <h1 class="text-3xl text-gray-600 font-bold m-5">
+            Клиент не найден
+          </h1>
+        </div>
+        <div
+          v-else
+        >
+          <table class="pb-[40px] px-[20px] relative">
+            <tr class="table-header">
+              <th>Имя</th>
+              <th>Номер телефона</th>
+              <th>Email</th>
+              <th>Комментарий</th>
             </tr>
-          </template>
-        </table>
+            <ClientsSkeleton v-if="status === 'loading'" />
+            <template v-if="status === 'success'">
+              <tr
+                v-for="client in clients"
+                :key="client?.uid"
+                :class="client?.uid === selectedClient?.uid ? 'bg-[#F4F5F7]' : ''"
+                @click.stop="showClientProperties(client)"
+              >
+                <td>
+                  <div class="content max-w-[150px] xl:max-w-[250px]">
+                    <span class="truncate">
+                      {{ client.name }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="content max-w-[150px] xl:max-w-[250px]">
+                    <span class="truncate">
+                      {{ client.phone }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="content max-w-[150px] xl:max-w-[250px]">
+                    <span class="truncate">
+                      {{ client.email }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="content max-w-[150px] xl:max-w-[250px]">
+                    <span class="truncate">
+                      {{ client.comment }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </table>
+        </div>
       </div>
       <Pagination
         v-model="currentPage"
@@ -96,7 +107,8 @@ export default {
     return {
       showAddClient: false,
       currentPage: 1,
-      wasLoaded: true
+      wasLoaded: true,
+      clientUndefined: false
     }
   },
   computed: {
@@ -154,6 +166,7 @@ export default {
   },
   methods: {
     async requestClients () {
+      this.clientUndefined = false
       if (this.$route.query.page < 1) {
         this.$router.push('/clients?page=1')
         this.$route.query.page = 1
@@ -168,6 +181,10 @@ export default {
       }
       await this.$store.dispatch(CLIENTS.GET_CLIENTS, data)
       if (this.currentPageRouter > this.paging.pages) {
+        if (this.paging.pages === 0 && this.$route.query.search.length > 1) {
+          this.clientUndefined = true
+          return
+        }
         this.currentPage = this.paging.pages
         this.changePage()
       }
