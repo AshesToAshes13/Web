@@ -112,6 +112,7 @@
   />
 
   <!-- Chat skeleton -->
+  <YandexIntegrationSkeleton v-if="yandexIntegrationStatus" />
   <MessageSkeleton v-if="status=='loading'" />
   <ClientChat
     v-if="status=='success' && !cardMessages.length"
@@ -143,6 +144,7 @@
   </div>
 </template>
 <script>
+import YandexIntegrationSkeleton from '@/components/TaskProperties/YandexIntegrationSkeleton.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import PopMenuHeader from '@/components/Common/PopMenuHeader.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
@@ -167,6 +169,7 @@ export default {
     PopMenuHeader,
     ModalBoxDelete,
     PopMenu,
+    YandexIntegrationSkeleton,
     ClientChat,
     ClientMessageQuoteUnderInput,
     ClientCardSelectCardMessages,
@@ -191,6 +194,21 @@ export default {
   computed: {
     selectedClient () {
       return this.$store.state.clients.selectedClient ?? ''
+    },
+    corpYandexIntegration () {
+      return this.$store.state.corpYandexIntegration.isIntegrated
+    },
+    corpMsgsLoading () {
+      return this.$store.state.corpYandexIntegration.isLoading
+    },
+    personalYandexIntegration () {
+      return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    personalMsgsLoading () {
+      return this.$store.state.personalYandexIntegration.isLoading
+    },
+    yandexIntegrationStatus () {
+      return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
     },
     status () { return this.$store.state.clientfilesandmessages.status },
     user () { return this.$store.state.user.user },

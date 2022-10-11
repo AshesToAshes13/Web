@@ -1248,6 +1248,9 @@ const actions = {
 }
 
 const mutations = {
+  [TASK.CHANGE_TASK_COST]: (state, cost) => {
+    state.selectedTask.cost = cost
+  },
   [TASK.CHANGE_TASK_UID_BOARD_AND_STAGE]: (state, task) => {
     state.selectedTask.uid_board = task.uid_board
     state.selectedTask.uid_stage = task.uid_stage

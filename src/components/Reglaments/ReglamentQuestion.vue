@@ -30,6 +30,7 @@
             contenteditable="true"
             @blur="changeQuestionName($event)"
             @keydown.enter.exact.prevent="$emit('addQuestion')"
+            @paste="pasteAsPlainText"
             @input="maxQuestionLength"
             v-text="question.name"
           />
@@ -219,6 +220,12 @@ export default {
       range.collapse(true)
       sel.removeAllRanges()
       sel.addRange(range)
+    },
+    pasteAsPlainText (e) {
+      // Функция исправляет баг, когда текст вставляется как html тег
+      e.preventDefault()
+      const text = (e.originalEvent || e).clipboardData.getData('text/plain')
+      document.execCommand('insertHTML', false, text)
     }
   }
 }
