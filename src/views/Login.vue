@@ -229,6 +229,7 @@ export default {
       mdiChevronLeft,
       mdiEyeOutline,
       mdiPhoneOutline,
+      date: new Date(),
       form: {
         email: '',
         password: '',
@@ -402,11 +403,39 @@ export default {
             parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
           }
           this.$store.dispatch(CREATE_COLOR_REQUEST, thirdColor)
+
+          // демо-задача в Сегодня
+          const tags = [firstTag.uid]
+          const todayTask = {
+            uid: uuidv4(),
+            uid_parent: this.user.current_user_uid,
+            uid_customer: this.user.current_user_uid,
+            uid_project: '00000000-0000-0000-0000-000000000000',
+            status: 0,
+            email_performer: '',
+            type: 1,
+            date_begin: this.getDateString(this.date) + 'T00:00:00',
+            date_end: this.getDateString(this.date) + 'T23:59:59',
+            tags: tags,
+            name: 'Прочитайте задачу и завершите ее',
+            comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, todayTask)
         })
         .catch(() => {
           this.form.showError = true
           this.form.errorMessage = 'Unknown error'
         })
+    },
+    pad2 (n) {
+      return (n < 10 ? '0' : '') + n
+    },
+    getDateString (date) {
+      const month = this.pad2(date.getMonth() + 1)
+      const day = this.pad2(date.getDate())
+      const year = this.pad2(date.getFullYear())
+      return year + '-' + month + '-' + day
     },
     submit () {
       if (this.showValues.showLoginInputsValue) {

@@ -1537,7 +1537,7 @@ const mutations = {
     // добавляем только в открытую ветку
     // потому что если ветка закрыта, то детей ее получим от
     // сервера при открытии
-    if (state.newtasks[task.uid_parent].state.opened === true) {
+    if (state?.newtasks[task.uid_parent]?.state?.opened === true) {
       if (state.newtasks[task.uid_parent].children?.length) {
         state.newtasks[task.uid_parent].children.unshift(task.uid)
       } else {
