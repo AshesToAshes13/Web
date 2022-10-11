@@ -358,7 +358,7 @@ export default {
     this.$store.commit(TASK.CLEAN_UP_LOADED_TASKS)
     this.$store.dispatch(REGLAMENTS.REGLAMENT_CONTENT_REQUEST, this.currReglament?.uid).then((res) => {
       console.log(res)
-      this.reglamentContent = res.data[0].content
+      this.reglamentContent = res.data
       this.reglamentSuccess = true
     })
     this.$store.dispatch(REGLAMENTS.REGLAMENT_REQUEST, this.currReglament?.uid)
