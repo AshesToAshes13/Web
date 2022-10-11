@@ -272,7 +272,7 @@
               :fallback-tolerance="1"
               :force-fallback="true"
               :animation="380"
-              :scroll-sensitivity="250"
+              :scroll-sensitivity="150"
               @start="startDragCard"
               @end="endDragCard"
               @change="changeDragCard"
