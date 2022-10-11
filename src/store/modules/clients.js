@@ -92,6 +92,12 @@ const mutations = {
   [CLIENTS.CHANGE_CLIENT_NAME]: (state, client) => {
     state.clients.find(cl => cl.uid === client.uid).name = client.name
   },
+  [CLIENTS.RESET_CLIENT_STATE]: (state) => {
+    state.selectedClient = null
+    state.paging = {}
+    state.clients = []
+    state.status = 'loading'
+  },
   UPDATE_PAGING: (state, paging) => {
     state.paging = paging
   }
