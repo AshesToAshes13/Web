@@ -80,7 +80,7 @@ const mutations = {
     state.clients.push(client)
   },
   [CLIENTS.REMOVE_CLIENT]: (state, clientUid) => {
-    state.clients = state.clients.filter(cl => cl.uid !== clientUid)
+    state.clients.splice(state.clients.findIndex(client => client.uid === clientUid), 1)
   },
   [CLIENTS.UPDATE_CLIENT]: (state, data) => {
     state.selectedClient = { ...data }

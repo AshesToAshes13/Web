@@ -213,8 +213,9 @@ export default {
         date_create: client.date_create
       }
       await this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
-      this.showAddClient = false
-      await this.requestClients()
+      await this.requestClients().then(() => {
+        this.showAddClient = false
+      })
     },
     changePage () {
       this.$router.push({ path: '/clients', query: { page: this.currentPage } })
