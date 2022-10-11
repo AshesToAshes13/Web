@@ -4,6 +4,7 @@
     :class="{ 'border-[rgba(0,0,0,0.1)]': !selected, 'border-[#ff9123]': selected }"
     :style="getCardStyle"
     @click="selectCard"
+    @contextmenu="copyEmail($event)"
   >
     <div
       v-if="onlineUsers.length"
@@ -444,7 +445,7 @@ export default {
       required: true
     }
   },
-  emits: ['select', 'moveSuccess', 'moveReject', 'moveColumn', 'delete', 'moveCardToTop', 'moveCardToBottom'],
+  emits: ['select', 'moveSuccess', 'moveReject', 'moveColumn', 'delete', 'moveCardToTop', 'moveCardToBottom', 'copyEmail'],
   data () {
     return {
       isCardShow: false
@@ -597,6 +598,10 @@ export default {
         return `${day} ${month} ${dateMove.getFullYear()}`
       }
       return `${day} ${month}`
+    },
+    checkIfEmailInString () {
+      const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
+      return regex.exec(this.card.name) ? regex.exec(this.card.name)[0] : ''
     }
   },
   methods: {
@@ -635,6 +640,12 @@ export default {
     },
     clickReject () {
       this.$emit('moveReject')
+    },
+    copyEmail (event) {
+      if (this.checkIfEmailInString) {
+        event.preventDefault()
+        this.$emit('copyEmail')
+      }
     },
     clickDelete () {
       this.$emit('delete')

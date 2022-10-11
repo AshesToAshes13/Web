@@ -1268,7 +1268,7 @@ const mutations = {
     }
   },
   [TASK.PUSH_TAG]: (state, resp) => {
-    state.tags[resp.data.uid] = resp.data
+    state.tags[resp?.data?.uid] = resp?.data
   },
   [TASK.UPDATE_TASK]: (state, task) => {
     if (state.newtasks[task.uid]) {

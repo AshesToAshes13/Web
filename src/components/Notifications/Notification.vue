@@ -105,7 +105,7 @@ export default {
   methods: {
 
     redirect (notification) {
-      const link = `${window.location.origin}/task/${notification.obj.obj.uid}`
+      const link = `${window.location.origin}/project/${notification.obj.obj.uid}`
       window.location.href = link
       this.$store.commit(NAVIGATOR_SUCCESS)
     }

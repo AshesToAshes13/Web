@@ -95,27 +95,35 @@
     >
   </div>
 
-  <ClientCardSelectCardMessages
-    v-if="cards.length"
-    :cards="cards"
-    @selectCard="selectCard"
-    @clearCardChat="clearCardChat"
-  />
-
-  <CardChat
-    v-if="cardMessages.length"
-    :card-name="cards[0]?.name"
-    :messages="cardMessages"
-    :current-user-uid="user.current_user_uid"
-    :employees="employees"
-    :show-files-only="showFilesOnly"
-  />
-
+  <template v-if="cardMessages">
+    <div
+      v-for="(card, index) in cardMessages"
+      :key="index"
+    >
+      <div
+        class="mt-3 p-3 bg-[#f5f5f5] rounded-[10px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
+        style="border: 1px solid #E5E5E5;"
+      >
+        <div class="text-center w-full my-3">
+          {{ cards[index].name }}
+        </div>
+        <CardChat
+          v-if="card"
+          :current-user-uid="user.current_user_uid"
+          :messages="card"
+          :employees="employees"
+          @onQuote="() => {}"
+          @onDeleteMessage="() => {}"
+          @onDeleteFile="() => {}"
+        />
+      </div>
+    </div>
+  </template>
   <!-- Chat skeleton -->
   <YandexIntegrationSkeleton v-if="yandexIntegrationStatus" />
   <MessageSkeleton v-if="status=='loading'" />
   <ClientChat
-    v-if="status=='success' && !cardMessages.length"
+    v-if="status=='success'"
     :messages="clientMessages"
     :current-user-uid="user.current_user_uid"
     :employees="employees"
@@ -134,7 +142,6 @@
       @onClearQuote="currentQuote = false"
     />
     <ClientMessageInput
-      v-if="!cardMessages.length"
       v-model="clientMessageInputValue"
       :can-add-files="canAddFiles"
       @createClientMessage="createClientMessage"
@@ -155,7 +162,6 @@ import ClientChat from '@/components/Clients/ClientChat.vue'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput.vue'
 import ClientMessageInput from '@/components/Clients/ClientMessageInput.vue'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
-import ClientCardSelectCardMessages from './ClientCardSelectCardMessages.vue'
 import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
@@ -172,7 +178,6 @@ export default {
     YandexIntegrationSkeleton,
     ClientChat,
     ClientMessageQuoteUnderInput,
-    ClientCardSelectCardMessages,
     ClientMessageInput,
     CardChat,
     MessageSkeleton
@@ -216,15 +221,15 @@ export default {
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
     clientMessages () { return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages] },
     cards () { return this.$store.state.clientfilesandmessages.cards.cards },
-    cardMessages () { return this.$store.state.cardfilesandmessages.messages },
+    cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
     validateNumber () {
       const phone = this.currClient.phone
       if (phone.length < 10) return false
       const number = phone.slice(-10)
-      if (!isNaN(+number)) return false
+      if (isNaN(+number)) return false
       const code = phone.slice(0, -10)
       if (!code.startsWith('+')) return false
-      if (!isNaN(+code.slice(1))) return false
+      if (isNaN(+code.slice(1))) return false
       return code === '+7' || code === '+37'
     },
     validateEmail () {
