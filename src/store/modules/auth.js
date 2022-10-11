@@ -17,6 +17,7 @@ import { RESET_REGLAMENTS_STATE } from '../actions/reglaments'
 import { RESET_DEPARTMENTS_STATE } from '../actions/departments'
 import { RESET_EMPLOYEE_STATE } from '../actions/employees'
 import { RESET_ONBOARDING_STATE } from '@/store/actions/onboarding'
+import { RESET_CLIENT_STATE } from '@/store/actions/clients'
 
 const state = {
   token: localStorage.getItem('user-token') || '',
@@ -163,6 +164,7 @@ const actions = {
       commit(RESET_DEPARTMENTS_STATE)
       commit(RESET_EMPLOYEE_STATE)
       commit(RESET_ONBOARDING_STATE)
+      commit(RESET_CLIENT_STATE)
       axios
         .get(url)
         .then((resp) => {

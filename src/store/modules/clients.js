@@ -80,7 +80,7 @@ const mutations = {
     state.clients.push(client)
   },
   [CLIENTS.REMOVE_CLIENT]: (state, clientUid) => {
-    state.clients = state.clients.filter(cl => cl.uid !== clientUid)
+    state.clients.splice(state.clients.findIndex(client => client.uid === clientUid), 1)
   },
   [CLIENTS.UPDATE_CLIENT]: (state, data) => {
     state.selectedClient = { ...data }
@@ -91,6 +91,12 @@ const mutations = {
   },
   [CLIENTS.CHANGE_CLIENT_NAME]: (state, client) => {
     state.clients.find(cl => cl.uid === client.uid).name = client.name
+  },
+  [CLIENTS.RESET_CLIENT_STATE]: (state) => {
+    state.selectedClient = null
+    state.paging = {}
+    state.clients = []
+    state.status = 'loading'
   },
   UPDATE_PAGING: (state, paging) => {
     state.paging = paging

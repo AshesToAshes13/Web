@@ -7,3 +7,4 @@ export const GET_CLIENT = 'GET_CLIENT'
 
 export const SET_CLIENTS = 'SET_CLIENTS'
 export const UPDATE_CLIENT = 'UPDATE_CLIENT'
+export const RESET_CLIENT_STATE = 'RESET_CLIENT_STATE'

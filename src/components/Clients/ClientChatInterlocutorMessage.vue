@@ -9,19 +9,46 @@
       v-else
       class="flex"
     >
-      <span
-        v-linkified:options="{ className: 'text-blue-600', tagName: 'a' }"
-        class="mr-[8px]  font-[400] text-[14px] text-[#4C4C4D] leading-[19px] break-words max-w-[230px]"
+      <div
+        v-if="message?.emailSender"
+        class="flex flex-col w-full"
       >
-        {{ message.msg }}
-      </span>
-      <p
-        :class="{ 'group-hover:hidden' : shouldShowOptions }"
-        class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
-        style="color: rgba(0, 0, 0, 0.4);"
+        <span
+          class="text-[14px]"
+          style="color: rgba(0, 0, 0, 0.4);"
+        >
+          Тема: {{ message.subject }}
+        </span>
+        <span
+          v-if="message?.emailSender"
+          class="w-full break-words"
+          v-html="message.msg"
+        />
+        <p
+          class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
+          style="color: rgba(0, 0, 0, 0.4);"
+        >
+          {{ getMessageTimeString(message.date_create) }}
+        </p>
+      </div>
+      <div
+        v-else
+        class="flex"
       >
-        {{ getMessageTimeString(message.date_create) }}
-      </p>
+        <span
+          v-linkified:options="{ className: 'text-blue-600', tagName: 'a' }"
+          class="mr-[8px]  font-[400] text-[14px] text-[#4C4C4D] leading-[19px] break-words max-w-[230px]"
+        >
+          {{ message.msg }}
+        </span>
+        <p
+          :class="{ 'group-hover:hidden' : shouldShowOptions }"
+          class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
+          style="color: rgba(0, 0, 0, 0.4);"
+        >
+          {{ getMessageTimeString(message.date_create) }}
+        </p>
+      </div>
       <div
         class="self-end group-hover:flex hidden"
       >

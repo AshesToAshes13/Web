@@ -378,7 +378,7 @@ export default {
         this.$store.state.reglaments.lastCommentText = res.data[0].comment
       }
     })
-    console.log(this.currReglament)
+    console.log(this.reglament)
   },
   methods: {
     setEdit () {
