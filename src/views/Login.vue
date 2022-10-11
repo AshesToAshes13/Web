@@ -206,6 +206,7 @@ import { AUTH_REQUEST, GOOGLE_AUTH_REQUEST, AUTH_REGISTER } from '@/store/action
 import { maska } from 'maska'
 import * as SLIDES from '@/store/actions/slides.js'
 import * as TASK from '@/store/actions/tasks'
+import { CREATE_COLOR_REQUEST } from '@/store/actions/colors'
 
 export default {
   directives: {
@@ -259,6 +260,9 @@ export default {
   computed: {
     validatePassword () {
       return this.form.password.trim().length > 7
+    },
+    user () {
+      return this.$store.state.user.user
     },
     validateName () {
       return this.form.username.trim().length > 2
@@ -356,6 +360,48 @@ export default {
           this.$store.dispatch(TASK.CREATE_TAG_REQUEST, firstTag)
           this.$store.dispatch(TASK.CREATE_TAG_REQUEST, secondTag)
           this.$store.dispatch(TASK.CREATE_TAG_REQUEST, thirdTag)
+
+          // демо-цвета
+          const firstColor = {
+            back_color: '#62A5F9',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: this.user.current_user_email,
+            uid: uuidv4(),
+            name: 'Синий',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, firstColor)
+          const secondColor = {
+            back_color: '#FFF38B',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: this.user.current_user_email,
+            uid: uuidv4(),
+            name: 'Желтый',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, secondColor)
+
+          const thirdColor = {
+            back_color: '#93FFB9',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: this.user.current_user_email,
+            uid: uuidv4(),
+            name: 'Зеленый',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, thirdColor)
         })
         .catch(() => {
           this.form.showError = true
