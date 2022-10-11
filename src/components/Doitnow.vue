@@ -198,7 +198,7 @@ export default {
   },
   watch: {
     firstTask (newtask) {
-      if (newtask && newtask.uid && !this.isReglament) {
+      if (newtask && newtask.uid && !this.isReglament && !newtask.mode) {
         this.isTaskMessagesLoading = true
         this.$store.dispatch(TASK.GET_TASK_CHILDRENS, newtask.uid)
           .then((resp) => {

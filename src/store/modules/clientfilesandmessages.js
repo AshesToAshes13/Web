@@ -14,7 +14,6 @@ const state = {
   cards: {
     status: 'loading',
     messages: [],
-    files: [],
     cards: []
   }
 }
@@ -29,16 +28,10 @@ const actions = {
         .then(resp => {
           resp.data = resp.data.filter(item => { return item?.uid })
           commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data)
-          dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_MESSAGES, resp.data).then(msgs => {
-            const messages = []
-            msgs.forEach(messageGroup => {
-              if (messageGroup.length) {
-                messageGroup.forEach(message => {
-                  messages.push(message)
-                })
-              }
-            })
-            commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MESSAGES_SUCCESS, messages)
+          const cardsMessages = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_MESSAGES, resp.data)
+          const cardsFiles = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_FILES, resp.data)
+          Promise.all([cardsMessages, cardsFiles]).then((resp) => {
+            commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MERGE_FILES, resp)
           })
           resolve(resp)
         }).catch(err => {
@@ -53,6 +46,19 @@ const actions = {
         axios({ url: url, method: 'GET' })
           .then(resp => {
             resolve(resp.data.msgs)
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    }))
+  },
+  [CLIENT_FILES_AND_MESSAGES.GET_CARDS_FILES] ({ commit, state }, cards) {
+    return Promise.all(cards.map((card) => {
+      return new Promise((resolve, reject) => {
+        const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsfiles/bycard?uid=' + card.uid
+        axios({ url: url, method: 'GET' })
+          .then(resp => {
+            resolve(resp)
           }).catch(err => {
             reject(err)
           })
@@ -235,8 +241,31 @@ const mutations = {
   [CLIENT_FILES_AND_MESSAGES.REFRESH_FILES]: (state, resp) => {
     state.files = []
   },
-  [CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES]: (state, resp) => {
+  [CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES]: (state, commit, resp) => {
     state.messages = []
+  },
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MERGE_FILES]: (state, resp) => {
+    const messages = resp[0]
+    const files = resp[1]
+
+    const cardsLength = messages.length === files.length ? messages.length : messages.length > files.length ? messages.length : files.length
+    const cardsFilesAndMessages = []
+
+    for (let i = 0; i < cardsLength; i++) {
+      cardsFilesAndMessages.push([...messages[i], ...files[i].data.files])
+    }
+
+    state.cards.messages = cardsFilesAndMessages.map((card) => {
+      return card.sort((a, b) => {
+        if (!a.file_name && !a.date_create.includes('Z')) {
+          a.date_create += 'Z'
+        }
+        if (!b.file_name && !b.date_create.includes('Z')) {
+          b.date_create += 'Z'
+        }
+        return new Date(a.date_create) - new Date(b.date_create)
+      })
+    })
   },
   [CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES]: (state) => {
     state.messages = state.messages.concat(state.files)
@@ -259,9 +288,6 @@ const mutations = {
         state.messages.splice(i, 1)
       }
     }
-  },
-  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MESSAGES_SUCCESS]: (state, msgs) => {
-    state.cards.messages = msgs
   },
   [CLIENT_FILES_AND_MESSAGES.REFRESH_CARDS]: (state) => {
     state.cards = {
