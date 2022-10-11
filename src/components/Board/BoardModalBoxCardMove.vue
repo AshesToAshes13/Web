@@ -213,10 +213,7 @@ export default {
     boardsCanEdit () {
       const currentUserUid = this.user.current_user_uid
       return Object.values(this.$store.state.boards.boards).filter(
-        item => {
-          console.log('item.members: ', item)
-          return item.members[currentUserUid] === 1 || item.members[currentUserUid] === 2
-        }
+        item => item.members[currentUserUid] === 1 || item.members[currentUserUid] === 2
       )
     },
     myBoards () {
