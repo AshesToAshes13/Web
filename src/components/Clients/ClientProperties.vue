@@ -221,10 +221,10 @@ export default {
       const phone = this.currClient.phone
       if (phone.length < 10) return false
       const number = phone.slice(-10)
-      if (!isNaN(+number)) return false
+      if (isNaN(+number)) return false
       const code = phone.slice(0, -10)
       if (!code.startsWith('+')) return false
-      if (!isNaN(+code.slice(1))) return false
+      if (isNaN(+code.slice(1))) return false
       return code === '+7' || code === '+37'
     },
     validateEmail () {
