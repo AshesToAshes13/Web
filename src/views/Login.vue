@@ -197,6 +197,7 @@ import FullScreenSection from '@/components/FullScreenSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import Field from '@/components/Field.vue'
 import Icon from '@/components/Icon.vue'
+import { uuidv4 } from '@/helpers/functions'
 import Control from '@/components/Control.vue'
 import JbButton from '@/components/JbButton.vue'
 import { USER_START_ONBOARDING } from '@/store/actions/onboarding.js'
@@ -204,6 +205,7 @@ import { AUTH_REQUEST, GOOGLE_AUTH_REQUEST, AUTH_REGISTER } from '@/store/action
 // import { decodeCredential } from 'vue3-google-login'
 import { maska } from 'maska'
 import * as SLIDES from '@/store/actions/slides.js'
+import * as TASK from '@/store/actions/tasks'
 
 export default {
   directives: {
@@ -334,6 +336,26 @@ export default {
             })
           })
           this.$store.dispatch(USER_START_ONBOARDING)
+
+          // демо-метки
+          const firstTag = {
+            back_color: '#4AC7BF',
+            uid: uuidv4(),
+            name: 'Внимание!'
+          }
+          const secondTag = {
+            back_color: '#FA3865',
+            uid: uuidv4(),
+            name: 'Срочно!'
+          }
+          const thirdTag = {
+            back_color: '#FFCC00',
+            uid: uuidv4(),
+            name: 'Важно!'
+          }
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, firstTag)
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, secondTag)
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, thirdTag)
         })
         .catch(() => {
           this.form.showError = true
