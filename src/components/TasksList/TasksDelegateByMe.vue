@@ -57,7 +57,7 @@ export default {
   watch: {
     employeeUid: {
       handler: function (val) {
-        if (val) this.selectAnotherEmployee(val)
+        if (val && this.$route.name === 'tasksDelegateByMe') this.selectAnotherEmployee(val)
       }
     }
   },
