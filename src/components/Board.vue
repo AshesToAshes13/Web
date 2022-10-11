@@ -272,7 +272,7 @@
               :fallback-tolerance="1"
               :force-fallback="true"
               :animation="380"
-              :scroll-sensitivity="250"
+              :scroll-sensitivity="150"
               @start="startDragCard"
               @end="endDragCard"
               @change="changeDragCard"
@@ -289,6 +289,7 @@
                   :color-dots="colorCard(column.Color, 0.8)"
                   class="mt-2"
                   @select="selectCard(element)"
+                  @copyEmail="copyEmail(element)"
                   @delete="deleteCard(element)"
                   @moveSuccess="moveSuccessCard(element)"
                   @moveReject="moveRejectCard(element)"
@@ -309,7 +310,6 @@
               v-if="showAddCard && column.UID === selectedColumn.UID"
               :show="showAddCard && column.UID === selectedColumn.UID"
               class="w-[254px]"
-              maxlength="50"
               @save="onAddNewCard"
               @cancel="showAddCard = false"
             />
@@ -402,6 +402,7 @@ import BoardInputValue from './Board/BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
 import BoardTextareaValue from './Board/BoardTextareaValue.vue'
+import { notify } from 'notiwind'
 
 export default {
   directives: {
@@ -832,6 +833,23 @@ export default {
 
       this.$store.commit('basic', { key: 'propertiesState', value: 'card' })
       this.$store.dispatch('asidePropertiesToggle', true)
+    },
+    copyEmail (card) {
+      const email = this.checkIfEmailInString(card.name)
+      navigator.clipboard.writeText(email)
+      notify(
+        {
+          group: 'api',
+          title: 'Email скопирован',
+          action: '',
+          text: email
+        },
+        15000
+      )
+    },
+    checkIfEmailInString (text) {
+      const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
+      return regex.exec(text) ? regex.exec(text)[0] : ''
     },
     closeProperties () {
       this.$store.dispatch('asidePropertiesToggle', false)

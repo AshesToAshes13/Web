@@ -30,6 +30,7 @@
             contenteditable="true"
             @blur="changeQuestionName($event)"
             @keydown.enter.exact.prevent="$emit('addQuestion')"
+            @paste="pasteAsPlainText"
             @input="maxQuestionLength"
             v-text="question.name"
           />
@@ -52,6 +53,12 @@
           </svg>
         </div>
       </div>
+      <span
+        v-if="question.invalid"
+        class="text-red-500 text-xs font-medium"
+      >
+        Текст вопроса не должен быть пустым
+      </span>
       <div class="mt-4 mb-2">
         <span
           class="text-[#424242] font-[700] text-[15px]"
@@ -207,7 +214,7 @@ export default {
         name: event.target.innerText,
         needToCreate: this.question.needToCreate,
         needToUpdate: true,
-        invalid: event.target.innerText === ''
+        invalid: event.target.textContent === ''
       }
       this.$emit('updateQuestionName', data)
     },
@@ -219,6 +226,12 @@ export default {
       range.collapse(true)
       sel.removeAllRanges()
       sel.addRange(range)
+    },
+    pasteAsPlainText (e) {
+      // Функция исправляет баг, когда текст вставляется как html тег
+      e.preventDefault()
+      const text = (e.originalEvent || e).clipboardData.getData('text/plain')
+      document.execCommand('insertHTML', false, text)
     }
   }
 }

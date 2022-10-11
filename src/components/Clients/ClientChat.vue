@@ -117,6 +117,9 @@ export default {
         isMyMessage: (message?.uid_creator === this.currentUserUid) || this.isMessageIncludesIntegrationLogin(message)
       }))
     },
+    cardsMessages () {
+      return this.messages.filter((message) => message.uid_creator === 'inspector')
+    },
     user () {
       return this.$store.state.user.user
     },

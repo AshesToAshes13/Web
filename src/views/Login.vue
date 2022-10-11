@@ -197,6 +197,7 @@ import FullScreenSection from '@/components/FullScreenSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import Field from '@/components/Field.vue'
 import Icon from '@/components/Icon.vue'
+import { uuidv4 } from '@/helpers/functions'
 import Control from '@/components/Control.vue'
 import JbButton from '@/components/JbButton.vue'
 import { USER_START_ONBOARDING } from '@/store/actions/onboarding.js'
@@ -204,6 +205,9 @@ import { AUTH_REQUEST, GOOGLE_AUTH_REQUEST, AUTH_REGISTER } from '@/store/action
 // import { decodeCredential } from 'vue3-google-login'
 import { maska } from 'maska'
 import * as SLIDES from '@/store/actions/slides.js'
+import * as TASK from '@/store/actions/tasks'
+import { CREATE_COLOR_REQUEST } from '@/store/actions/colors'
+import * as PROJECT from '@/store/actions/projects'
 
 export default {
   directives: {
@@ -226,6 +230,7 @@ export default {
       mdiChevronLeft,
       mdiEyeOutline,
       mdiPhoneOutline,
+      date: new Date(),
       form: {
         email: '',
         password: '',
@@ -257,6 +262,9 @@ export default {
   computed: {
     validatePassword () {
       return this.form.password.trim().length > 7
+    },
+    user () {
+      return this.$store.state.user.user
     },
     validateName () {
       return this.form.username.trim().length > 2
@@ -334,11 +342,224 @@ export default {
             })
           })
           this.$store.dispatch(USER_START_ONBOARDING)
+
+          // демо-метки
+          const firstTag = {
+            back_color: '#4AC7BF',
+            uid: uuidv4(),
+            name: 'Внимание!'
+          }
+          const secondTag = {
+            back_color: '#FA3865',
+            uid: uuidv4(),
+            name: 'Срочно!'
+          }
+          const thirdTag = {
+            back_color: '#FFCC00',
+            uid: uuidv4(),
+            name: 'Важно!'
+          }
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, firstTag)
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, secondTag)
+          this.$store.dispatch(TASK.CREATE_TAG_REQUEST, thirdTag)
+
+          // демо-цвета
+          const firstColor = {
+            back_color: '#62A5F9',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: data.email,
+            uid: uuidv4(),
+            name: 'Синий',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, firstColor)
+          const secondColor = {
+            back_color: '#FFF38B',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: data.email,
+            uid: uuidv4(),
+            name: 'Желтый',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, secondColor)
+
+          const thirdColor = {
+            back_color: '#93FFB9',
+            fore_color: '',
+            uppercase: 0,
+            order: 0,
+            default: 0,
+            email_creator: data.email,
+            uid: uuidv4(),
+            name: 'Зеленый',
+            bold: 0,
+            parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
+          }
+          this.$store.dispatch(CREATE_COLOR_REQUEST, thirdColor)
+
+          // демо-проект
+          const project = {
+            uid: uuidv4(),
+            name: 'Как это работает',
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            email_creator: data.email,
+            order: 1,
+            comment: '',
+            plugin: '',
+            collapsed: 0,
+            isclosed: 0,
+            group: 0,
+            show: 1,
+            favorite: 0,
+            quiet: 0,
+            members: [data.email],
+            children: [],
+            bold: 0
+          }
+          this.$store.dispatch(PROJECT.CREATE_PROJECT_REQUEST, project).then((res) => {
+          // заполняем недостающие параметры
+            project.global_property_uid = '431a3531-a77a-45c1-8035-f0bf75c32641'
+          })
+
+          // демо-задача в Сегодня и в проекте Как это работает
+          const tags = [firstTag.uid]
+          const todayTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            uid_marker: firstColor.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            date_begin: this.getDateString(this.date) + 'T00:00:00',
+            date_end: this.getDateString(this.date) + 'T23:59:59',
+            tags: tags,
+            name: 'Прочитайте задачу и завершите ее',
+            comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, todayTask)
+
+          // остальные демо-задачи в проекте Как это работает
+
+          // первая задачка с ребенком (папа)
+          const firstTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, firstTask)
+
+          // ребенок первой задачки (сынок)
+          const firstTaskChildren = {
+            uid: uuidv4(),
+            uid_parent: firstTask.uid,
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Подзадача имеет такие же свойства, как и задача',
+            comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren)
+
+          // вторая задачка
+          const secondTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Добавляйте к задачам подзадачи (этапы выполнения основной) - наведите на задачу курсор и нажмите на появившийся тулбар',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, secondTask)
+
+          // третья задачка
+          const thirdTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Зажмите задачу и переместите ее в любое место в списке',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, thirdTask)
+
+          // четвертая задачка
+          const fourthTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Поручите эту задачу сотруднику',
+            comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, fourthTask)
+
+          // пятая задачка
+          const fifthTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Добавьте участников проекта',
+            comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, fifthTask)
         })
         .catch(() => {
           this.form.showError = true
           this.form.errorMessage = 'Unknown error'
         })
+    },
+    pad2 (n) {
+      return (n < 10 ? '0' : '') + n
+    },
+    getDateString (date) {
+      const month = this.pad2(date.getMonth() + 1)
+      const day = this.pad2(date.getDate())
+      const year = this.pad2(date.getFullYear())
+      return year + '-' + month + '-' + day
     },
     submit () {
       if (this.showValues.showLoginInputsValue) {
