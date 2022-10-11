@@ -221,6 +221,21 @@ const actions = {
           reject(err)
         })
     })
+  },
+  [REGLAMENTS.DELETE_REGLAMENT_REMINDER]: (
+    { commit, dispatch },
+    data
+  ) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'reglamentReminder'
+      axios({ url: url, method: 'DELETE', data: data })
+        .then((resp) => {
+          resolve(resp)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   }
 }
 

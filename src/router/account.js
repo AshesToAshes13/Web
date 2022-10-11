@@ -12,12 +12,18 @@ export default [
       {
         path: 'myaccount',
         name: 'myaccount',
-        component: () => import('@/components/Settings/Account.vue')
+        component: () => import('@/components/Settings/Account.vue'),
+        meta: {
+          title: 'Аккаунт'
+        }
       },
       {
         path: 'karma',
         name: 'karma',
-        component: () => import('@/components/Settings/AccKarma.vue')
+        component: () => import('@/components/Settings/AccKarma.vue'),
+        meta: {
+          title: 'Карма'
+        }
       }
     ]
   }

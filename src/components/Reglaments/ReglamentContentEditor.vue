@@ -107,8 +107,9 @@
             </ReglamentSmallButton>
           </div>
         </div>
-
+        <ReglamentContentEditorSkeleton v-if="reglamentContentSuccess === false" />
         <div
+          v-if="reglamentContentSuccess === true"
           class="flex justify-start gap-[8px] mr-3 leading-[30px] text-[13px] text-[#424242] flex-wrap"
         >
           <span class="font-medium">Отдел:</span>
@@ -220,11 +221,15 @@
         </div>
       </div>
     </div>
-    <div class="bg-white rounded-[28px]">
+    <div
+      v-if="reglamentContentSuccess === true"
+      class="bg-white rounded-[28px]"
+    >
       <!-- Пустой див для корректного поведения quill-tollbar'a-->
       <div>
         <QuillEditor
-          v-model:content="currText"
+          v-if="reglamentContentSuccess === true"
+          v-model:content="reglamentContent"
           content-type="html"
           :toolbar="'full'"
           class="h-auto mb-5 bg-white reglament-editor"
@@ -336,6 +341,7 @@ import ReglamentPropsMenuItemUser from '@/components/Reglaments/ReglamentPropsMe
 import EmployeeProfile from '../Employees/EmployeeProfile.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
+import ReglamentContentEditorSkeleton from '@/components/Reglaments/ReglamentContentEditorSkeleton.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import { NAVIGATOR_REMOVE_REGLAMENT } from '@/store/actions/navigator'
 import ReglamentQuestion from '@/components/Reglaments/ReglamentQuestion'
@@ -354,6 +360,7 @@ export default {
     ModalBoxDelete,
     PopMenuItem,
     ReglamentPropsMenuItemUser,
+    ReglamentContentEditorSkeleton,
     ReglamentQuestion,
     EmployeeProfile,
     ReglamentModalSave
@@ -367,11 +374,12 @@ export default {
       currText: this.$store.state.reglaments.reglaments[this.$route.params.id].content ?? '',
       saveContentStatus: 1, // 1 - is saved, 2 error, 0 request processing
       buttonSaveReglament: 1, // то же самое что и saveContentStatus, сделано для того, чтобы 2 кнопки не принимали 1 статус
-      isFormInvalid: false,
       showEmployees: false,
       buttonDisabled: false,
       showSaveModal: false,
-      reglamentHistoryLength: 0
+      reglamentHistoryLength: 0,
+      reglamentContent: this.$store.state.reglaments?.reglaments[this.$route.params.id]?.content ?? '',
+      reglamentContentSuccess: false
     }
   },
   computed: {
@@ -410,9 +418,6 @@ export default {
     },
     reglamentTitle () {
       return this.currReglament?.name ?? ''
-    },
-    reglamentContent () {
-      return this.currReglament?.content ?? ''
     },
     reglamentCreatorEmail () {
       return this.currReglament?.email_creator ?? ''
@@ -478,7 +483,12 @@ export default {
     this.$store.dispatch(REGLAMENTS.REGLAMENT_REQUEST, this.currReglament?.uid)
     this.$store.dispatch(REGLAMENTS.GET_USERS_REGLAMENT_ANSWERS, this.currReglament?.uid)
     this.buttonDisabled = true
-
+    this.$store.dispatch(REGLAMENTS.REGLAMENT_CONTENT_REQUEST, this.currReglament?.uid).then((res) => {
+      console.log(this.$store.state.reglaments.reglaments[this.$route.params.id])
+      this.reglamentContent = res.data[0].content
+      this.$store.state.reglaments.reglaments[this.$route.params.id].content = this.reglamentContent
+      this.reglamentContentSuccess = true
+    })
     this.$store.dispatch(REGLAMENTS.GET_REGLAMENT_COMMENTS, this.$route.params.id).then(res => {
       this.reglamentHistoryLength = res.data.length
       this.buttonDisabled = false
@@ -622,6 +632,8 @@ export default {
       return this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, reglament)
     },
     clickSaveAndExitReglament () {
+      if (this.validateReglamentQuestions()) return
+
       this.$store.state.reglaments.hideSaveParams = false
 
       if (this.reglamentHistoryLength > 0) {
@@ -638,26 +650,18 @@ export default {
       }
     },
     saveOnClick () {
+      if (this.validateReglamentQuestions()) return
       this.$store.state.reglaments.hideSaveParams = true
       this.setEdit()
     },
     setEdit () {
       const reglament = { ...this.currReglament }
-      reglament.content = this.currText
+      reglament.content = this.reglamentContent
       reglament.name = this.currName.trim()
       reglament.department_uid = this.currDep
       reglament.editors = [...this.currEditors]
 
       this.saveContentStatus = 0
-      this.isFormInvalid = false
-      this.firstInvalidQuestionUid = null
-      this.validateReglamentQuestions()
-      if (this.isFormInvalid && this.firstInvalidQuestionUid) {
-        this.gotoNode(this.firstInvalidQuestionUid)
-        this.saveContentStatus = 1
-        return
-      }
-
       this.saveReglament(reglament).then(() => {
         this.saveContentStatus = 1
         // обновляем регламент в сторе
@@ -695,6 +699,9 @@ export default {
       return `${day} ${month}, ${weekday}, ${hours}:${minutes}:${seconds}`
     },
     validateReglamentQuestions () {
+      let isFormInvalid = false
+      let firstInvalidQuestionUid = null
+
       for (const question of this.questions) {
         question.invalid = question.name === ''
 
@@ -705,28 +712,34 @@ export default {
         if (!checkOnEmptyRightAnswers) {
           question.invalid = true
           question.errorText = 'Отметьте как минимум один правильный ответ'
-          if (!this.isFormInvalid) {
-            this.isFormInvalid = true
+          if (!isFormInvalid) {
+            isFormInvalid = true
           }
-          if (!this.firstInvalidQuestionUid) {
-            this.firstInvalidQuestionUid = question.uid
+          if (!firstInvalidQuestionUid) {
+            firstInvalidQuestionUid = question.uid
           }
         }
 
-        if (!this.isFormInvalid && question.name === '') {
-          this.isFormInvalid = true
-          this.firstInvalidQuestionUid = question.uid
+        if (!isFormInvalid && question.name === '') {
+          isFormInvalid = true
+          firstInvalidQuestionUid = question.uid
         }
 
         for (const answer of question.answers) {
           answer.invalid = answer.name === ''
 
-          if (!this.isFormInvalid && answer.name === '') {
-            this.isFormInvalid = true
-            this.firstInvalidQuestionUid = question.uid
+          if (!isFormInvalid && answer.name === '') {
+            isFormInvalid = true
+            firstInvalidQuestionUid = question.uid
           }
         }
       }
+
+      if (isFormInvalid && firstInvalidQuestionUid) {
+        this.gotoNode(firstInvalidQuestionUid)
+        return true
+      }
+      return false
     },
     removeReglament () {
       // копия регламента, нужна для NAVIGATOR_REMOVE_REGLAMENT, он при удалении регламента использовал greedSource.

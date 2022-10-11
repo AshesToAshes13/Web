@@ -228,6 +228,29 @@ const actions = {
         })
     })
   },
+  [BOARD.CHANGE_STAGE_BOARD]: ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+      const boardToStagesLength = state.boards[data.boardTo].stages.length
+      const url =
+      process.env.VUE_APP_LEADERTASK_API +
+      '/api/v1/boardsstages/move?uid_stage=' + data.stageUid +
+      '&uid_board=' + data.boardTo +
+      '&order=' + boardToStagesLength
+      axios({ url: url, method: 'PATCH' })
+        .then((resp) => {
+          commit(BOARD.ADD_STAGE_BOARD, {
+            boardUid: data.boardTo,
+            newStageTitle: data.stage.Name,
+            stageUid: data.stageUid
+          })
+          commit(BOARD.DELETE_STAGE_BOARD, data)
+          resolve(resp)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  },
   [BOARD.DELETE_STAGE_BOARD_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       const board = state.boards[data.boardUid]
@@ -324,7 +347,9 @@ const mutations = {
     delete state.boards[uid]
   },
   [BOARD.PUBLIC_LINK_STATUS_BOARD_REQUEST]: (state, data) => {
-    state.publicBoard = data.public_link_status
+    setTimeout(() => {
+      state.publicBoard = data.public_link_status
+    }, 300)
   },
   [BOARD.PUSH_BOARD]: (state, boards) => {
     for (const board of boards) {

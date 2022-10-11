@@ -4,7 +4,8 @@ import axios from 'axios'
 const state = {
   login: null,
   password: null,
-  isIntegrated: false
+  isIntegrated: false,
+  isLoading: false
 }
 
 const actions = {
@@ -76,6 +77,7 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'yandexCorpMsgsSentFromUs'
+      commit(CORP_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent from us success')
@@ -84,6 +86,9 @@ const actions = {
         .catch((err) => {
           console.log('ошибка при запросе imap')
           reject(err)
+        })
+        .finally(() => {
+          commit(CORP_YANDEX.YANDEX_END_LOADING)
         })
     })
   },
@@ -98,6 +103,7 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'yandexCorpMsgsSentToUs'
+      commit(CORP_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent to us success')
@@ -107,11 +113,20 @@ const actions = {
           console.log('ошибка при запросе imap')
           reject(err)
         })
+        .finally(() => {
+          commit(CORP_YANDEX.YANDEX_END_LOADING)
+        })
     })
   }
 }
 
 const mutations = {
+  [CORP_YANDEX.YANDEX_START_LOADING]: (state) => {
+    state.isLoading = true
+  },
+  [CORP_YANDEX.YANDEX_END_LOADING]: (state) => {
+    state.isLoading = false
+  },
   [CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION]: (state, data) => {
     state.isIntegrated = data
   },
