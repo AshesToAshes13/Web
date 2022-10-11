@@ -259,9 +259,10 @@ export default {
       this.$store.dispatch('asidePropertiesToggle', false)
     },
     removeClient () {
-      this.showConfirm = false
-      this.$store.dispatch(CLIENTS.REMOVE_CLIENT, this.selectedClient)
-      this.$store.dispatch('asidePropertiesToggle', false)
+      this.$store.dispatch(CLIENTS.REMOVE_CLIENT, this.selectedClient).then(() => {
+        this.showConfirm = false
+        this.$store.dispatch('asidePropertiesToggle', false)
+      })
     },
     updateClient () {
       if (this.checkForm()) {
