@@ -429,13 +429,14 @@ export default {
             project.global_property_uid = '431a3531-a77a-45c1-8035-f0bf75c32641'
           })
 
-          // демо-задача в Сегодня
+          // демо-задача в Сегодня и в проекте Как это работает
           const tags = [firstTag.uid]
           const todayTask = {
             uid: uuidv4(),
             uid_parent: '00000000-0000-0000-0000-000000000000',
             uid_customer: data.email,
             uid_project: project.uid,
+            uid_marker: firstColor.uid,
             status: 0,
             email_performer: '',
             type: 1,
@@ -447,6 +448,104 @@ export default {
             _addToList: true
           }
           this.$store.dispatch(TASK.CREATE_TASK, todayTask)
+
+          // остальные демо-задачи в проекте Как это работает
+
+          // первая задачка с ребенком (папа)
+          const firstTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, firstTask)
+
+          // ребенок первой задачки (сынок)
+          const firstTaskChildren = {
+            uid: uuidv4(),
+            uid_parent: firstTask.uid,
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Подзадача имеет такие же свойства, как и задача',
+            comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren)
+
+          // вторая задачка
+          const secondTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Добавляйте к задачам подзадачи (этапы выполнения основной) - наведите на задачу курсор и нажмите на появившийся тулбар',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, secondTask)
+
+          // третья задачка
+          const thirdTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Зажмите задачу и переместите ее в любое место в списке',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, thirdTask)
+
+          // четвертая задачка
+          const fourthTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Поручите эту задачу сотруднику',
+            comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, fourthTask)
+
+          // пятая задачка
+          const fifthTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: data.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Добавьте участников проекта',
+            comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, fifthTask)
         })
         .catch(() => {
           this.form.showError = true
