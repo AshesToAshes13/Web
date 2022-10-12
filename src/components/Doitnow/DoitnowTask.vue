@@ -20,13 +20,13 @@
       class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
       :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
     >
-      <DoitnowCustomerInfo
-        v-if="shouldShowCustomer"
+      <DoitnowPerformerInfo
+        v-if="shouldShowPerformer"
         :task="task"
         :employees="employees"
       />
-      <DoitnowPerformerInfo
-        v-else-if="shouldShowPerformer"
+      <DoitnowCustomerInfo
+        v-else-if="shouldShowCustomer"
         :task="task"
         :employees="employees"
       />
