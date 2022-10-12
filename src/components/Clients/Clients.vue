@@ -182,7 +182,7 @@ export default {
         this.wasLoaded = true
       })
       if (this.currentPageRouter > this.paging.pages) {
-        if (this.paging.pages === 0 && this.$route.query.search.length > 1) {
+        if (this.paging.pages === 0 && this.$route.query.search?.length > 1) {
           this.clientUndefined = true
           return
         }

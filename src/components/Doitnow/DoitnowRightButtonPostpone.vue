@@ -37,26 +37,31 @@
       <template #menu>
         <div class="w-[203px]">
           <PopMenuItem
+            class="!h-[40px] !justify-center"
             @click="onSetPostpone({minutes: 10, days: 0})"
           >
             На 10 минут
           </PopMenuItem>
           <PopMenuItem
+            class="!h-[40px] !justify-center"
             @click="onSetPostpone({minutes: 60, days: 0})"
           >
             На 1 час
           </PopMenuItem>
           <PopMenuItem
+            class="!h-[40px] !justify-center"
             @click="onSetPostpone({minutes: 180, days: 0})"
           >
             На 3 часа
           </PopMenuItem>
           <PopMenuItem
+            class="!h-[40px] !justify-center"
             @click="onSetPostpone({minutes: 0, days: 1})"
           >
             На завтра
           </PopMenuItem>
           <PopMenuItem
+            class="!h-[40px] !justify-center"
             @click="onSelectPostpone"
           >
             Выбрать дату
@@ -121,7 +126,7 @@ export default {
   },
   methods: {
     onPostpone () {
-      const date = new Date(this.taskEndDate) ?? new Date()
+      const date = this.taskEndDate ? new Date(this.taskEndDate) : new Date()
       if (this.postponeValue.days > 0) {
         date.setHours(9, 0, 0, 0) // на 9 утра
         date.setDate(date.getDate() + this.postponeValue.days)

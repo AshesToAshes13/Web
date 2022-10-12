@@ -17,76 +17,73 @@
     />
 
     <div
-      class="py-6 px-5 w-[85%] bg-white rounded-lg mr-[10px]"
+      class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
+      :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
     >
+      <DoitnowCustomerInfo
+        v-if="shouldShowCustomer"
+        :task="task"
+        :employees="employees"
+      />
+      <DoitnowPerformerInfo
+        v-else-if="shouldShowPerformer"
+        :task="task"
+        :employees="employees"
+      />
       <div
-        class="flex mr-[30px] justify-between items-center mb-6 p-2 rounded-[8px] pl-4"
-        :style="{ backgroundColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : '', color: getValidForeColor(colors[task.uid_marker]?.fore_color) }"
+        class="flex mr-[30px] justify-between items-center mb-[13px] py-2 rounded-[8px]"
       >
         <!-- task info/status -->
-        <div class="flex items-center -ml-2">
-          <TaskStatus
-            :task="task"
-            @changeStatus="changeStatus"
-          />
-          <contenteditable
-            v-model="name"
-            v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
-            tag="div"
-            class="p-0.5 ring-0 outline-none max-w-7xl ml-[8px] flex overflow-x-hidden font-bold text-[18px] text-[#424242]"
-            style="word-break: break-word"
-            :contenteditable="task._isEditable"
-            placeholder="Введите название задачи"
-            :no-nl="false"
-            :no-html="false"
-            :style="{ color: getValidForeColor(colors[task.uid_marker]?.fore_color) }"
-            :class="{ 'uppercase': !task._isEditable && colors[task.uid_marker] && colors[task.uid_marker].uppercase, 'text-gray-500': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED, 'line-through': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED }"
-            @focusout="clearTaskFocus(task)"
-            @dblclick.stop="editTaskName(task)"
-            @keydown.enter="updateTask($event, task)"
-          />
-        </div>
+        <contenteditable
+          v-model="name"
+          v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
+          tag="div"
+          class="p-0.5 ring-0 outline-none max-w-7xl flex overflow-x-hidden font-bold text-[21px] text-[#424242]"
+          style="word-break: break-word"
+          :contenteditable="task._isEditable"
+          placeholder="Введите название задачи"
+          :no-nl="false"
+          :no-html="false"
+          :class="{ 'uppercase': !task._isEditable && colors[task.uid_marker] && colors[task.uid_marker].uppercase, 'text-gray-500': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED, 'line-through': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED }"
+          @focusout="clearTaskFocus(task)"
+          @dblclick.stop="editTaskName(task)"
+          @keydown.enter="updateTask($event, task)"
+        />
       </div>
-      <div class="flex text-sm text-left justify-between w-[400px]">
-        <div class="flex flex-col font-normal w-[720px]">
-          <div
-            v-if="shouldShowAccessLabel"
-            class="border-[#FF912380] w-[150px] text-center py-1 px-2 mb-2 border-2 rounded-[8px] inline-block"
-          >
-            Задача в доступе
-          </div>
-          <DoitnowCustomerInfo
-            v-if="shouldShowCustomer"
-            :task="task"
-            :employees="employees"
+      <div class="gap-x-[5px] flex mb-[20px]">
+        <DoitnowDaysInfo
+          v-if="dateClearWords"
+          :date-clear-words="dateClearWords"
+        />
+        <DoitnowCreateDateInfo
+          :create-date="createTaskDate"
+        />
+        <template
+          v-for="(tag, index) in task.tags"
+          :key="index"
+        >
+          <TaskListTagLabel
+            v-if="tags[tag]"
+            :icon-path="tagIcon.path"
+            :icon-box="tagIcon.viewBox"
+            :text="tags[tag].name"
+            :color-bg-style="{ backgroundColor: tags[tag] ? tags[tag].back_color : '' }"
           />
-          <DoitnowPerformerInfo
-            v-if="shouldShowPerformer"
-            :task="task"
-            :employees="employees"
-          />
-          <DoitnowDaysInfo
-            v-if="dateClearWords"
-            :date-clear-words="dateClearWords"
-          />
-          <DoitnowCreateDateInfo
-            :create-date="createTaskDate"
-          />
-          <DoitnowOverdueInfo
-            v-if="isTaskHaveOverdueTime"
-            :is-task-have-overdue-time="isTaskHaveOverdueTime"
-          />
-          <DoitnowProjectInfo
-            v-if="shouldShowProject"
-            :projects="projects"
-            :task="task"
-          />
-        </div>
+        </template>
+        <DoitnowOverdueInfo
+          v-if="isTaskHaveOverdueTime"
+          :is-task-have-overdue-time="isTaskHaveOverdueTime"
+        />
+        <DoitnowProjectInfo
+          v-if="shouldShowProject"
+          :projects="projects"
+          :task="task"
+        />
       </div>
       <TaskPropsCommentEditor
         v-if="shouldShowCommentEditor"
         class="mt-3"
-        text-style="!text-[16px] leading-[155%] mb-[40px]"
+        text-style="!text-[16px] leading-[155%] px-[22px] py-[12px] bg-[#f8f8fa] rounded-lg min-h-[200px]"
         style="word-break: break-word"
         :comment="task.comment"
         :can-edit="task.uid_customer === user?.current_user_uid"
@@ -95,7 +92,7 @@
       />
       <Checklist
         v-if="shouldShowChecklist"
-        class="mt-3 checklist-custom font-medium"
+        class="mt-5 checklist-custom font-medium"
         :checklist="task?.checklist"
         :can-edit="canEditChecklist"
         :can-check="canCheckChecklist"
@@ -177,7 +174,6 @@ import { TASK_STATUS } from '@/constants'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsCommentEditor.vue'
-import TaskStatus from '@/components/TasksList/TaskStatus.vue'
 
 // Doitnow components
 import Checklist from '@/components/Doitnow/Checklist.vue'
@@ -192,11 +188,13 @@ import DoitnowDaysInfo from '@/components/Doitnow/DoitnowDaysInfo.vue'
 import DoitnowOverdueInfo from '@/components/Doitnow/DoitnowOverdueInfo.vue'
 import DoitnowProjectInfo from '@/components/Doitnow/DoitnowProjectInfo.vue'
 import DoitnowCreateDateInfo from '@/components/Doitnow/DoitnowCreateDateInfo'
+import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel'
 
 import * as INSPECTOR from '@/store/actions/inspector.js'
 import * as TASK from '@/store/actions/tasks'
 import * as MSG from '@/store/actions/taskmessages'
 import * as FILES from '@/store/actions/taskfiles.js'
+import tagIcon from '@/icons/tag'
 
 export default {
   components: {
@@ -213,8 +211,8 @@ export default {
     DoitnowRightButton,
     DoitnowStatusModal,
     contenteditable,
-    TaskStatus,
-    DoitnowChatMessages
+    DoitnowChatMessages,
+    TaskListTagLabel
   },
   directives: {
     linkify
@@ -279,7 +277,8 @@ export default {
       postponeDate: {
         start: '',
         end: ''
-      }
+      },
+      tagIcon
     }
   },
   computed: {
@@ -292,6 +291,9 @@ export default {
         return 'Готово к сдаче'
       }
       return 'Понятно'
+    },
+    tags () {
+      return this.$store.state.tasks.tags
     },
     canEditChecklist () {
       return ((this.task?.type === 1 || this.task?.type === 2) && this.user.tarif !== 'free') || !this.$store.getters.isLicenseExpired
@@ -374,9 +376,6 @@ export default {
     // состояния для v-if
     shouldShowCustomer () {
       return this.task?.type !== 1
-    },
-    shouldShowAccessLabel () {
-      return this.task?.uid && this.task?.emails.includes(this.user?.current_user_email) && this.task?.uid_performer !== this.user?.current_user_uid
     },
     shouldShowPerformer () {
       return (this.task?.type !== 1) && (this.task?.uid_performer !== this.task?.uid_customer)

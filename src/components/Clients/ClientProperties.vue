@@ -137,9 +137,7 @@
           :current-user-uid="user.current_user_uid"
           :messages="card"
           :employees="employees"
-          @onQuote="() => {}"
-          @onDeleteMessage="() => {}"
-          @onDeleteFile="() => {}"
+          :in-doitnow="true"
         />
       </div>
     </div>

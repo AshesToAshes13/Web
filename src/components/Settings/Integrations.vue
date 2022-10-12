@@ -132,6 +132,10 @@ export default {
             {
               path: 'personalYandexMail',
               name: 'Яндекс.Почта'
+            },
+            {
+              path: 'personalTelegram',
+              name: 'Телеграм'
             }
           ],
           // TODO: сделать userType константами с понятным названием вроде OWNER, ADMIN

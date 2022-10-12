@@ -28,6 +28,7 @@
         src="@/assets/images/emptytask2.png"
         alt="Empty task image"
       >
+      <!-- Анбоардинг -->
       <div
         v-if="displayModal"
         class="flex flex-col w-[600px]"
@@ -42,6 +43,7 @@
           @okToModal="okToModal"
         />
       </div>
+      <!-- Пустой таск лист -->
       <div
         v-if="!displayModal"
         class="mb-[35px]"

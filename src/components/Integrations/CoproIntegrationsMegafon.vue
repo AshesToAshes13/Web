@@ -161,10 +161,31 @@
           </li>
           <li class="mb-3">
             Заполните поля в соответствии со скриншотом:
-            <ul class="list-inside list-disc">
-              <li>В поле "Имя вашей CRM" введите "LeaderTask CRM"</li>
-              <li>В поле "Адрес вашей CRM" введите "https://api.leadertask.ru/megafon"</li>
-              <li>В поле "Ключ для авторизации в вашей CRM" введите строку "{{ ownerKey }}"</li>
+            <ul class="list-inside list-disc gap-y-10px flex flex-col gap-y-[5px]">
+              <li>
+                <div class="inline-flex items-center gap-x-[5px]">
+                  В поле "Имя вашей CRM" введите:
+                  <ButtonCopy
+                    text="LeaderTask CRM"
+                  />
+                </div>
+              </li>
+              <li>
+                <div class="inline-flex items-center gap-x-[5px]">
+                  В поле "Адрес вашей CRM" введите:
+                  <ButtonCopy
+                    text="https://api.leadertask.ru/megafon"
+                  />
+                </div>
+              </li>
+              <li>
+                <div class="inline-flex items-center gap-x-[5px]">
+                  В поле "Ключ для авторизации в вашей CRM":
+                  <ButtonCopy
+                    :text="ownerKey"
+                  />
+                </div>
+              </li>
             </ul>
             <img
               class="block max-w-[800px]"
@@ -186,6 +207,7 @@ import IntegrationsModalBoxMegafon from '@/components/Integrations/IntegrationsM
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import NavBar from '../Navbar/NavBar.vue'
 import EmployeesPopper from '../Employees/EmployeesPopper.vue'
+import ButtonCopy from '@/components/ButtonCopy.vue'
 
 export default {
   components: {
@@ -193,7 +215,8 @@ export default {
     IntegrationsModalBoxMegafon,
     ModalBoxDelete,
     EmployeesPopper,
-    Popper
+    Popper,
+    ButtonCopy
   },
   data () {
     return {
