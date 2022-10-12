@@ -211,6 +211,9 @@ import * as PROJECT from '@/store/actions/projects'
 // import * as REGLAMENTS from '@/store/actions/reglaments'
 // import * as QUESTIONS from '@/store/actions/reglament_questions'
 // import * as ANSWER from '@/store/actions/reglament_answers'
+import * as BOARD from '@/store/actions/boards'
+import * as CARD from '@/store/actions/cards'
+import * as NAVIGATOR from '@/store/actions/navigator'
 
 export default {
   directives: {
@@ -681,6 +684,40 @@ export default {
       //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionSecondAnswer)
       //   })
       // })
+
+      // демо-доска
+      const boardData = {
+        uid: uuidv4(),
+        name: 'Как работают доски',
+        email_creator: this.form.email,
+        members: this.user.current_user_uid
+      }
+      this.$store.dispatch(BOARD.CREATE_BOARD_REQUEST, boardData).then((res) => {
+        const board = res.data
+        board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
+        board.color = '#A998B6'
+        //
+        this.$store.commit(BOARD.PUSH_BOARD, [board])
+        this.$store.commit(NAVIGATOR.NAVIGATOR_PUSH_BOARD, [board])
+
+        // колонки для демо-доски
+        // колонка Новое
+        this.$store
+          .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+            boardUid: boardData.uid,
+            newStageTitle: 'Новое'
+          }).then((resp) => {
+            // 1 карточка
+            this.$store
+              .dispatch(CARD.ADD_CARD, {
+                name: 'Прочитайте эту карточку и отправьте ее в Архив',
+                comment: 'В очередь попадают и карточки из досок. Если вы становитесь ответственным за какую-то карточку, то она обязательно попадет к вам в Очередь.\r\n\r\nКарточкой может быть заявкой, заказом от клиента или задачей в рамках системы Канбан',
+                uid_board: boardData.uid,
+                uid_stage: resp.UID,
+                user: this.form.email
+              })
+          })
+      })
     },
     register () {
       if (!this.form.password || !this.form.username) { return }
@@ -717,6 +754,7 @@ export default {
             })
           })
           this.$store.dispatch(USER_START_ONBOARDING)
+          // демо-данные для новых пользователей
           this.createDemoElementsAfterRegister()
         })
         .catch(() => {
