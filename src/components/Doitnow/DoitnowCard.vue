@@ -147,6 +147,7 @@
     />
     <template #buttons>
       <DoitnowRightButtonPostpone
+        :task-end-date="card.date_reminder"
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />

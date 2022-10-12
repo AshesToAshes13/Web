@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     onPostpone () {
-      const date = new Date(this.taskEndDate) ?? new Date()
+      const date = this.taskEndDate ? new Date(this.taskEndDate) : new Date()
       if (this.postponeValue.days > 0) {
         date.setHours(9, 0, 0, 0) // на 9 утра
         date.setDate(date.getDate() + this.postponeValue.days)
