@@ -138,5 +138,7 @@ export default {
   --popper-theme-border-radius: 8px;
   --popper-theme-padding: 10px 10px;
   --popper-theme-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1), 0px 3px 5px rgba(0, 0, 0, 0.12);
+  margin: 0 !important;
+  border: 0 !important;
 }
 </style>

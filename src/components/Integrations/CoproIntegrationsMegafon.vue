@@ -48,6 +48,81 @@
         </button>
       </div>
     </div>
+    <div
+      v-if="isOrganizationIntegrated"
+      class="mt-[30px] flex flex-col w-[450px]"
+    >
+      <span class="mb-1">Пользователи Мегафон</span>
+      <span class="mb-1 text-[11px]">Установите пользователям ЛидерТаск их логины из ЛК Мегафон</span>
+      <div
+        v-for="(megafonUser, index) in megafonUsers"
+        :key="index"
+        class="mb-2.5 flex justify-start h-[34px]"
+      >
+        <div class="mr-2 flex-1">
+          <EmployeesPopper
+            v-model="megafonUser.uidUser"
+            class="w-full"
+            :can-edit="true"
+            :org-employees="orgEmployees"
+          />
+        </div>
+
+        <div class="flex-1">
+          <Popper
+            class="light w-full overflow-hidden"
+            @open:popper="loadUsers"
+          >
+            <span class="block rounded text-[12px] bg-[#f4f5f7] px-[8px] py-[5px] truncate">{{ megafonUser.megafonUserLogin || 'Логин' }}</span>
+            <template
+              #content="{ close }"
+            >
+              <svg
+                v-if="areAtsLoginsLoading"
+                class="inline mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-orange-400"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <template
+                v-for="atsLogin in atsLogins"
+                v-else
+                :key="atsLogin.id"
+              >
+                <span
+                  class="block mb-2 pointer py-2"
+                  @click="setUserLogin(index, atsLogin.login), close()"
+                >{{ atsLogin.login }}</span>
+              </template>
+            </template>
+          </Popper>
+        </div>
+      </div>
+      <button
+        class="mb-3 text-[13px] text-[#4c4c4d]"
+        type="button"
+        @click="onAddNewMegafonUser"
+      >
+        + Добавить
+      </button>
+      <button
+        class="mb-3 focus:ring min-w-[90px] focus:outline-none inline-flex cursor-pointer whitespace-nowrap justify-center items-center duration-150 px-[12px] py-[10px] rounded-md bg-[#ff9123] text-white text-[13px] leading-[15px] font-medium font-roboto disabled:opacity-70 disabled:cursor-default"
+
+        type="button"
+        @click="saveUsers"
+      >
+        Сохранить
+      </button>
+    </div>
     <article class="mt-[30px]">
       <p class="font-[500]">
         Инструкция по интеграции:
@@ -99,61 +174,35 @@
           </li>
         </ul>
       </p>
-      <p class="mt-[10px] font-[600] text-[18px]">
-        Шаг 2. Заполните интеграцию в ЛидерТаск
-      </p>
-      <p class="mt-[10px]">
-        <ul class="list-inside list-decimal">
-          <li>
-            Откройте страницу
-            <a
-              class="text-[#04b]"
-              href="https://passport.yandex.ru/profile/"
-              target="_blank"
-            >
-              Управление аккаунтом.
-            </a>
-          </li>
-          <li>
-            В разделе
-            <span class="font-[500]">Пароли и авторизация</span>
-            выберите
-            <span class="font-[500]">Включить пароли приложений.</span>
-            Подтвердите действие и нажмите
-            <span class="font-[500]">Создать новый пароль.</span>
-          </li>
-          <li>
-            Выберите тип приложения <span class="font-[500]">Почта.</span>
-          </li>
-          <li>
-            Придумайте название пароля, например укажите название приложения, для которого вы создаете пароль. С этим названием пароль будет отображаться в списке.
-          </li>
-          <li>
-            Нажмите кнопку Создать. Пароль приложения отобразится во всплывающем окне.
-          </li>
-        </ul>
-      </p>
     </article>
   </div>
 </template>
 <script>
+import Popper from 'vue3-popper'
+
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 import IntegrationsModalBoxMegafon from '@/components/Integrations/IntegrationsModalBoxMegafon.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import NavBar from '../Navbar/NavBar.vue'
+import EmployeesPopper from '../Employees/EmployeesPopper.vue'
 
 export default {
   components: {
     NavBar,
     IntegrationsModalBoxMegafon,
-    ModalBoxDelete
+    ModalBoxDelete,
+    EmployeesPopper,
+    Popper
   },
   data () {
     return {
       error: '',
       showIntegration: false,
-      removeIntegrationModal: false
+      removeIntegrationModal: false,
+      megafonUsers: this.$store.state.corpMegafonIntegration.megafonUsers,
+      atsLogins: [],
+      areAtsLoginsLoading: false
     }
   },
   computed: {
@@ -162,6 +211,9 @@ export default {
     },
     isOrganizationIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated
+    },
+    orgEmployees () {
+      return this.$store.state.navigator.navigator.emps.items
     },
     employees () {
       return this.$store.state.employees.employees
@@ -204,7 +256,50 @@ export default {
         .then(() => {
           this.showRemoveIntegration(false)
         })
+    },
+    onAddNewMegafonUser () {
+      this.megafonUsers.push({
+        uidUser: '',
+        megafonUserLogin: ''
+      })
+    },
+    async loadUsers () {
+      this.areAtsLoginsLoading = true
+      const response = await this.$store.dispatch(CORP_MEGAFON.GET_ATS_LOGINS, {
+        organizationEmail: this.user.owner_email,
+        atsKey: this.$store.state.corpMegafonIntegration.atsKey
+      })
+      this.atsLogins = response.data.items
+
+      this.areAtsLoginsLoading = false
+    },
+    setUserLogin (index, login) {
+      this.megafonUsers[index].megafonUserLogin = login
+    },
+    async saveUsers () {
+      this.megafonUsers = this.megafonUsers.filter(user => user.uidUser !== '' || user.megafonUserLogin !== '')
+      await this.$store.dispatch(CORP_MEGAFON.MEGAFON_UPDATE_INTEGRATION, {
+        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
+        atsLink: this.$store.state.corpMegafonIntegration.atsLink,
+        megafonUsers: this.megafonUsers,
+        organizationEmail: this.user.owner_email,
+        crmKey: this.ownerKey
+      })
     }
   }
 }
 </script>
+<style scoped>
+.light {
+  --popper-theme-background-color: #ffffff;
+  --popper-theme-background-color-hover: #ffffff;
+  --popper-theme-text-color: #444444;
+  --popper-theme-border-width: 0px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-radius: 8px;
+  --popper-theme-padding: 10px 10px;
+  --popper-theme-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1), 0px 3px 5px rgba(0, 0, 0, 0.12);
+  margin: 0 !important;
+  border: 0 !important;
+}
+</style>

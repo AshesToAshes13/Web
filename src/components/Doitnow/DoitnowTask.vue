@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-between"
+    class="flex justify-between max-w-[1045px]"
     :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
     :class="{
       'bg-gray-200 dark:bg-gray-800':
