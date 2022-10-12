@@ -105,7 +105,7 @@
     class="flex flex-col justify-center items-center"
   >
     <ReglamentsOboarding
-      @okToModal="okokToModal"
+      @okToModal="okToModal"
     />
   </div>
 </template>
