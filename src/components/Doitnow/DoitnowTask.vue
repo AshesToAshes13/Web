@@ -31,30 +31,24 @@
         :employees="employees"
       />
       <div
-        class="flex mr-[30px] justify-between items-center mb-[13px] p-2 rounded-[8px] pl-4"
+        class="flex mr-[30px] justify-between items-center mb-[13px] py-2 rounded-[8px]"
       >
         <!-- task info/status -->
-        <div class="flex items-center -ml-2">
-          <TaskStatus
-            :task="task"
-            @changeStatus="changeStatus"
-          />
-          <contenteditable
-            v-model="name"
-            v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
-            tag="div"
-            class="p-0.5 ring-0 outline-none max-w-7xl ml-[8px] flex overflow-x-hidden font-bold text-[21px] text-[#424242]"
-            style="word-break: break-word"
-            :contenteditable="task._isEditable"
-            placeholder="Введите название задачи"
-            :no-nl="false"
-            :no-html="false"
-            :class="{ 'uppercase': !task._isEditable && colors[task.uid_marker] && colors[task.uid_marker].uppercase, 'text-gray-500': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED, 'line-through': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED }"
-            @focusout="clearTaskFocus(task)"
-            @dblclick.stop="editTaskName(task)"
-            @keydown.enter="updateTask($event, task)"
-          />
-        </div>
+        <contenteditable
+          v-model="name"
+          v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
+          tag="div"
+          class="p-0.5 ring-0 outline-none max-w-7xl flex overflow-x-hidden font-bold text-[21px] text-[#424242]"
+          style="word-break: break-word"
+          :contenteditable="task._isEditable"
+          placeholder="Введите название задачи"
+          :no-nl="false"
+          :no-html="false"
+          :class="{ 'uppercase': !task._isEditable && colors[task.uid_marker] && colors[task.uid_marker].uppercase, 'text-gray-500': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED, 'line-through': task.status == TASK_STATUS.TASK_COMPLETED || task.status == TASK_STATUS.TASK_CANCELLED }"
+          @focusout="clearTaskFocus(task)"
+          @dblclick.stop="editTaskName(task)"
+          @keydown.enter="updateTask($event, task)"
+        />
       </div>
       <div class="gap-x-[5px] flex mb-[20px]">
         <DoitnowDaysInfo
@@ -180,7 +174,6 @@ import { TASK_STATUS } from '@/constants'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsCommentEditor.vue'
-import TaskStatus from '@/components/TasksList/TaskStatus.vue'
 
 // Doitnow components
 import Checklist from '@/components/Doitnow/Checklist.vue'
@@ -218,7 +211,6 @@ export default {
     DoitnowRightButton,
     DoitnowStatusModal,
     contenteditable,
-    TaskStatus,
     DoitnowChatMessages,
     TaskListTagLabel
   },
