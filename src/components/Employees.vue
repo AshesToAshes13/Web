@@ -358,7 +358,7 @@ export default {
     isCanChangeEmployees () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       return userType === 1 || userType === 2
     },
     isCanChangeDepartments () {
