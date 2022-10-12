@@ -80,30 +80,7 @@
       v-if="displayModal"
       class="flex flex-col justify-center items-center "
     >
-      <img
-        class="mx-auto mt-10"
-        width="320"
-        height="314"
-        src="@/assets/images/boards.svg"
-        alt="Empty task image"
-      >
-      <div class="w-[600px]">
-        <p class="font-bold p-3">
-          Визуализируйте цели, проекты и командную работу с помощью досок
-        </p>
-        <ul class="list-decimal pl-[30px]">
-          <li class="p-3 text-sm">
-            Мои доски - это ваши доски. Вы можете установить цвет для доски и добавить коллег с определенными правами, чтобы приступить к совместной работе
-          </li>
-          <li class="p-3 text-sm">
-            Общие доски - доски, к которым вам дали доступ
-          </li>
-          <li class="p-3 text-sm">
-            Участники доски видят все карточки в ней
-          </li>
-        </ul>
-      </div>
-      <OnBoardingButton
+      <BoardOnboarding
         @okToModal="okToModal"
       />
     </div>
@@ -124,8 +101,8 @@ import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 import BoardInputValue from './Board/BoardInputValue.vue'
 
 import NavBar from '@/components/Navbar/NavBar.vue'
-import OnBoardingButton from './onBoarding/onBoardingButton.vue'
 import BoardChildrenGroup from './Board/BoardChildrenGroup.vue'
+import BoardOnboarding from './Board/BoardOnboarding.vue'
 
 export default {
   components: {
@@ -134,8 +111,8 @@ export default {
     ListBlocAdd,
     BoardInputValue,
     NavBar,
-    OnBoardingButton,
-    BoardChildrenGroup
+    BoardChildrenGroup,
+    BoardOnboarding
   },
   data () {
     return {
