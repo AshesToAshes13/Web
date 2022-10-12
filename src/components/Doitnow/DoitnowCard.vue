@@ -150,11 +150,6 @@
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />
-      <DoitnowRightButton
-        title="Пропустить"
-        icon="next"
-        @click="onPostpone()"
-      />
       <DoitnowRightButtonContact
         title="Установить контакт"
         @changeContact="onChangeClient"
