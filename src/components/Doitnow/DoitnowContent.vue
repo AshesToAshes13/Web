@@ -1,5 +1,5 @@
 <template>
-  <div class="flex max-w-[1045px] justify-between gap-[12px] mx-auto">
+  <div class="flex max-w-[1045px] justify-between gap-[12px]">
     <div class="grow py-[30px] px-[25px] bg-white rounded-[12px] overflow-x-hidden">
       <slot />
     </div>

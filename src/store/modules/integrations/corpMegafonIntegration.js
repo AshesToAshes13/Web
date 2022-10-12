@@ -17,12 +17,13 @@ const actions = {
   [CORP_MEGAFON.MEGAFON_CREATE_INTEGRATION]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations'
+      const atsLink = data.atsLink.replace('https://', '').replaceAll('/', '')
       const body = {
         crmKey: data.crmKey,
         atsKey: data.atsKey,
-        atsLink: data.atsLink,
-        megafonUsers: JSON.stringify(data.megafonUsers),
-        organizationEmail: data.organizationEmail
+        atsLink: atsLink,
+        organizationEmail: data.organizationEmail,
+        megafonUsers: JSON.stringify([])
       }
       axios({ url: url, method: 'POST', data: body })
         .then((resp) => {
@@ -30,10 +31,10 @@ const actions = {
             return
           }
           commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
-            atsKey: resp.data.integration.atsKey,
-            crmKey: resp.data.integration.crmKey,
-            atsLink: resp.data.integration.atsLink,
-            megafonUsers: resp.data.users
+            atsKey: data.atsKey,
+            crmKey: data.crmKey,
+            atsLink: atsLink,
+            megafonUsers: JSON.stringify([])
           })
           resolve(resp)
         })
@@ -46,22 +47,24 @@ const actions = {
   [CORP_MEGAFON.MEGAFON_UPDATE_INTEGRATION]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + data.organizationEmail
+      const atsLink = data.atsLink.replace('https://', '').replaceAll('/', '')
       const body = {
         crmKey: data.crmKey,
         atsKey: data.atsKey,
-        atsLink: data.atsLink,
+        atsLink: atsLink,
+        organizationEmail: data.organizationEmail,
         megafonUsers: JSON.stringify(data.megafonUsers)
       }
-      axios({ url: url, method: 'POST', data: body })
+      axios({ url: url, method: 'PATCH', data: body })
         .then((resp) => {
           if (!resp.data.integration) {
             return
           }
           commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
-            atsKey: resp.data.integration.atsKey,
-            crmKey: resp.data.integration.crmKey,
-            atsLink: resp.data.integration.atsLink,
-            megafonUsers: resp.data.users
+            atsKey: data.atsKey,
+            crmKey: data.crmKey,
+            atsLink: atsLink,
+            megafonUsers: data.megafonUsers
           })
           resolve(resp)
         })
@@ -124,6 +127,22 @@ const actions = {
           resolve(resp)
         })
         .catch((err) => {
+          reject(err)
+        })
+    })
+  },
+  [CORP_MEGAFON.GET_ATS_LOGINS]: ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + data.organizationEmail + '/users'
+      const params = {
+        megafonATSKey: data.atsKey
+      }
+      axios({ url: url, method: 'GET', params: params })
+        .then((resp) => {
+          resolve(resp)
+        })
+        .catch((err) => {
+          console.log('ошибка при запросе организации')
           reject(err)
         })
     })

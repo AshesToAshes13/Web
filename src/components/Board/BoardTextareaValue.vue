@@ -4,7 +4,7 @@
       ref="inputValue"
       v-model="currentValue"
       type="text"
-      class="rounded-[6px] border border-[#4c4c4d] focus:ring-0 focus:border-[#ff9123] min-h-[41px] w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto resize-none"
+      class="scroll-style rounded-[6px] border border-[#4c4c4d] focus:ring-0 focus:border-[#ff9123] min-h-[41px] w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto resize-none"
       :maxlength="maxlength"
       @keyup.enter="onSave"
       @keyup.esc="onCancel"
@@ -68,4 +68,20 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.scroll-style::-webkit-scrollbar {
+  width: 15px;
+  height: 14px;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  border: 4px solid transparent;
+  border-radius: 9999px;
+  background-clip: padding-box;
+  background-color: rgb(215 215 215);
+}
+
+.scroll-style::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(190 190 190);
+}
+</style>
