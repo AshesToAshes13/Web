@@ -51,6 +51,14 @@ export default [
             meta: {
               title: 'перс. Яндекс интеграция'
             }
+          },
+          {
+            path: 'personalTelegram',
+            name: 'personalTelegram',
+            component: () => import('@/components/Integrations/PersonalIntegrationsTelegram.vue'),
+            meta: {
+              title: 'перс. Телеграм интеграция'
+            }
           }
         ]
       },
