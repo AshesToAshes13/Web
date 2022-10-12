@@ -1,22 +1,13 @@
 <template>
   <div
-    class="flex mb-2"
+    class="flex items-center"
   >
-    <span
-      class="mr-[16px] w-[90px] shrink-0 text-[#7E7E80] text-[13px]"
+    <img
+      :alt="employees[task.uid_performer]?.name"
+      :src="employees[task.uid_performer] ? employees[task.uid_performer]?.fotolink : ''"
+      class="rounded-lg ml-1 h-[30px] w-[30px] border-2 border-[#1ca345]"
     >
-      Исполнитель:
-    </span>
-    <div
-      class="flex"
-    >
-      <img
-        :alt="employees[task.uid_performer]?.name"
-        :src="employees[task.uid_performer] ? employees[task.uid_performer]?.fotolink : ''"
-        class="rounded-lg ml-1 h-[20px] w-[20px]"
-      >
-      <span class="ml-1 text-[#4C4C4D] text-[13px] font-medium">{{ employees[task.uid_performer]?.name }}</span>
-    </div>
+    <span class="ml-[8px] text-[#4C4C4D] text-[14px] font-[400]">{{ employees[task.uid_performer]?.name }}</span>
   </div>
 </template>
 <script>
