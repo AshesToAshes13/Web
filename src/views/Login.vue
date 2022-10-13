@@ -688,7 +688,7 @@ export default {
         email: this.form.email,
         phone: this.form.phone,
         comment: 'Комментарий контакта',
-        date_create: new Date()
+        date_create: new Date().toLocaleString()
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
 
