@@ -50,13 +50,11 @@
           @keydown.enter="updateTask($event, task)"
         />
       </div>
-      <div class="gap-x-[5px] flex mb-[20px]">
-        <DoitnowDaysInfo
-          v-if="dateClearWords"
-          :date-clear-words="dateClearWords"
-        />
-        <DoitnowCreateDateInfo
-          :create-date="createTaskDate"
+      <div class="gap-[5px] flex flex-wrap mb-[20px]">
+        <DoitnowBadge
+          v-if="createTaskDate"
+          icon="calendar"
+          :text="createTaskDate"
         />
         <template
           v-for="(tag, index) in task.tags"
@@ -70,14 +68,19 @@
             :color-bg-style="{ backgroundColor: tags[tag] ? tags[tag].back_color : '' }"
           />
         </template>
-        <DoitnowOverdueInfo
+        <DoitnowBadge
           v-if="isTaskHaveOverdueTime"
-          :is-task-have-overdue-time="isTaskHaveOverdueTime"
+          class="!text-white"
+          title="Просрочено:"
+          color="#ef7665"
+          bold-text
+          :text="isTaskHaveOverdueTime"
         />
-        <DoitnowProjectInfo
+        <DoitnowBadge
           v-if="shouldShowProject"
-          :projects="projects"
-          :task="task"
+          :text="projectName"
+          color="#facc15"
+          icon="project"
         />
       </div>
       <TaskPropsCommentEditor
@@ -184,10 +187,6 @@ import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonP
 import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
 import DoitnowPerformerInfo from '@/components/Doitnow/DoitnowPerformerInfo.vue'
-import DoitnowDaysInfo from '@/components/Doitnow/DoitnowDaysInfo.vue'
-import DoitnowOverdueInfo from '@/components/Doitnow/DoitnowOverdueInfo.vue'
-import DoitnowProjectInfo from '@/components/Doitnow/DoitnowProjectInfo.vue'
-import DoitnowCreateDateInfo from '@/components/Doitnow/DoitnowCreateDateInfo'
 import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel'
 
 import * as INSPECTOR from '@/store/actions/inspector.js'
@@ -195,17 +194,15 @@ import * as TASK from '@/store/actions/tasks'
 import * as MSG from '@/store/actions/taskmessages'
 import * as FILES from '@/store/actions/taskfiles.js'
 import tagIcon from '@/icons/tag'
+import DoitnowBadge from '@/components/Doitnow/DoitnowBadge'
 
 export default {
   components: {
+    DoitnowBadge,
     DoitnowRightButtonPerform,
-    DoitnowCreateDateInfo,
     TaskPropsCommentEditor,
     DoitnowCustomerInfo,
     DoitnowPerformerInfo,
-    DoitnowDaysInfo,
-    DoitnowOverdueInfo,
-    DoitnowProjectInfo,
     Checklist,
     DoitnowRightButtonPostpone,
     DoitnowRightButton,
@@ -406,6 +403,11 @@ export default {
     },
     shouldShowPerformButton () {
       return this.task.status !== TASK_STATUS.NOTE && this.task.type !== TASK_STATUS.TASK_IN_WORK && (this.task.uid_customer === this.user?.current_user_uid || this.task.uid_customer === this.task.uid_performer)
+    },
+    projectName () {
+      return this.projects[this.task.uid_project]?.name.length > 99
+        ? this.projects[this.task.uid_project]?.name.split('').slice(0, 100).join('') + '...'
+        : this.projects[this.task.uid_project]?.name
     }
   },
   watch: {
