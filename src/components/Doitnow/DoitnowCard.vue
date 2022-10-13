@@ -120,7 +120,7 @@
         @onPasteFile="onPasteEvent"
       />
     </div>
-    <div class="border-t mt-4">
+    <div class="mt-4">
       <div class="max-w-[540px] mx-auto pt-[20px]">
         <DoitnowCardChat
           :card-messages="cardMessages"
