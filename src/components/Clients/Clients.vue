@@ -1,87 +1,97 @@
 <template>
-  <ModalBoxAddClient
-    v-if="showAddClient"
-    title="Добавить контакт"
-    @cancel="showAddClient = false"
-    @save="onAddNewClient"
-  />
-  <div class="flex flex-col h-full">
-    <NavBarClients
-      title="Контакты"
-      class="pt-[8px]"
-      @search="requestClients"
-      @clickAddClient="clickAddClient"
+  <div
+    v-if="displayModal"
+    class="mt-[100px] flex flex-col items-center justify-center"
+  >
+    <ClientsOnboarding
+      @okToModal="okToModal"
     />
-    <div class="h-[calc(100%-120px)] bg-white rounded-xl">
-      <div
-        class="my-[40px] h-[calc(100%-60px)] overflow-y-auto grow scroll-style"
-      >
-        <div
-          v-if="clientUndefined"
-        >
-          <h1 class="text-3xl text-gray-600 font-bold m-5">
-            Клиент не найден
-          </h1>
-        </div>
-        <div
-          v-else
-        >
-          <table class="pb-[40px] px-[20px] relative">
-            <tr class="table-header">
-              <th>Имя</th>
-              <th>Номер телефона</th>
-              <th>Email</th>
-              <th>Комментарий</th>
-            </tr>
-            <ClientsSkeleton v-if="status === 'loading' && !wasLoaded" />
-            <template v-if="status === 'success' || wasLoaded">
-              <tr
-                v-for="client in clients"
-                :key="client?.uid"
-                :class="client?.uid === selectedClient?.uid ? 'bg-[#F4F5F7]' : ''"
-                @click.stop="showClientProperties(client)"
-              >
-                <td>
-                  <div class="content max-w-[150px] xl:max-w-[250px]">
-                    <span class="truncate">
-                      {{ client.name }}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div class="content max-w-[150px] xl:max-w-[250px]">
-                    <span class="truncate">
-                      {{ client.phone }}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div class="content max-w-[150px] xl:max-w-[250px]">
-                    <span class="truncate">
-                      {{ client.email }}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div class="content max-w-[150px] xl:max-w-[250px]">
-                    <span class="truncate">
-                      {{ client.comment }}
-                    </span>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </table>
-        </div>
-      </div>
-      <Pagination
-        v-model="currentPage"
-        class="my-3 flex justify-center shrink-0"
-        :disabled="status === 'loading'"
-        :total="paging.pages"
-        :max-visible-buttons="6"
-        @update:modelValue="changePage"
+  </div>
+  <div v-if="!displayModal">
+    <ModalBoxAddClient
+      v-if="showAddClient"
+      title="Добавить контакт"
+      @cancel="showAddClient = false"
+      @save="onAddNewClient"
+    />
+    <div class="flex flex-col h-full">
+      <NavBarClients
+        title="Контакты"
+        class="pt-[8px]"
+        @search="requestClients"
+        @clickAddClient="clickAddClient"
       />
+      <div class="h-[calc(100%-120px)] bg-white rounded-xl">
+        <div
+          class="my-[40px] h-[calc(100%-60px)] overflow-y-auto grow scroll-style"
+        >
+          <div
+            v-if="clientUndefined"
+          >
+            <h1 class="text-3xl text-gray-600 font-bold m-5">
+              Клиент не найден
+            </h1>
+          </div>
+          <div
+            v-else
+          >
+            <table class="pb-[40px] px-[20px] relative">
+              <tr class="table-header">
+                <th>Имя</th>
+                <th>Номер телефона</th>
+                <th>Email</th>
+                <th>Комментарий</th>
+              </tr>
+              <ClientsSkeleton v-if="status === 'loading' && !wasLoaded" />
+              <template v-if="status === 'success' || wasLoaded">
+                <tr
+                  v-for="client in clients"
+                  :key="client?.uid"
+                  :class="client?.uid === selectedClient?.uid ? 'bg-[#F4F5F7]' : ''"
+                  @click.stop="showClientProperties(client)"
+                >
+                  <td>
+                    <div class="content max-w-[150px] xl:max-w-[250px]">
+                      <span class="truncate">
+                        {{ client.name }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="content max-w-[150px] xl:max-w-[250px]">
+                      <span class="truncate">
+                        {{ client.phone }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="content max-w-[150px] xl:max-w-[250px]">
+                      <span class="truncate">
+                        {{ client.email }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="content max-w-[150px] xl:max-w-[250px]">
+                      <span class="truncate">
+                        {{ client.comment }}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </table>
+          </div>
+        </div>
+        <Pagination
+          v-model="currentPage"
+          class="my-3 flex justify-center shrink-0"
+          :disabled="status === 'loading'"
+          :total="paging.pages"
+          :max-visible-buttons="6"
+          @update:modelValue="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -90,15 +100,18 @@ import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENTS_CHAT from '@/store/actions/clientfilesandmessages.js'
 import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages.js'
 import { REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
+import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 
 import NavBarClients from '@/components/Clients/NavBarClients.vue'
 import ModalBoxAddClient from './ModalBoxAddClient.vue'
 import ClientsSkeleton from '@/components/Clients/ClientsSkeleton.vue'
+import ClientsOnboarding from '@/components/Clients/ClientsOnboarding.vue'
 import Pagination from '../Pagination.vue'
 
 export default {
   components: {
     NavBarClients,
+    ClientsOnboarding,
     ModalBoxAddClient,
     ClientsSkeleton,
     Pagination
@@ -120,6 +133,9 @@ export default {
     },
     paging () {
       return this.$store.state.clients.paging
+    },
+    displayModal () {
+      return !this.$store.state.onboarding.visitedModals?.includes('clients') && this.$store.state.onboarding.showModals
     },
     status () {
       return this.$store.state.clients.status
@@ -242,6 +258,9 @@ export default {
     },
     changePage () {
       this.$router.push({ path: '/clients', query: { page: this.currentPage } })
+    },
+    okToModal () {
+      this.$store.commit(USER_VIEWED_MODAL, 'clients')
     }
   }
 }
