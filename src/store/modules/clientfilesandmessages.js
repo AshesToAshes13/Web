@@ -2,6 +2,7 @@ import { uuidv4 } from '@/helpers/functions'
 
 import * as CLIENT_FILES_AND_MESSAGES from '../actions/clientfilesandmessages'
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
+import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt.js'
 import * as PERSONAL_YANDEX from '@/store/actions/integrations/personalYandexInt.js'
 
 import axios from 'axios'
@@ -155,7 +156,26 @@ const actions = {
 
     const promises = [messages, files]
 
-    await Promise.all(promises)
+    if (data.megafonIntegration) {
+      let preparedClientPhone = data.clientPhone
+      if (preparedClientPhone[0] === '8') {
+        preparedClientPhone[0] = '7'
+      }
+      preparedClientPhone = data.clientPhone.replaceAll(/(\s|\(|\)|\+|-)/g, '')
+      const megafonCallHistory = dispatch(CORP_MEGAFON.GET_CALL_HISTORY, {
+        phone: preparedClientPhone,
+        crmKey: data.crmKey
+      })
+        .then(res => ({ res: res, name: 'megafonHistory' }))
+
+      promises.push(megafonCallHistory)
+    }
+
+    const response = await Promise.all(promises)
+
+    if (data.megafonIntegration) {
+      commit(CLIENT_FILES_AND_MESSAGES.PUSH_CALL_HISTORY, response.find((promise) => promise.name === 'megafonHistory').res.data)
+    }
 
     if (data.corpYandexInt) {
       await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
@@ -191,6 +211,20 @@ const mutations = {
         state.messages[i].deleted = 1
         return
       }
+    }
+  },
+  [CLIENT_FILES_AND_MESSAGES.PUSH_CALL_HISTORY]: (state, data) => {
+    for (let i = 0; i < data.length; i++) {
+      state.messages.push({
+        type: 'call',
+        direction: data[i].type,
+        status: data[i].status,
+        date_create: data[i].start,
+        duration: data[i].duration,
+        user: data[i].user,
+        link: data[i].link,
+        uid_message: data[i].id
+      })
     }
   },
   [CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL]: (state, data) => {

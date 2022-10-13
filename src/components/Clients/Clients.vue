@@ -138,6 +138,9 @@ export default {
     },
     isPersonalYandexIntegrated () {
       return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    isCorpMegafonIntegrated () {
+      return this.$store.state.corpMegafonIntegration.isIntegrated
     }
   },
   watch: {
@@ -204,8 +207,11 @@ export default {
       const data = {
         clientUid: client.uid,
         clientEmail: client.email,
+        clientPhone: client.phone,
+        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
         corpYandexInt: this.isCorpYandexIntegrated,
-        personalYandexInt: this.isPersonalYandexIntegrated
+        personalYandexInt: this.isPersonalYandexIntegrated,
+        megafonIntegration: this.isCorpMegafonIntegrated
       }
       this.$store.dispatch(CLIENTS_CHAT.FETCH_FILES_AND_MESSAGES, data)
       if (!this.isPropertiesMobileExpanded) {
