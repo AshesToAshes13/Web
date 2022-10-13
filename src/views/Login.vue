@@ -296,11 +296,10 @@ export default {
         .then(() => {
           this.$router.push('/doitnow')
           const slideNames = [
-            'addAvatar',
+            'doitnowstart',
             'addEmployees',
-            'addReglaments',
-            'delegateTasks',
-            'welcome'
+            'addAvatar',
+            'delegateTasks'
           ]
           slideNames.forEach(slideName => {
             this.$store.commit(SLIDES.CHANGE_VISIBLE, {
@@ -832,11 +831,10 @@ export default {
           window.ym(89796698, 'reachGoal', 'signup-new-web')
           localStorage.removeItem('slides')
           const slideNames = [
-            'addAvatar',
+            'doitnowstart',
             'addEmployees',
-            'addReglaments',
-            'delegateTasks',
-            'welcome'
+            'addAvatar',
+            'delegateTasks'
           ]
           slideNames.forEach(slideName => {
             this.$store.commit(SLIDES.CHANGE_VISIBLE, {

@@ -337,11 +337,7 @@ export default {
     },
     startSlides () {
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'welcome',
-        visible: true
-      })
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'addAvatar',
+        name: 'doitnowstart',
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
@@ -349,11 +345,11 @@ export default {
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'addReglaments',
+        name: 'delegateTasks',
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'delegateTasks',
+        name: 'addAvatar',
         visible: true
       })
     },

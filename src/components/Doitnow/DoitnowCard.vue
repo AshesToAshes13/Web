@@ -1,5 +1,7 @@
 <template>
-  <DoitnowContent :border-color="cardColor">
+  <DoitnowContent
+    :border-color="cardColor"
+  >
     <div class="flex flex-col gap-[20px] overflow-x-hidden">
       <contenteditable
         v-model="title"
