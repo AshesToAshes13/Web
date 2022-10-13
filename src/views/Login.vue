@@ -687,7 +687,7 @@ export default {
         name: this.form.username,
         email: this.form.email,
         phone: this.form.phone,
-        comment: 'Комментарий клиента',
+        comment: 'Комментарий контакта',
         date_create: new Date()
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
