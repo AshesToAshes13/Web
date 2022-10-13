@@ -34,7 +34,7 @@
         />
       </div>
     </div>
-    <div v-if="!displayModal">
+    <div>
       <BoardModalBoxBoardsLimit
         v-if="showBoardsLimit"
         @cancel="showBoardsLimit = false"
@@ -76,14 +76,6 @@
         />
       </div>
     </div>
-    <div
-      v-if="displayModal"
-      class="flex flex-col justify-center items-center mt-[100px]"
-    >
-      <BoardOnboarding
-        @okToModal="okToModal"
-      />
-    </div>
   </div>
 </template>
 
@@ -97,12 +89,10 @@ import * as NAVIGATOR from '@/store/actions/navigator'
 
 import gridView from '@/icons/grid-view.js'
 import listView from '@/icons/list-view.js'
-import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 import BoardInputValue from './Board/BoardInputValue.vue'
 
 import NavBar from '@/components/Navbar/NavBar.vue'
 import BoardChildrenGroup from './Board/BoardChildrenGroup.vue'
-import BoardOnboarding from './Board/BoardOnboarding.vue'
 
 export default {
   components: {
@@ -111,8 +101,7 @@ export default {
     ListBlocAdd,
     BoardInputValue,
     NavBar,
-    BoardChildrenGroup,
-    BoardOnboarding
+    BoardChildrenGroup
   },
   data () {
     return {
@@ -128,9 +117,6 @@ export default {
     },
     isPropertiesMobileExpanded () {
       return this.$store.state.isPropertiesMobileExpanded
-    },
-    displayModal () {
-      return !this.$store.state.onboarding?.visitedModals?.includes('boards') && this.$store.state?.onboarding?.showModals
     },
     storeNavigator () {
       return this.$store.state.navigator.navigator
@@ -223,9 +209,6 @@ export default {
           this.gotoChildren(board)
         })
       }
-    },
-    okToModal () {
-      this.$store.commit(USER_VIEWED_MODAL, 'boards')
     }
   }
 }
