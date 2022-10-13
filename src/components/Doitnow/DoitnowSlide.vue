@@ -1,5 +1,7 @@
 <template>
-  <DoitnowContent>
+  <DoitnowContent
+    class="max-w-[1129px]"
+  >
     <InspectorModalBox
       v-model="showInspector"
       button="warning"
@@ -15,44 +17,7 @@
       @close-window="changeAvatar = false"
       @nextTask="nextTask"
     />
-    <div class="flex justify-center w-full">
-      <!-- welcome -->
-      <div
-        v-if="name === 'welcome'"
-        class="flex flex-col items-center text-center w-8/12"
-      >
-        <SlideBodyTitle title="Добро пожаловать в ЛидерТаск Web!" />
-        <div class="flex justify-center">
-          <article class="font-[400] text-[18px] text-left leading-[29px] w-full text-[#4C4C4D] mb-[35px] pl-0">
-            <p class="mb-3">
-              ЛидерТаск – это система для совместной работы в команде, которая:
-            </p>
-            <ul class="list-decimal pl-10">
-              <li>запишет и сохранит все задачи, проекты, дела и встречи;</li>
-              <li>проследит за выполнением ваших поручений сотрудникам;</li>
-              <li>будет вести статистику каждого участника команды;</li>
-              <li>автоматизирует внедрение новых сотрудников;</li>
-              <li>и многое другое.</li>
-            </ul>
-          </article>
-        </div>
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/97CjkmN_YjE"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="border rounded-xl"
-        />
-        <SlideBodyButton
-          class="mt-[35px]"
-          text="Понятно"
-          @click="clickSuccess"
-        />
-      </div>
-
+    <div class="flex justify-center h-[87vh] pt-[102px]">
       <!-- addAvatar -->
       <div
         v-if="name === 'addAvatar'"
@@ -93,61 +58,32 @@
         v-if="name === 'addEmployees'"
         class="flex flex-col items-center text-center"
       >
-        <SlideBodyTitle title="Добавьте сотрудников" />
-        <div class="max-w-[550px] mb-[28px]">
-          <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-            <p class="mb-[28px] font-bold text-[#424242]">
-              Для успешного использования Лидертаск Вам необходимо добавить сотрудников.
-            </p>
-            <p class="mb-[28px] text-[#4C4C4D]">
-              После добавления сотрудников Вы сможете поручать им задачи, а Лидертаск сможет самостоятельно им напоминать звонками, смс и сообщениями в телеграмм о том, чтобы Ваши задачи были сделаны в срок.
-            </p>
-            <p class="text-[16px] font-bold text-[#2E2E2E]">
-              Посмотрите, как Лидертаск помогает завершать задачи в срок:
-            </p>
-          </article>
-        </div>
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/Jx-TBirC_Cc"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="border rounded-xl"
-        />
-        <SlideBodyButton
-          class="mt-[35px]"
-          text="Добавить сотрудников"
-          @click="clickAddEmployees"
-        />
-      </div>
-
-      <!-- addReglaments -->
-      <div
-        v-if="name === 'addReglaments'"
-        class="w-8/12 text-center"
-      >
-        <div class="flex flex-col items-center">
-          <SlideBodyTitle title="Добавьте ваши правила и регламенты" />
-          <div>
-            <article class="font-[400] text-[18px] text-left leading-[29px] w-full text-[#4C4C4D] mb-[35px] pl-0">
-              <p class="mt-1 mb-3">
-                Лидертаск может обучать и аттестовывать ваших сотрудников. Для этого необходимо один раз написать инструкции и Лидертаск будет проводить аттестацию ваших сотрудников самостоятельно.
+        <SlideBodyTitle title="Добавьте сотрудника!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                И вы сможете поручать задачи, делегировать работу с клиентами и многое другое
               </p>
-              <ol class="list-decimal mt-1 mb-1 ml-5">
-                <li>Создаем регламенты;</li>
-                <li>создаем отделы, к которым привязаны эти регламенты;</li>
-                <li>добавляем сотрудников в нужные отделы - все теперь Лидертаск сам проследит, чтобы все изучили правила и сдали тест на их знание. Все новые сотрудники будут проходить аттестацию по тем правилам, которые определены в его отделе.</li>
-              </ol>
             </article>
           </div>
+
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border rounded-xl"
+          />
+
+          <SlideBodyButton
+            text="Добавить сотрудников"
+            @click="clickAddEmployees"
+          />
         </div>
-        <SlideBodyButton
-          text="Создать регламент"
-          @click="clickAddReglament"
-        />
       </div>
 
       <!-- delegateTasks -->
@@ -268,10 +204,6 @@ export default {
     },
     nextTask () {
       this.$emit('next')
-    },
-    clickSuccess () {
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'welcome', visible: false })
-      this.nextTask()
     },
     clickAddEmployees () {
       this.nextTask()

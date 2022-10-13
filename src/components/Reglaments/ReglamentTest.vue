@@ -86,7 +86,6 @@ import ReglamentTestQuestion from '@/components/Reglaments/ReglamentTestQuestion
 import ReglamentWrong from '@/components/Reglaments/ReglamentWrong'
 import ReglamentCompleteMessage from '@/components/Reglaments/ReglamentCompleteMessage'
 import * as REGLAMENTS from '@/store/actions/reglaments'
-import * as SLIDES from '@/store/actions/slides'
 export default {
   components: { ReglamentCompleteMessage, ReglamentWrong, ReglamentTestQuestion },
   props: {
@@ -136,7 +135,6 @@ export default {
         this.isPassed = resp.data.is_passed
         this.disableButton = false
         this.completeText = 'Завершить'
-        this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'addReglaments', visible: false })
       })
     },
     confirm (val) {
