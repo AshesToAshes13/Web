@@ -77,7 +77,7 @@ const mutations = {
           data[value.name].reminder = value.reminder || dateStr
         } catch (e) {
           data = {
-            addAvatar: {
+            doitnowstart: {
               visible: true,
               reminder: dateStr
             },
@@ -86,6 +86,10 @@ const mutations = {
               reminder: dateStr
             },
             delegateTasks: {
+              visible: true,
+              reminder: dateStr
+            },
+            addAvatar: {
               visible: true,
               reminder: dateStr
             }

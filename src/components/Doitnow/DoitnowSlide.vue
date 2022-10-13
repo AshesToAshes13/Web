@@ -21,35 +21,45 @@
       <!-- addAvatar -->
       <div
         v-if="name === 'addAvatar'"
-        class="text-center w-8/12"
+        class="flex flex-col items-center text-center"
       >
-        <div class="flex flex-col items-center">
-          <SlideBodyTitle title="Установите фото профиля (аватар) в ЛидерТаск" />
-          <div>
-            <article class="font-[400] text-[18px] leading-[29px] text-left w-full text-[#4C4C4D] mb-[35px] pl-0">
-              <p>
-                1. Аватар поможет вашим коллегам быстрее найти Вас в списках <br>
-                (особенно, когда в вашей команде есть сотрудники с одинаковыми именами);
+        <SlideBodyTitle title="Добавьте фото профиля!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                Аватар поможет вашим коллегам быстрее найти Вас в списках.
               </p>
-              <p>2. это просто, эстетично и гораздо лучше стандартной серой картинки.</p>
             </article>
           </div>
-        </div>
-        <div class="mb-3">
-          <input
-            id="iconfile"
-            type="file"
-            class="hidden"
-            accept="image/png, image/jpeg"
-            @change="changeUserPhoto"
-          >
-          <label
-            for="iconfile"
-            class="w-[238px] h-[40px] justify-center cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-[68px] py-3 rounded-md hover:bg-slate-200 hover:text-[#422b14] font-medium"
-          >
-            Загрузить
-          </label>
-          <br>
+
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border rounded-xl"
+          />
+
+          <div class="mb-3">
+            <input
+              id="iconfile"
+              type="file"
+              class="hidden"
+              accept="image/png, image/jpeg"
+              @change="changeUserPhoto"
+            >
+            <label
+              for="iconfile"
+              class="w-[238px] h-[40px] justify-center cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-[68px] py-3 rounded-md hover:bg-slate-200 hover:text-[#422b14] font-medium"
+            >
+              Загрузить
+            </label>
+            <br>
+          </div>
         </div>
       </div>
 
@@ -63,7 +73,7 @@
           <div class="max-w-[600px]">
             <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
               <p class=" text-[#4C4C4D]">
-                И вы сможете поручать задачи, делегировать работу с клиентами и многое другое
+                И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое.
               </p>
             </article>
           </div>
@@ -86,37 +96,71 @@
         </div>
       </div>
 
-      <!-- delegateTasks -->
+      <!-- doitnowstart -->
       <div
-        v-if="name === 'delegateTasks'"
-        class="w-8/12 text-center"
+        v-if="name === 'doitnowstart'"
+        class="flex flex-col items-center text-center"
       >
-        <div class="flex flex-col items-center">
-          <SlideBodyTitle title="Поручите задачи" />
-          <div>
-            <article class="font-[400] text-[18px] leading-[29px] text-left w-full text-[#4C4C4D] mb-[35px] pl-0">
-              Поручите задачи вашим сотрудникам. Это можно сделать так:
-              <ol class="list-decimal mt-1 mb-1 ml-5">
-                <li>написать задачу в верхнем поле</li>
-                <li>через мастер по кнопке "добавить задачу"</li>
-              </ol>
-              <p class="mt-1 mb-1">
-                ЛидерТаск сам будет следить за выполнением задачи вашим сотрудником и в случае простоя - звонить и писать сообщения сотруднику, если сотрудник не будет отвечать - Вы получите звонок и сообщение.
-              </p>
-              <p class="mt-1 mb-1">
-                Таким образом вы сможете принять решение о невыполненной работы ДО дедлайна когда будет уже поздно.
-              </p>
-              <p class="mt-1 mb-1">
-                Поручайте задачи в Лидертаск и экономьте свое время - получайте готовые задачи до срока!
+        <SlideBodyTitle title="Вы в Очереди!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь.
               </p>
             </article>
           </div>
+
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border rounded-xl"
+          />
+
+          <SlideBodyButton
+            text="Начать"
+            @click="clickAddEmployees"
+          />
         </div>
-        <SlideBodyButton
-          v-if="name === 'delegateTasks'"
-          text="Поручить задачу"
-          @click="showInspector = true"
-        />
+      </div>
+
+      <!-- delegateTasks -->
+      <div
+        v-if="name === 'delegateTasks'"
+        class="flex flex-col items-center text-center"
+      >
+        <SlideBodyTitle title="Делегируйте задачи!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок.
+              </p>
+            </article>
+          </div>
+
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border rounded-xl"
+          />
+
+          <SlideBodyButton
+            v-if="name === 'delegateTasks'"
+            text="Поручить задачу"
+            @click="showInspector = true"
+          />
+        </div>
       </div>
     </div>
     <template #buttons>
@@ -209,6 +253,10 @@ export default {
       this.nextTask()
       this.$router.push('/settings/employees')
       this.$store.commit(NAVIGATOR_SUCCESS)
+    },
+    clickDoitnowStartSuccess () {
+      this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'doitnowstart', visible: false })
+      this.nextTask()
     },
     clickAddReglament () {
       this.nextTask()
