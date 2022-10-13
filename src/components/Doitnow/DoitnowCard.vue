@@ -36,7 +36,7 @@
           :color="stageColor"
           :text="currentStageName"
         />
-        <DoitnowBadge>
+        <DoitnowBadge v-if="clientName">
           <svg
             width="13"
             height="14"
