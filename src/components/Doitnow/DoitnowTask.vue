@@ -51,8 +51,14 @@
         />
       </div>
       <div class="gap-[5px] flex flex-wrap mb-[20px]">
+        <TaskStatus
+          class="pt-[6px]"
+          :task="task"
+          @changeStatus="changeStatus"
+        />
         <DoitnowBadge
           v-if="createTaskDate"
+          class="ml-1"
           icon="calendar"
           :text="createTaskDate"
         />
@@ -195,9 +201,11 @@ import * as MSG from '@/store/actions/taskmessages'
 import * as FILES from '@/store/actions/taskfiles.js'
 import tagIcon from '@/icons/tag'
 import DoitnowBadge from '@/components/Doitnow/DoitnowBadge'
+import TaskStatus from '@/components/TasksList/TaskStatus'
 
 export default {
   components: {
+    TaskStatus,
     DoitnowBadge,
     DoitnowRightButtonPerform,
     TaskPropsCommentEditor,
