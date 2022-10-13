@@ -73,7 +73,7 @@ const TaskListChecker = {
         selectedDate <= currentDate
       ) {
         if (!isTaskCompleted && taskDateEnd < selectedDate) {
-          return true
+          return false
         }
       }
     } else if (
