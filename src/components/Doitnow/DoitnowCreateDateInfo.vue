@@ -94,7 +94,7 @@
       fill="currentColor"
       d="M10.6668 3.5556C10.6668 3.89925 10.9453 4.17783 11.289 4.17783C11.6326 4.17783 11.9112 3.89925 11.9112 3.55561V2.84449H10.6668V3.5556Z"
     /></svg>
-    <span class="text-[#4C4C4D] text-[12px] font-[500] font-medium">{{ createDate }}</span>
+    <span class="text-[#4C4C4D] text-[12px] font-[500]">{{ createDate }}</span>
   </div>
 </template>
 
