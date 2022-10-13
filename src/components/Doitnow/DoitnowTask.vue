@@ -170,7 +170,7 @@
 
 <script>
 import { uuidv4 } from '@/helpers/functions'
-import { TASK_STATUS } from '@/constants'
+import { TASK_STATUS, TASK_TYPE } from '@/constants'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsCommentEditor.vue'
@@ -375,10 +375,10 @@ export default {
     },
     // состояния для v-if
     shouldShowCustomer () {
-      return this.task?.type !== 1
+      return this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE
     },
     shouldShowPerformer () {
-      return (this.task?.type !== 1) && (this.task?.uid_performer !== this.task?.uid_customer)
+      return (this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE) && (this.task?.uid_performer !== this.task?.uid_customer)
     },
     shouldShowProject () {
       return this.task?.uid && this.projects[this.task?.uid_project]
