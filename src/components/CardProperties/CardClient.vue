@@ -85,7 +85,7 @@
         />
       </div>
       <div
-        class="h-[360px] w-[320px] overflow-y-scroll scroll-style relative"
+        class="h-[360px] w-[320px] overflow-y-scroll overflow-x-hidden scroll-style relative"
       >
         <svg
           v-if="clientsStatus === 'loading'"
@@ -215,7 +215,7 @@
                 />
               </svg>
 
-              <div class="my-[4px]">
+              <div class="my-[4px] max-w-[265px]">
                 <div class="text-[#4C4C4D] text-[13px] leading-[15px] truncate">
                   {{ client.name }}
                 </div>
