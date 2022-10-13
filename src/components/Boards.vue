@@ -78,7 +78,7 @@
     </div>
     <div
       v-if="displayModal"
-      class="flex flex-col justify-center items-center "
+      class="flex flex-col justify-center items-center mt-[100px]"
     >
       <BoardOnboarding
         @okToModal="okToModal"
