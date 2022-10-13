@@ -214,6 +214,7 @@ import * as PROJECT from '@/store/actions/projects'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 import * as NAVIGATOR from '@/store/actions/navigator'
+// import * as CLIENTS from '@/store/actions/clients'
 
 export default {
   directives: {
@@ -320,18 +321,18 @@ export default {
         uid: uuidv4(),
         name: 'Внимание!'
       }
+      this.$store.dispatch(TASK.CREATE_TAG_REQUEST, firstTag)
       const secondTag = {
         back_color: '#FA3865',
         uid: uuidv4(),
         name: 'Срочно!'
       }
+      this.$store.dispatch(TASK.CREATE_TAG_REQUEST, secondTag)
       const thirdTag = {
         back_color: '#FFCC00',
         uid: uuidv4(),
         name: 'Важно!'
       }
-      this.$store.dispatch(TASK.CREATE_TAG_REQUEST, firstTag)
-      this.$store.dispatch(TASK.CREATE_TAG_REQUEST, secondTag)
       this.$store.dispatch(TASK.CREATE_TAG_REQUEST, thirdTag)
 
       // демо-цвета
@@ -361,7 +362,6 @@ export default {
         parentID: 'ed8039ae-f3de-4369-8f32-829d401056e9'
       }
       this.$store.dispatch(CREATE_COLOR_REQUEST, secondColor)
-
       const thirdColor = {
         back_color: '#93FFB9',
         fore_color: '',
@@ -398,125 +398,125 @@ export default {
       this.$store.dispatch(PROJECT.CREATE_PROJECT_REQUEST, project).then((res) => {
         // заполняем недостающие параметры
         project.global_property_uid = '431a3531-a77a-45c1-8035-f0bf75c32641'
+
+        // демо-задача в Сегодня и в проекте Как это работает
+        const tags = [firstTag.uid]
+        const todayTask = {
+          uid: uuidv4(),
+          uid_parent: '00000000-0000-0000-0000-000000000000',
+          uid_customer: this.form.email,
+          uid_project: project.uid,
+          uid_marker: firstColor.uid,
+          status: 0,
+          email_performer: '',
+          type: 1,
+          date_begin: this.getDateString(this.date) + 'T00:00:00',
+          date_end: this.getDateString(this.date) + 'T23:59:59',
+          tags: tags,
+          name: 'Прочитайте задачу и завершите ее',
+          comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
+          _addToList: true
+        }
+        this.$store.dispatch(TASK.CREATE_TASK, todayTask).then(() => {
+          // остальные демо-задачи в проекте Как это работает
+
+          // первая задачка с ребенком (папа)
+          const firstTask = {
+            uid: uuidv4(),
+            uid_parent: '00000000-0000-0000-0000-000000000000',
+            uid_customer: this.form.email,
+            uid_project: project.uid,
+            status: 0,
+            email_performer: '',
+            type: 1,
+            tags: [],
+            name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
+            comment: '',
+            _addToList: true
+          }
+          this.$store.dispatch(TASK.CREATE_TASK, firstTask).then(() => {
+            // ребенок первой задачки (сынок)
+            const firstTaskChildren = {
+              uid: uuidv4(),
+              uid_parent: firstTask.uid,
+              uid_customer: this.form.email,
+              uid_project: project.uid,
+              status: 0,
+              email_performer: '',
+              type: 1,
+              tags: [],
+              name: 'Подзадача имеет такие же свойства, как и задача',
+              comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
+              _addToList: true
+            }
+            this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren).then(() => {
+              // вторая задачка
+              const secondTask = {
+                uid: uuidv4(),
+                uid_parent: '00000000-0000-0000-0000-000000000000',
+                uid_customer: this.form.email,
+                uid_project: project.uid,
+                status: 0,
+                email_performer: '',
+                type: 1,
+                tags: [],
+                name: 'Добавляйте к задачам подзадачи (этапы выполнения основной) - наведите на задачу курсор и нажмите на появившийся тулбар',
+                comment: '',
+                _addToList: true
+              }
+              this.$store.dispatch(TASK.CREATE_TASK, secondTask).then(() => {
+                // третья задачка
+                const thirdTask = {
+                  uid: uuidv4(),
+                  uid_parent: '00000000-0000-0000-0000-000000000000',
+                  uid_customer: this.form.email,
+                  uid_project: project.uid,
+                  status: 0,
+                  email_performer: '',
+                  type: 1,
+                  tags: [],
+                  name: 'Зажмите задачу и переместите ее в любое место в списке',
+                  comment: '',
+                  _addToList: true
+                }
+                this.$store.dispatch(TASK.CREATE_TASK, thirdTask).then(() => {
+                  // четвертая задачка
+                  const fourthTask = {
+                    uid: uuidv4(),
+                    uid_parent: '00000000-0000-0000-0000-000000000000',
+                    uid_customer: this.form.email,
+                    uid_project: project.uid,
+                    status: 0,
+                    email_performer: '',
+                    type: 1,
+                    tags: [],
+                    name: 'Поручите эту задачу сотруднику',
+                    comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
+                    _addToList: true
+                  }
+                  this.$store.dispatch(TASK.CREATE_TASK, fourthTask).then(() => {
+                    // пятая задачка
+                    const fifthTask = {
+                      uid: uuidv4(),
+                      uid_parent: '00000000-0000-0000-0000-000000000000',
+                      uid_customer: this.form.email,
+                      uid_project: project.uid,
+                      status: 0,
+                      email_performer: '',
+                      type: 1,
+                      tags: [],
+                      name: 'Добавьте участников проекта',
+                      comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
+                      _addToList: true
+                    }
+                    this.$store.dispatch(TASK.CREATE_TASK, fifthTask)
+                  })
+                })
+              })
+            })
+          })
+        })
       })
-
-      // демо-задача в Сегодня и в проекте Как это работает
-      const tags = [firstTag.uid]
-      const todayTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        uid_marker: firstColor.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        date_begin: this.getDateString(this.date) + 'T00:00:00',
-        date_end: this.getDateString(this.date) + 'T23:59:59',
-        tags: tags,
-        name: 'Прочитайте задачу и завершите ее',
-        comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, todayTask)
-
-      // остальные демо-задачи в проекте Как это работает
-
-      // первая задачка с ребенком (папа)
-      const firstTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
-        comment: '',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, firstTask)
-
-      // ребенок первой задачки (сынок)
-      const firstTaskChildren = {
-        uid: uuidv4(),
-        uid_parent: firstTask.uid,
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Подзадача имеет такие же свойства, как и задача',
-        comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren)
-
-      // вторая задачка
-      const secondTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Добавляйте к задачам подзадачи (этапы выполнения основной) - наведите на задачу курсор и нажмите на появившийся тулбар',
-        comment: '',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, secondTask)
-
-      // третья задачка
-      const thirdTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Зажмите задачу и переместите ее в любое место в списке',
-        comment: '',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, thirdTask)
-
-      // четвертая задачка
-      const fourthTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Поручите эту задачу сотруднику',
-        comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, fourthTask)
-
-      // пятая задачка
-      const fifthTask = {
-        uid: uuidv4(),
-        uid_parent: '00000000-0000-0000-0000-000000000000',
-        uid_customer: this.form.email,
-        uid_project: project.uid,
-        status: 0,
-        email_performer: '',
-        type: 1,
-        tags: [],
-        name: 'Добавьте участников проекта',
-        comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
-        _addToList: true
-      }
-      this.$store.dispatch(TASK.CREATE_TASK, fifthTask)
 
       // закомментил на время, падает инспектор из-за вебсинка
       // // демо-регламент
@@ -685,6 +685,18 @@ export default {
       //   })
       // })
 
+      // // демо-клиент
+      // const clientToSend = {
+      //   uid: uuidv4(),
+      //   organization: this.form.email,
+      //   name: this.form.name,
+      //   email: this.form.email,
+      //   phone: this.form.phone,
+      //   comment: 'Комментарий клиента',
+      //   date_create: new Date()
+      // }
+      // this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
+
       // демо-доска
       const boardData = {
         uid: uuidv4(),
@@ -696,7 +708,6 @@ export default {
         const board = res.data
         board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
         board.color = '#A998B6'
-        //
         this.$store.commit(BOARD.PUSH_BOARD, [board])
         this.$store.commit(NAVIGATOR.NAVIGATOR_PUSH_BOARD, [board])
 
@@ -748,49 +759,55 @@ export default {
                             comment: 'И даже с установленным бюджетом\r↵\r↵А в колонке отображается сумма бюджетов всех карточек в ней',
                             uid_board: boardData.uid,
                             uid_stage: resp.UID
-                          })
-                      })
-                  })
-              })
-              // колонка В работе
-            this.$store
-              .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
-                boardUid: boardData.uid,
-                newStageTitle: 'В работе'
-              }).then((resp) => {
-                this.$store
-                  .dispatch(CARD.ADD_CARD, {
-                    name: 'Карточки можно перетаскивать между колонками мышкой',
-                    comment: '',
-                    uid_board: boardData.uid,
-                    uid_stage: resp.UID
-                  })
-                  // колонка Достигнуто
-                this.$store
-                  .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
-                    boardUid: boardData.uid,
-                    newStageTitle: 'Достигнуто'
-                  }).then((resp) => {
-                    this.$store
-                      .dispatch(CARD.ADD_CARD, {
-                        name: 'В доске может быть любое количество колонок',
-                        comment: 'Колонки можно точно также перетаскивать мышкой вместе со всеми карточками',
-                        uid_board: boardData.uid,
-                        uid_stage: resp.UID
-                      }).then(() => {
-                        this.$store
-                          .dispatch(CARD.ADD_CARD, {
-                            name: 'Автоматизируйте получение новых заявок и заказов',
-                            comment: 'Создайте форму сбора заявок и разместите ее у себя на сайте - смотрите Меню в верхнем правом углу',
-                            uid_board: boardData.uid,
-                            uid_stage: resp.UID
                           }).then(() => {
+                            // колонка В работе
                             this.$store
-                              .dispatch(CARD.ADD_CARD, {
-                                name: 'C помощью досок можно сделать CRM для работы с клиентами, Канбан или красивую визуализацию целей',
-                                comment: 'Добавьте свои доски',
-                                uid_board: boardData.uid,
-                                uid_stage: resp.UID
+                              .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+                                boardUid: boardData.uid,
+                                newStageTitle: 'В работе'
+                              }).then((resp) => {
+                                // 1 карточка
+                                this.$store
+                                  .dispatch(CARD.ADD_CARD, {
+                                    name: 'Карточки можно перетаскивать между колонками мышкой',
+                                    comment: '',
+                                    uid_board: boardData.uid,
+                                    uid_stage: resp.UID
+                                  }).then(() => {
+                                    // колонка Достигнуто
+                                    this.$store
+                                      .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+                                        boardUid: boardData.uid,
+                                        newStageTitle: 'Достигнуто'
+                                      }).then((resp) => {
+                                        // 1 карточка
+                                        this.$store
+                                          .dispatch(CARD.ADD_CARD, {
+                                            name: 'В доске может быть любое количество колонок',
+                                            comment: 'Колонки можно точно также перетаскивать мышкой вместе со всеми карточками',
+                                            uid_board: boardData.uid,
+                                            uid_stage: resp.UID
+                                          }).then(() => {
+                                            // 2 карточка
+                                            this.$store
+                                              .dispatch(CARD.ADD_CARD, {
+                                                name: 'Автоматизируйте получение новых заявок и заказов',
+                                                comment: 'Создайте форму сбора заявок и разместите ее у себя на сайте - смотрите Меню в верхнем правом углу',
+                                                uid_board: boardData.uid,
+                                                uid_stage: resp.UID
+                                              }).then(() => {
+                                                // 3 карточка
+                                                this.$store
+                                                  .dispatch(CARD.ADD_CARD, {
+                                                    name: 'C помощью досок можно сделать CRM для работы с клиентами, Канбан или красивую визуализацию целей',
+                                                    comment: 'Добавьте свои доски',
+                                                    uid_board: boardData.uid,
+                                                    uid_stage: resp.UID
+                                                  })
+                                              })
+                                          })
+                                      })
+                                  })
                               })
                           })
                       })
