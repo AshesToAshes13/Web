@@ -253,7 +253,7 @@ export default {
       return this.card?.cover_color === '#A998B6' ? '' : this.card?.cover_color
     },
     boardColor () {
-      return this.$store.state.boards.boards[this.card.uid_board].color
+      return this.$store.state.boards.boards[this.card.uid_board].color === '#A998B6' ? '' : this.$store.state.boards.boards[this.card.uid_board].color
     },
     stageColor () {
       const stages = this.$store.state.boards.boards[this.card.uid_board].stages

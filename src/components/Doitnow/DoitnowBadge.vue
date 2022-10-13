@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex items-center gap-x-[5px] rounded-[4px] px-[8px] py-[4px] text-[12px] font-[500]"
-    :style="{backgroundColor: color}"
+    :style="{backgroundColor: color ? color : '#F4F5F7'}"
   >
     <template v-if="icon">
       <svg
@@ -194,7 +194,7 @@ export default {
     },
     color: {
       type: String,
-      default: '#F4F5F7'
+      default: ''
     },
     icon: {
       type: String,
