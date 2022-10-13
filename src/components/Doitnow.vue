@@ -4,6 +4,7 @@
     class="w-full overflow-x-hidden"
   >
     <NavBar
+      v-if="!showLimitMessage"
       class="pt-[8px]"
       title="Очередь"
     />

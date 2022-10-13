@@ -345,7 +345,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.state.boards.publicBoard = this.$store.state.boards.boards[this.boardUid].public_link_status
+    this.$store.state.boards.publicBoard = this.$store.state.boards.boards[this.boardUid]?.public_link_status
   },
   methods: {
     clickEditBoard () {

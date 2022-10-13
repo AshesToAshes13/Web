@@ -199,21 +199,18 @@ export default {
           organization: this.$store?.state?.user?.user?.owner_email,
           user_uid: this.$store?.state?.user?.user?.current_user_uid
         }
-        let reglaments = []
         this.$store.commit(NAVIGATOR_REQUEST)
-        this.$store.dispatch('REGLAMENTS_REQUEST', data).then(resp => {
-          reglaments = resp.data
-        }).finally(() => {
-          this.$store.dispatch(NAVIGATOR_REQUEST).then((resp) => {
-            this.storeNavigator.reglaments = {
-              uid: 'fake-uid',
-              items: reglaments
-            }
-            initWebSync()
-            initInspectorSocket()
-            this.$store.dispatch('GET_SOUND_SETTING', this.$store?.state?.user?.user?.current_user_uid)
-            this.isContentLoaded = true
-          })
+        const reglamentsRequest = this.$store.dispatch('REGLAMENTS_REQUEST', data)
+        const navigatorRequest = this.$store.dispatch(NAVIGATOR_REQUEST)
+        Promise.all([navigatorRequest, reglamentsRequest]).then((resp) => {
+          this.storeNavigator.reglaments = {
+            uid: 'fake-uid',
+            items: resp[1].data
+          }
+          initWebSync()
+          initInspectorSocket()
+          this.$store.dispatch('GET_SOUND_SETTING', this.$store?.state?.user?.user?.current_user_uid)
+          this.isContentLoaded = true
         })
       }
     },

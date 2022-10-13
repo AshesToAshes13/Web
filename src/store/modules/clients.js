@@ -27,6 +27,22 @@ const actions = {
         })
     })
   },
+  // для обновления в реальном времени
+  [CLIENTS.GET_CLIENTS_UPDATE]: ({ commit, dispatch, state }, data) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients?organization=' + data.organization + '&page=' + (data.page - 1)
+      axios({ url: url, method: 'GET' })
+        .then((resp) => {
+          console.log(resp)
+          commit(CLIENTS.SET_CLIENTS, resp.data.clients)
+          commit('UPDATE_PAGING', resp.data.paging)
+          resolve(resp)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  },
   [CLIENTS.ADD_NEW_CLIENT]: ({ commit, dispatch }, client) => {
     return new Promise((resolve, reject) => {
       const url =

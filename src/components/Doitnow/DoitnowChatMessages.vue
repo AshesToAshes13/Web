@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-w-1/2 border-t mt-2 pt-2"
+    class="max-w-1/2 mt-2 pt-2"
     :class="task.uid_marker !== '00000000-0000-0000-0000-000000000000' ? 'bg-white p-1 mt-1 rounded-lg' : ''"
   >
     <div class="mx-auto max-w-[540px]">
