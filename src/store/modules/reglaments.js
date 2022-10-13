@@ -65,7 +65,7 @@ const actions = {
   },
   [REGLAMENTS.CREATE_REGLAMENT_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const userUid = store.state.user.user.current_user_uid
+      const userUid = store.state?.user?.user?.current_user_uid
       const url =
         process.env.VUE_APP_INSPECTOR_API +
         'reglaments' +

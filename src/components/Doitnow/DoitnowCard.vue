@@ -235,7 +235,7 @@ export default {
           currentStage = stage
         }
       })
-      return currentStage.Name
+      return currentStage?.Name
     },
     cardBudget () {
       return this.card?.cost / 100

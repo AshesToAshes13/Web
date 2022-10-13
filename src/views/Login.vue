@@ -208,13 +208,13 @@ import * as SLIDES from '@/store/actions/slides.js'
 import * as TASK from '@/store/actions/tasks'
 import { CREATE_COLOR_REQUEST } from '@/store/actions/colors'
 import * as PROJECT from '@/store/actions/projects'
-// import * as REGLAMENTS from '@/store/actions/reglaments'
-// import * as QUESTIONS from '@/store/actions/reglament_questions'
-// import * as ANSWER from '@/store/actions/reglament_answers'
+import * as REGLAMENTS from '@/store/actions/reglaments'
+import * as QUESTIONS from '@/store/actions/reglament_questions'
+import * as ANSWER from '@/store/actions/reglament_answers'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 import * as NAVIGATOR from '@/store/actions/navigator'
-// import * as CLIENTS from '@/store/actions/clients'
+import * as CLIENTS from '@/store/actions/clients'
 
 export default {
   directives: {
@@ -398,30 +398,23 @@ export default {
       this.$store.dispatch(PROJECT.CREATE_PROJECT_REQUEST, project).then((res) => {
         // заполняем недостающие параметры
         project.global_property_uid = '431a3531-a77a-45c1-8035-f0bf75c32641'
-
-        // демо-задача в Сегодня и в проекте Как это работает
-        const tags = [firstTag.uid]
-        const todayTask = {
+        // пятая задачка
+        const fifthTask = {
           uid: uuidv4(),
           uid_parent: '00000000-0000-0000-0000-000000000000',
           uid_customer: this.form.email,
           uid_project: project.uid,
-          uid_marker: firstColor.uid,
           status: 0,
           email_performer: '',
           type: 1,
-          date_begin: this.getDateString(this.date) + 'T00:00:00',
-          date_end: this.getDateString(this.date) + 'T23:59:59',
-          tags: tags,
-          name: 'Прочитайте задачу и завершите ее',
-          comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
+          tags: [],
+          name: 'Добавьте участников проекта',
+          comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
           _addToList: true
         }
-        this.$store.dispatch(TASK.CREATE_TASK, todayTask).then(() => {
-          // остальные демо-задачи в проекте Как это работает
-
-          // первая задачка с ребенком (папа)
-          const firstTask = {
+        this.$store.dispatch(TASK.CREATE_TASK, fifthTask).then(() => {
+          // четвертая задачка
+          const fourthTask = {
             uid: uuidv4(),
             uid_parent: '00000000-0000-0000-0000-000000000000',
             uid_customer: this.form.email,
@@ -430,26 +423,25 @@ export default {
             email_performer: '',
             type: 1,
             tags: [],
-            name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
-            comment: '',
+            name: 'Поручите эту задачу сотруднику',
+            comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
             _addToList: true
           }
-          this.$store.dispatch(TASK.CREATE_TASK, firstTask).then(() => {
-            // ребенок первой задачки (сынок)
-            const firstTaskChildren = {
+          this.$store.dispatch(TASK.CREATE_TASK, fourthTask).then(() => {
+            const thirdTask = {
               uid: uuidv4(),
-              uid_parent: firstTask.uid,
+              uid_parent: '00000000-0000-0000-0000-000000000000',
               uid_customer: this.form.email,
               uid_project: project.uid,
               status: 0,
               email_performer: '',
               type: 1,
               tags: [],
-              name: 'Подзадача имеет такие же свойства, как и задача',
-              comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
+              name: 'Зажмите задачу и переместите ее в любое место в списке',
+              comment: '',
               _addToList: true
             }
-            this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren).then(() => {
+            this.$store.dispatch(TASK.CREATE_TASK, thirdTask).then(() => {
               // вторая задачка
               const secondTask = {
                 uid: uuidv4(),
@@ -465,8 +457,8 @@ export default {
                 _addToList: true
               }
               this.$store.dispatch(TASK.CREATE_TASK, secondTask).then(() => {
-                // третья задачка
-                const thirdTask = {
+                // первая задачка с ребенком (папа)
+                const firstTask = {
                   uid: uuidv4(),
                   uid_parent: '00000000-0000-0000-0000-000000000000',
                   uid_customer: this.form.email,
@@ -475,41 +467,45 @@ export default {
                   email_performer: '',
                   type: 1,
                   tags: [],
-                  name: 'Зажмите задачу и переместите ее в любое место в списке',
+                  name: 'Нажмите на стрелочку > у этой задачи, чтобы увидеть подзадачи',
                   comment: '',
                   _addToList: true
                 }
-                this.$store.dispatch(TASK.CREATE_TASK, thirdTask).then(() => {
-                  // четвертая задачка
-                  const fourthTask = {
+                this.$store.dispatch(TASK.CREATE_TASK, firstTask).then(() => {
+                  // ребенок первой задачки (сынок)
+                  const firstTaskChildren = {
                     uid: uuidv4(),
-                    uid_parent: '00000000-0000-0000-0000-000000000000',
+                    uid_parent: firstTask.uid,
                     uid_customer: this.form.email,
                     uid_project: project.uid,
                     status: 0,
                     email_performer: '',
                     type: 1,
                     tags: [],
-                    name: 'Поручите эту задачу сотруднику',
-                    comment: 'Нажмите на Поручить и выберите сотрудника из списка.\n\nТеперь сотрудник отвечает за выполнение этой задачи.',
+                    name: 'Подзадача имеет такие же свойства, как и задача',
+                    comment: 'Присвойте задаче цвет, добавьте к ней метки или чек-лист.\r\n\r\nИспользуйте кнопки выше.',
                     _addToList: true
                   }
-                  this.$store.dispatch(TASK.CREATE_TASK, fourthTask).then(() => {
-                    // пятая задачка
-                    const fifthTask = {
+                  this.$store.dispatch(TASK.CREATE_TASK, firstTaskChildren).then(() => {
+                    // демо-задача в Сегодня и в проекте Как это работает
+                    const tags = [firstTag.uid]
+                    const todayTask = {
                       uid: uuidv4(),
                       uid_parent: '00000000-0000-0000-0000-000000000000',
                       uid_customer: this.form.email,
                       uid_project: project.uid,
+                      uid_marker: firstColor.uid,
                       status: 0,
                       email_performer: '',
                       type: 1,
-                      tags: [],
-                      name: 'Добавьте участников проекта',
-                      comment: 'Откройте Меню в верхнем правом углу и добавьте сотрудников в свойствах',
+                      date_begin: this.getDateString(this.date) + 'T00:00:00',
+                      date_end: this.getDateString(this.date) + 'T23:59:59',
+                      tags: tags,
+                      name: 'Прочитайте задачу и завершите ее',
+                      comment: 'Сюда можно вносить все детали по задаче - заметки и ссылки.\n\nА еще к задачам можно прикреплять файлы, вести переписку с коллегами в чате, создавать чек-листы.\n\nСоздавайте задачи для себя и сотрудников в разделе Задачи в Навигаторе.',
                       _addToList: true
                     }
-                    this.$store.dispatch(TASK.CREATE_TASK, fifthTask)
+                    this.$store.dispatch(TASK.CREATE_TASK, todayTask)
                   })
                 })
               })
@@ -518,184 +514,183 @@ export default {
         })
       })
 
-      // закомментил на время, падает инспектор из-за вебсинка
       // // демо-регламент
-      // const reglamentContent = '<h1>Поздравляем! Вы присоединились к тысячам пользователей и бизнесов, использующих ЛидерТаск для управления задачами, поручениями, проектами каждый день!</h1><p><br></p><h2>Что такое регламенты и как они помогут вам в вашем бизнесе?</h2><p><br></p><p>Регламенты - это инструкции, правила, руководства, которые позволят вам наладить работу команды, автоматизируют процесс внедрения новых сотрудников и позволят вам управлять бизнесом удаленно.</p><p><br></p><p>Создавайте регламенты, чтобы составить: </p><p><br></p><ul><li>инструкции по работе конкретных сотрудников или отделов (что и как нужно делать)</li><li>правила компании (общие правила, касающиеся всех и каждого)</li><li>миссию вашего бизнеса (чтобы каждый знал для чего и на что он работает)</li><li>систему мотивации "KPI" (пропишите правила премирования, проценты с продаж и многое другое)</li></ul><p><br></p><p>Регламенты состоят из:</p><p><br></p><ul><li>текста описания инструкции, правил, руководств</li><li>теста на знание этих правил</li><li>данных об успешном прохождении регламентов (в любой момент вы сможете посмотреть кто прошел регламент, а кто нет)</li></ul><p><br></p><p>Вы также можете предоставить доступ к редактированию регламента вашим сотрудникам. Используйте правило "Принес проблему - захвати решение". Вы всего знать не можете и не должны. Если что-то изменилось в работе отдела или сотрудника, дайте доступ к инструкции ответственному сотруднику и пускай он сам внесет необходимые изменения.</p><p><br></p><p><strong>Регламенты решают проблему внедрения новых сотрудников в компанию</strong>. Вы просто добавляете его в ЛидерТаск, он изучает все регламенты, сдает по ним тесты и приступает к работе. Вам больше не надо каждый раз объяснять новичкам одно и тоже. </p><p><br></p><h2>Создайте свой первый регламент! </h2><p><br></p><ol><li>Нажмите на кнопку +</li><li>Подробно опишите правила или инструкцию</li><li>Создайте тест</li><li>Пройдите его сами</li><li>Поручите вашим сотрудникам изучить регламент и выполнить тест</li><li>Получите обратную связь (ответственный сотрудник внимательно прочитает инструкцию, выполнит тест и, возможно, попросит внести правки; неответственный в лучшем случае сделает все не сразу, в худшем вообще проигнорирует. Дальше выводы делать вам)</li></ol><p><br></p><p>А теперь пройдите тест на знание регламентов)</p>'
-      // const reglament = {
-      //   bold: 0,
-      //   color: '',
-      //   organization: this.form.email,
-      //   email_creator: this.form.email,
-      //   name: 'Добро пожаловать в ЛидерТаск!',
-      //   department_uid: '',
-      //   content: reglamentContent,
-      //   uid: uuidv4()
-      // }
-      // this.$store.dispatch(REGLAMENTS.CREATE_REGLAMENT_REQUEST, reglament).then(() => {
-      //   // вопросы и ответы демо-регламента
-      //   // первый вопрос
-      //   const firstQuestion = {
-      //     name: 'Из чего состоят регламенты?',
-      //     uid: uuidv4(),
-      //     uid_reglament: reglament.uid
-      //   }
-      //   this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, firstQuestion).then(() => {
-      //     // ответы первого вопроса
-      //     const firstQuestionFirstAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Информация о сотрудниках, прошедших регламент',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFirstAnswer)
-      //     const firstQuestionSecondAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Описание регламента',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionSecondAnswer)
-      //     const firstQuestionThirdAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Тест',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionThirdAnswer)
-      //     const firstQuestionFourthAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Проект',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFourthAnswer)
-      //     const firstQuestionFifthAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Доска',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFifthAnswer)
-      //     const firstQuestionSixthAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: firstQuestion.uid,
-      //       name: 'Задача',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionSixthAnswer)
-      //   })
-      //   // второй вопрос
-      //   const secondQuestion = {
-      //     name: 'Что такое регламент?',
-      //     uid: uuidv4(),
-      //     uid_reglament: reglament.uid
-      //   }
-      //   this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, secondQuestion).then(() => {
-      //     // ответы второго вопроса
-      //     const secondQuestionFirstAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: secondQuestion.uid,
-      //       name: 'Инструкции, правила, руководства',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionFirstAnswer)
-      //     const secondQuestionSecondAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: secondQuestion.uid,
-      //       name: 'Регулярные задачи',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionSecondAnswer)
-      //     const secondQuestionThirdAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: secondQuestion.uid,
-      //       name: 'Одноразовые задачи',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionThirdAnswer)
-      //   })
+      const reglamentContent = '<h1>Поздравляем! Вы присоединились к тысячам пользователей и бизнесов, использующих ЛидерТаск для управления задачами, поручениями, проектами каждый день!</h1><p><br></p><h2>Что такое регламенты и как они помогут вам в вашем бизнесе?</h2><p><br></p><p>Регламенты - это инструкции, правила, руководства, которые позволят вам наладить работу команды, автоматизируют процесс внедрения новых сотрудников и позволят вам управлять бизнесом удаленно.</p><p><br></p><p>Создавайте регламенты, чтобы составить: </p><p><br></p><ul><li>инструкции по работе конкретных сотрудников или отделов (что и как нужно делать)</li><li>правила компании (общие правила, касающиеся всех и каждого)</li><li>миссию вашего бизнеса (чтобы каждый знал для чего и на что он работает)</li><li>систему мотивации "KPI" (пропишите правила премирования, проценты с продаж и многое другое)</li></ul><p><br></p><p>Регламенты состоят из:</p><p><br></p><ul><li>текста описания инструкции, правил, руководств</li><li>теста на знание этих правил</li><li>данных об успешном прохождении регламентов (в любой момент вы сможете посмотреть кто прошел регламент, а кто нет)</li></ul><p><br></p><p>Вы также можете предоставить доступ к редактированию регламента вашим сотрудникам. Используйте правило "Принес проблему - захвати решение". Вы всего знать не можете и не должны. Если что-то изменилось в работе отдела или сотрудника, дайте доступ к инструкции ответственному сотруднику и пускай он сам внесет необходимые изменения.</p><p><br></p><p><strong>Регламенты решают проблему внедрения новых сотрудников в компанию</strong>. Вы просто добавляете его в ЛидерТаск, он изучает все регламенты, сдает по ним тесты и приступает к работе. Вам больше не надо каждый раз объяснять новичкам одно и тоже. </p><p><br></p><h2>Создайте свой первый регламент! </h2><p><br></p><ol><li>Нажмите на кнопку +</li><li>Подробно опишите правила или инструкцию</li><li>Создайте тест</li><li>Пройдите его сами</li><li>Поручите вашим сотрудникам изучить регламент и выполнить тест</li><li>Получите обратную связь (ответственный сотрудник внимательно прочитает инструкцию, выполнит тест и, возможно, попросит внести правки; неответственный в лучшем случае сделает все не сразу, в худшем вообще проигнорирует. Дальше выводы делать вам)</li></ol><p><br></p><p>А теперь пройдите тест на знание регламентов)</p>'
+      const reglament = {
+        bold: 0,
+        color: '',
+        organization: this.form.email,
+        email_creator: this.form.email,
+        name: 'Добро пожаловать в ЛидерТаск!',
+        department_uid: '',
+        content: reglamentContent,
+        uid: uuidv4()
+      }
+      this.$store.dispatch(REGLAMENTS.CREATE_REGLAMENT_REQUEST, reglament).then(() => {
+        // вопросы и ответы демо-регламента
+        // первый вопрос
+        const firstQuestion = {
+          name: 'Из чего состоят регламенты?',
+          uid: uuidv4(),
+          uid_reglament: reglament.uid
+        }
+        this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, firstQuestion).then(() => {
+          // ответы первого вопроса
+          const firstQuestionFirstAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Информация о сотрудниках, прошедших регламент',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFirstAnswer)
+          const firstQuestionSecondAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Описание регламента',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionSecondAnswer)
+          const firstQuestionThirdAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Тест',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionThirdAnswer)
+          const firstQuestionFourthAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Проект',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFourthAnswer)
+          const firstQuestionFifthAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Доска',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionFifthAnswer)
+          const firstQuestionSixthAnswer = {
+            uid: uuidv4(),
+            uid_question: firstQuestion.uid,
+            name: 'Задача',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, firstQuestionSixthAnswer)
+        })
+        // второй вопрос
+        const secondQuestion = {
+          name: 'Что такое регламент?',
+          uid: uuidv4(),
+          uid_reglament: reglament.uid
+        }
+        this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, secondQuestion).then(() => {
+          // ответы второго вопроса
+          const secondQuestionFirstAnswer = {
+            uid: uuidv4(),
+            uid_question: secondQuestion.uid,
+            name: 'Инструкции, правила, руководства',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionFirstAnswer)
+          const secondQuestionSecondAnswer = {
+            uid: uuidv4(),
+            uid_question: secondQuestion.uid,
+            name: 'Регулярные задачи',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionSecondAnswer)
+          const secondQuestionThirdAnswer = {
+            uid: uuidv4(),
+            uid_question: secondQuestion.uid,
+            name: 'Одноразовые задачи',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, secondQuestionThirdAnswer)
+        })
 
-      //   // третий вопрос
-      //   const thirdQuestion = {
-      //     name: 'Чем могут быть регламенты?',
-      //     uid: uuidv4(),
-      //     uid_reglament: reglament.uid
-      //   }
-      //   this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, thirdQuestion).then(() => {
-      //     // ответы третьего вопроса
-      //     const thirdQuestionFirstAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: thirdQuestion.uid,
-      //       name: 'Описанием системы мотивации',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFirstAnswer)
-      //     const thirdQuestionSecondAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: thirdQuestion.uid,
-      //       name: 'Инструкцией',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionSecondAnswer)
-      //     const thirdQuestionThirdAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: thirdQuestion.uid,
-      //       name: 'Правилами компании',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionThirdAnswer)
-      //     const thirdQuestionFourthAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: thirdQuestion.uid,
-      //       name: 'Задачей',
-      //       is_right: 0
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFourthAnswer)
-      //     const thirdQuestionFifthAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: thirdQuestion.uid,
-      //       name: 'Миссией бизнеса',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFifthAnswer)
-      //   })
+        // третий вопрос
+        const thirdQuestion = {
+          name: 'Чем могут быть регламенты?',
+          uid: uuidv4(),
+          uid_reglament: reglament.uid
+        }
+        this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, thirdQuestion).then(() => {
+          // ответы третьего вопроса
+          const thirdQuestionFirstAnswer = {
+            uid: uuidv4(),
+            uid_question: thirdQuestion.uid,
+            name: 'Описанием системы мотивации',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFirstAnswer)
+          const thirdQuestionSecondAnswer = {
+            uid: uuidv4(),
+            uid_question: thirdQuestion.uid,
+            name: 'Инструкцией',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionSecondAnswer)
+          const thirdQuestionThirdAnswer = {
+            uid: uuidv4(),
+            uid_question: thirdQuestion.uid,
+            name: 'Правилами компании',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionThirdAnswer)
+          const thirdQuestionFourthAnswer = {
+            uid: uuidv4(),
+            uid_question: thirdQuestion.uid,
+            name: 'Задачей',
+            is_right: 0
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFourthAnswer)
+          const thirdQuestionFifthAnswer = {
+            uid: uuidv4(),
+            uid_question: thirdQuestion.uid,
+            name: 'Миссией бизнеса',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, thirdQuestionFifthAnswer)
+        })
 
-      //   // четвертый вопрос
-      //   const fourthQuestion = {
-      //     name: 'Как создать хороший регламент?',
-      //     uid: uuidv4(),
-      //     uid_reglament: reglament.uid
-      //   }
-      //   this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, fourthQuestion).then(() => {
-      //     // ответы четвертого вопроса
-      //     const fourthQuestionFirstAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: fourthQuestion.uid,
-      //       name: 'Добавить описание',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionFirstAnswer)
-      //     const fourthQuestionSecondAnswer = {
-      //       uid: uuidv4(),
-      //       uid_question: fourthQuestion.uid,
-      //       name: 'Составить тест',
-      //       is_right: 1
-      //     }
-      //     this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionSecondAnswer)
-      //   })
-      // })
+        // четвертый вопрос
+        const fourthQuestion = {
+          name: 'Как создать хороший регламент?',
+          uid: uuidv4(),
+          uid_reglament: reglament.uid
+        }
+        this.$store.dispatch(QUESTIONS.CREATE_REGLAMENT_QUESTION_REQUEST, fourthQuestion).then(() => {
+          // ответы четвертого вопроса
+          const fourthQuestionFirstAnswer = {
+            uid: uuidv4(),
+            uid_question: fourthQuestion.uid,
+            name: 'Добавить описание',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionFirstAnswer)
+          const fourthQuestionSecondAnswer = {
+            uid: uuidv4(),
+            uid_question: fourthQuestion.uid,
+            name: 'Составить тест',
+            is_right: 1
+          }
+          this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionSecondAnswer)
+        })
+      })
 
-      // // демо-клиент
-      // const clientToSend = {
-      //   uid: uuidv4(),
-      //   organization: this.form.email,
-      //   name: this.form.name,
-      //   email: this.form.email,
-      //   phone: this.form.phone,
-      //   comment: 'Комментарий клиента',
-      //   date_create: new Date()
-      // }
-      // this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
+      // демо-клиент
+      const clientToSend = {
+        uid: uuidv4(),
+        organization: this.form.email,
+        name: this.form.username,
+        email: this.form.email,
+        phone: this.form.phone,
+        comment: 'Комментарий клиента',
+        date_create: new Date()
+      }
+      this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
 
       // демо-доска
       const boardData = {
@@ -836,7 +831,6 @@ export default {
         .then(() => {
           window.ym(89796698, 'reachGoal', 'signup-new-web')
           localStorage.removeItem('slides')
-          this.$router.push('/doitnow')
           const slideNames = [
             'addAvatar',
             'addEmployees',
@@ -853,6 +847,7 @@ export default {
           this.$store.dispatch(USER_START_ONBOARDING)
           // демо-данные для новых пользователей
           this.createDemoElementsAfterRegister()
+          this.$router.push('/doitnow')
         })
         .catch(() => {
           this.form.showError = true
