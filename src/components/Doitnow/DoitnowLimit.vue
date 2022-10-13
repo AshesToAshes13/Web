@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center px-5 bg-white rounded-lg max-w-full h-screen mt-[15px]"
+    class="flex flex-col items-center px-5 bg-white rounded-lg max-w-full h-full mt-[15px] pb-[20em]"
   >
     <div class="flex flex-col gap-[35px] items-center mt-[150px]">
       <svg
