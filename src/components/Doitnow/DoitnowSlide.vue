@@ -30,16 +30,21 @@
               </p>
             </article>
           </div>
-
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/doitnowstart.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
           <iframe
+            v-if="!showPreviewPicture"
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
             title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class=" border-[3px] rounded-xl border-[#2E2E2E]"
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <div class="mb-3">
@@ -76,15 +81,21 @@
             </article>
           </div>
 
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
           <iframe
+            v-if="!showPreviewPicture"
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
             title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class=" border-[3px] rounded-xl border-[#2E2E2E]"
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <SlideBodyButton
@@ -108,21 +119,26 @@
               </p>
             </article>
           </div>
-
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
           <iframe
+            v-if="!showPreviewPicture"
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
             title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
             class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <SlideBodyButton
             text="Начать"
-            @click="clickAddEmployees"
+            @click="nextTask"
           />
         </div>
       </div>
@@ -141,14 +157,19 @@
               </p>
             </article>
           </div>
-
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
           <iframe
+            v-if="!showPreviewPicture"
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/Jx-TBirC_Cc"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
             title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
             class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
@@ -206,7 +227,8 @@ export default {
       showSlide: true,
       uploadedAvatar: '',
       changeAvatar: false,
-      avatarType: ''
+      avatarType: '',
+      showPreviewPicture: true
     }
   },
   computed: {
@@ -245,6 +267,7 @@ export default {
       }
     },
     nextTask () {
+      this.showPreviewPicture = true
       this.$emit('next')
     },
     clickAddEmployees () {
@@ -277,6 +300,9 @@ export default {
       }
       this.$store.commit(SLIDES.CHANGE_VISIBLE, slide)
       this.nextTask()
+    },
+    playVideo () {
+      this.showPreviewPicture = false
     }
   }
 }
