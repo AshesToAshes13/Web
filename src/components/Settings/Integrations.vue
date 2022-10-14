@@ -146,7 +146,7 @@ export default {
           typeAccess: [1, 2, 3]
         },
         {
-          title: 'Корпоративные интеграции',
+          title: 'Общие интеграции',
           items: [
             {
               path: 'corporationYandexMail',
