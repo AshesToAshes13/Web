@@ -40,7 +40,7 @@
       <DoitnowSlideDoitnowStart
         v-if="name === 'doitnowstart'"
         :show-preview-picture="showPreviewPicture"
-        @nextTaskEmit="nextTask"
+        @clickDoitnowStartSuccessEmit="clickDoitnowStartSuccess"
         @playVideoEmit="playVideo"
       />
       <!-- addEmployees -->

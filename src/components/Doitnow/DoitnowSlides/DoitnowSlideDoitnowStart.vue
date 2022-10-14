@@ -30,7 +30,7 @@
 
       <SlideBodyButton
         text="Начать"
-        @click="nextTask"
+        @click="clickDoitnowStartSuccess"
       />
     </div>
   </div>
@@ -46,10 +46,10 @@ export default {
       default: true
     }
   },
-  emits: ['nextTaskEmit', 'playVideoEmit'],
+  emits: ['clickDoitnowStartSuccessEmit', 'playVideoEmit'],
   methods: {
-    nextTask () {
-      this.$emit('nextTaskEmit')
+    clickDoitnowStartSuccess () {
+      this.$emit('clickDoitnowStartSuccessEmit')
     },
     playVideo () {
       this.$emit('playVideoEmit')
