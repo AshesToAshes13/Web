@@ -20,13 +20,13 @@
       class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
       :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
     >
-      <DoitnowCustomerInfo
-        v-if="shouldShowCustomer"
+      <DoitnowPerformerInfo
+        v-if="shouldShowPerformer"
         :task="task"
         :employees="employees"
       />
-      <DoitnowPerformerInfo
-        v-else-if="shouldShowPerformer"
+      <DoitnowCustomerInfo
+        v-else-if="shouldShowCustomer"
         :task="task"
         :employees="employees"
       />
@@ -179,7 +179,7 @@
 
 <script>
 import { uuidv4 } from '@/helpers/functions'
-import { TASK_STATUS } from '@/constants'
+import { TASK_STATUS, TASK_TYPE } from '@/constants'
 import contenteditable from 'vue-contenteditable'
 import linkify from 'vue-linkify'
 import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsCommentEditor.vue'
@@ -380,10 +380,10 @@ export default {
     },
     // состояния для v-if
     shouldShowCustomer () {
-      return this.task?.type !== 1
+      return this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE
     },
     shouldShowPerformer () {
-      return (this.task?.type !== 1) && (this.task?.uid_performer !== this.task?.uid_customer)
+      return (this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE) && (this.task?.uid_performer !== this.task?.uid_customer)
     },
     shouldShowProject () {
       return this.task?.uid && this.projects[this.task?.uid_project]
