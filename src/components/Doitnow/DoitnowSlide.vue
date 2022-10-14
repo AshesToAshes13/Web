@@ -39,7 +39,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="border rounded-xl"
+            class=" border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <div class="mb-3">
@@ -84,7 +84,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="border rounded-xl"
+            class=" border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <SlideBodyButton
@@ -117,7 +117,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="border rounded-xl"
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <SlideBodyButton
@@ -150,7 +150,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="border rounded-xl"
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
           />
 
           <SlideBodyButton
