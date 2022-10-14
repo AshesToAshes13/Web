@@ -85,8 +85,8 @@
         @onPasteFile="onPasteEvent"
       />
     </div>
-    <div class="mt-4">
-      <div class="max-w-[540px] mx-auto pt-[20px]">
+    <div class="mt-[65px]">
+      <div>
         <DoitnowCardChat
           :card-messages="cardMessages"
           :user-uid="user.uid"
