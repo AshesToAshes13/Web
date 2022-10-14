@@ -29,6 +29,12 @@
         >
         <span class="ml-[10px] font-[500]">Персональная интеграция через Яндекс.Почта</span>
       </div>
+      <span
+        v-if="isPersonalIntegrated"
+        class="my-[20px]"
+      >
+        Интегрировано с: {{ persLogin }}
+      </span>
       <button
         v-if="!isPersonalIntegrated"
         class="mt-[10px] rounded-[10px] h-[40px] text-white bg-orange-300"
@@ -41,17 +47,11 @@
         class="flex flex-col"
       >
         <button
-          class="mt-[10px] rounded-[10px] h-[40px] text-white bg-[#44944A]"
-        >
-          Уже интегрированно
-        </button>
-        <button
           class="mt-[10px] rounded-[10px] h-[40px] text-white bg-[#CD5C5C]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию
         </button>
-        <span class="bg-[#4a724d] mt-[10px] rounded-[10px] px-2 py-1 text-white font-[500]">Интеграция с: {{ persLogin }}</span>
       </div>
     </div>
     <article
