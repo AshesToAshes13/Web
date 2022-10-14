@@ -37,8 +37,8 @@
   </div>
 </template>
 <script>
-import SlideBodyButton from '../SlideBodyButton.vue'
-import SlideBodyTitle from '../SlideBodyTitle.vue'
+import SlideBodyButton from './SlideBodyButton.vue'
+import SlideBodyTitle from './SlideBodyTitle.vue'
 
 export default {
   components: { SlideBodyButton, SlideBodyTitle },

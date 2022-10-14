@@ -48,7 +48,7 @@
   </div>
 </template>
 <script>
-import SlideBodyTitle from '../SlideBodyTitle.vue'
+import SlideBodyTitle from './SlideBodyTitle.vue'
 export default {
   components: { SlideBodyTitle },
   props: {
