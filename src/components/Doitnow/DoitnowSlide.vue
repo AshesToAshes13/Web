@@ -25,7 +25,7 @@
         <div class="max-w-[600px]">
           <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
             <p class=" text-[#4C4C4D]">
-              Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь.
+              Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь
             </p>
           </article>
         </div>
@@ -62,7 +62,7 @@
         <div class="max-w-[600px]">
           <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
             <p class=" text-[#4C4C4D]">
-              И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое.
+              И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое
             </p>
           </article>
         </div>
@@ -100,7 +100,7 @@
         <div class="max-w-[600px]">
           <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
             <p class=" text-[#4C4C4D]">
-              Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок.
+              Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок
             </p>
           </article>
         </div>
@@ -139,7 +139,7 @@
           <div class="max-w-[600px]">
             <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
               <p class=" text-[#4C4C4D]">
-                Аватар поможет вашим коллегам быстрее найти Вас в списках.
+                Это просто эстетично, а Ваши коллеги смогут быстрее найти вас в списках
               </p>
             </article>
           </div>
