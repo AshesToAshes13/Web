@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex flex-col items-center px-5 bg-white rounded-lg max-w-full h-screen mt-[15px]"
+    class="flex items-center justify-center px-5 bg-white rounded-lg max-w-full h-[calc(100%-30px)] my-[15px]"
   >
-    <div class="flex flex-col gap-[35px] items-center mt-[150px]">
+    <div class="flex flex-col items-center">
       <svg
         width="161"
         height="160"
@@ -280,7 +280,7 @@
           stroke-width="1.40147"
         />
       </svg>
-      <div class="flex flex-col gap-[28px] w-[600px] text-center">
+      <div class="flex flex-col gap-[28px] w-[600px] text-center mt-[37px]">
         <p class="text-[25px] font-bold text-[#424242] leading-[35px]">
           Обновите тариф
         </p>
@@ -312,7 +312,7 @@
       <a
         href="https://www.leadertask.ru/alpha"
         target="_blank"
-        class="w-xl-1/6 mt-[35px] w-[217px] h-[40px] cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-10 rounded-md hover:bg-slate-200 font-medium text-center pt-[7px]"
+        class="w-xl-1/6 mt-[55px] w-[217px] h-[40px] cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-10 pt-[2px] rounded-md hover:bg-slate-200 font-medium text-center flex items-center justify-center"
       >
         Подключить сейчас
       </a>

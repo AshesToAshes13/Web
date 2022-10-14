@@ -1,7 +1,7 @@
 <template>
   <NavBar
     class="pt-[8px]"
-    title="Контакты компании ЛидерТаск"
+    title="Помощь"
   />
   <form class="px-5 text-lg bg-white p-2 rounded-xl pb-[150px]">
     <div class="mt-[15px]">

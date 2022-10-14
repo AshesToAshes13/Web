@@ -102,7 +102,7 @@
   </div>
   <div
     v-if="displayModal"
-    class="h-[70%] flex flex-col items-center justify-center"
+    class="mt-[100px] flex flex-col items-center justify-center"
   >
     <ReglamentsOboarding
       @okToModal="okToModal"

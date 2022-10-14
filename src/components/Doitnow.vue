@@ -2,18 +2,15 @@
   <div
     ref="doitnow"
     class="w-full overflow-x-hidden"
+    :class="showLimitMessage ? 'h-full' : ''"
   >
     <NavBar
       v-if="!showLimitMessage"
       class="pt-[8px]"
       title="Очередь"
     />
-    <DoitnowOnboarding
-      v-if="displayModal"
-      @okToModal="okToModal"
-    />
     <DoitnowSkeleton
-      v-else-if="isLoadingDoits"
+      v-if="isLoadingDoits"
     />
     <DoitnowLimit
       v-else-if="showLimitMessage"
@@ -92,11 +89,8 @@ import DoitnowTask from '@/components/Doitnow/DoitnowTask.vue'
 import DoitnowSkeleton from '@/components/Doitnow/DoitnowSkeleton.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
-import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
-
 import DoitnowReglament from './Doitnow/DoitnowReglament.vue'
 import DoitnowLimit from '@/components/Doitnow/DoitnowLimit'
-import DoitnowOnboarding from './Doitnow/DoitnowOnboarding.vue'
 
 export default {
   components: {
@@ -107,8 +101,7 @@ export default {
     DoitnowSkeleton,
     DoitnowTask,
     DoitnowReglament,
-    NavBar,
-    DoitnowOnboarding
+    NavBar
   },
   data () {
     return {
@@ -176,9 +169,6 @@ export default {
     },
     subTasks () {
       return this.$store.state.tasks.subtasks.tasks
-    },
-    displayModal () {
-      return !this.$store.state.onboarding?.visitedModals?.includes('doitnow') && this.$store.state.onboarding?.showModals
     },
     isSlide () {
       return this.firstTask?.mode === 'slide'
@@ -254,7 +244,7 @@ export default {
         const [tasksUnread, tasksOwerdue, tasksToday, tasksReady] = await this.$store.dispatch(TASK.DOITNOW_TASKS_REQUEST)
         const currentUserUid = this.user?.current_user_uid
         const unreadDelegateByMe = tasksUnread.filter(task => task.uid_customer === currentUserUid)
-        const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && this.uid_performer === currentUserUid)
+        const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && task.uid_performer === currentUserUid)
         // заполняем главные массивы задач очереди
         this.unreadTasks = [
         // в массив не попали непрочитанные расшаренные мне задачи
@@ -284,9 +274,6 @@ export default {
     },
     pad2 (n) {
       return (n < 10 ? '0' : '') + n
-    },
-    okToModal () {
-      this.$store.commit(USER_VIEWED_MODAL, 'doitnow')
     },
     readTask () {
       this.$store.dispatch(TASK.CHANGE_TASK_READ, this.firstTask?.uid)

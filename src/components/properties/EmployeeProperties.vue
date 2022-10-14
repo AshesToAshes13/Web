@@ -14,7 +14,6 @@
         <template #menu>
           <PopMenuItem
             v-if="$store?.state?.user?.user?.owner_email === $store?.state?.user?.user?.current_user_email && selectedEmployee.type === 3"
-            icon="delete"
             @click="setAdmin()"
           >
             Назначить администратором

@@ -260,6 +260,7 @@ import PhoneModalBoxRename from './PhoneModalBoxRename.vue'
 import ModalBox from '@/components/modals/ModalBox.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 import UploadAvatar from '@/components/UploadAvatar'
+import * as TASK from '@/store/actions/tasks.js'
 import * as SLIDES from '@/store/actions/slides.js'
 
 export default {
@@ -315,6 +316,7 @@ export default {
   },
   methods: {
     logout () {
+      this.$store.commit(TASK.REMOVE_ALL_TAGS)
       this.$store.dispatch(AUTH_LOGOUT)
     },
     getDateExpired () {
@@ -337,11 +339,7 @@ export default {
     },
     startSlides () {
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'welcome',
-        visible: true
-      })
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'addAvatar',
+        name: 'doitnowstart',
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
@@ -349,11 +347,11 @@ export default {
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'addReglaments',
+        name: 'delegateTasks',
         visible: true
       })
       this.$store.commit(SLIDES.CHANGE_VISIBLE, {
-        name: 'delegateTasks',
+        name: 'addAvatar',
         visible: true
       })
     },

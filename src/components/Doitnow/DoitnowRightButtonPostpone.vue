@@ -103,30 +103,9 @@ export default {
       showSetDate: false
     }
   },
-  computed: {
-    postpone () {
-      if (this.postponeValue.days > 0) {
-        if (this.postponeValue.days === 1) return 'завтра'
-        //
-        const date = new Date(this.taskEndDate) ?? new Date()
-        date.setHours(9, 0, 0, 0) // на 9 утра
-        date.setDate(date.getDate() + this.postponeValue.days)
-        const day = String(date.getDate()).padStart(2, '0')
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        return `${day}.${month}.${date.getFullYear()}`
-      }
-      if (this.postponeValue.minutes === 60) {
-        return '1 час'
-      }
-      if (this.postponeValue.minutes === 180) {
-        return '3 часа'
-      }
-      return `${this.postponeValue.minutes} минут`
-    }
-  },
   methods: {
     onPostpone () {
-      const date = this.taskEndDate ? new Date(this.taskEndDate) : new Date()
+      const date = new Date()
       if (this.postponeValue.days > 0) {
         date.setHours(9, 0, 0, 0) // на 9 утра
         date.setDate(date.getDate() + this.postponeValue.days)

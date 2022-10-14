@@ -4,7 +4,7 @@
     @cancel="showBoardsLimit = false"
     @ok="showBoardsLimit = false"
   />
-  <div class="px-[20px] pt-[22px]">
+  <div class="px-[20px] py-[22px]">
     <AsideMenuListSkeleton v-if="status == 'loading'" />
     <div
       v-if="status == 'success'"

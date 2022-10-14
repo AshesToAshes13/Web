@@ -1,9 +1,14 @@
 <template>
+  <BoardOnboarding
+    v-if="displayModal"
+    class="mt-[100px]"
+    @okToModal="okToModal"
+  />
   <BoardSkeleton
-    v-if="status == 'loading'"
+    v-else-if="status == 'loading'"
   />
   <div
-    v-if="status == 'success'"
+    v-else-if="status == 'success'"
     id="Board"
     class="h-full"
   >
@@ -403,6 +408,8 @@ import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessag
 import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
 import BoardTextareaValue from './Board/BoardTextareaValue.vue'
 import { notify } from 'notiwind'
+import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
+import BoardOnboarding from './Board/BoardOnboarding.vue'
 
 export default {
   directives: {
@@ -417,6 +424,7 @@ export default {
     BoardModalBoxCardMove,
     BoardSkeleton,
     BoardCard,
+    BoardOnboarding,
     draggable,
     BoardInputValue,
     BoardModalBoxColumnBoardChange,
@@ -490,6 +498,9 @@ export default {
     },
     showOnlyCardsWithNoResponsible () {
       return this.$store.state.boards.showOnlyCardsWithNoResponsible
+    },
+    displayModal () {
+      return !this.$store.state.onboarding?.visitedModals?.includes('boards') && this.$store.state?.onboarding?.showModals
     },
     showOnlyMyCreatedCards () {
       return this.$store.state.boards.showOnlyMyCreatedCards
@@ -674,6 +685,9 @@ export default {
       }
 
       return column.cards
+    },
+    okToModal () {
+      this.$store.commit(USER_VIEWED_MODAL, 'boards')
     },
     addCard (column) {
       this.showAddCard = true

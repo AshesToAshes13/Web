@@ -1,5 +1,7 @@
 <template>
-  <DoitnowContent :border-color="cardColor">
+  <DoitnowContent
+    :border-color="cardColor"
+  >
     <div class="flex flex-col gap-[20px] overflow-x-hidden">
       <contenteditable
         v-model="title"
@@ -83,8 +85,8 @@
         @onPasteFile="onPasteEvent"
       />
     </div>
-    <div class="mt-4">
-      <div class="max-w-[540px] mx-auto pt-[20px]">
+    <div class="mt-[65px]">
+      <div>
         <DoitnowCardChat
           :card-messages="cardMessages"
           :user-uid="user.uid"
@@ -110,7 +112,6 @@
     />
     <template #buttons>
       <DoitnowRightButtonPostpone
-        :task-end-date="card.date_reminder"
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
       />

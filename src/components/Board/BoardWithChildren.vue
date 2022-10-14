@@ -3,6 +3,7 @@
     <NavBarBoards
       class="pt-[8px]"
       :board-uid="boardUid"
+      :archive-mode="showArchive"
     />
     <div
       v-if="currentBoard"

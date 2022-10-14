@@ -14,23 +14,14 @@ function getCurrDateTimeString () {
 const state = {
   slides: [
     {
-      uid: 'welcome',
-      name: 'welcome',
+      uid: 'doitnowstart',
+      name: 'doitnowstart',
       mode: 'slide',
       visible:
-        JSON.parse(localStorage.getItem('slides'))?.welcome?.visible ?? true,
+        JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.visible ??
+        true,
       reminder:
-        JSON.parse(localStorage.getItem('slides'))?.welcome?.reminder ??
-        getCurrDateTimeString()
-    },
-    {
-      uid: 'addAvatar',
-      name: 'addAvatar',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.visible ?? true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.reminder ??
+        JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.reminder ??
         getCurrDateTimeString()
     },
     {
@@ -45,17 +36,6 @@ const state = {
         getCurrDateTimeString()
     },
     {
-      uid: 'addReglaments',
-      name: 'addReglaments',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.addReglaments?.visible ??
-        true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.addReglaments?.reminder ??
-        getCurrDateTimeString()
-    },
-    {
       uid: 'delegateTasks',
       name: 'delegateTasks',
       mode: 'slide',
@@ -64,6 +44,16 @@ const state = {
         true,
       reminder:
         JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.reminder ??
+        getCurrDateTimeString()
+    },
+    {
+      uid: 'addAvatar',
+      name: 'addAvatar',
+      mode: 'slide',
+      visible:
+        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.visible ?? true,
+      reminder:
+        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.reminder ??
         getCurrDateTimeString()
     }
   ]
@@ -87,11 +77,7 @@ const mutations = {
           data[value.name].reminder = value.reminder || dateStr
         } catch (e) {
           data = {
-            welcome: {
-              visible: true,
-              reminder: dateStr
-            },
-            addAvatar: {
+            doitnowstart: {
               visible: true,
               reminder: dateStr
             },
@@ -99,11 +85,11 @@ const mutations = {
               visible: true,
               reminder: dateStr
             },
-            addReglaments: {
+            delegateTasks: {
               visible: true,
               reminder: dateStr
             },
-            delegateTasks: {
+            addAvatar: {
               visible: true,
               reminder: dateStr
             }

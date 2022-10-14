@@ -6,7 +6,7 @@
     @ok="onSave"
     @cancel="onCancel"
   >
-    <div class="text-[#7e7e80] text-[13px] leading-[18px] font-roboto whitespace-pre-line truncate">
+    <div class="text-[#7e7e80] text-[13px] leading-[18px] font-roboto truncate">
       {{ text }}
     </div>
   </ModalBox>
