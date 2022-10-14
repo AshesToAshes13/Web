@@ -254,7 +254,7 @@ export default {
         const [tasksUnread, tasksOwerdue, tasksToday, tasksReady] = await this.$store.dispatch(TASK.DOITNOW_TASKS_REQUEST)
         const currentUserUid = this.user?.current_user_uid
         const unreadDelegateByMe = tasksUnread.filter(task => task.uid_customer === currentUserUid)
-        const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && this.uid_performer === currentUserUid)
+        const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && task.uid_performer === currentUserUid)
         // заполняем главные массивы задач очереди
         this.unreadTasks = [
         // в массив не попали непрочитанные расшаренные мне задачи
