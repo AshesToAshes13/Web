@@ -5,6 +5,7 @@ import {
   PUSH_MYCOLOR,
   REMOVE_COLOR_REQUEST,
   REMOVE_MYCOLOR_REQUEST,
+  RESET_COLOR_STATE,
   SELECT_COLOR,
   UPDATE_COLOR_REQUEST
 } from '../actions/colors'
@@ -78,6 +79,11 @@ const mutations = {
   },
   [SELECT_COLOR]: (state, color) => {
     state.selectedColor = color
+  },
+  [RESET_COLOR_STATE]: (state) => {
+    state.colors = {}
+    state.mycolors = {}
+    state.selectedColor = null
   }
 }
 
