@@ -54,7 +54,10 @@
         <span class="bg-[#4a724d] mt-[10px] rounded-[10px] px-2 py-1 text-white font-[500]">Интеграция с: {{ persLogin }}</span>
       </div>
     </div>
-    <article class="mt-[30px]">
+    <article
+      v-if="!isPersonalIntegrated"
+      class="mt-[30px]"
+    >
       <p class="font-[500]">
         Инструкция по интеграции:
       </p>

@@ -123,7 +123,10 @@
         Сохранить
       </button>
     </div>
-    <article class="mt-[30px]">
+    <article
+      v-if="!isOrganizationIntegrated"
+      class="mt-[30px]"
+    >
       <p class="font-[500]">
         Инструкция по интеграции:
       </p>
