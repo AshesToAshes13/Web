@@ -20,13 +20,13 @@
       class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
       :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
     >
-      <DoitnowPerformerInfo
-        v-if="shouldShowPerformer"
+      <DoitnowCustomerInfo
+        v-if="shouldShowCustomer"
         :task="task"
         :employees="employees"
       />
-      <DoitnowCustomerInfo
-        v-else-if="shouldShowCustomer"
+      <DoitnowPerformerInfo
+        v-else-if="shouldShowPerformer"
         :task="task"
         :employees="employees"
       />
@@ -380,7 +380,7 @@ export default {
     },
     // состояния для v-if
     shouldShowCustomer () {
-      return this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE
+      return this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE && (this.task?.uid_customer !== this.user?.current_user_uid)
     },
     shouldShowPerformer () {
       return (this.task?.type !== TASK_TYPE.MY_TASK_NO_ASSIGNEE) && (this.task?.uid_performer !== this.task?.uid_customer)
