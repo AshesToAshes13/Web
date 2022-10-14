@@ -2,6 +2,7 @@
   <div
     ref="doitnow"
     class="w-full overflow-x-hidden"
+    :class="showLimitMessage ? 'h-full' : ''"
   >
     <NavBar
       v-if="!showLimitMessage"
