@@ -16,119 +16,119 @@
       @nextTask="nextTask"
     />
     <!-- doitnowstart -->
-    <div
-      v-if="name === 'doitnowstart'"
-      class="flex flex-col items-center text-center"
-    >
-      <SlideBodyTitle title="Вы в Очереди!" />
-      <div class="flex flex-col items-center gap-[45px]">
-        <div class="max-w-[600px]">
-          <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-            <p class=" text-[#4C4C4D]">
-              Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь
-            </p>
-          </article>
-        </div>
-        <img
-          v-if="showPreviewPicture"
-          src="@/assets/images/slides/addEmployes.png"
-          class="w-[560px] h-[315px] cursor-pointer"
-          @click="playVideo"
-        >
-        <iframe
-          v-if="!showPreviewPicture"
-          width="560"
-          height="315"
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
-          title="YouTube video player"
-          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E]"
-        />
-
-        <SlideBodyButton
-          text="Начать"
-          @click="nextTask"
-        />
-      </div>
-    </div>
-    <!-- addEmployees -->
-    <div
-      v-if="name === 'addEmployees'"
-      class="flex flex-col items-center text-center"
-    >
-      <SlideBodyTitle title="Добавьте сотрудника!" />
-      <div class="flex flex-col items-center gap-[45px]">
-        <div class="max-w-[600px]">
-          <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-            <p class=" text-[#4C4C4D]">
-              И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое
-            </p>
-          </article>
-        </div>
-
-        <img
-          v-if="showPreviewPicture"
-          src="@/assets/images/slides/addEmployes.png"
-          class="w-[560px] h-[315px] cursor-pointer"
-          @click="playVideo"
-        >
-        <iframe
-          v-if="!showPreviewPicture"
-          width="560"
-          height="315"
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
-          title="YouTube video player"
-          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E]"
-        />
-
-        <SlideBodyButton
-          text="Добавить сотрудников"
-          @click="clickAddEmployees"
-        />
-      </div>
-    </div>
-    <!-- delegateTasks -->
-    <div
-      v-if="name === 'delegateTasks'"
-      class="flex flex-col items-center text-center"
-    >
-      <SlideBodyTitle title="Делегируйте задачи!" />
-      <div class="flex flex-col items-center gap-[45px]">
-        <div class="max-w-[600px]">
-          <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-            <p class=" text-[#4C4C4D]">
-              Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок
-            </p>
-          </article>
-        </div>
-        <img
-          v-if="showPreviewPicture"
-          src="@/assets/images/slides/addEmployes.png"
-          class="w-[560px] h-[315px] cursor-pointer"
-          @click="playVideo"
-        >
-        <iframe
-          v-if="!showPreviewPicture"
-          width="560"
-          height="315"
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
-          title="YouTube video player"
-          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E]"
-        />
-
-        <SlideBodyButton
-          v-if="name === 'delegateTasks'"
-          text="Поручить задачу"
-          @click="showInspector = true"
-        />
-      </div>
-    </div>
     <div class="flex justify-center h-[87vh] pt-[102px]">
+      <div
+        v-if="name === 'doitnowstart'"
+        class="flex flex-col items-center text-center"
+      >
+        <SlideBodyTitle title="Вы в Очереди!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь
+              </p>
+            </article>
+          </div>
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
+          <iframe
+            v-if="!showPreviewPicture"
+            width="560"
+            height="315"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+            title="YouTube video player"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
+          />
+
+          <SlideBodyButton
+            text="Начать"
+            @click="nextTask"
+          />
+        </div>
+      </div>
+      <!-- addEmployees -->
+      <div
+        v-if="name === 'addEmployees'"
+        class="flex flex-col items-center text-center"
+      >
+        <SlideBodyTitle title="Добавьте сотрудника!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое
+              </p>
+            </article>
+          </div>
+
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
+          <iframe
+            v-if="!showPreviewPicture"
+            width="560"
+            height="315"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+            title="YouTube video player"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
+          />
+
+          <SlideBodyButton
+            text="Добавить сотрудников"
+            @click="clickAddEmployees"
+          />
+        </div>
+      </div>
+      <!-- delegateTasks -->
+      <div
+        v-if="name === 'delegateTasks'"
+        class="flex flex-col items-center text-center"
+      >
+        <SlideBodyTitle title="Делегируйте задачи!" />
+        <div class="flex flex-col items-center gap-[45px]">
+          <div class="max-w-[600px]">
+            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+              <p class=" text-[#4C4C4D]">
+                Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок
+              </p>
+            </article>
+          </div>
+          <img
+            v-if="showPreviewPicture"
+            src="@/assets/images/slides/addEmployes.png"
+            class="w-[560px] h-[315px] cursor-pointer"
+            @click="playVideo"
+          >
+          <iframe
+            v-if="!showPreviewPicture"
+            width="560"
+            height="315"
+            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+            title="YouTube video player"
+            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="border-[3px] rounded-xl border-[#2E2E2E]"
+          />
+
+          <SlideBodyButton
+            v-if="name === 'delegateTasks'"
+            text="Поручить задачу"
+            @click="showInspector = true"
+          />
+        </div>
+      </div>
       <!-- addAvatar -->
       <div
         v-if="name === 'addAvatar'"
@@ -225,12 +225,17 @@ export default {
       uploadedAvatar: '',
       changeAvatar: false,
       avatarType: '',
-      showPreviewPicture: true
+      showPreviewPicture: true,
+      showAddEmployee: false,
+      showUsersLimit: false
     }
   },
   computed: {
     storeNavigator () {
       return this.$store.getters.sortedNavigator
+    },
+    isLicenseExpired () {
+      return this.$store.getters.isLicenseExpired
     }
   },
   watch: {
@@ -268,8 +273,18 @@ export default {
       this.$emit('next')
     },
     clickAddEmployees () {
-      this.nextTask()
-      this.$router.push('/settings/employees')
+      if (this.isLicenseExpired) {
+        this.showUsersLimit = true
+        return
+      }
+      // если у нас куплены рабочие места
+      // проверяем на превышение лицензии
+      if (this.user.count_workplaces !== 0 && this.user.count_workplaces <= this.currUserWorkspaces) {
+        this.showUsersLimit = true
+        return
+      }
+
+      this.showAddEmployee = true
       this.$store.commit(NAVIGATOR_SUCCESS)
     },
     clickDoitnowStartSuccess () {
