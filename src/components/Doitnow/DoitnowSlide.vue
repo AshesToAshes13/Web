@@ -281,11 +281,6 @@ export default {
     }
   },
   methods: {
-    clickAddAvatar () {
-      this.nextTask()
-      this.$router.push('/account/myaccount')
-      this.$store.commit(NAVIGATOR_SUCCESS)
-    },
     changeUserPhoto (event) {
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
       const file = event.target.files[0]
@@ -349,11 +344,6 @@ export default {
     clickDoitnowStartSuccess () {
       this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'doitnowstart', visible: false })
       this.nextTask()
-    },
-    clickAddReglament () {
-      this.nextTask()
-      this.$router.push('/reglaments')
-      this.$store.commit(NAVIGATOR_SUCCESS)
     },
     onPostpone (date) {
       const year = String(date.getFullYear()).padStart(4, '0')
