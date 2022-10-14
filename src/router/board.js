@@ -36,8 +36,7 @@ export default [
           {
             path: 'archive',
             name: 'boardArchive',
-            component: () => import('@/components/Board/BoardWithChildren.vue'),
-            props: { showArchive: true },
+            component: () => import('@/components/Board/BoardArchive.vue'),
             meta: {
               title: 'Архив доски'
             }
