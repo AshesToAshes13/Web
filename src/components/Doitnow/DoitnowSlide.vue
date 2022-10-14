@@ -1,5 +1,25 @@
 <template>
   <DoitnowContent>
+    <DoitnowSlidesModalBoxEmployeeLimit
+      v-if="showUsersLimit"
+      @cancel="showUsersLimit = false"
+      @ok="showUsersLimit = false"
+    />
+    <DoitnowSlidesModalBoxAddEmployee
+      v-if="showAddEmployee"
+      :show="showAddEmployee"
+      @cancel="showAddEmployee = false"
+      @save="onAddNewEmp"
+    />
+    <DoitnowSlidesModalBoxOtherOrg
+      v-if="showOtherOrg"
+      @cancel="showOtherOrg = false"
+      @ok="showOtherOrg = false"
+    />
+    <DoitnowSlidesAlreadyExist
+      v-if="alreadyExist"
+      @cancel="alreadyExist = false"
+    />
     <InspectorModalBox
       v-model="showInspector"
       button="warning"
@@ -197,6 +217,11 @@ import SlideBodyTitle from './SlideBodyTitle.vue'
 import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
 import * as SLIDES from '@/store/actions/slides.js'
 import UploadAvatar from '../UploadAvatar.vue'
+import * as EMPLOYEE from '@/store/actions/employees'
+import DoitnowSlidesModalBoxAddEmployee from './DoitnowSlides/DoitnowSlidesModalBoxAddEmployee.vue'
+import DoitnowSlidesModalBoxEmployeeLimit from './DoitnowSlides/DoitnowSlidesModalBoxEmployeeLimit.vue'
+import DoitnowSlidesModalBoxOtherOrg from './DoitnowSlides/DoitnowSlidesModalBoxOtherOrg.vue'
+import DoitnowSlidesAlreadyExist from './DoitnowSlides/DoitnowSlidesAlreadyExist.vue'
 
 export default {
   components: {
@@ -205,7 +230,11 @@ export default {
     InspectorModalBox,
     SlideBodyButton,
     SlideBodyTitle,
-    UploadAvatar
+    UploadAvatar,
+    DoitnowSlidesModalBoxAddEmployee,
+    DoitnowSlidesModalBoxEmployeeLimit,
+    DoitnowSlidesModalBoxOtherOrg,
+    DoitnowSlidesAlreadyExist
   },
   props: {
     name: {
@@ -227,7 +256,10 @@ export default {
       avatarType: '',
       showPreviewPicture: true,
       showAddEmployee: false,
-      showUsersLimit: false
+      showUsersLimit: false,
+      showOtherOrg: false,
+      alreadyExist: false
+
     }
   },
   computed: {
@@ -236,6 +268,9 @@ export default {
     },
     isLicenseExpired () {
       return this.$store.getters.isLicenseExpired
+    },
+    user () {
+      return this.$store.state.user.user
     }
   },
   watch: {
@@ -286,6 +321,30 @@ export default {
 
       this.showAddEmployee = true
       this.$store.commit(NAVIGATOR_SUCCESS)
+    },
+    onAddNewEmp (name, email) {
+      this.showAddEmployee = false
+      const empName = name.trim()
+      const empEmail = email.trim()
+      if (empName && empEmail) {
+        this.$store.dispatch(EMPLOYEE.CREATE_EMPLOYEE_REQUEST, {
+          name: empName,
+          email: empEmail
+        })
+          .catch((e) => {
+            if (e.response?.data?.error === 'the employee is already present in this organization' || e.response?.data?.error === 'the employee has license') {
+              this.showOtherOrg = true
+            }
+            if (e.response?.data?.error === 'the employee is the director of the organization') {
+              this.alreadyExist = true
+            }
+          })
+          .then((resp) => {
+            this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'addEmployees', visible: false })
+            this.nextTask()
+            console.log('onAddNewEmp', resp)
+          })
+      }
     },
     clickDoitnowStartSuccess () {
       this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'doitnowstart', visible: false })
