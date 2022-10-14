@@ -5,8 +5,19 @@
     route="/board"
     :breadcrumbs="breadcrumbs"
   >
+    <router-link
+      v-if="archiveMode"
+      :to="`/board/${boardUid}`"
+    >
+      <BoardSmallButton
+        class="flex items-center px-[10px] py-[5px]"
+        icon="back"
+      >
+        Назад
+      </BoardSmallButton>
+    </router-link>
     <div
-      v-if="onlineUsers?.length"
+      v-if="onlineUsers?.length && !archiveMode"
       class="flex -space-x-1.5"
     >
       <div
@@ -38,9 +49,11 @@ import NavBarSearch from '@/components/Navbar/NavBarSearch.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
 import * as BOARD from '@/store/actions/boards'
+import BoardSmallButton from '@/components/Board/BoardSmallButton'
 
 export default {
   components: {
+    BoardSmallButton,
     NavBarButtonsBoard,
     NavBarSearch,
     NavBar
@@ -53,6 +66,10 @@ export default {
     boardTitle: {
       type: String,
       default: ''
+    },
+    archiveMode: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

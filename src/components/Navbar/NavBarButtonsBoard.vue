@@ -88,11 +88,14 @@
         >
           Создать поддоску
         </PopMenuItem>
-        <router-link :to="archiveLink">
+        <router-link
+          v-if="!inArchive"
+          :to="`/board/${selectedBoardUid}/archive`"
+        >
           <PopMenuItem
             icon="archive"
           >
-            {{ archiveText }}
+            Архив
           </PopMenuItem>
         </router-link>
         <PopMenuItem
@@ -298,19 +301,8 @@ export default {
     quitBoardMessage () {
       return `Вы действительно хотите покинуть доску ${this.selectedBoard.name}? Обратно можно попасть, только если владелец доски опять вас добавит.`
     },
-    archiveLink () {
-      if (this.$route.name === 'boardArchive') {
-        return `/board/${this.selectedBoardUid}/`
-      } else {
-        return `/board/${this.selectedBoardUid}/archive`
-      }
-    },
-    archiveText () {
-      if (this.$route.name === 'boardArchive') {
-        return 'Вернуться в доску'
-      } else {
-        return 'Архив'
-      }
+    inArchive () {
+      return this.$route.name === 'boardArchive'
     },
     board () {
       return this.$store.state.boards.boards[this.boardUid]
