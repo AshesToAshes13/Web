@@ -44,43 +44,12 @@
         @playVideoEmit="playVideo"
       />
       <!-- addEmployees -->
-      <div
+      <DoitnowSlideAddEmployee
         v-if="name === 'addEmployees'"
-        class="flex flex-col items-center text-center"
-      >
-        <SlideBodyTitle title="Добавьте сотрудника!" />
-        <div class="flex flex-col items-center gap-[45px]">
-          <div class="max-w-[600px]">
-            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-              <p class=" text-[#4C4C4D]">
-                И Вы сможете поручать задачи, делегировать работу с клиентами и многое другое
-              </p>
-            </article>
-          </div>
-
-          <img
-            v-if="showPreviewPicture"
-            src="@/assets/images/slides/addEmployes.png"
-            class="w-[560px] h-[315px] cursor-pointer"
-            @click="playVideo"
-          >
-          <iframe
-            v-if="!showPreviewPicture"
-            width="560"
-            height="315"
-            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
-            title="YouTube video player"
-            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="border-[3px] rounded-xl border-[#2E2E2E]"
-          />
-
-          <SlideBodyButton
-            text="Добавить сотрудников"
-            @click="clickAddEmployees"
-          />
-        </div>
-      </div>
+        :show-preview-picture="showPreviewPicture"
+        @clickAddEmployeesEmit="clickAddEmployees"
+        @playVideoEmit="playVideo"
+      />
       <!-- delegateTasks -->
       <div
         v-if="name === 'delegateTasks'"
@@ -188,11 +157,12 @@ import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
 import * as SLIDES from '@/store/actions/slides.js'
 import UploadAvatar from '../UploadAvatar.vue'
 import * as EMPLOYEE from '@/store/actions/employees'
-import DoitnowSlidesModalBoxAddEmployee from './DoitnowSlides/DoitnowSlidesModalBoxAddEmployee.vue'
+import DoitnowSlideDoitnowStart from './DoitnowSlides/DoitnowSlideDoitnowStart.vue'
+import DoitnowSlideAddEmployee from './DoitnowSlides/DoitnowSlideAddEmployee.vue'
 import DoitnowSlidesModalBoxEmployeeLimit from './DoitnowSlides/DoitnowSlidesModalBoxEmployeeLimit.vue'
+import DoitnowSlidesModalBoxAddEmployee from './DoitnowSlides/DoitnowSlidesModalBoxAddEmployee.vue'
 import DoitnowSlidesModalBoxOtherOrg from './DoitnowSlides/DoitnowSlidesModalBoxOtherOrg.vue'
 import DoitnowSlidesAlreadyExist from './DoitnowSlides/DoitnowSlidesAlreadyExist.vue'
-import DoitnowSlideDoitnowStart from './DoitnowSlides/DoitnowSlideDoitnowStart.vue'
 
 export default {
   components: {
@@ -202,11 +172,12 @@ export default {
     SlideBodyButton,
     SlideBodyTitle,
     UploadAvatar,
-    DoitnowSlidesModalBoxAddEmployee,
+    DoitnowSlideDoitnowStart,
+    DoitnowSlideAddEmployee,
     DoitnowSlidesModalBoxEmployeeLimit,
+    DoitnowSlidesModalBoxAddEmployee,
     DoitnowSlidesModalBoxOtherOrg,
-    DoitnowSlidesAlreadyExist,
-    DoitnowSlideDoitnowStart
+    DoitnowSlidesAlreadyExist
   },
   props: {
     name: {
