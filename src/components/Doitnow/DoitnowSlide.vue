@@ -1,7 +1,5 @@
 <template>
-  <DoitnowContent
-    class="max-w-[1129px]"
-  >
+  <DoitnowContent>
     <InspectorModalBox
       v-model="showInspector"
       button="warning"
