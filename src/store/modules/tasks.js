@@ -1259,6 +1259,9 @@ const mutations = {
     visitChildren([state.tags[uid]], (value) => delete state.tags[value.uid])
     delete state.tags[uid]
   },
+  [TASK.REMOVE_ALL_TAGS]: (state) => {
+    state.tags = []
+  },
   [TASK.CHANGE_TASK_NAME]: (state, data) => {
     // в некоторых разделах (например в очереди) newtasks пустые, поэтому может возникнуть ошибка
     try {
