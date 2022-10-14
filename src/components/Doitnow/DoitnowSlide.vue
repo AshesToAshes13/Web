@@ -51,43 +51,12 @@
         @playVideoEmit="playVideo"
       />
       <!-- delegateTasks -->
-      <div
+      <DoitnowSlideDelegateTasks
         v-if="name === 'delegateTasks'"
-        class="flex flex-col items-center text-center"
-      >
-        <SlideBodyTitle title="Делегируйте задачи!" />
-        <div class="flex flex-col items-center gap-[45px]">
-          <div class="max-w-[600px]">
-            <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
-              <p class=" text-[#4C4C4D]">
-                Поручите задачу сотруднику, а наш бот проследит за ее выполнением в срок
-              </p>
-            </article>
-          </div>
-          <img
-            v-if="showPreviewPicture"
-            src="@/assets/images/slides/addEmployes.png"
-            class="w-[560px] h-[315px] cursor-pointer"
-            @click="playVideo"
-          >
-          <iframe
-            v-if="!showPreviewPicture"
-            width="560"
-            height="315"
-            :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
-            title="YouTube video player"
-            allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="border-[3px] rounded-xl border-[#2E2E2E]"
-          />
-
-          <SlideBodyButton
-            v-if="name === 'delegateTasks'"
-            text="Поручить задачу"
-            @click="showInspector = true"
-          />
-        </div>
-      </div>
+        :show-preview-picture="showPreviewPicture"
+        @clickShowInspectorEmit="clickShowInspector"
+        @playVideoEmit="playVideo"
+      />
       <!-- addAvatar -->
       <div
         v-if="name === 'addAvatar'"
@@ -151,7 +120,6 @@ import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 
 import InspectorModalBox from '@/components/Inspector/InspectorModalBox.vue'
-import SlideBodyButton from './SlideBodyButton.vue'
 import SlideBodyTitle from './SlideBodyTitle.vue'
 import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
 import * as SLIDES from '@/store/actions/slides.js'
@@ -163,13 +131,13 @@ import DoitnowSlidesModalBoxEmployeeLimit from './DoitnowSlides/DoitnowSlidesMod
 import DoitnowSlidesModalBoxAddEmployee from './DoitnowSlides/DoitnowSlidesModalBoxAddEmployee.vue'
 import DoitnowSlidesModalBoxOtherOrg from './DoitnowSlides/DoitnowSlidesModalBoxOtherOrg.vue'
 import DoitnowSlidesAlreadyExist from './DoitnowSlides/DoitnowSlidesAlreadyExist.vue'
+import DoitnowSlideDelegateTasks from './DoitnowSlides/DoitnowSlideDelegateTasks.vue'
 
 export default {
   components: {
     DoitnowRightButtonPostpone,
     DoitnowContent,
     InspectorModalBox,
-    SlideBodyButton,
     SlideBodyTitle,
     UploadAvatar,
     DoitnowSlideDoitnowStart,
@@ -177,7 +145,8 @@ export default {
     DoitnowSlidesModalBoxEmployeeLimit,
     DoitnowSlidesModalBoxAddEmployee,
     DoitnowSlidesModalBoxOtherOrg,
-    DoitnowSlidesAlreadyExist
+    DoitnowSlidesAlreadyExist,
+    DoitnowSlideDelegateTasks
   },
   props: {
     name: {
@@ -244,6 +213,9 @@ export default {
     nextTask () {
       this.showPreviewPicture = true
       this.$emit('next')
+    },
+    clickShowInspector () {
+      this.showInspector = true
     },
     clickAddEmployees () {
       if (this.isLicenseExpired) {
