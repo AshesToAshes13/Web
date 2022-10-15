@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center mt-[100px]">
     <svg
       width="160"
       height="160"
