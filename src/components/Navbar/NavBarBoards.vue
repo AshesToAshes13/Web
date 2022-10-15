@@ -5,19 +5,8 @@
     route="/board"
     :breadcrumbs="breadcrumbs"
   >
-    <router-link
-      v-if="archiveMode"
-      :to="`/board/${boardUid}`"
-    >
-      <BoardSmallButton
-        class="flex items-center px-[10px] py-[5px]"
-        icon="back"
-      >
-        Назад
-      </BoardSmallButton>
-    </router-link>
     <div
-      v-if="onlineUsers?.length && !archiveMode"
+      v-if="onlineUsers?.length"
       class="flex -space-x-1.5"
     >
       <div
@@ -28,6 +17,7 @@
         <img
           :title="user.name"
           class="w-[30px] h-[30px] rounded-full"
+          :alt="user.name"
           :src="user.fotolink"
         >
       </div>
@@ -49,11 +39,9 @@ import NavBarSearch from '@/components/Navbar/NavBarSearch.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
 import * as BOARD from '@/store/actions/boards'
-import BoardSmallButton from '@/components/Board/BoardSmallButton'
 
 export default {
   components: {
-    BoardSmallButton,
     NavBarButtonsBoard,
     NavBarSearch,
     NavBar
@@ -66,10 +54,6 @@ export default {
     boardTitle: {
       type: String,
       default: ''
-    },
-    archiveMode: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {

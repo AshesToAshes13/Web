@@ -272,7 +272,7 @@
               ghost-class="ghost-card"
               item-key="uid"
               group="cards"
-              :disabled="isReadOnlyBoard || isFiltered || showArchive || isSavingMoveNow"
+              :disabled="isReadOnlyBoard || isFiltered || isSavingMoveNow"
               :move="checkMoveDragCard"
               :fallback-tolerance="1"
               :force-fallback="true"
@@ -347,7 +347,7 @@
       <template #footer>
         <!-- кнопка Добавить колонку -->
         <div
-          v-if="board.type_access === 1 && !showArchive"
+          v-if="board.type_access === 1"
           class="flex-none bg-white rounded-xl w-[280px] h-[48px] mr-[10px] px-[12px]"
         >
           <BoardInputValue
@@ -438,10 +438,6 @@ export default {
     board: {
       type: Object,
       default: () => ({})
-    },
-    showArchive: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
@@ -602,16 +598,11 @@ export default {
       return this.hexToRgb(color, 20, opacity)
     },
     isColumnVisible (column) {
-      if (this.showArchive) {
-        // показываем только архив
-        return column.Archive
-      }
       // скрываем архив
       if (column.Archive) return false
       // скрываем пустое неразобранное
       const isDragCardFromUnsortedNow = this.dragCardParam?.move?.column?.Unsorted ?? false
-      if (column.Unsorted && column.cards.length === 0 && !isDragCardFromUnsortedNow) return false
-      return true
+      return !(column.Unsorted && column.cards.length === 0 && !isDragCardFromUnsortedNow)
     },
     totalItem (cards) {
       const cost = cards.reduce((sum, card) => sum + card.cost, 0)
