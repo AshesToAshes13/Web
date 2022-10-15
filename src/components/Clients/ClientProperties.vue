@@ -126,18 +126,14 @@
       :key="index"
     >
       <div
-        class="mt-3 p-3 bg-[#f5f5f5] rounded-[10px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
-        style="border: 1px solid #E5E5E5;"
+        class="mt-3 p-3 bg-[#f5f5f5] rounded-[10px] border font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
       >
-        <div class="text-center w-full my-3">
-          {{ cards[index].name }}
-        </div>
-        <CardChat
+        <ClientCardChatMessages
           v-if="card"
-          :current-user-uid="user.current_user_uid"
+          :card-name="cards[index].name"
           :messages="card"
           :employees="employees"
-          :in-doitnow="true"
+          :current-user-uid="user.current_user_uid"
         />
       </div>
     </div>
@@ -185,10 +181,10 @@ import ClientChat from '@/components/Clients/ClientChat.vue'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput.vue'
 import ClientMessageInput from '@/components/Clients/ClientMessageInput.vue'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
-import CardChat from '../CardProperties/CardChat.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
+import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages.vue'
 
 export default {
   components: {
@@ -202,7 +198,7 @@ export default {
     ClientChat,
     ClientMessageQuoteUnderInput,
     ClientMessageInput,
-    CardChat,
+    ClientCardChatMessages,
     MessageSkeleton
   },
   data () {
