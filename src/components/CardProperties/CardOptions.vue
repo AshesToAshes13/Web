@@ -1,48 +1,3 @@
-<script>
-import PopMenu from '@/components/Common/PopMenu.vue'
-import PopMenuItem from '@/components/Common/PopMenuItem.vue'
-import PopMenuHeader from '@/components/Common/PopMenuHeader.vue'
-
-export default {
-  components: {
-    PopMenu,
-    PopMenuItem,
-    PopMenuHeader
-  },
-  props: {
-    dateCreate: {
-      type: String,
-      default: ''
-    },
-    showFilesOnly: {
-      type: Boolean,
-      default: false
-    },
-    creator: {
-      type: String,
-      default: ''
-    },
-    canEdit: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  emits: ['clickRemoveButton', 'toggleShowOnlyFiles'],
-  computed: {
-    employees () { return this.$store.state.employees.employees },
-    cardDateCreate () {
-      let dateCreateString = this.dateCreate
-      if (!dateCreateString) {
-        dateCreateString = new Date().toISOString()
-      } else if (dateCreateString[dateCreateString.length - 1] !== 'Z') {
-        dateCreateString = dateCreateString + 'Z'
-      }
-      return new Date(dateCreateString).toLocaleString()
-    }
-  }
-}
-</script>
 <template>
   <div class="flex items-center bg-[#F4F5F7] rounded-[6px] text-[#575758] text-[12px] font-[500]">
     <PopMenu>
@@ -108,3 +63,49 @@ export default {
     </PopMenu>
   </div>
 </template>
+
+<script>
+import PopMenu from '@/components/Common/PopMenu.vue'
+import PopMenuItem from '@/components/Common/PopMenuItem.vue'
+import PopMenuHeader from '@/components/Common/PopMenuHeader.vue'
+
+export default {
+  components: {
+    PopMenu,
+    PopMenuItem,
+    PopMenuHeader
+  },
+  props: {
+    dateCreate: {
+      type: String,
+      default: ''
+    },
+    showFilesOnly: {
+      type: Boolean,
+      default: false
+    },
+    creator: {
+      type: String,
+      default: ''
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  emits: ['clickRemoveButton', 'toggleShowOnlyFiles'],
+  computed: {
+    employees () { return this.$store.state.employees.employees },
+    cardDateCreate () {
+      let dateCreateString = this.dateCreate
+      if (!dateCreateString) {
+        dateCreateString = new Date().toISOString()
+      } else if (dateCreateString[dateCreateString.length - 1] !== 'Z') {
+        dateCreateString = dateCreateString + 'Z'
+      }
+      return new Date(dateCreateString).toLocaleString()
+    }
+  }
+}
+</script>
