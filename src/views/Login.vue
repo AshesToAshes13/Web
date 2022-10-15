@@ -685,7 +685,7 @@ export default {
         organization: this.form.email,
         name: this.form.username,
         email: this.form.email,
-        phone: this.form.phone,
+        phone: this.form.phone.replace(/[^a-zA-Z0-9+]/g, ''),
         comment: 'Комментарий контакта',
         date_create: new Date().toLocaleString()
       }
