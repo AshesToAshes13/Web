@@ -845,11 +845,12 @@ export default {
           this.$store.dispatch(USER_START_ONBOARDING)
           // демо-данные для новых пользователей
           this.createDemoElementsAfterRegister()
-          this.$router.push('/doitnow')
         })
         .catch(() => {
           this.form.showError = true
           this.form.errorMessage = 'Unknown error'
+        }).finally(() => {
+          this.$router.push('/doitnow')
         })
     },
     pad2 (n) {
