@@ -1,13 +1,11 @@
 <template>
-  <div
+  <ClientsOnboarding
     v-if="displayModal"
-    class="mt-[100px] flex flex-col items-center justify-center"
+    @okToModal="okToModal"
+  />
+  <template
+    v-else
   >
-    <ClientsOnboarding
-      @okToModal="okToModal"
-    />
-  </div>
-  <div v-if="!displayModal">
     <ModalBoxAddClient
       v-if="showAddClient"
       title="Добавить контакт"
@@ -93,7 +91,7 @@
         />
       </div>
     </div>
-  </div>
+  </template>
 </template>
 <script>
 import * as CLIENTS from '@/store/actions/clients'
@@ -146,9 +144,6 @@ export default {
     currentPageRouter () {
       return Number(this.$route.query.page) || 1
     },
-    searchValue () {
-      return this.$route.query.search || ''
-    },
     isCorpYandexIntegrated () {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
@@ -168,11 +163,6 @@ export default {
     },
     currentPageRouter () {
       this.requestClients()
-    },
-    searchValue (searchValue) {
-      if (!searchValue) {
-        this.requestClients()
-      }
     }
   },
   mounted () {
