@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import BoardModalBoxBoardsLimit from '@/components/Board/BoardModalBoxBoardsLimit.vue'
+import BoardModalBoxBoardsLimit from '@/components/Board/modalboxes/BoardModalBoxBoardsLimit.vue'
 import AsideMenuListAdd from '@/components/AsideMenu/AsideMenuListAdd.vue'
 import AsideMenuListInput from '@/components/AsideMenu/AsideMenuListInput.vue'
 import BoardsSubmenuGroup from '@/components/AsideMenu/BoardsSubmenuGroup.vue'

@@ -103,7 +103,7 @@ import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
 import ListBlocAdd from '@/components/Common/ListBlocAdd.vue'
 import ListBlocItem from '@/components/Common/ListBlocItem.vue'
-import BoardModalBoxRename from '@/components/Board/BoardModalBoxRename.vue'
+import BoardModalBoxRename from '@/components/Board/modalboxes/BoardModalBoxRename.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import PropsButtonMenu from '@/components/Common/PropsButtonMenu.vue'
 
