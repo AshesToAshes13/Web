@@ -40,10 +40,10 @@
 import OnBoardingButton from '../onBoarding/onBoardingButton.vue'
 export default {
   components: { OnBoardingButton },
-  emits: ['ok'],
+  emits: ['okToModal'],
   methods: {
     onOk () {
-      this.$emit('ok')
+      this.$emit('okToModal')
     }
   }
 }
