@@ -140,8 +140,7 @@
     </div>
   </template>
   <!-- Chat skeleton -->
-  <YandexIntegrationSkeleton v-if="yandexIntegrationStatus" />
-  <MessageSkeleton v-if="status=='loading'" />
+  <MessageSkeleton v-if="skeletonLoading" />
   <ClientChat
     v-if="status=='success'"
     :messages="clientMessages"
@@ -171,7 +170,6 @@
   </div>
 </template>
 <script>
-import YandexIntegrationSkeleton from '@/components/TaskProperties/YandexIntegrationSkeleton.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import PopMenuHeader from '@/components/Common/PopMenuHeader.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
@@ -196,7 +194,6 @@ export default {
     PopMenuHeader,
     ModalBoxDelete,
     PopMenu,
-    YandexIntegrationSkeleton,
     ClientChat,
     ClientMessageQuoteUnderInput,
     ClientMessageInput,
@@ -220,6 +217,9 @@ export default {
   computed: {
     selectedClient () {
       return this.$store.state.clients.selectedClient ?? ''
+    },
+    skeletonLoading () {
+      return this.status === 'loading' || this.yandexIntegrationStatus
     },
     corpYandexIntegration () {
       return this.$store.state.corpYandexIntegration.isIntegrated
