@@ -40,7 +40,7 @@
           for="iconfile"
           class="w-[238px] h-[40px] justify-center cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-[68px] py-3 rounded-md hover:bg-slate-200 hover:text-[#422b14] font-medium"
         >
-          Загрузить
+          Установить
         </label>
         <br>
       </div>
