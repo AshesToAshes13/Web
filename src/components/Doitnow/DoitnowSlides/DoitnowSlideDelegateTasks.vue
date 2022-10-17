@@ -29,7 +29,7 @@
       />
 
       <SlideBodyButton
-        text="Поручить задачу"
+        text="Поручить"
         @click="clickShowInspector"
       />
     </div>

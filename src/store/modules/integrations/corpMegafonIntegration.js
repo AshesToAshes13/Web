@@ -146,6 +146,24 @@ const actions = {
           reject(err)
         })
     })
+  },
+  [CORP_MEGAFON.CALL_CLIENT]: ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/call/' + data.phone
+      const body = {
+        atsKey: data.atsKey,
+        login: data.login,
+        atsLink: data.atsLink
+      }
+      axios({ url: url, method: 'POST', data: body })
+        .then((resp) => {
+          resolve(resp)
+        })
+        .catch((err) => {
+          console.log('ошибка при запросе организации')
+          reject(err)
+        })
+    })
   }
 }
 
@@ -158,6 +176,13 @@ const mutations = {
     state.isIntegrated = true
   },
   [CORP_MEGAFON.MEGAFON_REMOVE_CORP_INTEGRATION]: (state) => {
+    state.atsKey = ''
+    state.crmKey = ''
+    state.atsLink = ''
+    state.megafonUsers = []
+    state.isIntegrated = false
+  },
+  [CORP_MEGAFON.MEGAFON_RESET_CORP_INTEGRATION]: (state) => {
     state.atsKey = ''
     state.crmKey = ''
     state.atsLink = ''

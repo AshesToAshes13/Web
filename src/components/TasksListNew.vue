@@ -12,12 +12,7 @@
     @cancel="showTasksLimit = false"
     @ok="showTasksLimit = false"
   />
-  <TaskListUnboardingCard
-    v-if="displayModal"
-    @ok="okToModal"
-  />
   <div
-    v-else
     class="lg:mr-0"
     :class="{'mr-96': isPropertiesMobileExpanded}"
   >
@@ -304,7 +299,6 @@ import TaskListIconLabel from '@/components/TasksList/TaskListIconLabel.vue'
 import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel.vue'
 import TaskListActionHoverPanel from '@/components/TasksList/TaskListActionHoverPanel.vue'
 import TaskListModalBoxLicenseLimit from '@/components/TasksList/TaskListModalBoxLicenseLimit.vue'
-import TaskListUnboardingCard from '@/components/TasksList/TaskListUnboardingCard.vue'
 import TaskListEdit from '@/components/TasksList/TaskListEdit.vue'
 import TasksSkeleton from '@/components/TasksList/TasksSkeleton.vue'
 import { shouldAddTaskIntoList } from '@/websync/utils'
@@ -347,8 +341,7 @@ export default {
     TaskStatus,
     contenteditable,
     TaskListActionHoverPanel,
-    TaskListModalBoxLicenseLimit,
-    TaskListUnboardingCard
+    TaskListModalBoxLicenseLimit
   },
   directives: {
     linkify
@@ -428,9 +421,6 @@ export default {
     },
     copiedTasks () {
       return this.$store.state.tasks.copiedTasks
-    },
-    displayModal () {
-      return !this.$store.state.onboarding.visitedModals?.includes('tasks') && this.$store.state.onboarding.showModals
     },
     lastSelectedTaskUid () {
       return this.$store.state.tasks.selectedTask?.uid || ''
@@ -892,7 +882,11 @@ export default {
       })
     },
     okToModal () {
-      this.$store.commit(USER_VIEWED_MODAL, 'tasks')
+      if (this.$route.name === 'tasksToday') {
+        this.$store.commit(USER_VIEWED_MODAL, 'tasks')
+        return
+      }
+      this.$store.commit(USER_VIEWED_MODAL, 'projects')
     },
     copyTaskName (task) {
       navigator.clipboard.writeText(task.name)

@@ -126,6 +126,12 @@ const actions = {
 }
 
 const mutations = {
+  [PERSONAL_YANDEX.RESET_PERSONAL_YANDEX_STATE]: (state) => {
+    state.login = null
+    state.password = null
+    state.isIntegrated = false
+    state.isLoading = false
+  },
   [PERSONAL_YANDEX.YANDEX_START_LOADING]: (state) => {
     state.isLoading = true
   },
