@@ -29,7 +29,7 @@
       />
 
       <SlideBodyButton
-        text="Начать"
+        text="Попробовать"
         @click="clickDoitnowStartSuccess"
       />
     </div>
