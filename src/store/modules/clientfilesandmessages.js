@@ -1,4 +1,4 @@
-import { uuidv4 } from '@/helpers/functions'
+import { uuidv4, stripPhoneNumber } from '@/helpers/functions'
 
 import * as CLIENT_FILES_AND_MESSAGES from '../actions/clientfilesandmessages'
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
@@ -157,11 +157,7 @@ const actions = {
     const promises = [messages, files]
 
     if (data.megafonIntegration) {
-      let preparedClientPhone = data.clientPhone
-      if (preparedClientPhone[0] === '8') {
-        preparedClientPhone[0] = '7'
-      }
-      preparedClientPhone = data.clientPhone.replaceAll(/(\s|\(|\)|\+|-)/g, '')
+      const preparedClientPhone = stripPhoneNumber(data.clientPhone)
       const megafonCallHistory = dispatch(CORP_MEGAFON.GET_CALL_HISTORY, {
         phone: preparedClientPhone,
         crmKey: data.crmKey

@@ -58,6 +58,7 @@
     <button
       v-if="showCallButton"
       class="flex mt-[10px] gap-[5px] items-center justify-center p-3 border-[1px] border-[#6b6868] rounded-[10px] font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d] w-5/12"
+      @click="callClient"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +184,8 @@ import ClientMessageInput from '@/components/Clients/ClientMessageInput.vue'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import { uuidv4 } from '@/helpers/functions'
+import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
+import { uuidv4, stripPhoneNumber } from '@/helpers/functions'
 import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages.vue'
 
 export default {
@@ -234,13 +236,27 @@ export default {
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
     },
-    status () { return this.$store.state.clientfilesandmessages.status },
-    user () { return this.$store.state.user.user },
-    employees () { return this.$store.state.employees.employees },
-    canAddFiles () { return !this.$store.getters.isLicenseExpired },
-    clientMessages () { return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages] },
-    cards () { return this.$store.state.clientfilesandmessages.cards.cards },
-    cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
+    status () {
+      return this.$store.state.clientfilesandmessages.status
+    },
+    user () {
+      return this.$store.state.user.user
+    },
+    employees () {
+      return this.$store.state.employees.employees
+    },
+    canAddFiles () {
+      return !this.$store.getters.isLicenseExpired
+    },
+    clientMessages () {
+      return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages]
+    },
+    cards () {
+      return this.$store.state.clientfilesandmessages.cards.cards
+    },
+    cardMessages () {
+      return this.$store.state.clientfilesandmessages.cards.messages
+    },
     validateNumber () {
       const phone = this.currClient.phone
       if (phone.length < 10) return false
@@ -259,7 +275,11 @@ export default {
         )
     },
     showCallButton () {
-      return this.$store.state.corpMegafonIntegration.isIntegrated && this.currClient.phone
+      return (
+        this.$store.state.corpMegafonIntegration.isIntegrated &&
+        this.currClient.phone &&
+        this.$store.state.corpMegafonIntegration.megafonUsers.findIndex((megafonUser) => megafonUser.uidUser === this.user.current_user_uid) !== -1
+      )
     }
   },
   watch: {
@@ -421,6 +441,15 @@ export default {
     },
     deleteClientFileMessage (uid) {
       this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.DELETE_FILE_REQUEST, uid)
+    },
+    callClient () {
+      const phone = stripPhoneNumber(this.currClient.phone)
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
+        phone: phone,
+        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
+        login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
+        atsLink: this.$store.state.corpMegafonIntegration.atsLink
+      })
     }
   }
 }
