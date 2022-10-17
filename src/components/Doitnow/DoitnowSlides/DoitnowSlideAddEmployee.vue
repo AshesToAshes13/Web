@@ -30,7 +30,7 @@
       />
 
       <SlideBodyButton
-        text="Добавить сотрудников"
+        text="Добавить"
         @click="clickAddEmployees"
       />
     </div>
