@@ -259,6 +259,9 @@ export default {
     orgEmployees () {
       return this.$store.state.navigator.navigator.emps.items
     },
+    user () {
+      return this.$store.state.user.user
+    },
     employeesByEmail () {
       return this.$store.state.employees.employeesByEmail
     }
@@ -276,6 +279,7 @@ export default {
     setPerformerCurrentUser () {
       // ставим исполнителем себя
       const currentUserEmail = this.$store.state.employees.employees[this.currentUserUid]?.email
+      this.$store.state.tasks.selectedTask.uid_performer = this.user.current_user_uid
       this.changePerformer(currentUserEmail)
     },
     changePerformer (userEmail) {
