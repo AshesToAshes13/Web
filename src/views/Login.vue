@@ -321,7 +321,6 @@ export default {
         email_creator: this.form.email
       }
       this.$store.dispatch(BOARD.CREATE_BOARD_REQUEST, boardData).then((res) => {
-        alert()
         const board = res.data
         board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
         board.color = '#A998B6'
