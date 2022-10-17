@@ -1,35 +1,35 @@
-import { createStore } from 'vuex'
-import axios from 'axios'
 import { darkModeKey } from '@/config.js'
+import { setLocalStorageItem } from '@/store/helpers/functions'
+import onboarding from '@/store/modules/onboarding.js'
+import slides from '@/store/modules/slides.js'
+import axios from 'axios'
+import { createStore } from 'vuex'
+import auth from './modules/auth'
+import boardforms from './modules/boardforms'
+import boards from './modules/boards'
+import calendar from './modules/calendar'
+import cardfilesandmessages from './modules/cardfilesandmessages'
+import cards from './modules/cards'
+import clientfilesandmessages from './modules/clientfilesandmessages'
+import clients from './modules/clients'
+import colors from './modules/colors'
+import departments from './modules/departments'
+import employees from './modules/employees'
+import inspector from './modules/inspector'
 import corpMegafonIntegration from './modules/integrations/corpMegafonIntegration'
 import corpYandexIntegration from './modules/integrations/corpYandexIntegration'
 import personalYandexIntegration from './modules/integrations/personalYandexIntegration'
-import auth from './modules/auth'
+import localization from './modules/localization'
 import navigator from './modules/navigator'
-import calendar from './modules/calendar'
-import user from './modules/user'
-import onboarding from '@/store/modules/onboarding.js'
-import slides from '@/store/modules/slides.js'
-import tasks from './modules/tasks'
-import { setLocalStorageItem } from '@/store/helpers/functions'
-import taskfilesandmessages from './modules/taskfilesandmessages'
-import cardfilesandmessages from './modules/cardfilesandmessages'
-import employees from './modules/employees'
-import departments from './modules/departments'
+import notificationtasks from './modules/notification_tasks'
 import projects from './modules/projects'
-import clients from './modules/clients'
 import reglaments from './modules/reglaments'
 import reglamentAnswers from './modules/reglament_answers'
 import reglamentQuestions from './modules/reglament_questions'
-import boards from './modules/boards'
-import cards from './modules/cards'
-import colors from './modules/colors'
-import localization from './modules/localization'
-import inspector from './modules/inspector'
-import notificationtasks from './modules/notification_tasks'
 import tabs from './modules/tabs'
-import clientfilesandmessages from './modules/clientfilesandmessages'
-import boardforms from './modules/boardforms'
+import taskfilesandmessages from './modules/taskfilesandmessages'
+import tasks from './modules/tasks'
+import user from './modules/user'
 
 export default createStore({
   state: {
@@ -39,6 +39,9 @@ export default createStore({
 
     /* Properties state: (project, task, color, tag, empmloyee) */
     propertiesState: null,
+
+    // последний оффер по которому кликнули
+    clickedOffer: '',
 
     /* User */
     userName: null,
@@ -80,12 +83,23 @@ export default createStore({
       if (payload.avatar) {
         state.userAvatar = payload.avatar
       }
+    },
+
+    SET_CLICK_OFFER (state, value) {
+      state.clickedOffer = value
     }
   },
   actions: {
+    setClickOffer ({ commit }, value) {
+      setLocalStorageItem('clicked-offer', value)
+      commit('SET_CLICK_OFFER', value)
+    },
+
     asideMobileToggle ({ commit, state }, payload = null) {
       const isShow = payload !== null ? payload : !state.isAsideMobileExpanded
-      document.getElementById('app').classList[isShow ? 'add' : 'remove']('ml-80', 'xl:ml-0')
+      document
+        .getElementById('app')
+        .classList[isShow ? 'add' : 'remove']('ml-80', 'xl:ml-0')
       document.documentElement.classList[isShow ? 'add' : 'remove']('m-clipped')
 
       commit('basic', {
@@ -95,8 +109,11 @@ export default createStore({
     },
 
     asidePropertiesToggle ({ commit, state }, payload = null) {
-      const isShow = payload !== null ? payload : !state.isPropertiesMobileExpanded
-      document.getElementById('app').classList[isShow ? 'add' : 'remove']('mr-96')
+      const isShow =
+        payload !== null ? payload : !state.isPropertiesMobileExpanded
+      document
+        .getElementById('app')
+        .classList[isShow ? 'add' : 'remove']('mr-96')
       document.documentElement.classList[isShow ? 'add' : 'remove']('m-clipped')
 
       commit('basic', {
@@ -106,13 +123,18 @@ export default createStore({
     },
 
     asideLgToggle ({ commit, state }, payload = null) {
-      commit('basic', { key: 'isAsideLgActive', value: payload !== null ? payload : !state.isAsideLgActive })
+      commit('basic', {
+        key: 'isAsideLgActive',
+        value: payload !== null ? payload : !state.isAsideLgActive
+      })
     },
 
     fullScreenToggle ({ commit, state }, value) {
       commit('basic', { key: 'isFullScreen', value })
 
-      document.documentElement.classList[value ? 'add' : 'remove']('full-screen')
+      document.documentElement.classList[value ? 'add' : 'remove'](
+        'full-screen'
+      )
     },
 
     darkMode ({ commit, state }) {
@@ -137,7 +159,7 @@ export default createStore({
             })
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     }

@@ -20,12 +20,12 @@
       <AsideMenuListItem
         class="mb-[16px]"
         :selected="isPathSelected('account')"
-        :title="user?.current_user_name"
+        :title="currentUserName"
         @click="changeTab('account')"
       >
         <img
           class="rounded-[8px] h-[30px] w-[30px] border-2 border-white"
-          :src="user?.foto_link"
+          :src="currentUserPhoto"
         >
       </AsideMenuListItem>
       <router-link to="/doitnow">
@@ -195,7 +195,15 @@
       />
       <EventAlert
         v-if="licenseAlert"
-        :tarif="user?.tarif"
+        class="mb-[16px]"
+        :tarif="tarif"
+      />
+      <MainMenuOffer
+        v-if="showOffer"
+        class="mb-[16px]"
+        :title="offerTitle"
+        :link="offerLink"
+        @click="onOffer"
       />
     </div>
   </aside>
@@ -206,6 +214,7 @@ import InspectorLimit from '@/components/TasksList/InspectorLimit.vue'
 import EventAlert from '@/components/EventAlert.vue'
 import AsideMenuListItem from '@/components/AsideMenu/AsideMenuListItem.vue'
 import AsideMenuListButton from '@/components/AsideMenu/AsideMenuListButton.vue'
+import MainMenuOffer from '@/components/AsideMenu/MainMenuOffer.vue'
 
 import * as TASK from '@/store/actions/tasks.js'
 
@@ -215,15 +224,24 @@ export default {
     EventAlert,
     InspectorModalBox,
     AsideMenuListItem,
-    AsideMenuListButton
+    AsideMenuListButton,
+    MainMenuOffer
   },
   data: () => ({
     showFreeModal: false,
-    showInspector: false
+    showInspector: false,
+    currentDate: new Date(),
+    newDayTimerID: 0
   }),
   computed: {
-    user () {
-      return this.$store.state.user.user
+    currentUserName () {
+      return this.$store.state.user?.user?.current_user_name
+    },
+    currentUserPhoto () {
+      return this.$store.state.user?.user?.foto_link
+    },
+    tarif () {
+      return this.$store.state.user?.user?.tarif
     },
     isAsideMobileExpanded () {
       return this.$store.state.isAsideMobileExpanded
@@ -232,7 +250,41 @@ export default {
       return this.$store.state.navigator.submenu.activeTab
     },
     licenseAlert () {
-      return (this.$store.getters.isLicenseExpired && this.user?.tarif === 'alpha') || (this.user?.tarif === 'free' || this.user?.tarif === 'trial')
+      return (this.$store.getters.isLicenseExpired && this.tarif === 'alpha') || (this.tarif === 'free' || this.tarif === 'trial')
+    },
+    offerTitle () {
+      return this.$store.state.user?.user?.offer?.textru ?? ''
+    },
+    offerLink () {
+      return this.$store.state.user?.user?.offer?.linkru ?? ''
+    },
+    offerBegin () {
+      const dateString = this.$store.state.user?.user?.offer?.datebegin ?? '?'
+      if (dateString.includes(' ')) {
+        const [dateExp, timeExp] = dateString.split(' ')
+        const [dayExp, monthExp, yearExp] = dateExp.split('.')
+        return new Date(`${yearExp}-${monthExp}-${dayExp}T${timeExp}`)
+      }
+      return new Date(dateString)
+    },
+    offerEnd () {
+      const dateString = this.$store.state.user?.user?.offer?.dateend ?? '?'
+      if (dateString.includes(' ')) {
+        const [dateExp, timeExp] = dateString.split(' ')
+        const [dayExp, monthExp, yearExp] = dateExp.split('.')
+        return new Date(`${yearExp}-${monthExp}-${dayExp}T${timeExp}`)
+      }
+      return new Date(dateString)
+    },
+    currentClickOffer () {
+      return (this.offerTitle.trim() + ' ' + this.offerLink.trim()).trim()
+    },
+    lastClickedOffer () {
+      return this.$store.state.clickedOffer
+    },
+    showOffer () {
+      if (!this.offerTitle || !this.offerLink || this.lastClickedOffer === this.currentClickOffer) return false
+      return this.offerEnd >= this.currentDate && this.offerBegin <= this.currentDate
     }
   },
   watch: {
@@ -248,6 +300,21 @@ export default {
   },
   mounted () {
     this.initActiveTab()
+    // устанавливаем текущий день (время сбрасываем)
+    const currDate = new Date()
+    currDate.setHours(0, 0, 0, 0)
+    this.currentDate = currDate
+    // по таймеру проверям - поменялся ли день
+    this.newDayTimerID = setInterval(() => {
+      const newDate = new Date()
+      newDate.setHours(0, 0, 0, 0)
+      if (this.currentDate.getTime() !== newDate.getTime()) {
+        this.currentDate = newDate
+      }
+    }, 1000)
+  },
+  beforeUnmount () {
+    clearInterval(this.newDayTimerID)
   },
   methods: {
     initActiveTab () {
@@ -272,7 +339,7 @@ export default {
       return this.activeTab === code
     },
     shouldShowInspector () {
-      if ((this.user.tarif !== 'alpha' && this.user.tarif !== 'trial') || this.$store.getters.isLicenseExpired) {
+      if ((this.tarif !== 'alpha' && this.tarif !== 'trial') || this.$store.getters.isLicenseExpired) {
         this.showFreeModal = true
         return
       }
@@ -289,6 +356,12 @@ export default {
       }
       this.selectTab(tab)
       this.$store.state.navigator.submenu.status = true
+    },
+    onOffer () {
+      console.log('onOffer')
+      // скрыть кнопку
+      const offer = (this.offerTitle + ' ' + this.offerLink).trim()
+      this.$store.dispatch('setClickOffer', offer)
     }
   }
 }
