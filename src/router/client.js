@@ -4,12 +4,27 @@ import { shouldRedirectToLogin } from './utils'
 export default [
   {
     meta: {
-      layout: Home,
-      title: 'Контакты'
+      layout: Home
     },
     path: '/clients',
-    name: 'clients',
-    component: () => import('@/components/Clients/Clients'),
-    beforeEnter: shouldRedirectToLogin
+    beforeEnter: shouldRedirectToLogin,
+    children: [
+      {
+        path: '',
+        name: 'clients',
+        meta: {
+          title: 'Контакты'
+        },
+        component: () => import('@/components/Clients/Clients')
+      },
+      {
+        path: ':client_id',
+        name: 'clientPage',
+        component: () => import('@/components/Clients/ClientPage'),
+        meta: {
+          title: 'Клиент'
+        }
+      }
+    ]
   }
 ]

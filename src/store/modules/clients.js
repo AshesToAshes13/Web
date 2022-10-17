@@ -27,6 +27,19 @@ const actions = {
         })
     })
   },
+  [CLIENTS.GET_CLIENT]: ({ commit }, data) => {
+    const url = process.env.VUE_APP_INSPECTOR_API + 'clients/client?uid=' + data
+    return new Promise((resolve, reject) => {
+      axios({ url, method: 'GET' })
+        .then(resp => {
+          commit(CLIENTS.SELECT_CLIENT, resp)
+          resolve(resp)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
   // для обновления в реальном времени
   [CLIENTS.GET_CLIENTS_UPDATE]: ({ commit, dispatch, state }, data) => {
     return new Promise((resolve, reject) => {

@@ -95,9 +95,6 @@
 </template>
 <script>
 import * as CLIENTS from '@/store/actions/clients'
-import * as CLIENTS_CHAT from '@/store/actions/clientfilesandmessages.js'
-import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages.js'
-import { REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 
 import NavBarClients from '@/components/Clients/NavBarClients.vue'
@@ -168,10 +165,6 @@ export default {
   mounted () {
     this.requestClients()
   },
-  unmounted () {
-    this.$store.commit(CLIENTS.SELECT_CLIENT, null)
-    this.$store.dispatch('asidePropertiesToggle', false)
-  },
   methods: {
     async requestClients () {
       this.clientUndefined = false
@@ -200,33 +193,8 @@ export default {
       }
     },
     showClientProperties (client) {
-      if (client.uid === this.selectedClient?.uid) {
-        return
-      }
-
-      this.$store.commit(CLIENTS_CHAT.REFRESH_MESSAGES)
-      this.$store.commit(CLIENTS_CHAT.REFRESH_FILES)
-      this.$store.commit(REFRESH_FILES, [])
-      this.$store.commit(REFRESH_MESSAGES, [])
-      this.$store.commit(REFRESH_CARDS)
-
-      const data = {
-        clientUid: client.uid,
-        clientEmail: client.email,
-        clientPhone: client.phone,
-        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
-        corpYandexInt: this.isCorpYandexIntegrated,
-        personalYandexInt: this.isPersonalYandexIntegrated,
-        megafonIntegration: this.isCorpMegafonIntegrated
-      }
-      this.$store.dispatch(CLIENTS_CHAT.FETCH_FILES_AND_MESSAGES, data)
-      if (!this.isPropertiesMobileExpanded) {
-        this.$store.dispatch('asidePropertiesToggle', true)
-      }
-      this.$store.commit('basic', { key: 'propertiesState', value: 'client' })
       this.$store.commit(CLIENTS.SELECT_CLIENT, client)
-      this.$store.dispatch(GET_CLIENT_CARDS, client.uid)
-      console.log('selected client', this.selectedClient)
+      this.$router.push(`/clients/${client.uid}`)
     },
     clickAddClient () {
       this.showAddClient = true
