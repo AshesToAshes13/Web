@@ -268,7 +268,7 @@
             <draggable
               :id="column.UID"
               :data-column-id="column.UID"
-              :list="getPaginatedCards(column.cards, cardQuantityByColumns[column.UID])"
+              :list="column.paginatedCards"
               ghost-class="ghost-card"
               item-key="uid"
               group="cards"
@@ -412,6 +412,8 @@ import { notify } from 'notiwind'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 import BoardOnboarding from './Board/BoardOnboarding.vue'
 
+const DEF_COUNT_CARDS_BY_PAGE = 50
+
 export default {
   directives: {
     dragscroll
@@ -520,9 +522,11 @@ export default {
     filteredColumns () {
       return this.storeCards.map((column) => {
         const cards = this.getColumnCards(column)
+        const paginatedCards = this.getPaginatedCards(cards, this.cardQuantityByColumns[column.UID] || DEF_COUNT_CARDS_BY_PAGE)
         return {
           ...column,
-          cards: cards
+          cards: cards,
+          paginatedCards
         }
       })
     },
@@ -551,7 +555,7 @@ export default {
       immediate: true,
       handler: function (val) {
         val.forEach((column) => {
-          this.cardQuantityByColumns[column.UID] = 50
+          this.cardQuantityByColumns[column.UID] = DEF_COUNT_CARDS_BY_PAGE
         })
       }
     },
@@ -576,7 +580,7 @@ export default {
       const { scrollTop, offsetHeight, scrollHeight } = event.target
 
       if ((scrollTop + offsetHeight) >= scrollHeight && this.cardQuantityByColumns[columnUid] < cardsLength) {
-        this.cardQuantityByColumns[columnUid] += 50
+        this.cardQuantityByColumns[columnUid] += DEF_COUNT_CARDS_BY_PAGE
       }
     },
     getContrastYIQ (hexcolor) {
