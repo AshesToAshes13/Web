@@ -6,11 +6,11 @@
         src="@/assets/images/emptydoitnowpic.png"
         alt="Empty task image"
       >
-      <div class="flex flex-col text-center">
+      <div class="flex flex-col text-center items-center">
         <p class="text-[25px] font-bold leading-[25px] text-[#424242]">
           Отличная работа!
         </p>
-        <div class="w-[320px] flex justify-end mt-[9px]">
+        <div class="w-[185px] flex justify-end mt-[9px]">
           <svg
             width="68"
             height="7"
@@ -29,13 +29,12 @@
         <p class="font-normal text-[18px] text-[#4C4C4D] w-[450px]">
           В Очереди пусто. Запланируем еще дела?
         </p>
-        <div>
-          <router-link to="/tasks/today">
-            <button
-              class="bg-[#F2B679] pl-[40px] font-[500] rounded-[8px] text-[#2E2E2E] flex items-center text-[14px] hover:bg-[#F5DEB3] w-[185px] h-[40px] mr-auto ml-auto mt-[35px] text-center"
-            >
-              Запланировать
-            </button>
+        <div class="mt-[35px] w-[185px]">
+          <router-link
+            to="/tasks/today"
+            class="bg-[#F2B679] pl-[40px] font-[500] rounded-[8px] text-[#2E2E2E] flex items-center text-[14px] hover:bg-[#F5DEB3] h-[40px] mr-auto ml-auto text-center"
+          >
+            Запланировать
           </router-link>
         </div>
       </div>
