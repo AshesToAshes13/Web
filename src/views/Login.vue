@@ -431,6 +431,7 @@ export default {
               })
           })
       })
+      this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT)
       // демо-метки
       const firstTag = {
         back_color: '#4AC7BF',
@@ -799,7 +800,7 @@ export default {
       // можно я не буду комментировать это
       let phone
       try {
-        phone = this.form.phone.replace(/[^a-zA-Z0-9+]/g, '')
+        phone = '+74852685820'.replace(/[^a-zA-Z0-9+]/g, '')
       } catch (err) {
         console.log(err)
         phone = ''
@@ -807,10 +808,10 @@ export default {
       const clientToSend = {
         uid: uuidv4(),
         organization: this.form.email,
-        name: this.form.username,
-        email: this.form.email,
+        name: 'Поддержка ЛидерТаск',
+        email: '911@leadertask.com',
         phone: phone,
-        comment: 'Комментарий контакта',
+        comment: 'Все контакты доступны в разделе Помощь, смотрите Настройки',
         date_create: new Date().toLocaleString()
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
