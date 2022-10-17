@@ -163,6 +163,13 @@ const mutations = {
     state.atsLink = ''
     state.megafonUsers = []
     state.isIntegrated = false
+  },
+  [CORP_MEGAFON.MEGAFON_RESET_CORP_INTEGRATION]: (state) => {
+    state.atsKey = ''
+    state.crmKey = ''
+    state.atsLink = ''
+    state.megafonUsers = []
+    state.isIntegrated = false
   }
 }
 

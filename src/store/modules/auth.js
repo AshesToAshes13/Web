@@ -19,7 +19,7 @@ import { RESET_EMPLOYEE_STATE } from '../actions/employees'
 import { RESET_ONBOARDING_STATE } from '@/store/actions/onboarding'
 import { RESET_CLIENT_STATE } from '@/store/actions/clients'
 import { RESET_COLOR_STATE } from '@/store/actions/colors'
-import { MEGAFON_REMOVE_CORP_INTEGRATION } from '../actions/integrations/corpoMegafonInt'
+import { MEGAFON_RESET_CORP_INTEGRATION } from '../actions/integrations/corpoMegafonInt'
 
 const state = {
   token: localStorage.getItem('user-token') || '',
@@ -168,7 +168,7 @@ const actions = {
       commit(RESET_ONBOARDING_STATE)
       commit(RESET_CLIENT_STATE)
       commit(RESET_COLOR_STATE)
-      commit(MEGAFON_REMOVE_CORP_INTEGRATION)
+      commit(MEGAFON_RESET_CORP_INTEGRATION)
       axios
         .get(url)
         .then((resp) => {
