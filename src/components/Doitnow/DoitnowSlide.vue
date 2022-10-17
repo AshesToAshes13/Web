@@ -1,5 +1,7 @@
 <template>
-  <DoitnowContent>
+  <DoitnowContent
+    class="mb-[15px]"
+  >
     <DoitnowSlidesModalBoxEmployeeLimit
       v-if="showUsersLimit"
       @cancel="showUsersLimit = false"
