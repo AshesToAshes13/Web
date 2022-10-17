@@ -7,10 +7,10 @@
         alt="Empty task image"
       >
       <div class="flex flex-col text-center">
-        <p class="text-[25px] font-bold leading-[25px] text-[#4C4C4D]">
-          Задач пока нет.
+        <p class="text-[25px] font-bold leading-[25px] text-[#424242]">
+          Отличная работа!
         </p>
-        <div class="w-[335px] flex justify-end mt-[9px]">
+        <div class="w-[320px] flex justify-end mt-[9px]">
           <svg
             width="68"
             height="7"

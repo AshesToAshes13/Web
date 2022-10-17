@@ -31,7 +31,7 @@
         class="mb-[35px]"
       >
         <div class="flex flex-col text-center">
-          <p class="text-[25px] font-bold leading-[25px] text-[#4C4C4D]">
+          <p class="text-[25px] font-bold leading-[25px] text-[#424242]">
             Задач пока нет.
           </p>
           <div class="w-[335px] flex justify-end mt-[9px]">
@@ -56,7 +56,7 @@
         </div>
         <div class="grid grid-cols-1">
           <button
-            class="w-[238px] h-[40px] bg-[#F2B679] px-2 rounded-[8px] text-[#3D3E40] text-sm hover:bg-[#F5DEB3] mr-auto ml-auto mt-[35px] whitespace-nowrap font-medium font-[16px]"
+            class="w-[238px] h-[40px] bg-[#F2B679] px-2 rounded-[8px] text-[#2E2E2E] text-sm hover:bg-[#F5DEB3] mr-auto ml-auto mt-[35px] whitespace-nowrap font-medium font-[16px]"
             @click="goToNextDay"
           >
             Запланировать завтра

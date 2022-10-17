@@ -1,7 +1,7 @@
 <template>
   <div
     ref="doitnow"
-    class="w-full overflow-x-hidden"
+    class="w-full overflow-hidden"
     :class="showLimitMessage ? 'h-full' : ''"
   >
     <NavBar
