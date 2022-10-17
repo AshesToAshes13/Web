@@ -1,4 +1,9 @@
 import router from '@/router'
+import { RESET_CLIENT_STATE } from '@/store/actions/clients'
+import { RESET_COLOR_STATE } from '@/store/actions/colors'
+import { RESET_CORP_YANDEX_STATE } from '@/store/actions/integrations/corpoYandexInt'
+import { RESET_PERSONAL_YANDEX_STATE } from '@/store/actions/integrations/personalYandexInt'
+import { RESET_ONBOARDING_STATE } from '@/store/actions/onboarding'
 import { setLocalStorageItem } from '@/store/helpers/functions'
 import axios from 'axios'
 import {
@@ -12,14 +17,11 @@ import {
   GOOGLE_AUTH_REQUEST
 } from '../actions/auth'
 import { RESET_STATE_BOARD } from '../actions/boards'
-import { RESET_STATE_PROJECT } from '../actions/projects'
-import { RESET_REGLAMENTS_STATE } from '../actions/reglaments'
 import { RESET_DEPARTMENTS_STATE } from '../actions/departments'
 import { RESET_EMPLOYEE_STATE } from '../actions/employees'
-import { RESET_ONBOARDING_STATE } from '@/store/actions/onboarding'
-import { RESET_CLIENT_STATE } from '@/store/actions/clients'
-import { RESET_COLOR_STATE } from '@/store/actions/colors'
 import { MEGAFON_RESET_CORP_INTEGRATION } from '../actions/integrations/corpoMegafonInt'
+import { RESET_STATE_PROJECT } from '../actions/projects'
+import { RESET_REGLAMENTS_STATE } from '../actions/reglaments'
 
 const state = {
   token: localStorage.getItem('user-token') || '',
@@ -169,6 +171,8 @@ const actions = {
       commit(RESET_CLIENT_STATE)
       commit(RESET_COLOR_STATE)
       commit(MEGAFON_RESET_CORP_INTEGRATION)
+      commit(RESET_CORP_YANDEX_STATE)
+      commit(RESET_PERSONAL_YANDEX_STATE)
       axios
         .get(url)
         .then((resp) => {
