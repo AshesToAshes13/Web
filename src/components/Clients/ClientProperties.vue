@@ -38,6 +38,7 @@
       <button
         v-if="showCallButton"
         class="flex gap-[5px] items-center justify-center py-[12px] px-[20px] border border-[#F2B679] rounded-[10px] font-roboto text-[#4C4C4D] text-[14px] w-5/12 mt-[25px]"
+        @click="callClient"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -135,6 +136,8 @@
 </template>
 <script>
 import * as CLIENTS from '@/store/actions/clients'
+import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
+import { stripPhoneNumber } from '@/helpers/functions'
 
 export default {
   props: {
@@ -178,7 +181,14 @@ export default {
         )
     },
     showCallButton () {
-      return this.$store.state.corpMegafonIntegration.isIntegrated && this.currClient.phone
+      return (
+        this.$store.state.corpMegafonIntegration.isIntegrated &&
+        this.currClient.phone &&
+        this.$store.state.corpMegafonIntegration.megafonUsers.findIndex((megafonUser) => megafonUser.uidUser === this.user.current_user_uid) !== -1
+      )
+    },
+    user () {
+      return this.$store.state.user.user
     }
   },
   mounted () {
@@ -193,6 +203,15 @@ export default {
     checkForm () {
       const { name } = this.currClient
       return name.length && this.validateNumber && this.validateEmail
+    },
+    callClient () {
+      const phone = stripPhoneNumber(this.currClient.phone)
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
+        phone: phone,
+        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
+        login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
+        atsLink: this.$store.state.corpMegafonIntegration.atsLink
+      })
     }
   }
 }
