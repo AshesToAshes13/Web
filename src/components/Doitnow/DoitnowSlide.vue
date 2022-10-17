@@ -36,7 +36,7 @@
       @nextTask="nextTask"
     />
     <!-- Временные паддинги (по дизайну такие) -->
-    <div class="flex justify-center mt-[102px]">
+    <div class="flex justify-center pt-[102px] pb-[592px]">
       <DoitnowSlideDoitnowStart
         v-if="name === 'doitnowstart'"
         :show-preview-picture="showPreviewPicture"
