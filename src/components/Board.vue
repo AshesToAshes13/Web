@@ -400,7 +400,7 @@ import BoardModalBoxColor from '@/components/Board/modalboxes/BoardModalBoxColor
 import BoardModalBoxMove from '@/components/Board/modalboxes/BoardModalBoxMove.vue'
 
 import BoardModalBoxCardMove from '@/components/Board/modalboxes/BoardModalBoxCardMove.vue'
-import BoardSkeleton from '@/components/Board/BoardSkeleton.vue'
+import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
