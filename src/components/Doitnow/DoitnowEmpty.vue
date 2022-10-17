@@ -3,7 +3,7 @@
     <div class="max-w-xl mx-auto mt-[130px] flex flex-col items-center">
       <img
         class="mx-auto"
-        src="@/assets/images/emptyDoitnow.png"
+        src="@/assets/images/emptydoitnowpic.png"
         alt="Empty task image"
       >
       <div class="flex flex-col text-center">

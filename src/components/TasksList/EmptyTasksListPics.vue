@@ -7,7 +7,7 @@
       <img
         v-show="currentImageIndex === 1"
         class="mx-auto mt-[150px]"
-        src="@/assets/images/emptyTask.png"
+        src="@/assets/images/emptytaskpic.png"
         alt="Empty task image"
       >
       <!-- Анбоардинг -->
