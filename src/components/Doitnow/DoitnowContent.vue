@@ -1,7 +1,7 @@
 <template>
   <div class="flex max-w-[1033px] justify-between gap-[12px]">
     <div
-      class="grow pt-[18px] pb-[30px] px-[25px] bg-white rounded-[12px] overflow-x-hidden border-t-[12px] border-transparent"
+      class="grow pt-[18px] pb-[30px] px-[25px] bg-white rounded-[12px] overflow-hidden border-t-[12px] border-transparent"
       :style="{borderColor: borderColor}"
     >
       <slot />

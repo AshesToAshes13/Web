@@ -1,7 +1,5 @@
 <template>
-  <DoitnowContent
-    class="mb-[15px]"
-  >
+  <DoitnowContent>
     <DoitnowSlidesModalBoxEmployeeLimit
       v-if="showUsersLimit"
       @cancel="showUsersLimit = false"
@@ -38,7 +36,7 @@
       @nextTask="nextTask"
     />
     <!-- Временные паддинги (по дизайну такие) -->
-    <div class="flex justify-center pt-[102px] pb-[185px]">
+    <div class="flex justify-center mt-[102px]">
       <DoitnowSlideDoitnowStart
         v-if="name === 'doitnowstart'"
         :show-preview-picture="showPreviewPicture"
