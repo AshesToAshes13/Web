@@ -2,38 +2,46 @@
   <div
     class="w-full"
   >
-    <NavBarProjects
-      class="pt-[8px]"
-      :project-uid="projectUid"
+    <ProjectsOnboarding
+      v-if="displayModalProjects"
+      @okToModal="okToModal"
     />
-    <div
-      v-if="currentProject"
-    >
-      <div
-        v-if="currentProject?.children?.length"
-        class="grid gap-[8px] mb-[8px] grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
-      >
-        <template
-          v-for="project in currentProject?.children"
-          :key="project.uid"
-        >
-          <router-link :to="'/project/' + project.uid">
-            <ProjectBlocItem
-              :project="project"
-            />
-          </router-link>
-        </template>
-      </div>
-      <TasksListNew
-        :new-task-props="newTaskProps"
-      />
-    </div>
     <div
       v-else
     >
-      <h1 class="text-3xl text-gray-600 font-bold mb-5">
-        Нет доступа к проекту
-      </h1>
+      <NavBarProjects
+        class="pt-[8px]"
+        :project-uid="projectUid"
+      />
+      <div
+        v-if="currentProject"
+      >
+        <div
+          v-if="currentProject?.children?.length"
+          class="grid gap-[8px] mb-[8px] grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+        >
+          <template
+            v-for="project in currentProject?.children"
+            :key="project.uid"
+          >
+            <router-link :to="'/project/' + project.uid">
+              <ProjectBlocItem
+                :project="project"
+              />
+            </router-link>
+          </template>
+        </div>
+        <TasksListNew
+          :new-task-props="newTaskProps"
+        />
+      </div>
+      <div
+        v-else
+      >
+        <h1 class="text-3xl text-gray-600 font-bold mb-5">
+          Нет доступа к проекту
+        </h1>
+      </div>
     </div>
   </div>
 </template>
@@ -43,12 +51,15 @@ import NavBarProjects from '@/components/Navbar/NavBarProjects.vue'
 import ProjectBlocItem from '@/components/Projects/ProjectBlocItem.vue'
 import TasksListNew from '@/components/TasksListNew.vue'
 import * as TASK from '@/store/actions/tasks'
+import ProjectsOnboarding from './ProjectsOnboarding.vue'
+import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 
 export default {
   components: {
     ProjectBlocItem,
     TasksListNew,
-    NavBarProjects
+    NavBarProjects,
+    ProjectsOnboarding
   },
   computed: {
     projectUid () {
@@ -67,6 +78,9 @@ export default {
     },
     hsntProjectAccess () {
       return !Object.keys(this.$store.state.projects.projects).includes(this.$route.params.project_id)
+    },
+    displayModalProjects () {
+      return !this.$store.state.onboarding.visitedModals?.includes('projects') && this.$store.state.onboarding.showModals
     }
   },
   watch: {
@@ -87,6 +101,9 @@ export default {
       }
       this.$store.dispatch(TASK.PROJECT_TASKS_REQUEST, this.currentProject.uid)
       this.$store.commit(TASK.CLEAN_UP_LOADED_TASKS)
+    },
+    okToModal () {
+      this.$store.commit(USER_VIEWED_MODAL, 'projects')
     }
   }
 }
