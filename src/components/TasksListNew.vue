@@ -13,11 +13,15 @@
     @ok="showTasksLimit = false"
   />
   <TaskListUnboardingCard
-    v-if="displayModal"
+    v-if="displayModalTasks"
+    @ok="okToModal"
+  />
+  <ProjectsOnboarding
+    v-if="displayModalProjects"
     @ok="okToModal"
   />
   <div
-    v-else
+    v-if="(displayModalTasks === false && $route.name === 'tasksToday') || (displayModalProjects === false && $route.name !== 'tasksToday')"
     class="lg:mr-0"
     :class="{'mr-96': isPropertiesMobileExpanded}"
   >
@@ -305,6 +309,7 @@ import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel.vue'
 import TaskListActionHoverPanel from '@/components/TasksList/TaskListActionHoverPanel.vue'
 import TaskListModalBoxLicenseLimit from '@/components/TasksList/TaskListModalBoxLicenseLimit.vue'
 import TaskListUnboardingCard from '@/components/TasksList/TaskListUnboardingCard.vue'
+import ProjectsOnboarding from '@/components/Projects/ProjectsOnboarding.vue'
 import TaskListEdit from '@/components/TasksList/TaskListEdit.vue'
 import TasksSkeleton from '@/components/TasksList/TasksSkeleton.vue'
 import { shouldAddTaskIntoList } from '@/websync/utils'
@@ -348,7 +353,8 @@ export default {
     contenteditable,
     TaskListActionHoverPanel,
     TaskListModalBoxLicenseLimit,
-    TaskListUnboardingCard
+    TaskListUnboardingCard,
+    ProjectsOnboarding
   },
   directives: {
     linkify
@@ -429,8 +435,11 @@ export default {
     copiedTasks () {
       return this.$store.state.tasks.copiedTasks
     },
-    displayModal () {
-      return !this.$store.state.onboarding.visitedModals?.includes('tasks') && this.$store.state.onboarding.showModals
+    displayModalTasks () {
+      return !this.$store.state.onboarding.visitedModals?.includes('tasks') && this.$store.state.onboarding.showModals && this.$route.name === 'tasksToday'
+    },
+    displayModalProjects () {
+      return !this.$store.state.onboarding.visitedModals?.includes('projects') && this.$store.state.onboarding.showModals && this.$route.name !== 'tasksToday'
     },
     lastSelectedTaskUid () {
       return this.$store.state.tasks.selectedTask?.uid || ''
@@ -892,7 +901,11 @@ export default {
       })
     },
     okToModal () {
-      this.$store.commit(USER_VIEWED_MODAL, 'tasks')
+      if (this.$route.name === 'tasksToday') {
+        this.$store.commit(USER_VIEWED_MODAL, 'tasks')
+        return
+      }
+      this.$store.commit(USER_VIEWED_MODAL, 'projects')
     },
     copyTaskName (task) {
       navigator.clipboard.writeText(task.name)
