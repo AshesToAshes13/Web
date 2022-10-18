@@ -202,10 +202,10 @@ export default {
         this.$store.commit(NAVIGATOR_REQUEST)
         const reglamentsRequest = this.$store.dispatch('REGLAMENTS_REQUEST', data)
         const navigatorRequest = this.$store.dispatch(NAVIGATOR_REQUEST)
-        Promise.all([navigatorRequest, reglamentsRequest]).then((resp) => {
+        Promise.allSettled([navigatorRequest, reglamentsRequest]).then((resp) => {
           this.storeNavigator.reglaments = {
             uid: 'fake-uid',
-            items: resp[1].data
+            items: resp[1]?.value?.data || []
           }
           initWebSync()
           initInspectorSocket()
@@ -215,9 +215,9 @@ export default {
       }
     },
     getIntegrations () {
-      this.$store.dispatch(CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION, this.user.owner_email)
-      this.$store.dispatch(CORP_YANDEX.YANDEX_GET_ORGANIZATION_LOGIN_AND_PASS, this.user.owner_email)
-      this.$store.dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_LOGIN_AND_PASS, this.user.current_user_email)
+      this.$store.dispatch(CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION, this.user.owner_email).catch((e) => {})
+      this.$store.dispatch(CORP_YANDEX.YANDEX_GET_ORGANIZATION_LOGIN_AND_PASS, this.user.owner_email).catch((e) => {})
+      this.$store.dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_LOGIN_AND_PASS, this.user.current_user_email).catch((e) => {})
     },
     setShouldShowModalValue (value) {
       setLocalStorageItem('shouldShowModal', value)
