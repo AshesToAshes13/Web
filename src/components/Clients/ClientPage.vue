@@ -5,7 +5,7 @@
     @deleteClient="deleteClient"
   />
   <div class="bg-white rounded-xl flex h-[calc(100%-70px)] overflow-hidden">
-    <div class="w-[420px] shrink-0 overflow-y-auto scroll-style">
+    <div class="w-[420px] shrink-0 overflow-y-auto scroll-style p-[25px]">
       <ClientProperties
         :client="selectedClient"
         :cards="cards"

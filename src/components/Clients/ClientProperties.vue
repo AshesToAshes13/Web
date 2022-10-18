@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-[25px]">
+  <div class="flex flex-col">
     <div class="mb-[30px]">
       <div
         class="font-roboto leading-[19px] font-[400] text-[15px] text-[#606061] mb-[10px]"
@@ -193,6 +193,13 @@ export default {
     },
     user () {
       return this.$store.state.user.user
+    }
+  },
+  watch: {
+    selectedClient (selectedClient) {
+      if (selectedClient) {
+        this.currClient = this.selectedClient
+      }
     }
   },
   mounted () {

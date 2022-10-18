@@ -1,4 +1,10 @@
 <template>
+  <!--  Сейчас в clientUid временно приходит имя пользователя (пока ждем заливку инспектора с новым api)-->
+  <ClientModal
+    v-if="showClientModal"
+    :client-uid="selectedCard.client_name"
+    @closeModal="showClientModal = false"
+  />
   <BoardModalBoxDelete
     v-if="showDeleteCard"
     title="Удалить карточку"
@@ -143,6 +149,13 @@
           @click="clickCardBudget"
           @onWipeBudget="changeCardBudget"
         />
+        <div
+          v-if="selectedCard?.uid_client"
+          class="flex items-center bg-[#F4F5F7] rounded-[6px] text-[#575758] text-[12px] px-[8px] py-[5px] font-[500] group cursor-pointer"
+          @click="showClientModal = true"
+        >
+          Открыть контакт
+        </div>
       </div>
 
       <TaskPropsCommentEditor
@@ -244,9 +257,11 @@ import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import * as CARD from '@/store/actions/cards'
 import TaskPropertiesModalBoxFileSizeLimit from '@/components/TaskProperties/TaskPropertiesModalBoxFileSizeLimit.vue'
 import { uuidv4 } from '@/helpers/functions'
+import ClientModal from '@/components/Clients/ClientModal'
 
 export default {
   components: {
+    ClientModal,
     PopMenu,
     PopMenuItem,
     PopMenuDivider,
@@ -274,6 +289,7 @@ export default {
       showChangeCardBudget: false,
       showFilesOnly: false,
       showFileSizeLimit: false,
+      showClientModal: false,
       currentQuote: false,
       showDeleteCard: false,
       cardMessageInputValue: '',
