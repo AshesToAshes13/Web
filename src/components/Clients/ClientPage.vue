@@ -38,10 +38,9 @@
           </div>
         </template>
         <!-- Chat skeleton -->
-        <YandexIntegrationSkeleton v-if="yandexIntegrationStatus" />
-        <MessageSkeleton v-if="status === 'loading'" />
+        <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
-          v-if="status === 'success'"
+          v-else
           class="!pb-[20px]"
           :messages="clientMessages"
           :current-user-uid="user.current_user_uid"
@@ -78,7 +77,6 @@
 <script>
 import ClientProperties from '@/components/Clients/ClientProperties'
 import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages'
-import YandexIntegrationSkeleton from '@/components/TaskProperties/YandexIntegrationSkeleton'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton'
 import ClientChat from '@/components/Clients/ClientChat'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput'
@@ -91,7 +89,7 @@ import ClientNavbar from '@/components/Clients/ClientNavbar'
 import * as CLIENTS from '@/store/actions/clients'
 
 export default {
-  components: { ClientNavbar, ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, YandexIntegrationSkeleton, ClientCardChatMessages, ClientProperties },
+  components: { ClientNavbar, ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientCardChatMessages, ClientProperties },
   data () {
     return {
       showFilesOnly: false,
@@ -107,6 +105,9 @@ export default {
     status () { return this.$store.state.clientfilesandmessages.status },
     corpYandexIntegration () {
       return this.$store.state.corpYandexIntegration.isIntegrated
+    },
+    showSkeletonMsg () {
+      return this.status === 'loading' && !this.yandexIntegrationStatus
     },
     corpMsgsLoading () {
       return this.$store.state.corpYandexIntegration.isLoading
