@@ -89,10 +89,10 @@ import * as NAVIGATOR from '@/store/actions/navigator'
 
 import gridView from '@/icons/grid-view.js'
 import listView from '@/icons/list-view.js'
-import BoardInputValue from './Board/BoardInputValue.vue'
+import BoardInputValue from './BoardInputValue.vue'
 
 import NavBar from '@/components/Navbar/NavBar.vue'
-import BoardChildrenGroup from './Board/BoardChildrenGroup.vue'
+import BoardChildrenGroup from './BoardChildrenGroup.vue'
 
 export default {
   components: {

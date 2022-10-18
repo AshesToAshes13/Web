@@ -215,12 +215,12 @@
 import PropsColorBoxItem from '@/components/Common/PropsColorBoxItem.vue'
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
-import BoardPropsUserButton from '@/components/Board/BoardPropsUserButton.vue'
+import BoardPropsUserButton from '@/components/Board/buttons/BoardPropsUserButton.vue'
 import BoardPropsMenuItemUser from '@/components/Board/BoardPropsMenuItemUser.vue'
 
 import * as BOARD from '@/store/actions/boards'
 import BoardPropsMenuItemDeps from '../Board/BoardPropsMenuItemDeps.vue'
-import BoardPropsDepButton from '../Board/BoardPropsDepButton.vue'
+import BoardPropsDepButton from '../Board/buttons/BoardPropsDepButton.vue'
 
 export default {
   components: {

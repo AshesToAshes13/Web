@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import PublicBoard from '@/components/PublicBoard.vue'
+import PublicBoard from '@/components/Board/publicBoard/PublicBoard.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 
