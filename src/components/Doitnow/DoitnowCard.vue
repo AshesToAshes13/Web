@@ -114,6 +114,7 @@
       <DoitnowRightButtonPostpone
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @next="nextTask"
       />
       <DoitnowRightButtonContact
         title="Установить контакт"
@@ -284,6 +285,9 @@ export default {
         selectedCard.date_reminder = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
         this.$store.dispatch(CARD.CHANGE_CARD_DATE_REMINDER, selectedCard)
       }
+      this.nextTask()
+    },
+    nextTask () {
       this.$emit('next')
     },
     changeComment (text) {
@@ -330,7 +334,7 @@ export default {
         stageTo,
         boardTo: this.currentBoard?.uid
       })
-      this.$emit('next')
+      this.nextTask()
     },
     clickCardBudget () {
       this.showChangeCardBudget = true

@@ -68,7 +68,6 @@ export default {
         }
       })
     )
-    console.log(this.chart.config._config)
   }
 }
 </script>
