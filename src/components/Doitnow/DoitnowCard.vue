@@ -130,11 +130,10 @@
         icon="archive"
         @click="onSetReject"
       />
-      <DoitnowRightButtonBudget
-        :budget="card?.cost"
-        :can-edit="true"
+      <DoitnowRightButton
+        title="Установить бюджет"
+        icon="budget"
         @click="clickCardBudget"
-        @onWipeBudget="changeCardBudget"
       />
       <DoitnowRightButton
         title="Переместить"
@@ -154,7 +153,6 @@ import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 import DoitnowRightButtonContact from '@/components/Doitnow/DoitnowRightButtonContact.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
-import DoitnowRightButtonBudget from '@/components/Doitnow/DoitnowRightButtonBudget.vue'
 import DoitnowModalBoxBudget from '@/components/Doitnow/DoitnowModalBoxBudget.vue'
 import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
@@ -177,7 +175,6 @@ export default {
     DoitnowRightButton,
     DoitnowContent,
     contenteditable,
-    DoitnowRightButtonBudget,
     DoitnowModalBoxBudget,
     DoitnowModalBoxCardMove
   },

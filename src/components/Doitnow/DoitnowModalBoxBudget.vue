@@ -2,7 +2,6 @@
   <ModalBox
     :title="title"
     ok="Сохранить"
-    :disabled="!currentValue"
     @ok="onSave"
     @cancel="onCancel"
   >
@@ -60,7 +59,8 @@ export default {
       if (this.show) this.$emit('cancel')
     },
     onSave () {
-      if (this.show) this.$emit('save', this.currentValue)
+      console.log('onSave', this.currentValue)
+      if (this.show) this.$emit('save', this.currentValue || 0)
     }
   }
 }
