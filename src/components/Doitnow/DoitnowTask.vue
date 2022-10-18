@@ -38,7 +38,7 @@
           v-model="name"
           v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
           tag="div"
-          class="p-0.5 ring-0 outline-none max-w-7xl flex overflow-x-hidden font-bold text-[21px] text-[#424242]"
+          class="ring-0 outline-none overflow-hidden font-bold text-[21px] text-[#424242]"
           style="word-break: break-word"
           :contenteditable="task._isEditable"
           placeholder="Введите название задачи"
