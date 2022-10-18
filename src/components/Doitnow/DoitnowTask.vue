@@ -127,6 +127,12 @@
         @next="nextTask"
       />
       <DoitnowRightButton
+        v-else-if="isDevelopmentMode"
+        title="Пропустить"
+        icon="next"
+        @click="nextTask"
+      />
+      <DoitnowRightButton
         v-if="!task.mode && shouldShowAcceptButton"
         :title="acceptButtonText"
         icon="check"
@@ -280,6 +286,9 @@ export default {
     }
   },
   computed: {
+    isDevelopmentMode () {
+      return window.location.origin === 'http://localhost:8080'
+    },
     acceptButtonText () {
       if (this.isCustomer && this.isPerformer) {
         return 'Завершить'
