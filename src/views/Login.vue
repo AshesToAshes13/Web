@@ -213,7 +213,6 @@ import * as QUESTIONS from '@/store/actions/reglament_questions'
 import * as ANSWER from '@/store/actions/reglament_answers'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
-import * as NAVIGATOR from '@/store/actions/navigator'
 import * as CLIENTS from '@/store/actions/clients'
 
 export default {
@@ -325,7 +324,6 @@ export default {
         board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
         board.color = '#A998B6'
         this.$store.commit(BOARD.PUSH_BOARD, [board])
-        this.$store.commit(NAVIGATOR.NAVIGATOR_PUSH_BOARD, [board])
 
         // колонки для демо-доски
         // колонка Новое
