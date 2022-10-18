@@ -19,13 +19,11 @@
     <template
       #content="{ close }"
     >
-      <div class="flex items-center justify-between w-[300px]">
-        <CardClientSearch
-          ref="contactSearchBar"
-          @search="searchClients"
-          @eraseSearch="requestClients"
-        />
-      </div>
+      <CardClientSearch
+        ref="contactSearchBar"
+        @search="searchClients"
+        @eraseSearch="requestClients"
+      />
       <div
         class="h-[156px] w-[300px] overflow-y-scroll scroll-style relative"
       >
