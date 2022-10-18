@@ -59,7 +59,6 @@ export default {
       if (this.show) this.$emit('cancel')
     },
     onSave () {
-      console.log('onSave', this.currentValue)
       if (this.show) this.$emit('save', this.currentValue || 0)
     }
   }
