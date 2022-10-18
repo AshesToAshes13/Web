@@ -114,7 +114,7 @@
       <DoitnowRightButtonPostpone
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
-        @nextTask="nextTask"
+        @next="nextTask"
       />
       <DoitnowRightButtonContact
         title="Установить контакт"
