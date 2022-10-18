@@ -1,5 +1,5 @@
-import axios from 'axios'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
+import axios from 'axios'
 
 const getDefaultState = () => {
   return {
@@ -49,7 +49,10 @@ const actions = {
   },
   [CORP_MEGAFON.MEGAFON_UPDATE_INTEGRATION]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + data.organizationEmail
+      const url =
+        process.env.VUE_APP_INSPECTOR_API +
+        'megafon/integrations/' +
+        data.organizationEmail
       const atsLink = data.atsLink.replace('https://', '').replaceAll('/', '')
       const body = {
         crmKey: data.crmKey,
@@ -79,7 +82,8 @@ const actions = {
   },
   [CORP_MEGAFON.GET_CALL_HISTORY]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + `megafon/${data.phone}/history`
+      const url =
+        process.env.VUE_APP_INSPECTOR_API + `megafon/${data.phone}/history`
       const params = {
         crmKey: data.crmKey
       }
@@ -94,10 +98,16 @@ const actions = {
         })
     })
   },
-  [CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION]: ({ commit, dispatch }, organizationEmail) => {
+  [CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION]: (
+    { commit, dispatch },
+    organizationEmail
+  ) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + organizationEmail
-      axios({ url: url, method: 'GET' })
+      const url =
+        process.env.VUE_APP_INSPECTOR_API +
+        'megafon/integrations/' +
+        organizationEmail
+      axios({ url: url, method: 'GET', timeout: 1000 * 10 })
         .then((resp) => {
           if (!Object.keys(resp.data.integration).length) {
             return
@@ -121,9 +131,15 @@ const actions = {
         })
     })
   },
-  [CORP_MEGAFON.MEGAFON_REMOVE_CORP_INTEGRATION]: ({ commit, dispatch }, organization) => {
+  [CORP_MEGAFON.MEGAFON_REMOVE_CORP_INTEGRATION]: (
+    { commit, dispatch },
+    organization
+  ) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + organization
+      const url =
+        process.env.VUE_APP_INSPECTOR_API +
+        'megafon/integrations/' +
+        organization
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
           commit(CORP_MEGAFON.MEGAFON_REMOVE_CORP_INTEGRATION)
@@ -136,7 +152,11 @@ const actions = {
   },
   [CORP_MEGAFON.GET_ATS_LOGINS]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/integrations/' + data.organizationEmail + '/users'
+      const url =
+        process.env.VUE_APP_INSPECTOR_API +
+        'megafon/integrations/' +
+        data.organizationEmail +
+        '/users'
       const params = {
         megafonATSKey: data.atsKey
       }
@@ -152,7 +172,8 @@ const actions = {
   },
   [CORP_MEGAFON.CALL_CLIENT]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/call/' + data.phone
+      const url =
+        process.env.VUE_APP_INSPECTOR_API + 'megafon/call/' + data.phone
       const body = {
         atsKey: data.atsKey,
         login: data.login,
