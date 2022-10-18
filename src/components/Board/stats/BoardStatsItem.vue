@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import BoardStatsItemValue from '@/components/Board/BoardStatsItemValue.vue'
+import BoardStatsItemValue from '@/components/Board/stats/BoardStatsItemValue.vue'
 
 export default {
   components: {

@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import BoardArchiveNavbar from '@/components/Board/BoardArchiveNavbar'
+import BoardArchiveNavbar from '@/components/Board/archive/BoardArchiveNavbar'
 import * as CARD from '@/store/actions/cards'
 import BoardCard from '@/components/Board/BoardCard'
 import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'

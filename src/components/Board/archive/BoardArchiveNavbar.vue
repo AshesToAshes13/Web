@@ -61,7 +61,7 @@ import NavBarButtonIcon from '@/components/Navbar/NavBarButtonIcon'
 import PopMenuItem from '@/components/Common/PopMenuItem'
 import * as BOARD from '@/store/actions/boards'
 import PopMenuDivider from '@/components/Common/PopMenuDivider'
-import BoardSmallButton from '@/components/Board/BoardSmallButton'
+import BoardSmallButton from '@/components/Board/buttons/BoardSmallButton'
 import NavBarSearch from '@/components/Navbar/NavBarSearch'
 
 export default {

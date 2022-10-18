@@ -17,7 +17,7 @@ import ClientFile from '@/views/ClientFile'
 import Home from '@/views/Home'
 import TaskFile from '@/views/TaskFile'
 
-import CreatedBoardForm from '@/components/Board/CreatedBoardForm.vue'
+import CreatedBoardForm from '@/components/Board/form/CreatedBoardForm.vue'
 import Search from '@/components/Search/Search.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 

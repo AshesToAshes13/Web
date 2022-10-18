@@ -404,13 +404,13 @@ import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
-import BoardInputValue from './Board/BoardInputValue.vue'
+import BoardInputValue from './BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import BoardModalBoxColumnBoardChange from '@/components/Board/modalboxes/BoardModalBoxColumnBoardChange.vue'
-import BoardTextareaValue from './Board/BoardTextareaValue.vue'
+import BoardTextareaValue from './BoardTextareaValue.vue'
 import { notify } from 'notiwind'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
-import BoardOnboarding from './Board/BoardOnboarding.vue'
+import BoardOnboarding from './BoardOnboarding.vue'
 
 const DEF_COUNT_CARDS_BY_PAGE = 50
 
