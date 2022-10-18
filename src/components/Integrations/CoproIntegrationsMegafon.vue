@@ -217,12 +217,12 @@
                 alt="Список CRM в ЛК"
               >
             </li>
-            <li class="my-[50px]">
+            <li class="mt-[50px]">
               <span>Заполните поля в соответствии со скриншотом:</span>
-              <ul class="list-none flex flex-col gap-y-[25px]">
+              <ul class="list-none flex flex-col mt-[25px] gap-y-[25px]">
                 <li>
                   <div class="max-w-[550px]">
-                    <span class="font-500 text-[#4C4C4D]">поле "Имя вашей CRM" введите:</span>
+                    <span class="font-[500] text-[#4C4C4D]">поле "Имя вашей CRM" введите:</span>
                     <ButtonCopy
                       class="ml-[10px] mt-[12px]"
                       text="LeaderTask CRM"
@@ -231,7 +231,7 @@
                 </li>
                 <li>
                   <div class="max-w-[550px]">
-                    <span class="font-500 text-[#4C4C4D]">В поле "Адрес вашей CRM" введите:</span>
+                    <span class="font-[500] text-[#4C4C4D]">В поле "Адрес вашей CRM" введите:</span>
                     <ButtonCopy
                       class="ml-[10px] mt-[12px]"
                       text="https://api.leadertask.ru/megafon"
@@ -240,7 +240,7 @@
                 </li>
                 <li>
                   <div class="max-w-[550px]">
-                    <span class="font-500 text-[#4C4C4D]">В поле "Ключ для авторизации в вашей CRM":</span>
+                    <span class="font-[500] text-[#4C4C4D]">В поле "Ключ для авторизации в вашей CRM":</span>
                     <ButtonCopy
                       class="ml-[10px] mt-[12px]"
                       :text="ownerKey"
