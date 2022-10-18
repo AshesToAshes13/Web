@@ -41,7 +41,7 @@
                 <th>Комментарий</th>
               </tr>
               <ClientsSkeleton v-if="status === 'loading'" />
-              <template v-if="status === 'success' || wasLoaded">
+              <template v-if="status === 'success' && wasLoaded">
                 <tr
                   v-for="client in clients"
                   :key="client?.uid"
