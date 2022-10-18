@@ -1,17 +1,23 @@
 <template>
   <ModalBox
     title="Информация о клиенте"
+    width="1000"
     @cancel="closeModal"
   >
-    <ClientProperties />
+    <div class="h-[70vh] w-full overflow-hidden scroll-y-auto">
+      <ClientContent
+        :client-uid="clientUid"
+        class="w-full h-full"
+      />
+    </div>
   </ModalBox>
 </template>
 <script>
 import ModalBox from '@/components/modals/ModalBox'
-import ClientProperties from '@/components/Clients/ClientProperties'
-import { GET_CLIENT } from '@/store/actions/clients'
+import ClientContent from '@/components/Clients/ClientContent'
+
 export default {
-  components: { ClientProperties, ModalBox },
+  components: { ClientContent, ModalBox },
   props: {
     // Сейчас в clientUid временно приходит имя пользователя (пока ждем заливку инспектора с новым api)
     clientUid: {
@@ -20,13 +26,6 @@ export default {
     }
   },
   emits: ['closeModal'],
-  mounted () {
-    // Сейчас формируется объект с полями
-    // {organization: string, search: string}
-    this.$store.dispatch(GET_CLIENT, { organization: this.$store.state.user.user.owner_email, search: this.clientUid }).then(res => {
-      console.log('res -->', res)
-    })
-  },
   methods: {
     closeModal () {
       this.$emit('closeModal')
