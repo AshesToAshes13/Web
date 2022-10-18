@@ -30,16 +30,16 @@
 export default {
   props: {
     karmaQuantity: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     },
     successQuantity: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     },
     overdueQuantity: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     }
   }
 }
