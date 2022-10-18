@@ -15,7 +15,7 @@
       <img
         v-if="showPreviewPicture"
         src="@/assets/images/slides/addEmployes.png"
-        class="cursor-pointer md:w-[415px] md:h-[240px] lg:w-[560px] lg:h-[315px]"
+        class="cursor-pointer xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px]"
         @click="playVideo"
       >
       <iframe
@@ -24,7 +24,7 @@
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        class="border-[3px] md:w-[415px] md:h-[240px] lg:w-[560px] lg:h-[315px] rounded-xl border-[#2E2E2E]"
+        class="border-[3px] xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px] rounded-xl border-[#2E2E2E]"
       />
 
       <SlideBodyButton
