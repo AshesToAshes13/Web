@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pl-[15px]">
+  <div class="flex items-center justify-between w-[300px]">
     <div
       v-if="!showSearchBar"
       class="w-full flex gap-[5px] h-[40px] px-[8px] items-center cursor-pointer border-[1px] border-transparent text-[#7e7e80] hover:text-[#7e7e80]/75 bg-[#F4F5F7] rounded-[8px] hover:bg-[#F4F5F7]/70"
