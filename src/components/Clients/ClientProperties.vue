@@ -89,14 +89,16 @@
       >
         Комментарий
       </div>
-      <input
+      <contenteditable
         v-model="currClient.comment"
-        type="text"
-        maxlength="50"
+        tag="div"
+        contenteditable="true"
+        :no-html="true"
+        :no-nl="true"
         placeholder="Комментарий"
         class="font-roboto font-bold text-[#424242] text-[18px] p-0 w-full border-none focus:ring-0 focus:outline-none"
         @blur="updateClient"
-      >
+      />
     </div>
     <div
       v-if="cards.length"
@@ -138,8 +140,10 @@
 import * as CLIENTS from '@/store/actions/clients'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 import { stripPhoneNumber } from '@/helpers/functions'
+import contenteditable from 'vue-contenteditable'
 
 export default {
+  components: { contenteditable },
   props: {
     cards: {
       type: Array,
