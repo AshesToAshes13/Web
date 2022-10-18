@@ -134,6 +134,7 @@
         v-if="shouldShowPostponeButton"
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @next="nextTask"
       />
       <DoitnowRightButton
         v-if="shouldShowAcceptButton"

@@ -69,6 +69,7 @@
       <DoitnowRightButtonPostpone
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @next="nextTask"
       />
     </template>
   </DoitnowContent>

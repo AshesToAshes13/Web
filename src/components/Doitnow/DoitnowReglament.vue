@@ -29,6 +29,7 @@
       <DoitnowRightButtonPostpone
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @nextTask="nextTask"
       />
     </template>
   </DoitnowContent>
@@ -98,6 +99,9 @@ export default {
         const reglament = this.$store.state.reglaments.reglaments[reglamentReminder.uid_reglament]
         if (reglament) reglament.reminder = reglamentReminder.reminder_date
       })
+      this.nextTask()
+    },
+    nextTask () {
       this.$emit('next')
     }
   }
