@@ -11,6 +11,7 @@ import './css/main.css'
 
 const token = localStorage.getItem('user-token')
 const isGridView = JSON.parse(localStorage.getItem('isGridView'))
+const clickedOffer = localStorage.getItem('clicked-offer') || ''
 
 function pad2 (n) {
   return (n < 10 ? '0' : '') + n
@@ -116,6 +117,7 @@ axios.interceptors.response.use(
 )
 
 store.commit('basic', { key: 'isGridView', value: isGridView })
+store.commit('SET_CLICK_OFFER', clickedOffer)
 
 /* Default title tag */
 const defaultDocumentTitle = 'Leadertask 2.0'

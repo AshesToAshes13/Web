@@ -10,11 +10,15 @@ import {
   UPDATE_COLOR_REQUEST
 } from '../actions/colors'
 
-const state = {
-  colors: {},
-  mycolors: {},
-  selectedColor: null
+const getDefaultState = () => {
+  return {
+    colors: {},
+    mycolors: {},
+    selectedColor: null
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {}
 
@@ -81,9 +85,7 @@ const mutations = {
     state.selectedColor = color
   },
   [RESET_COLOR_STATE]: (state) => {
-    state.colors = {}
-    state.mycolors = {}
-    state.selectedColor = null
+    Object.assign(state, getDefaultState())
   }
 }
 

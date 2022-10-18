@@ -114,6 +114,7 @@
       <DoitnowRightButtonPostpone
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @next="nextTask"
       />
       <DoitnowRightButtonContact
         title="Установить контакт"
@@ -129,11 +130,10 @@
         icon="archive"
         @click="onSetReject"
       />
-      <DoitnowRightButtonBudget
-        :budget="card?.cost"
-        :can-edit="true"
+      <DoitnowRightButton
+        title="Установить бюджет"
+        icon="budget"
         @click="clickCardBudget"
-        @onWipeBudget="changeCardBudget"
       />
       <DoitnowRightButton
         title="Переместить"
@@ -153,7 +153,6 @@ import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
 import DoitnowRightButtonContact from '@/components/Doitnow/DoitnowRightButtonContact.vue'
 import DoitnowCardChat from '@/components/Doitnow/DoitnowCardChat'
-import DoitnowRightButtonBudget from '@/components/Doitnow/DoitnowRightButtonBudget.vue'
 import DoitnowModalBoxBudget from '@/components/Doitnow/DoitnowModalBoxBudget.vue'
 import DoitnowModalBoxCardMove from '@/components/Doitnow/DoitnowModalBoxCardMove.vue'
 import contenteditable from 'vue-contenteditable'
@@ -176,7 +175,6 @@ export default {
     DoitnowRightButton,
     DoitnowContent,
     contenteditable,
-    DoitnowRightButtonBudget,
     DoitnowModalBoxBudget,
     DoitnowModalBoxCardMove
   },
@@ -284,6 +282,9 @@ export default {
         selectedCard.date_reminder = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
         this.$store.dispatch(CARD.CHANGE_CARD_DATE_REMINDER, selectedCard)
       }
+      this.nextTask()
+    },
+    nextTask () {
       this.$emit('next')
     },
     changeComment (text) {
@@ -330,7 +331,7 @@ export default {
         stageTo,
         boardTo: this.currentBoard?.uid
       })
-      this.$emit('next')
+      this.nextTask()
     },
     clickCardBudget () {
       this.showChangeCardBudget = true

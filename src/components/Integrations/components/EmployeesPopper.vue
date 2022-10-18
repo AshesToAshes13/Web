@@ -3,7 +3,7 @@
     class="light overflow-hidden"
   >
     <div
-      class="rounded-[6px] text-[12px] px-[8px] py-[5px] font-[500] bg-[#F4F5F7] text-[#575758] cursor-pointer"
+      class="rounded-[6px] border border-gray-200 text-[12px] px-[8px] py-[9px] font-[500] bg-white text-[#575758] cursor-pointer"
     >
       <div
         class="flex items-center"
@@ -11,13 +11,13 @@
         <img
           v-if="userPhoto"
           :src="userPhoto"
-          class="mr-[4px] rounded-[6px] border-[1px] border-[#979799]"
+          class="mr-[8px] rounded-[6px] border-[1px] border-[#979799]"
           width="20"
           height="20"
         >
         <div
           v-else
-          class="mr-[4px] flex items-center justify-center w-[20px] h-[20px]"
+          class="mr-[8px] flex items-center justify-center w-[20px] h-[20px]"
         >
           <svg
             width="13"
@@ -32,9 +32,25 @@
             />
           </svg>
         </div>
-        <span class="truncate">
+        <span class="text-[#4C4C4D] text-[14px] leadind-[16px] font-[400] truncate">
           {{ userName }}
         </span>
+        <svg
+          class="ml-auto"
+          width="13"
+          height="7"
+          viewBox="0 0 13 7"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1.16602 1L6.49935 6.33333L11.8327 1"
+            stroke="#7E7E80"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </div>
     </div>
     <template
@@ -46,7 +62,7 @@
           :key="index"
         >
           <div
-            class="flex items-center text-[#4C4C4D] font-[400] text-[13px] leading-[14px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
+            class="flex items-center border border-gray-200 text-[#4C4C4D] font-[400] text-[13px] leading-[14px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
             @click="$emit('select', employee.uid), close()"
           >
             <img

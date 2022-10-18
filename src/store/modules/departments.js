@@ -5,10 +5,14 @@ import {
 import axios from 'axios'
 import * as DEPARTMENTS from '../actions/departments'
 
-const state = {
-  deps: {},
-  selectedDepartment: null
+const getDefaultState = () => {
+  return {
+    deps: {},
+    selectedDepartment: null
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {
   sortedDepartments (state) {
@@ -81,8 +85,7 @@ const mutations = {
     state.selectedDepartment = department
   },
   [DEPARTMENTS.RESET_DEPARTMENTS_STATE]: (state) => {
-    state.deps = {}
-    state.selectedDepartment = null
+    Object.assign(state, getDefaultState())
   },
   RemoveDepartment: (state, uid) => {
     delete state.deps[uid]

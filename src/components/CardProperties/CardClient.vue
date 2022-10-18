@@ -78,12 +78,10 @@
     <template
       #content="{ close }"
     >
-      <div class="flex items-center justify-between w-[300px]">
-        <CardClientSearch
-          @search="searchClients"
-          @eraseSearch="requestClients"
-        />
-      </div>
+      <CardClientSearch
+        @search="searchClients"
+        @eraseSearch="requestClients"
+      />
       <div
         class="h-[360px] w-[320px] overflow-y-scroll overflow-x-hidden scroll-style relative"
       >

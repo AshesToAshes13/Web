@@ -164,8 +164,9 @@ export function disconnectInspectorSocket () {
 
 export function sendInspectorMessage (message) {
   try {
-    // if (socket?.readyState === 1)
-    socket.send(JSON.stringify(message))
+    if (socket?.readyState !== WebSocket.CLOSED) {
+      socket.send(JSON.stringify(message))
+    }
   } catch (e) {
     console.log('sendInspectorMessage error', e, message)
   }

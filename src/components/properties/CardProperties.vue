@@ -1,4 +1,10 @@
 <template>
+  <!--  Сейчас в clientUid временно приходит имя пользователя (пока ждем заливку инспектора с новым api)-->
+  <ClientModal
+    v-if="showClientModal"
+    :client-uid="selectedCard.client_name"
+    @closeModal="showClientModal = false"
+  />
   <BoardModalBoxDelete
     v-if="showDeleteCard"
     title="Удалить карточку"
@@ -26,7 +32,7 @@
   />
   <div
     v-if="selectedCard"
-    class="relative min-h-full"
+    class="break-words relative z-1"
   >
     <div class="flex items-center justify-between mb-[10px]">
       <CardOptions
@@ -41,129 +47,141 @@
         @click="closeProperties"
       />
     </div>
-
-    <CardCover
-      :cover-color="
-        selectedCard?.cover_color === '#A998B6' ? '' : selectedCard?.cover_color
-      "
-      :cover-link="selectedCard?.cover_link"
-      :can-edit="canEdit"
-      @onChangeCardColor="changeCardColor"
-      @onChangeCardCover="changeCardCover"
-      @onChangeCardClearCover="changeCardClearCover"
-    />
-
-    <CardName
-      :card-name="selectedCard?.name"
-      :can-edit="canEdit"
-      @changeName="changeName"
-      @onPasteFile="onPasteEvent"
-    />
-
     <div
-      v-if="canEdit"
-      class="mb-[4px] w-full"
+      id="generalscroll"
+      class="column-resize relative overflow-hidden"
     >
-      <PopMenu
-        class="grow w-[calc(100%+24px)]"
-      >
-        <div
-          class="group w-full flex items-center gap-[12px] px-[12px] min-h-[34px] border border-black/12 rounded-[6px] cursor-pointer"
-        >
-          <div class="grow font-roboto text-[#575758] text-[12px] font-[500] w-11/12 break-words">
-            {{ selectedColumnName }}
-          </div>
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M10.7603 3.56099C11.0027 3.80668 11.0001 4.2024 10.7544 4.44486L6.7011 8.44486C6.47139 8.67154 6.10687 8.68606 5.85986 8.47836L1.46875 4.78606C1.20456 4.56391 1.17047 4.16965 1.39262 3.90546C1.61477 3.64126 2.00903 3.60718 2.27322 3.82933L6.22845 7.15512L9.87642 3.55514C10.1221 3.31269 10.5178 3.31531 10.7603 3.56099Z"
-              fill="#7E7E80"
-            />
-          </svg>
-        </div>
-        <template #menu>
-          <div class="max-h-[220px] overflow-y-auto w-[322px] scroll-style">
-            <PopMenuItem
-              v-for="column in columnsUser"
-              :key="column.UID"
-              @click="setColumn(column.UID)"
-            >
-              <span class="truncate">
-                {{ column.Name }}
-              </span>
-            </PopMenuItem>
-            <PopMenuDivider />
-            <PopMenuItem
-              v-for="column in columnsArchive"
-              :key="column.UID"
-              @click="setColumn(column.UID)"
-            >
-              <span class="truncate">
-                {{ column.Name }}
-              </span>
-            </PopMenuItem>
-          </div>
-        </template>
-      </PopMenu>
-    </div>
-
-    <div class="flex flex-wrap justify-start items-center mb-[25px] gap-[4px]">
-      <CardResponsibleUser
-        :responsible="selectedCard?.user"
-        :org-employees="orgEmployees"
+      <CardCover
+        :cover-color="
+          selectedCard?.cover_color === '#A998B6' ? '' : selectedCard?.cover_color
+        "
+        :cover-link="selectedCard?.cover_link"
         :can-edit="canEdit"
-        @changeResponsible="changeResponsible"
+        @onChangeCardColor="changeCardColor"
+        @onChangeCardCover="changeCardCover"
+        @onChangeCardClearCover="changeCardClearCover"
       />
-      <CardClient
-        :client-uid="selectedCard?.uid_client"
-        :client-name="selectedCard?.client_name"
+
+      <CardName
         :card-name="selectedCard?.name"
-        :card-comment="selectedCard?.comment"
         :can-edit="canEdit"
-        @changeClient="onChangeClient"
+        @changeName="changeName"
+        @onPasteFile="onPasteEvent"
       />
-      <CardSetDate
-        :date-time="selectedCard?.date_reminder"
-        :date-text="cardDateReminderText"
-        @changeDates="onChangeDates"
-      />
-      <CardBudget
-        :budget="selectedCard?.cost"
+
+      <div
+        v-if="canEdit"
+        class="mb-[4px] w-full"
+      >
+        <PopMenu
+          class="grow w-[calc(100%+24px)]"
+        >
+          <div
+            class="group w-full flex items-center gap-[12px] px-[12px] min-h-[34px] border border-black/12 rounded-[6px] cursor-pointer"
+          >
+            <div class="grow font-roboto text-[#575758] text-[12px] font-[500] w-11/12 break-words">
+              {{ selectedColumnName }}
+            </div>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M10.7603 3.56099C11.0027 3.80668 11.0001 4.2024 10.7544 4.44486L6.7011 8.44486C6.47139 8.67154 6.10687 8.68606 5.85986 8.47836L1.46875 4.78606C1.20456 4.56391 1.17047 4.16965 1.39262 3.90546C1.61477 3.64126 2.00903 3.60718 2.27322 3.82933L6.22845 7.15512L9.87642 3.55514C10.1221 3.31269 10.5178 3.31531 10.7603 3.56099Z"
+                fill="#7E7E80"
+              />
+            </svg>
+          </div>
+          <template #menu>
+            <div class="max-h-[220px] overflow-y-auto w-[322px] scroll-style">
+              <PopMenuItem
+                v-for="column in columnsUser"
+                :key="column.UID"
+                @click="setColumn(column.UID)"
+              >
+                <span class="truncate">
+                  {{ column.Name }}
+                </span>
+              </PopMenuItem>
+              <PopMenuDivider />
+              <PopMenuItem
+                v-for="column in columnsArchive"
+                :key="column.UID"
+                @click="setColumn(column.UID)"
+              >
+                <span class="truncate">
+                  {{ column.Name }}
+                </span>
+              </PopMenuItem>
+            </div>
+          </template>
+        </PopMenu>
+      </div>
+
+      <div class="flex flex-wrap justify-start items-center mb-[25px] gap-[4px]">
+        <CardResponsibleUser
+          :responsible="selectedCard?.user"
+          :org-employees="orgEmployees"
+          :can-edit="canEdit"
+          @changeResponsible="changeResponsible"
+        />
+        <CardClient
+          :client-uid="selectedCard?.uid_client"
+          :client-name="selectedCard?.client_name"
+          :card-name="selectedCard?.name"
+          :card-comment="selectedCard?.comment"
+          :can-edit="canEdit"
+          @changeClient="onChangeClient"
+        />
+        <CardSetDate
+          :date-time="selectedCard?.date_reminder"
+          :date-text="cardDateReminderText"
+          @changeDates="onChangeDates"
+        />
+        <CardBudget
+          :budget="selectedCard?.cost"
+          :can-edit="canEdit"
+          @click="clickCardBudget"
+          @onWipeBudget="changeCardBudget"
+        />
+        <div
+          v-if="selectedCard?.uid_client"
+          class="flex items-center bg-[#F4F5F7] rounded-[6px] text-[#575758] text-[12px] px-[8px] py-[5px] font-[500] group cursor-pointer"
+          @click="showClientModal = true"
+        >
+          Открыть контакт
+        </div>
+      </div>
+
+      <TaskPropsCommentEditor
+        v-if="canEdit || selectedCard?.comment?.length > 0"
+        class="mt-3 h-32 break-words"
+        :comment="selectedCard?.comment"
         :can-edit="canEdit"
-        @click="clickCardBudget"
-        @onWipeBudget="changeCardBudget"
+        @changeComment="changeComment"
+        @onPasteFile="onPasteEvent"
+      />
+
+      <!-- Chat skeleton -->
+      <MessageSkeleton v-if="status=='loading'" />
+      <!-- Card chat -->
+      <CardChat
+        v-if="status=='success'"
+        :messages="cardMessages"
+        class="mt-[16px]"
+        :current-user-uid="user.current_user_uid"
+        :employees="employees"
+        :show-files-only="showFilesOnly"
+        @onQuote="setCurrentQuote"
+        @onDeleteMessage="deleteCardMessage"
+        @onDeleteFile="deleteCardFileMessage"
       />
     </div>
-
-    <TaskPropsCommentEditor
-      v-if="canEdit || selectedCard?.comment?.length > 0"
-      class="mt-3 h-32 break-words"
-      :comment="selectedCard?.comment"
-      :can-edit="canEdit"
-      @changeComment="changeComment"
-      @onPasteFile="onPasteEvent"
-    />
-
-    <!-- Chat skeleton -->
-    <MessageSkeleton v-if="status=='loading'" />
-    <!-- Card chat -->
-    <CardChat
-      v-if="status=='success'"
-      :messages="cardMessages"
-      :current-user-uid="user.current_user_uid"
-      :employees="employees"
-      :show-files-only="showFilesOnly"
-      @onQuote="setCurrentQuote"
-      @onDeleteMessage="deleteCardMessage"
-      @onDeleteFile="deleteCardFileMessage"
-    />
 
     <!-- Card chat input -->
     <div class="flex flex-col fixed bottom-[0px] w-[340px] bg-white pt-2 pb-5">
@@ -230,7 +248,7 @@ import CardOptions from '@/components/CardProperties/CardOptions.vue'
 import CardBudget from '@/components/CardProperties/CardBudget.vue'
 import CardMessageInput from '@/components/CardProperties/CardMessageInput.vue'
 import TaskPropsCommentEditor from '@/components/TaskProperties/TaskPropsCommentEditor.vue'
-import BoardModalBoxDelete from '@/components/Board/BoardModalBoxDelete.vue'
+import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'
 import CardModalBoxBudget from '@/components/CardProperties/CardModalBoxBudget.vue'
 import CardMessageQuoteUnderInput from '@/components/CardProperties/CardMessageQuoteUnderInput.vue'
 import CardMessagesModalBoxLimit from '../CardProperties/CardMessagesModalBoxLimit.vue'
@@ -239,9 +257,11 @@ import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import * as CARD from '@/store/actions/cards'
 import TaskPropertiesModalBoxFileSizeLimit from '@/components/TaskProperties/TaskPropertiesModalBoxFileSizeLimit.vue'
 import { uuidv4 } from '@/helpers/functions'
+import ClientModal from '@/components/Clients/ClientModal'
 
 export default {
   components: {
+    ClientModal,
     PopMenu,
     PopMenuItem,
     PopMenuDivider,
@@ -269,6 +289,7 @@ export default {
       showChangeCardBudget: false,
       showFilesOnly: false,
       showFileSizeLimit: false,
+      showClientModal: false,
       currentQuote: false,
       showDeleteCard: false,
       cardMessageInputValue: '',
@@ -632,3 +653,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#generalscroll {
+  height: calc(100vh - var(--hex-parent-height) - 30px);
+  scrollbar-width: none;
+}
+</style>

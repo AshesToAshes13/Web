@@ -44,13 +44,13 @@
 </template>
 
 <script>
-import BoardStatsItem from '@/components/Board/BoardStatsItem.vue'
-import BoardStatsMonth from '@/components/Board/BoardStatsMonth.vue'
+import BoardStatsItem from '@/components/Board/stats/BoardStatsItem.vue'
+import BoardStatsMonth from '@/components/Board/stats/BoardStatsMonth.vue'
 import NavBar from '@/components/Navbar/NavBar'
-import BoardSmallButton from '@/components/Board/BoardSmallButton.vue'
+import BoardSmallButton from '@/components/Board/buttons/BoardSmallButton.vue'
 import * as CARD from '@/store/actions/cards'
 import { CARD_STAGE } from '@/constants'
-import BoardStatsSkeleton from '@/components/Board/BoardStatsSkeleton'
+import BoardStatsSkeleton from '@/components/Board/stats/BoardStatsSkeleton'
 
 export default {
   components: {

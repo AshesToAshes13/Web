@@ -47,9 +47,9 @@
 <script>
 import { sendInspectorMessage } from '@/inspector'
 import NavBarBoards from '@/components/Navbar/NavBarBoards.vue'
-import BoardModalBoxBoardsLimit from '@/components/Board/BoardModalBoxBoardsLimit.vue'
+import BoardModalBoxBoardsLimit from '@/components/Board/modalboxes/BoardModalBoxBoardsLimit.vue'
 import BoardBlocItem from '@/components/Board/BoardBlocItem.vue'
-import Board from '@/components/Board.vue'
+import Board from '@/components/Board/Board.vue'
 import * as CARD from '@/store/actions/cards'
 
 export default {

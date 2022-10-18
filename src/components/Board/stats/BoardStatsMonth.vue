@@ -66,8 +66,8 @@
 </template>
 
 <script>
-import BoardStatsSkeleton from '@/components/Board/BoardStatsSkeleton'
-import BoardStatsItem from '@/components/Board/BoardStatsItem.vue'
+import BoardStatsSkeleton from '@/components/Board/stats/BoardStatsSkeleton'
+import BoardStatsItem from '@/components/Board/stats/BoardStatsItem.vue'
 import { CARD_STAGE } from '@/constants'
 
 export default {

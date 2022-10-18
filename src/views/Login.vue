@@ -213,7 +213,6 @@ import * as QUESTIONS from '@/store/actions/reglament_questions'
 import * as ANSWER from '@/store/actions/reglament_answers'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
-import * as NAVIGATOR from '@/store/actions/navigator'
 import * as CLIENTS from '@/store/actions/clients'
 
 export default {
@@ -325,7 +324,6 @@ export default {
         board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
         board.color = '#A998B6'
         this.$store.commit(BOARD.PUSH_BOARD, [board])
-        this.$store.commit(NAVIGATOR.NAVIGATOR_PUSH_BOARD, [board])
 
         // колонки для демо-доски
         // колонка Новое
@@ -431,6 +429,7 @@ export default {
               })
           })
       })
+      this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT)
       // демо-метки
       const firstTag = {
         back_color: '#4AC7BF',
@@ -799,7 +798,7 @@ export default {
       // можно я не буду комментировать это
       let phone
       try {
-        phone = this.form.phone.replace(/[^a-zA-Z0-9+]/g, '')
+        phone = '+74852685820'.replace(/[^a-zA-Z0-9+]/g, '')
       } catch (err) {
         console.log(err)
         phone = ''
@@ -807,10 +806,10 @@ export default {
       const clientToSend = {
         uid: uuidv4(),
         organization: this.form.email,
-        name: this.form.username,
-        email: this.form.email,
+        name: 'Поддержка ЛидерТаск',
+        email: '911@leadertask.com',
         phone: phone,
-        comment: 'Комментарий контакта',
+        comment: 'Все контакты доступны в разделе Помощь, смотрите Настройки',
         date_create: new Date().toLocaleString()
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
@@ -847,9 +846,10 @@ export default {
               visible: true
             })
           })
-          this.$store.dispatch(USER_START_ONBOARDING)
+          this.$store.dispatch(USER_START_ONBOARDING).then(() => {
           // демо-данные для новых пользователей
-          this.createDemoElementsAfterRegister()
+            this.createDemoElementsAfterRegister()
+          })
         })
         .catch(() => {
           this.form.showError = true

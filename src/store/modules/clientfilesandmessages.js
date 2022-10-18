@@ -1,4 +1,4 @@
-import { uuidv4 } from '@/helpers/functions'
+import { uuidv4, stripPhoneNumber } from '@/helpers/functions'
 
 import * as CLIENT_FILES_AND_MESSAGES from '../actions/clientfilesandmessages'
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
@@ -24,7 +24,7 @@ const getters = {}
 const actions = {
   [CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS] ({ commit, dispatch }, clientUid) {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_cards?uid_client=' + clientUid
+      const url = process.env.VUE_APP_INSPECTOR_API + 'cards/byclient?uid_client=' + clientUid
       axios({ url: url, method: 'GET' })
         .then(resp => {
           resp.data = resp.data.filter(item => { return item?.uid })
@@ -109,7 +109,7 @@ const actions = {
   },
   [CLIENT_FILES_AND_MESSAGES.FILES_REQUEST]: ({ commit, dispatch }, clientUid) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clientfiles?uid_client=' + clientUid
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_files?uid_client=' + clientUid
       commit(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST)
       axios({ url: url, method: 'GET' })
         .then(resp => {
@@ -123,10 +123,10 @@ const actions = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clientsfiles?uid_client=' + data.uid_client + '&uid_creator=' + data.uid_creator
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_files?uid_client=' + data.uid_client + '&uid_creator=' + data.uid_creator
       axios({ url: url, method: 'POST', data: data.name })
         .then((resp) => {
-          commit(CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST, ...resp.data.success)
+          commit(CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST, resp.data.success)
           resolve(resp)
         })
         .catch((err) => {
@@ -136,7 +136,7 @@ const actions = {
   },
   [CLIENT_FILES_AND_MESSAGES.FILE_REQUEST]: ({ commit, dispatch }, fileUid) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clientfiles/file?uid=' + fileUid
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_files/file?uid=' + fileUid
       axios({ url: url, method: 'GET', responseType: 'blob' })
         .then(resp => {
           resolve(resp)
@@ -146,8 +146,17 @@ const actions = {
     })
   },
   [CLIENT_FILES_AND_MESSAGES.DELETE_FILE_REQUEST]: ({ commit, dispatch }, fileUid) => {
-    const data = { uid: fileUid, key: 'deleted', value: 1 }
-    commit(CLIENT_FILES_AND_MESSAGES.REMOVE_MESSAGE_LOCALLY, data)
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_files?uid=' + fileUid
+      axios({ url: url, method: 'DELETE' })
+        .then(resp => {
+          const data = { uid: fileUid, key: 'deleted', value: 1 }
+          commit(CLIENT_FILES_AND_MESSAGES.REMOVE_MESSAGE_LOCALLY, data)
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+    })
   },
   [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: async ({ commit, dispatch }, data) => {
     commit(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST)
@@ -157,11 +166,7 @@ const actions = {
     const promises = [messages, files]
 
     if (data.megafonIntegration) {
-      let preparedClientPhone = data.clientPhone
-      if (preparedClientPhone[0] === '8') {
-        preparedClientPhone[0] = '7'
-      }
-      preparedClientPhone = data.clientPhone.replaceAll(/(\s|\(|\)|\+|-)/g, '')
+      const preparedClientPhone = stripPhoneNumber(data.clientPhone)
       const megafonCallHistory = dispatch(CORP_MEGAFON.GET_CALL_HISTORY, {
         phone: preparedClientPhone,
         crmKey: data.crmKey
@@ -244,6 +249,7 @@ const mutations = {
     }
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
+    console.log('IN STATE MESSAGES', state.messages)
     state.messages.push(data)
   },
   [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
@@ -252,7 +258,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
     state.messages = state.messages.filter((message) => !message.is_uploading)
-    state.messages.push(data)
+    state.messages = state.messages.concat(data)
   },
   [CLIENT_FILES_AND_MESSAGES.FILES_REQUEST]: state => {
     state.status = 'loading'
@@ -304,7 +310,7 @@ const mutations = {
   [CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES]: (state) => {
     state.messages = state.messages.concat(state.files)
     state.messages.sort((a, b) => {
-      if (!a.file_name && !a.date_create.includes('Z')) {
+      if (!a.file_name && !a?.date_create.includes('Z')) {
         a.date_create += 'Z'
       }
       if (!b.file_name && !b.date_create.includes('Z')) {

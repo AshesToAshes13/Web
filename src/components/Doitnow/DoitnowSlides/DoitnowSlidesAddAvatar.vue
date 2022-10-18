@@ -5,7 +5,7 @@
     <SlideBodyTitle title="Добавьте фото профиля!" />
     <div class="flex flex-col items-center gap-[45px]">
       <div class="max-w-[600px]">
-        <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+        <article class="font-normal md:text-[16px] lg:text-[18px] text-center leading-[29px] w-full pl-0">
           <p class=" text-[#4C4C4D]">
             Это просто эстетично, а Ваши коллеги смогут быстрее найти вас в списках
           </p>
@@ -14,7 +14,7 @@
       <img
         v-if="showPreviewPicture"
         src="@/assets/images/slides/doitnowstart.png"
-        class="w-[560px] h-[315px] cursor-pointer"
+        class="cursor-pointer xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px]"
         @click="playVideo"
       >
       <iframe
@@ -25,7 +25,7 @@
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        class="border-[3px] rounded-xl border-[#2E2E2E]"
+        class="border-[3px] rounded-xl border-[#2E2E2E] xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px]"
       />
 
       <div class="mb-3">
@@ -40,7 +40,7 @@
           for="iconfile"
           class="w-[238px] h-[40px] justify-center cursor-pointer bg-[#F2B679] text-[#2E2E2E] text-[14px] px-[68px] py-3 rounded-md hover:bg-slate-200 hover:text-[#422b14] font-medium"
         >
-          Загрузить
+          Установить
         </label>
         <br>
       </div>

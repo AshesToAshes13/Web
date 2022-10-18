@@ -2,18 +2,22 @@ import store from '@/store/index.js'
 import axios from 'axios'
 import * as REGLAMENTS from '../actions/reglaments'
 
-const state = {
-  reglaments: {},
-  returnDoitnow: false,
-  showAll: false,
-  reglamentQuestions: [], // вопросы по текущему регламенту
-  contributors: [], // сотрудники, прошедшие текущий регламент
-  questionsToDelete: [],
-  answersToDelete: [],
-  hideSaveParams: false,
-  lastCommentDate: '',
-  lastCommentText: ''
+const getDefaultState = () => {
+  return {
+    reglaments: {},
+    returnDoitnow: false,
+    showAll: false,
+    reglamentQuestions: [], // вопросы по текущему регламенту
+    contributors: [], // сотрудники, прошедшие текущий регламент
+    questionsToDelete: [],
+    answersToDelete: [],
+    hideSaveParams: false,
+    lastCommentDate: '',
+    lastCommentText: ''
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   // получить вопросы регламента
@@ -413,13 +417,7 @@ const mutations = {
     state.reglaments[reglament.uid] = reglament
   },
   [REGLAMENTS.RESET_REGLAMENTS_STATE]: (state) => {
-    state.reglaments = {}
-    state.returnDoitnow = false
-    state.showAll = false
-    state.reglamentQuestions = [] // вопросы по текущему регламенту
-    state.contributors = [] // сотрудники, прошедшие текущий регламент
-    state.questionsToDelete = []
-    state.answersToDelete = []
+    Object.assign(state, getDefaultState())
   },
   RemoveReglamentByUid: (state, reglamentUid) => {
     delete state.reglaments[reglamentUid]

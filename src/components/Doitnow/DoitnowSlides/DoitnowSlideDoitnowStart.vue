@@ -5,7 +5,7 @@
     <SlideBodyTitle title="Вы в Очереди!" />
     <div class="flex flex-col items-center gap-[45px]">
       <div class="max-w-[600px]">
-        <article class="font-normal text-[18px] text-center leading-[29px] w-full pl-0">
+        <article class="font-normal md:text-[16px] lg:text-[18px] text-center leading-[29px] w-full pl-0">
           <p class=" text-[#4C4C4D]">
             Она выдает вам задачи, заявки и важные уведомления по очереди, а Вы работаете с ними сфокусировано и не отвлекаетесь
           </p>
@@ -14,7 +14,7 @@
       <img
         v-if="showPreviewPicture"
         src="@/assets/images/slides/addEmployes.png"
-        class="w-[560px] h-[315px] cursor-pointer"
+        class="cursor-pointer 2xl:w-[560px] 2xl:h-[315px] xl:w-[415px] xl:h-[240px]"
         @click="playVideo"
       >
       <iframe
@@ -25,11 +25,11 @@
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        class="border-[3px] rounded-xl border-[#2E2E2E]"
+        class="border-[3px] rounded-xl border-[#2E2E2E] 2xl:w-[560px] 2xl:h-[315px] xl:w-[415px] xl:h-[240px]"
       />
 
       <SlideBodyButton
-        text="Начать"
+        text="Попробовать"
         @click="clickDoitnowStartSuccess"
       />
     </div>

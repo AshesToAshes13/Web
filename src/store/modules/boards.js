@@ -4,15 +4,19 @@ import * as BOARD from '../actions/boards'
 import { uuidv4 } from '@/helpers/functions'
 import store from '@/store/index.js'
 
-const state = {
-  boards: {},
-  selectedBoard: undefined,
-  showOnlyCardsWhereIAmResponsible: false,
-  showOnlyCardsWithNoResponsible: false,
-  showOnlyMyCreatedCards: false,
-  searchText: undefined,
-  publicBoard: 0
+const getDefaultState = () => {
+  return {
+    boards: {},
+    selectedBoard: undefined,
+    showOnlyCardsWhereIAmResponsible: false,
+    showOnlyCardsWithNoResponsible: false,
+    showOnlyMyCreatedCards: false,
+    searchText: undefined,
+    publicBoard: 0
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {}
 
@@ -46,7 +50,7 @@ const actions = {
       uid: uuidv4(),
       name: data.name,
       uid_parent: data?.parent || '00000000-0000-0000-0000-000000000000',
-      email_creator: store.state.user.user.current_user_email,
+      email_creator: store.state?.user?.user?.current_user_email,
       order: maxOrder + 1,
       collapsed: 0,
       color: '',
@@ -57,7 +61,7 @@ const actions = {
       deps: [],
       children: [],
       members: {
-        [store.state.user.user.current_user_Uid]: 1
+        [store.state?.user?.user?.current_user_Uid]: 1
       },
       ...data
     }
@@ -422,13 +426,7 @@ const mutations = {
     })
   },
   [BOARD.RESET_STATE_BOARD]: (state) => {
-    state.boards = {}
-    state.selectedBoard = undefined
-    state.showArchive = false
-    state.showOnlyCardsWhereIAmResponsible = false
-    state.showOnlyCardsWithNoResponsible = false
-    state.showOnlyMyCreatedCards = false
-    state.searchText = undefined
+    Object.assign(state, getDefaultState())
   }
 }
 

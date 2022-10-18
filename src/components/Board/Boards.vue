@@ -82,17 +82,17 @@
 <script>
 import Icon from '@/components/Icon.vue'
 import { setLocalStorageItem } from '@/store/helpers/functions'
-import BoardModalBoxBoardsLimit from '@/components/Board/BoardModalBoxBoardsLimit.vue'
+import BoardModalBoxBoardsLimit from '@/components/Board/modalboxes/BoardModalBoxBoardsLimit.vue'
 import ListBlocAdd from '@/components/Common/ListBlocAdd.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as NAVIGATOR from '@/store/actions/navigator'
 
 import gridView from '@/icons/grid-view.js'
 import listView from '@/icons/list-view.js'
-import BoardInputValue from './Board/BoardInputValue.vue'
+import BoardInputValue from './BoardInputValue.vue'
 
 import NavBar from '@/components/Navbar/NavBar.vue'
-import BoardChildrenGroup from './Board/BoardChildrenGroup.vue'
+import BoardChildrenGroup from './BoardChildrenGroup.vue'
 
 export default {
   components: {

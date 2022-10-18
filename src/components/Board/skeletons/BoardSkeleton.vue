@@ -134,10 +134,10 @@
 </template>
 
 <script>
-import BoardSkeleton150 from '@/components/Board/BoardSkeleton150.vue'
-import BoardSkeleton120 from '@/components/Board/BoardSkeleton120.vue'
-import BoardSkeleton200 from '@/components/Board/BoardSkeleton200.vue'
-import BoardSkeleton240 from '@/components/Board/BoardSkeleton240.vue'
+import BoardSkeleton150 from '@/components/Board/skeletons/BoardSkeleton150.vue'
+import BoardSkeleton120 from '@/components/Board/skeletons/BoardSkeleton120.vue'
+import BoardSkeleton200 from '@/components/Board/skeletons/BoardSkeleton200.vue'
+import BoardSkeleton240 from '@/components/Board/skeletons/BoardSkeleton240.vue'
 export default {
   components: {
     BoardSkeleton150,
