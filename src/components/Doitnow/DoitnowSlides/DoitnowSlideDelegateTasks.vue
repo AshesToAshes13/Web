@@ -14,18 +14,16 @@
       <img
         v-if="showPreviewPicture"
         src="@/assets/images/slides/addEmployes.png"
-        class="w-[560px] h-[315px] cursor-pointer"
+        class="cursor-pointer md:w-[415px] md:h-[240px] lg:w-[560px] lg:h-[315px]"
         @click="playVideo"
       >
       <iframe
         v-if="!showPreviewPicture"
-        width="560"
-        height="315"
         :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        class="border-[3px] rounded-xl border-[#2E2E2E]"
+        class="border-[3px] rounded-xl border-[#2E2E2E] md:w-[415px] md:h-[240px] lg:w-[560px] lg:h-[315px]"
       />
 
       <SlideBodyButton
