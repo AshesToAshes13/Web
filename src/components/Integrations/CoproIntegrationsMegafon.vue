@@ -25,7 +25,7 @@
         class="flex w-[450px] justify-center flex-col"
       >
         <div class="flex items-center">
-          <span class="font-[500] text-[21px] leading-[29px]">
+          <span class="font-[700] text-[21px] leading-[29px]">
             Корпоративная интеграция через Мегафон
           </span>
         </div>
@@ -37,7 +37,7 @@
         </span>
         <button
           v-if="!isOrganizationIntegrated"
-          class="mt-[10px] rounded-[10px] h-[40px] text-white bg-orange-300"
+          class="mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300"
           @click="changeShowIntegrationState(true)"
         >
           Интеграция
@@ -56,13 +56,16 @@
       >
         <span class="mb-[8px] font-[500] text-[18px] leading-[28px]">Пользователи Мегафон</span>
         <span class="mb-[30px] text-[14px] leading-[22px]">Установите пользователям ЛидерТаск их логины из ЛК Мегафон</span>
+        <div class="flex flex-row w-[98%]">
+          <span class="flex-1 flex text-[13px] leading-[15px] font-[700]">Сотрудник</span>
+          <span class="flex-1 flex text-[13px] leading-[15px] font-[700]">Логин</span>
+        </div>
         <div
           v-for="(megafonUser, index) in megafonUsers"
           :key="index"
-          class="mb-[10px] flex h-[34px] gap-[8px]"
+          class="mb-[10px] flex h-[34px] my-[10px] gap-[8px]"
         >
           <div class="flex-1">
-            <span class="text-[13px] leading-[15px] font-[700]">Сотрудник</span>
             <EmployeesPopper
               :uid-user="megafonUser.uidUser"
               class="w-full"
@@ -70,7 +73,6 @@
             />
           </div>
           <div class="flex-1">
-            <span class="text-[13px] leading-[15px] font-[700]">Логин</span>
             <PopMenu
               class="w-full"
               @openMenu="loadUsers"
@@ -139,7 +141,7 @@
             </PopMenu>
           </div>
           <div
-            class="flex-none w-[34px] h-[34px] flex mt-[25px] justify-center items-center rounded-[6px] hover:bg-[#f4f5f7] cursor-pointer"
+            class="flex-none w-[34px] h-[34px] flex justify-center items-center rounded-[6px] hover:bg-[#f4f5f7] cursor-pointer"
             @click="deleteUserLogin(index)"
           >
             <svg
@@ -180,20 +182,18 @@
       </div>
       <article
         v-if="!isOrganizationIntegrated"
-        class="mt-[30px]"
+        class="mt-[40px]"
       >
-        <p class="font-[500]">
-          Инструкция по интеграции:
-        </p>
-        <p class="mt-[10px] font-[600] text-[18px]">
+        <span class="font-[400] text-[16px] leading-[25px]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
+        <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
-        <p class="mt-[10px]">
-          <ul class="list-inside list-decimal">
-            <li class="mb-3">
-              Зарегистрируйтесь на сайте
+        <p class="mt-[25px]">
+          <ul class="list-inside text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
+            <li class="my-[30px]">
+              <span class="mb-[25px]">Зарегистрируйтесь на сайте</span>
               <a
-                class="text-[#04b]"
+                class="text-[#007BE5] underline"
                 href="https://id.megafon.ru/sso/login-b2b"
                 target="_blank"
               >
@@ -201,55 +201,87 @@
               </a>
               и войдите в личный кабинет.
             </li>
-            <li class="mb-3">
-              Зайдите в раздел "Настройки" и выберите "Интеграция с CRM" в правом верхнем углу.
+            <li class="my-[30px]">
+              <span class="mb-[25px]">Зайдите в раздел "Настройки" и выберите "Интеграция с CRM" в правом верхнем углу.</span>
               <img
-                class="block max-w-[800px]"
+                class="block max-w-[800px] mt-[50px]"
                 src="@/assets/images/megafon/step_1.png"
                 alt="Интерфейс личного кабинета"
               >
             </li>
-            <li class="mb-3">
-              Найдите пункт "Ваша CRM" в списке и нажмите подключить.
+            <li class="my-[50px]">
+              <span class="mb-[25px]">Найдите пункт "Ваша CRM" в списке и нажмите подключить.</span>
               <img
-                class="block max-w-[800px]"
+                class="block max-w-[800px] mt-[50px]"
                 src="@/assets/images/megafon/step_2.png"
                 alt="Список CRM в ЛК"
               >
             </li>
-            <li class="mb-3">
-              Заполните поля в соответствии со скриншотом:
-              <ul class="list-inside list-disc gap-y-10px flex flex-col gap-y-[5px]">
+            <li class="my-[50px]">
+              <span>Заполните поля в соответствии со скриншотом:</span>
+              <ul class="list-none flex flex-col gap-y-[25px]">
                 <li>
-                  <div class="inline-flex items-center gap-x-[5px]">
-                    В поле "Имя вашей CRM" введите:
+                  <div class="max-w-[550px]">
+                    <span class="font-500 text-[#4C4C4D]">поле "Имя вашей CRM" введите:</span>
                     <ButtonCopy
+                      class="ml-[10px] mt-[12px]"
                       text="LeaderTask CRM"
                     />
                   </div>
                 </li>
                 <li>
-                  <div class="inline-flex items-center gap-x-[5px]">
-                    В поле "Адрес вашей CRM" введите:
+                  <div class="max-w-[550px]">
+                    <span class="font-500 text-[#4C4C4D]">В поле "Адрес вашей CRM" введите:</span>
                     <ButtonCopy
+                      class="ml-[10px] mt-[12px]"
                       text="https://api.leadertask.ru/megafon"
                     />
                   </div>
                 </li>
                 <li>
-                  <div class="inline-flex items-center gap-x-[5px]">
-                    В поле "Ключ для авторизации в вашей CRM":
+                  <div class="max-w-[550px]">
+                    <span class="font-500 text-[#4C4C4D]">В поле "Ключ для авторизации в вашей CRM":</span>
                     <ButtonCopy
+                      class="ml-[10px] mt-[12px]"
                       :text="ownerKey"
                     />
                   </div>
                 </li>
               </ul>
               <img
-                class="block max-w-[800px]"
+                class="block max-w-[800px] mt-[50px]"
                 src="@/assets/images/megafon/step_3.png"
                 alt="Параметры CRM в ЛК"
               >
+            </li>
+          </ul>
+        </p>
+        <p class="mt-[10px] font-[700] text-[22px] leading-[31px]">
+          Шаг 2. Заполните интеграцию ЛидерТаск
+        </p>
+        <p class="mt-[10px]">
+          <ul class="list-inside text-[#4C4C4D] list-decimal font-[500] text-[16px] leading-[25px]">
+            <li class="my-[25px]">
+              Откройте страницу
+              <a
+                class="text-[#007BE5] underline"
+                href=""
+                target="_blank"
+              >
+                Управление аккаунтом
+              </a>.
+            </li>
+            <li class="my-[25px]">
+              В разделе Пароли и авторизация выберите <b>Включить пароли приложений</b>. Подтвердите действие и нажмите Создать новый пароль.
+            </li>
+            <li class="my-[25px]">
+              Выберите тип приложения <b>Почта</b>.
+            </li>
+            <li class="my-[25px]">
+              Придумайте название пароля, например укажите название приложения, для которого вы создаете пароль. С этим названием пароль будет отображаться в списке.
+            </li>
+            <li class="my-[25px]">
+              Нажмите кнопку Создать. Пароль приложения отобразится во всплывающем окне.
             </li>
           </ul>
         </p>
