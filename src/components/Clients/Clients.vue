@@ -40,8 +40,8 @@
                 <th>Email</th>
                 <th>Комментарий</th>
               </tr>
-              <ClientsSkeleton v-if="status === 'loading' && !wasLoaded" />
-              <template v-if="status === 'success' || wasLoaded">
+              <ClientsSkeleton v-if="status === 'loading'" />
+              <template v-if="status === 'success' && wasLoaded">
                 <tr
                   v-for="client in clients"
                   :key="client?.uid"

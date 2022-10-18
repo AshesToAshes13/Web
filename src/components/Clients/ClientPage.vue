@@ -121,7 +121,7 @@ export default {
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
     },
-    clientMessages () { return [...this.$store.state.clientfilesandmessages.cards.messages, ...this.$store.state.clientfilesandmessages.messages] },
+    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
     selectedClient () {
       return this.$store.state.clients.selectedClient ?? ''
