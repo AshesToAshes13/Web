@@ -4,15 +4,19 @@ import * as BOARD from '../actions/boards'
 import { uuidv4 } from '@/helpers/functions'
 import store from '@/store/index.js'
 
-const state = {
-  boards: {},
-  selectedBoard: undefined,
-  showOnlyCardsWhereIAmResponsible: false,
-  showOnlyCardsWithNoResponsible: false,
-  showOnlyMyCreatedCards: false,
-  searchText: undefined,
-  publicBoard: 0
+const getDefaultState = () => {
+  return {
+    boards: {},
+    selectedBoard: undefined,
+    showOnlyCardsWhereIAmResponsible: false,
+    showOnlyCardsWithNoResponsible: false,
+    showOnlyMyCreatedCards: false,
+    searchText: undefined,
+    publicBoard: 0
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {}
 
@@ -422,13 +426,7 @@ const mutations = {
     })
   },
   [BOARD.RESET_STATE_BOARD]: (state) => {
-    state.boards = {}
-    state.selectedBoard = undefined
-    state.showArchive = false
-    state.showOnlyCardsWhereIAmResponsible = false
-    state.showOnlyCardsWithNoResponsible = false
-    state.showOnlyMyCreatedCards = false
-    state.searchText = undefined
+    Object.assign(state, getDefaultState())
   }
 }
 

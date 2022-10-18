@@ -1,12 +1,16 @@
 import * as CLIENTS from '@/store/actions/clients.js'
 import axios from 'axios'
 
-const state = {
-  selectedClient: null,
-  paging: {},
-  clients: [],
-  status: 'loading'
+const getDefaultState = () => {
+  return {
+    selectedClient: null,
+    paging: {},
+    clients: [],
+    status: 'loading'
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [CLIENTS.GET_CLIENTS]: ({ commit, dispatch, state }, data) => {
@@ -122,10 +126,7 @@ const mutations = {
     state.clients.find(cl => cl.uid === client.uid).name = client.name
   },
   [CLIENTS.RESET_CLIENT_STATE]: (state) => {
-    state.selectedClient = null
-    state.paging = {}
-    state.clients = []
-    state.status = 'loading'
+    Object.assign(state, getDefaultState())
   },
   UPDATE_PAGING: (state, paging) => {
     state.paging = paging

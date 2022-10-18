@@ -1,12 +1,16 @@
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
 import axios from 'axios'
 
-const state = {
-  login: null,
-  password: null,
-  isIntegrated: false,
-  isLoading: false
+const getDefaultState = () => {
+  return {
+    login: null,
+    password: null,
+    isIntegrated: false,
+    isLoading: false
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION]: (
@@ -122,10 +126,7 @@ const actions = {
 
 const mutations = {
   [CORP_YANDEX.RESET_CORP_YANDEX_STATE]: (state) => {
-    state.login = null
-    state.password = null
-    state.isIntegrated = false
-    state.isLoading = false
+    Object.assign(state, getDefaultState())
   },
   [CORP_YANDEX.YANDEX_START_LOADING]: (state) => {
     state.isLoading = true

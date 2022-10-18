@@ -1,17 +1,20 @@
 import axios from 'axios'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
-const state = {
-  // Ключ, указанный в ЛК Мегафон
-  atsKey: '',
-  // Ключ, который придумывает сам пользователь
-  crmKey: '',
-  // Ссылка на ЛК Мегафон
-  atsLink: '',
-  isIntegrated: false,
-  // Сотрудники, указанные в ЛК Мегафон
-  megafonUsers: []
+const getDefaultState = () => {
+  return {
+    atsKey: '',
+    // Ключ, который придумывает сам пользователь
+    crmKey: '',
+    // Ссылка на ЛК Мегафон
+    atsLink: '',
+    isIntegrated: false,
+    // Сотрудники, указанные в ЛК Мегафон
+    megafonUsers: []
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [CORP_MEGAFON.MEGAFON_CREATE_INTEGRATION]: ({ commit, dispatch }, data) => {
@@ -183,11 +186,7 @@ const mutations = {
     state.isIntegrated = false
   },
   [CORP_MEGAFON.MEGAFON_RESET_CORP_INTEGRATION]: (state) => {
-    state.atsKey = ''
-    state.crmKey = ''
-    state.atsLink = ''
-    state.megafonUsers = []
-    state.isIntegrated = false
+    Object.assign(state, getDefaultState())
   }
 }
 

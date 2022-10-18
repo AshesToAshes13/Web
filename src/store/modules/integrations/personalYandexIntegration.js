@@ -1,12 +1,16 @@
 import * as PERSONAL_YANDEX from '@/store/actions/integrations/personalYandexInt.js'
 import axios from 'axios'
 
-const state = {
-  login: null,
-  password: null,
-  isIntegrated: false,
-  isLoading: false
+const getDefaultState = () => {
+  return {
+    login: null,
+    password: null,
+    isIntegrated: false,
+    isLoading: false
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [PERSONAL_YANDEX.YANDEX_CREATE_PERSONAL_EMAIL_INTEGRATION]: (
@@ -127,10 +131,7 @@ const actions = {
 
 const mutations = {
   [PERSONAL_YANDEX.RESET_PERSONAL_YANDEX_STATE]: (state) => {
-    state.login = null
-    state.password = null
-    state.isIntegrated = false
-    state.isLoading = false
+    Object.assign(state, getDefaultState())
   },
   [PERSONAL_YANDEX.YANDEX_START_LOADING]: (state) => {
     state.isLoading = true
