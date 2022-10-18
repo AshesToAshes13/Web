@@ -50,6 +50,7 @@
         :task="task"
         :answer="currentAnswerMessageUid"
         @readTask="readTask"
+        @sendTaskMsg="sendTaskMsg"
       />
       <MessageSkeleton v-if="isTaskMessagesLoading" />
       <!-- chat -->
@@ -73,7 +74,7 @@
   </div>
 </template>
 <script>
-import TaskPropsInputForm from '@/components/TaskProperties/TaskPropsInputForm.vue'
+import TaskPropsInputForm from '@/components/Doitnow/TaskPropsInputForm.vue'
 import MessageSkeleton from '../TaskProperties/MessageSkeleton.vue'
 import TaskPropsChatMessages from '@/components/TaskProperties/TaskPropsChatMessages.vue'
 

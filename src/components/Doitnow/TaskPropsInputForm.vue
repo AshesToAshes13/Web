@@ -4,7 +4,7 @@
     src="/ajaxloader.gif"
   >
   <div class="w-full mt-[20px]">
-    <card-message-input
+    <CardMessageInput
       v-model="taskMsg"
       :can-add-files="true"
       @createCardMessage="sendTaskMsg"
@@ -12,13 +12,11 @@
     />
   </div>
 </template>
+
 <script>
-import * as INSPECTOR from '@/store/actions/inspector.js'
 import * as FILES from '@/store/actions/taskfiles.js'
-import * as MSG from '@/store/actions/taskmessages'
 import { TASK_STATUS } from '@/constants'
 import CardMessageInput from '@/components/CardProperties/CardMessageInput'
-import { uuidv4 } from '@/helpers/functions'
 
 export default {
   components: { CardMessageInput },
@@ -32,7 +30,7 @@ export default {
       default: ''
     }
   },
-  emits: ['readTask'],
+  emits: ['readTask', 'sendTaskMsg'],
   data: () => ({
     isloading: false,
     files: [],
@@ -99,40 +97,7 @@ export default {
       msgtask = this.taskMsg.replaceAll('&', '&amp;')
       msgtask = this.taskMsg.replaceAll('<', '&lt;')
       msgtask = this.taskMsg.replaceAll('>', '&gt;')
-      const uid = uuidv4()
-      const data = {
-        uid_task: this.selectedTask.uid,
-        uid_creator: this.cusers.current_user_uid,
-        uid: uid,
-        uid_msg: uid,
-        date_create: new Date().toISOString(),
-        deleted: 0,
-        uid_quote: this.answer,
-        text: msgtask,
-        msg: msgtask
-      }
-      this.$store.dispatch(MSG.CREATE_MESSAGE_REQUEST, data).then(
-        resp => {
-          // Answer last inspector message
-          const lastInspectorMessage = this.taskMessagesAndFiles.slice().reverse().find(message => message.uid_creator === 'inspector')
-          if (lastInspectorMessage && this.selectedTask.uid_performer === this.cusers.current_user_uid) {
-            this.$store.dispatch(INSPECTOR.ANSWER_INSPECTOR_TASK, { id: lastInspectorMessage.id, answer: 1 }).then(() => {
-              lastInspectorMessage.performer_answer = 1
-            })
-          }
-
-          this.selectedTask.has_msgs = true
-          if (this.selectedTask.type === 2 || this.selectedTask.type === 3) {
-            if ([TASK_STATUS.TASK_COMPLETED, TASK_STATUS.TASK_READY, TASK_STATUS.TASK_CANCELLED, TASK_STATUS.TASK_REJECTED].includes(this.selectedTask.status)) {
-              if (((this.selectedTask.uid_customer === this.cusers.current_user_uid) && ((this.selectedTask.status === 1) || (this.selectedTask.status === 5)))) {
-                this.selectedTask.status = 9
-              }
-            }
-          }
-          this.selectedTask.msg = decodeURIComponent(this.taskMsg)
-        })
-      this.taskMsg = ''
-      this.readTask()
+      this.$emit('sendTaskMsg', msgtask)
     },
     createTaskFile (event) {
       this.files = event.target.files ? event.target.files : event.dataTransfer.files

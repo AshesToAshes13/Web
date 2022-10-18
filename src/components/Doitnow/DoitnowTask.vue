@@ -472,6 +472,8 @@ export default {
 
       this.$store.dispatch(MSG.CREATE_MESSAGE_REQUEST, data)
         .then(() => {
+          this.$emit('changeValue', { has_msgs: true })
+
           const lastInspectorMessage = this.taskMessagesAndFiles[this.taskMessagesAndFiles.length - 2].uid_creator === 'inspector' ? this.taskMessagesAndFiles[this.taskMessagesAndFiles.length - 2] : false
           console.log('lastInspectorMessage: ', lastInspectorMessage)
           if (lastInspectorMessage) {
@@ -488,8 +490,12 @@ export default {
               this.$emit('changeValue', { status: TASK_STATUS.TASK_REFINE })
             }
           }
+        }).catch((e) => {
+          // задача удалена - сервер отвечает 500 и user has not task
+          if (e.response?.status === 500 && e.response?.data?.error === 'user has not task') {
+            this.$emit('nextTask')
+          }
         })
-      this.$emit('changeValue', { has_msgs: true })
       this.taskMsg = ''
     },
     openTaskFromQueue () {
@@ -839,6 +845,13 @@ export default {
         this.$emit('changeValue', { status: status })
         this.showStatusModal = false
         this.$emit('nextTask')
+      }).catch((e) => {
+        // задача удалена - сервер отвечает 500 и error while updating the status
+        if (e.response?.status === 500 && e.response?.data?.error === 'error while updating the status') {
+          this.showStatusModal = false
+          console.log('CHANGE_TASK_STATUS error', e)
+          // this.$emit('nextTask')
+        }
       })
     },
     getDate (time, withHours) {
