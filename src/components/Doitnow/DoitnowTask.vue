@@ -1,12 +1,8 @@
 <template>
-  <div
-    class="flex justify-between max-w-[1045px]"
-    :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
-    :class="{
-      'bg-gray-200 dark:bg-gray-800':
-        isTaskComplete &&
-        task.uid_marker !== '00000000-0000-0000-0000-000000000000'
-    }"
+  <DoitnowContent
+    :border-color="colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''"
+    :background-color="isTaskComplete &&
+      task.uid_marker !== '00000000-0000-0000-0000-000000000000' ? 'rgb(229 231 235)' : ''"
   >
     <DoitnowStatusModal
       v-if="showStatusModal"
@@ -16,10 +12,7 @@
       @yes="changeStatus(lastSelectedStatus, true)"
     />
 
-    <div
-      class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
-      :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
-    >
+    <div>
       <DoitnowCustomerInfo
         v-if="shouldShowCustomer"
         :task="task"
@@ -126,42 +119,39 @@
         @readTask="readTask"
       />
     </div>
-    <div
-      v-if="!task.mode"
-      class="flex ml-[10px] flex-col gap-[6px] w-[221px]"
-    >
+    <template #buttons>
       <DoitnowRightButtonPostpone
-        v-if="shouldShowPostponeButton"
+        v-if="!task.mode && shouldShowPostponeButton"
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
         @next="nextTask"
       />
       <DoitnowRightButton
-        v-if="shouldShowAcceptButton"
+        v-if="!task.mode && shouldShowAcceptButton"
         :title="acceptButtonText"
         icon="check"
         @click="accept"
       />
       <DoitnowRightButton
-        v-if="shouldShowRefineButton"
+        v-if="!task.mode && shouldShowRefineButton"
         title="На доработку"
         icon="refine"
         @click="refine"
       />
       <DoitnowRightButton
-        v-if="shouldShowRejectButton"
+        v-if="!task.mode && shouldShowRejectButton"
         title="Отклонить"
         icon="cancel"
         @click="reject"
       />
       <DoitnowRightButton
-        v-if="shouldShowCancelButton"
+        v-if="!task.mode && shouldShowCancelButton"
         title="Отменить"
         icon="cancel"
         @click="cancel"
       />
       <DoitnowRightButtonPerform
-        v-if="shouldShowPerformButton"
+        v-if="!task.mode && shouldShowPerformButton"
         :task-type="task.type"
         :current-user-uid="user?.current_user_uid"
         :performer-email="task.email_performer"
@@ -169,12 +159,13 @@
         @reAssign="onReAssignToUser"
       />
       <DoitnowRightButton
+        v-if="!task.mode"
         title="Открыть задачу"
         icon="task-open"
         @click="openTaskFromQueue"
       />
-    </div>
-  </div>
+    </template>
+  </DoitnowContent>
 </template>
 
 <script>
@@ -194,6 +185,7 @@ import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
 import DoitnowPerformerInfo from '@/components/Doitnow/DoitnowPerformerInfo.vue'
 import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel'
+import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
 
 import * as INSPECTOR from '@/store/actions/inspector.js'
 import * as TASK from '@/store/actions/tasks'
@@ -217,7 +209,8 @@ export default {
     DoitnowStatusModal,
     contenteditable,
     DoitnowChatMessages,
-    TaskListTagLabel
+    TaskListTagLabel,
+    DoitnowContent
   },
   directives: {
     linkify
