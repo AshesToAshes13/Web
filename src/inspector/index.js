@@ -71,6 +71,8 @@ export function initInspectorSocket (force = false) {
       }
       socket.send(JSON.stringify(data))
     }
+
+    console.log('inspector connected success')
   }
   socket.onmessage = function (event) {
     if (process.env.VUE_APP_EXTENDED_LOGS) {
@@ -83,7 +85,7 @@ export function initInspectorSocket (force = false) {
       !isSocketForceClosed && initInspectorSocket()
     }, 1000)
   }
-  socket.onerror = function () {
+  socket.onerror = function (e) {
     socket.close()
   }
 }
