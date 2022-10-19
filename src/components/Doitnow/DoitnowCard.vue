@@ -108,7 +108,7 @@
         @next="nextTask"
       />
       <DoitnowRightButtonContact
-        title="Установить контакт"
+        :title="contactButtonTitle"
         @changeContact="onChangeClient"
       />
       <DoitnowRightButton
@@ -200,6 +200,12 @@ export default {
     },
     clientPhone () {
       return ''
+    },
+    contactButtonTitle () {
+      if (this.clientName.length !== 0) {
+        return 'Изменить контакт'
+      }
+      return 'Установить контакт'
     },
     clientEmail () {
       return ''
@@ -348,5 +354,12 @@ export default {
       })
     }
   }
+  // contactButtonTitle () {
+  //   if (this.card.client_name !== '') {
+  //     return 'Изменить контакт'
+  //   } else {
+  //     return 'Установить контакт'
+  //   }
+  // }
 }
 </script>
