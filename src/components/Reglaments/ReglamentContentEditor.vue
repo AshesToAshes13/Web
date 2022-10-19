@@ -674,19 +674,13 @@ export default {
         } else {
           this.showSaveModal = false
         }
-        this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormat(new Date())
+        this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date())
         reglament.last_comment_text = this.$store.state.reglaments.lastCommentText
         reglament.last_comment_date = this.$store.state.reglaments.lastCommentDate
         this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, reglament)
       }).catch(() => {
         this.saveContentStatus = 2
       })
-    },
-    dateToLabelFormat (calendarDate) {
-      const day = calendarDate.getDate()
-      const month = calendarDate.toLocaleString('default', { month: 'short' })
-      const weekday = calendarDate.toLocaleString('default', { weekday: 'short' })
-      return day + ' ' + month + ', ' + weekday
     },
     dateToLabelFormatForComment (calendarDate) {
       const day = calendarDate.getDate()

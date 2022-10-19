@@ -43,7 +43,7 @@
       <ReglamentHistoryElement
         :comment="reglamentComments[index].comment"
         :uid-employee="reglamentComments[index].uid_employee"
-        :comment-date="reglamentComments[index].comment_date"
+        :comment-date="dateToLabelFormatForComment(new Date(reglamentComments[index].comment_date))"
       />
     </template>
   </div>
@@ -80,6 +80,18 @@ export default {
       }
       this.isLoading = false
     })
+  },
+  methods: {
+    dateToLabelFormatForComment (calendarDate) {
+      const day = calendarDate.getDate()
+      const month = calendarDate.toLocaleString('default', { month: 'short' })
+      const weekday = calendarDate.toLocaleString('default', { weekday: 'short' })
+      const hours = String(calendarDate.getHours()).padStart(2, '0')
+      const minutes = String(calendarDate.getMinutes()).padStart(2, '0')
+      const seconds = String(calendarDate.getSeconds()).padStart(2, '0')
+
+      return `${day} ${month}, ${weekday}, ${hours}:${minutes}:${seconds}`
+    }
   }
 }
 </script>
