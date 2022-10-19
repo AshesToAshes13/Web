@@ -42,7 +42,6 @@
         @clickRemoveButton="showDeleteCard = true"
         @toggleShowOnlyFiles="showFilesOnly = !showFilesOnly"
       />
-      <pre>{{ new Date(selectedCard?.date_create).toLocaleString() }}</pre>
       <PropsButtonClose
         @click="closeProperties"
       />
