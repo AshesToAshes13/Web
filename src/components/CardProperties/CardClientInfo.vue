@@ -2,7 +2,7 @@
   <div class="bg-[#F4F5F7] w-[340px] h-[185px] rounded-[8px] py-[20px] px-[16px] mb-[15px]">
     <div class="flex flex-col gap-[20px]">
       <div class="flex justify-between items-center">
-        <span class="font-medium text-[16px]">{{ currentClient.name }}</span>
+        <span class="font-medium text-[16px]">{{ clientName }}</span>
         <svg
           width="14"
           height="16"
@@ -20,10 +20,10 @@
       </div>
       <div class="flex flex-col gap-[12px] text-[#6A6A6C] text-[15px]">
         <span>
-          <span class="font-medium text-[#424242]">Почта:</span> {{ currentClient.email }}
+          <span class="font-medium text-[#424242]">Почта:</span> {{ clientEmail }}
         </span>
         <span>
-          <span class="font-medium text-[#424242]">Телефон:</span> {{ currentClient.phone }}
+          <span class="font-medium text-[#424242]">Телефон:</span> {{ clientPhone }}
         </span>
       </div>
       <div class="flex justify-between">
@@ -61,6 +61,7 @@
 <script>
 import { stripPhoneNumber } from '@/helpers/functions'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
+import * as CLIENTS from '@/store/actions/clients'
 
 export default {
 
@@ -71,10 +72,25 @@ export default {
     }
   },
   emits: ['clickShowClientModalEmit', 'removeClientFromCardEmit'],
+  data () {
+    return {
+      clientName: '',
+      clientPhone: '',
+      clientEmail: ''
+    }
+  },
   computed: {
     user () {
       return this.$store.state.user.user
-    }
+    },
+    selectedCard () { return this.$store.getters.selectedCard }
+  },
+  mounted () {
+    this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then((res) => {
+      this.clientEmail = res.data.email
+      this.clientPhone = res.data.phone
+      this.clientName = res.data.name
+    })
   },
   methods: {
     clickShowClientModal () {
