@@ -28,7 +28,7 @@
     @cancel="showFileSizeLimit = false"
   />
   <div
-    class="break-words relative z-1"
+    class="break-words z-1"
     @mousedown="selectedFalse"
   >
     <div
@@ -51,7 +51,7 @@
     </div>
     <div
       id="generalscroll"
-      class="column-resize relative overflow-hidden"
+      class="column-resize overflow-hidden"
     >
       <div class="flex items-center">
         <TaskStatus
@@ -219,7 +219,7 @@
       />
     </div>
   </div>
-  <div class="w-full relative">
+  <div class="w-full">
     <img
       v-if="isloading"
       class="mt-[8px] h-[40px]"
@@ -1270,6 +1270,6 @@ export default {
   border: 1px solid #aaaaaa;
 }
 #generalscroll {
-   scrollbar-width: none;
+  scrollbar-width: none;
 }
 </style>

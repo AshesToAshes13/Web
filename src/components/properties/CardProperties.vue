@@ -31,7 +31,7 @@
   />
   <div
     v-if="selectedCard"
-    class="break-words relative z-1"
+    class="break-words z-1"
   >
     <div class="flex items-center justify-between mb-[10px]">
       <CardOptions
@@ -48,7 +48,7 @@
     </div>
     <div
       id="generalscroll"
-      class="column-resize relative overflow-hidden"
+      class="column-resize overflow-hidden"
     >
       <CardCover
         :cover-color="
@@ -306,7 +306,8 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        return [...this.$store.state.clientfilesandmessages.messages, ...this.$store.state.cardfilesandmessages.messages]
+        const clientMessages = [...this.$store.state.clientfilesandmessages.messages].filter(message => !message.clientFile)
+        return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
       }
       return this.$store.state.cardfilesandmessages.messages
     },

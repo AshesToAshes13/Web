@@ -79,7 +79,7 @@ import ClientProperties from '@/components/Clients/ClientProperties'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import { uuidv4 } from '@/helpers/functions'
-import { REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
+import { REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages'
 import { GET_CLIENT } from '@/store/actions/clients'
 
@@ -271,7 +271,6 @@ export default {
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       this.$store.commit(REFRESH_FILES, [])
-      this.$store.commit(REFRESH_MESSAGES, [])
       this.$store.commit(REFRESH_CARDS)
 
       if (!this.selectedClient) {

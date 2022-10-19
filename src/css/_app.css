@@ -961,7 +961,6 @@ fieldset[disabled] .btn {
 {
   height: calc(100vh - var(--hex-parent-height));
   overflow-y: auto;
-  position: relative;
   width: 100%;
   overflow-x: hidden;
 }

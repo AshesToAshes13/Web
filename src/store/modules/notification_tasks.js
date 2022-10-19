@@ -20,12 +20,15 @@ const actions = {
         const reglamentReminder = reglament.reminder
           ? new Date(reglament.reminder)
           : dateNow
+        const reglamentReminderValud = isNaN(reglamentReminder)
+          ? dateNow
+          : reglamentReminder
         return (
           (reglament.department_uid === userDep ||
             reglament.department_uid === '') &&
           !reglament.is_passed &&
           reglament.has_questions &&
-          reglamentReminder <= dateNow
+          reglamentReminderValud <= dateNow
         )
       }
     )
