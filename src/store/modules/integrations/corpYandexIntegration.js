@@ -138,7 +138,7 @@ const mutations = {
     state.isIntegrated = data
   },
   [CORP_YANDEX.YANDEX_GET_ORGANIZATION_LOGIN_AND_PASS]: (state, data) => {
-    if (data.length) {
+    if (Object.keys(data).length) {
       state.login = data.ya_login
       state.password = data.ya_password
       state.isIntegrated = true
