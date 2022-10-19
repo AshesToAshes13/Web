@@ -1,7 +1,6 @@
 <template>
   <div
     class="flex flex-col"
-    :class="{'pb-[100px]': !inDoitnow}"
   >
     <div
       v-for="(message, index) in cardMessages"
