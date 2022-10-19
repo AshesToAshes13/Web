@@ -30,6 +30,7 @@ import tabs from './modules/tabs'
 import taskfilesandmessages from './modules/taskfilesandmessages'
 import tasks from './modules/tasks'
 import user from './modules/user'
+import telegramIntegration from './modules/integrations/personalTelegramIntegration'
 
 export default createStore({
   state: {
@@ -192,6 +193,7 @@ export default createStore({
     notificationtasks,
     tabs,
     clientfilesandmessages,
-    boardforms
+    boardforms,
+    telegramIntegration
   }
 })
