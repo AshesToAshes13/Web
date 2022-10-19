@@ -158,7 +158,7 @@ export default {
       return this.$store.state.employees.employees
     },
     canEdit () {
-      return this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2
+      return true // this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2
     }
   },
   methods: {
@@ -176,7 +176,7 @@ export default {
       this.$store.dispatch(CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION, {
         ya_login: login,
         ya_password: password,
-        organization_email: this.user.owner_email
+        organization: this.user.owner_email
       }).then(() => {
         this.changeShowIntegrationState(false)
         this.$store.state.corpYandexIntegration.login = login
