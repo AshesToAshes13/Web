@@ -176,7 +176,7 @@ export default {
       this.$store.dispatch(CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION, {
         ya_login: login,
         ya_password: password,
-        organization_email: this.user.owner_email
+        organization: this.user.owner_email
       }).then(() => {
         this.changeShowIntegrationState(false)
         this.$store.state.corpYandexIntegration.login = login

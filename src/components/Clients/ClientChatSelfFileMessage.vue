@@ -1,10 +1,10 @@
 <script>
 
-import ImagePreloader from '@/components/CardProperties/ImagePreloader.vue'
-import AudioPreloader from '@/components/CardProperties/AudioPreloader.vue'
-import DocPreloader from '@/components/CardProperties/DocPreloader.vue'
-import MoviePreloader from '@/components/CardProperties/MoviePreloader.vue'
-import FilePreloader from '@/components/CardProperties/FilePreloader.vue'
+import ImagePreloader from '@/components/CardProperties/cardFiles/ImagePreloader.vue'
+import AudioPreloader from '@/components/CardProperties/cardFiles/AudioPreloader.vue'
+import DocPreloader from '@/components/CardProperties/cardFiles/DocPreloader.vue'
+import MoviePreloader from '@/components/CardProperties/cardFiles/MoviePreloader.vue'
+import FilePreloader from '@/components/CardProperties/cardFiles/FilePreloader.vue'
 import CardChatDeletedMessageContent from '@/components/CardProperties/CardChatDeletedMessageContent.vue'
 
 export default {
