@@ -38,7 +38,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({ url, method: 'GET' })
         .then(resp => {
-          commit(CLIENTS.SELECT_CLIENT, resp)
+          commit(CLIENTS.SELECT_CLIENT, resp.data)
           resolve(resp)
         })
         .catch(err => {

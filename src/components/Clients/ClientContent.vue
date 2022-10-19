@@ -267,30 +267,29 @@ export default {
         asideRight.scrollTop = asideRight.scrollHeight
       })
     },
-    loadMessages () {
+    async loadMessages () {
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       this.$store.commit(REFRESH_FILES, [])
       this.$store.commit(REFRESH_MESSAGES, [])
       this.$store.commit(REFRESH_CARDS)
 
-      // Сейчас формируется объект с полями
-      // {organization: string, search: string}
-      // TODO: После заливки нового инспектора передавать в метод только поле clientUid
-      this.$store.dispatch(GET_CLIENT, { organization: this.$store.state.user.user.owner_email, search: this.clientUid }).then(() => {
-        const data = {
-          clientUid: this.selectedClient.uid,
-          clientEmail: this.selectedClient.email,
-          clientPhone: this.selectedClient.phone,
-          crmKey: this.$store.state.corpMegafonIntegration.crmKey,
-          corpYandexInt: this.corpYandexIntegration,
-          personalYandexInt: this.personalYandexIntegration,
-          megafonIntegration: this.isCorpMegafonIntegrated
-        }
+      if (!this.selectedClient) {
+        await this.$store.dispatch(GET_CLIENT, this.clientUid)
+      }
 
-        this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
-        this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
-      })
+      const data = {
+        clientUid: this.selectedClient.uid,
+        clientEmail: this.selectedClient.email,
+        clientPhone: this.selectedClient.phone,
+        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+        corpYandexInt: this.corpYandexIntegration,
+        personalYandexInt: this.personalYandexIntegration,
+        megafonIntegration: this.isCorpMegafonIntegrated
+      }
+
+      this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
+      this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
     }
   }
 }

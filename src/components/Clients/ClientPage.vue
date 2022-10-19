@@ -5,7 +5,7 @@
     @deleteClient="deleteClient"
   />
   <ClientContent
-    :client-uid="selectedClient.name"
+    :client-uid="clientUid"
     class="h-[calc(100%-70px)] bg-white rounded-xl"
   />
 </template>
@@ -23,14 +23,10 @@ export default {
     },
     breadcrumbs () {
       return [{ name: this.selectedClient?.name, selected: true }]
-    }
-  },
-  mounted () {
-    if (!this.selectedClient) {
-      // Ждем когда зальется новый инспектор, пока работаем только по сторе
-      // this.$store.dispatch(GET_CLIENT, this.$route.params.client_id)
-
-      this.$router.push('/clients')
+    },
+    clientUid () {
+      console.log('this.$router -->', this.$route)
+      return this.$route.params.client_id
     }
   },
   unmounted () {
