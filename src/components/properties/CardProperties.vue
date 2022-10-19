@@ -130,6 +130,7 @@
           @changeResponsible="changeResponsible"
         />
         <CardClient
+          v-if="!isClientInCard"
           :client-uid="selectedCard?.uid_client"
           :client-name="selectedCard?.client_name"
           :card-name="selectedCard?.name"
@@ -148,14 +149,13 @@
           @click="clickCardBudget"
           @onWipeBudget="changeCardBudget"
         />
-        <div
-          v-if="selectedCard?.uid_client"
-          class="flex items-center bg-[#F4F5F7] rounded-[6px] text-[#575758] text-[12px] px-[8px] py-[5px] font-[500] group cursor-pointer"
-          @click="showClientModal = true"
-        >
-          Открыть контакт
-        </div>
       </div>
+      <CardClientInfo
+        v-if="isClientInCard"
+        :current-client="clientInCard"
+        @clickShowClientModalEmit="clickShowClientModal"
+        @removeClientFromCardEmit="removeClientFromCard"
+      />
 
       <TaskPropsCommentEditor
         v-if="canEdit || selectedCard?.comment?.length > 0"
@@ -257,6 +257,8 @@ import * as CARD from '@/store/actions/cards'
 import TaskPropertiesModalBoxFileSizeLimit from '@/components/TaskProperties/TaskPropertiesModalBoxFileSizeLimit.vue'
 import { uuidv4 } from '@/helpers/functions'
 import ClientModal from '@/components/Clients/ClientModal'
+import * as CLIENTS from '@/store/actions/clients'
+import CardClientInfo from '../CardProperties/CardClientInfo.vue'
 
 export default {
   components: {
@@ -280,7 +282,8 @@ export default {
     MessageSkeleton,
     PropsButtonClose,
     TaskPropertiesModalBoxFileSizeLimit,
-    CardSetDate
+    CardSetDate,
+    CardClientInfo
   },
   data () {
     return {
@@ -293,13 +296,17 @@ export default {
       showDeleteCard: false,
       cardMessageInputValue: '',
       currentCard: null,
-      tooBigFiles: []
+      tooBigFiles: [],
+      clientInCard: {}
     }
   },
   computed: {
     status () { return this.$store.state.cardfilesandmessages.status },
     selectedCard () { return this.$store.getters.selectedCard },
     selectedCardUid () { return this.$store.state.cards.cards.selectedCardUid },
+    isClientInCard () {
+      return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
+    },
     user () { return this.$store.state.user.user },
     selectedCardBoard () { return this.$store.state.boards.boards[this.selectedCard?.uid_board] || null },
     employees () { return this.$store.state.employees.employees },
@@ -365,11 +372,21 @@ export default {
       this.cardMessageInputValue = ''
     }
   },
+  mounted () {
+    if (this.isClientInCard) {
+      this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
+        this.clientInCard = resp.data
+      })
+    }
+  },
   methods: {
     dateToLabelFormat (calendarDate) {
       const day = calendarDate.getDate()
       const month = calendarDate.toLocaleString('default', { month: 'short' })
       return day + ' ' + month
+    },
+    clickShowClientModal () {
+      this.showClientModal = true
     },
     isFilePreloadable (fileExtension) {
       const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
@@ -639,6 +656,11 @@ export default {
         this.selectedCard.client_name = name
         this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
       }
+    },
+    removeClientFromCard () {
+      this.selectedCard.uid_client = ''
+      this.selectedCard.client_name = ''
+      this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
     },
     onChangeDates: function (dateTimeString) {
       if (!this.selectedCard) return
