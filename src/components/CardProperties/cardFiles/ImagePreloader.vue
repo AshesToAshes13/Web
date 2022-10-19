@@ -77,7 +77,7 @@ import { writeCache } from '@/store/helpers/functions'
 import CardChatMessageOptionsPopMenu from '@/components/CardProperties/CardChatMessageOptionsPopMenu.vue'
 import * as CARDS from '@/store/actions/cards'
 import * as CARDSFILESANDMESSAGES from '@/store/actions/cardfilesandmessages'
-import ChatLoader from './ChatLoader.vue'
+import ChatLoader from '../ChatLoader.vue'
 
 export default {
   components: {
