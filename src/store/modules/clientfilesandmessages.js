@@ -152,9 +152,9 @@ const actions = {
   [CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES]: async ({ commit, dispatch }, data) => {
     commit(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST)
     const messages = dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, data.clientUid)
-    const files = dispatch(CLIENT_FILES_AND_MESSAGES.FILES_REQUEST, data.clientUid)
+    // const files = dispatch(CLIENT_FILES_AND_MESSAGES.FILES_REQUEST, data.clientUid)
 
-    const promises = [messages, files]
+    const promises = [messages]
 
     if (data.megafonIntegration) {
       let preparedClientPhone = data.clientPhone
@@ -302,6 +302,7 @@ const mutations = {
     })
   },
   [CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES]: (state) => {
+    console.log('merged')
     state.messages = state.messages.concat(state.files)
     state.messages.sort((a, b) => {
       if (!a.file_name && !a.date_create.includes('Z')) {

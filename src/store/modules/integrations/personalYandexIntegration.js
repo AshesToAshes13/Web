@@ -14,7 +14,7 @@ const actions = {
     data
   ) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'yandexIntegratePersonal'
+      const url = process.env.VUE_APP_INSPECTOR_API + 'personalYandexInt/yandexIntegratePersonal'
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           commit(
@@ -36,7 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexGetPersonalLoginPassword?user=' +
+        'personalYandexInt/getPersonalLoginPassword?user=' +
         userEmail
       axios({ url: url, method: 'GET', timeout: 1000 * 10 })
         .then((resp) => {
@@ -56,7 +56,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexRemovePersonalIntegration?user=' +
+        'personalYandexInt/yandexRemovePersonal?user=' +
         userEmail
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
@@ -80,7 +80,7 @@ const actions = {
       }
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexGetPersonalMessagesSentFromUs'
+        'personalYandexInt/yandexGetPersonalMessagesSentFromUs'
       commit(PERSONAL_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
@@ -107,7 +107,7 @@ const actions = {
         email: emails.clientEmail
       }
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'yandexGetPersonalMessagesSentToUs'
+        process.env.VUE_APP_INSPECTOR_API + 'personalYandexInt/yandexGetPersonalMessagesSentToUs'
       commit(PERSONAL_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
@@ -133,12 +133,14 @@ const mutations = {
     state.isLoading = false
   },
   [PERSONAL_YANDEX.YANDEX_CREATE_PERSONAL_EMAIL_INTEGRATION]: (state, data) => {
-    state.isIntegrated = data
+    state.login = data.ya_login
+    state.password = data.ya_password
+    state.isIntegrated = true
   },
   [PERSONAL_YANDEX.YANDEX_GET_PERSONAL_LOGIN_AND_PASS]: (state, data) => {
-    if (data.length) {
-      state.login = data[0].ya_login
-      state.password = data[0].ya_password
+    if (Object.keys(data).length) {
+      state.login = data.ya_login
+      state.password = data.ya_password
       state.isIntegrated = true
     }
   },
