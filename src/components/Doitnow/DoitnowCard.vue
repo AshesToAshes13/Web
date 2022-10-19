@@ -354,12 +354,5 @@ export default {
       })
     }
   }
-  // contactButtonTitle () {
-  //   if (this.card.client_name !== '') {
-  //     return 'Изменить контакт'
-  //   } else {
-  //     return 'Установить контакт'
-  //   }
-  // }
 }
 </script>
