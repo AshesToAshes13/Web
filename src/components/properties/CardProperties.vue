@@ -1,8 +1,7 @@
 <template>
-  <!--  Сейчас в clientUid временно приходит имя пользователя (пока ждем заливку инспектора с новым api)-->
   <ClientModal
     v-if="showClientModal"
-    :client-uid="selectedCard.client_name"
+    :client-uid="selectedCard.uid_client"
     @closeModal="showClientModal = false"
   />
   <BoardModalBoxDelete
