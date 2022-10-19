@@ -85,7 +85,7 @@
 <script>
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
-import DoitnowModalBoxSetDate from '@/components/Doitnow/DoitnowModalBoxSetDate.vue'
+import DoitnowModalBoxSetDate from '@/components/Doitnow/modals/DoitnowModalBoxSetDate.vue'
 import PopMenuDivider from '@/components/Common/PopMenuDivider.vue'
 
 export default {
