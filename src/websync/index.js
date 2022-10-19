@@ -41,16 +41,14 @@ export function initWebSync () {
   websync.currentClient = client
   // client в перемунную и в функции использовать
   client.connect({
-    onSuccess: function (e) {
-      console.log('websync connected success!')
-    },
+    onSuccess: function (e) {},
     onFailure: function (e) {
       console.log('websync could not connect: ' + e.getException().message)
     },
     onStreamFailure: function (e) {
       console.log(
         'websync network problems: ' +
-          e.getException().message +
+          e.getErrorMessage() +
           (e.getRetry() ? ' Will' : ' Will not') +
           ' reconnect.'
       )
@@ -60,10 +58,10 @@ export function initWebSync () {
   client.subscribe({
     channel: '/' + storeNavigator.value.push_channel,
     onSuccess: function (e) {
-      console.log('websync subscribe success')
+      console.log('websync connected success')
     },
     onFailure: function (e) {
-      console.log('websync subscribe fail' + e.getException().message)
+      console.log('websync could not subscribe' + e.getException().message)
       e.setRetry(true)
     },
     onReceive: function (e) {
@@ -75,7 +73,10 @@ export function initWebSync () {
         const obj = { ...JSON.parse(str) }
         if (process.env.VUE_APP_EXTENDED_LOGS) console.log('websync obj', obj)
 
-        if (obj.type === TYPES.TYPE_OBJECT_CARD && obj.operation === TYPES.TYPE_OPERATION_UPDATE) {
+        if (
+          obj.type === TYPES.TYPE_OBJECT_CARD &&
+          obj.operation === TYPES.TYPE_OPERATION_UPDATE
+        ) {
           sendInspectorMessage(obj)
         } else {
           parseObject(obj)

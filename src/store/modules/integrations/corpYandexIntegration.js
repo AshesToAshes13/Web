@@ -19,7 +19,7 @@ const actions = {
   ) => {
     return new Promise((resolve, reject) => {
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'yandexIntegrateOrganization'
+        process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/integrateOrganization'
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           commit(CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION, resp.data)
@@ -38,7 +38,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexOrganizationLogPass?organization=' +
+        'corpYandexInt/getOrganizationLogPass?organization=' +
         organization
       axios({ url: url, method: 'GET', timeout: 1000 * 10 })
         .then((resp) => {
@@ -58,7 +58,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'yandexRemoveCorpIntegration?organization=' +
+        'corpYandexInt/deleteOrganization?organization=' +
         organization
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
@@ -80,7 +80,7 @@ const actions = {
         ya_password: state.password,
         email: emails.clientEmail
       }
-      const url = process.env.VUE_APP_INSPECTOR_API + 'yandexCorpMsgsSentFromUs'
+      const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentFromUs'
       commit(CORP_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
@@ -106,7 +106,7 @@ const actions = {
         ya_password: state.password,
         email: emails.clientEmail
       }
-      const url = process.env.VUE_APP_INSPECTOR_API + 'yandexCorpMsgsSentToUs'
+      const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentToUs'
       commit(CORP_YANDEX.YANDEX_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
@@ -138,9 +138,9 @@ const mutations = {
     state.isIntegrated = data
   },
   [CORP_YANDEX.YANDEX_GET_ORGANIZATION_LOGIN_AND_PASS]: (state, data) => {
-    if (data.length) {
-      state.login = data[0].ya_login
-      state.password = data[0].ya_password
+    if (Object.keys(data).length) {
+      state.login = data.ya_login
+      state.password = data.ya_password
       state.isIntegrated = true
     }
   },

@@ -308,7 +308,11 @@ const mutations = {
     })
   },
   [CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES]: (state) => {
-    state.messages = state.messages.concat(state.files)
+    console.log('merged')
+    const files = state.files.map(file => {
+      return { ...file, clientFile: true }
+    })
+    state.messages = state.messages.concat(files)
     state.messages.sort((a, b) => {
       if (!a.file_name && !a?.date_create.includes('Z')) {
         a.date_create += 'Z'

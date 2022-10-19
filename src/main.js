@@ -54,23 +54,8 @@ axios.interceptors.response.use(
       error?.response?.data.error ||
       error?.message ||
       error?.code
-    const method = error?.config?.method || ''
-    const url = (error?.config?.url || '')
-      .replace(process.env.VUE_APP_LEADERTASK_API, 'leadertask/')
-      .replace(process.env.VUE_APP_INSPECTOR_API, 'inspector/')
-    const requestUrl = `${method ? method.toUpperCase() + ' ' : ''}${url}`
 
-    const avoidedErrorMessages = [
-      'old_password invalid',
-      "in user's org present employees",
-      'the employee is the director of the organization',
-      'the employee is already present in this organization',
-      'limit. invalid license.',
-      'Request aborted'
-    ]
     if (typeof errorMessage === 'string') {
-      if (errorMessage === 'canceled') return
-      //
       if (
         errorMessage.includes('invalid token') ||
         errorMessage.includes('token expired')
@@ -94,23 +79,8 @@ axios.interceptors.response.use(
           })
         return
       }
-      if (!avoidedErrorMessages.includes(errorMessage)) {
-        const text = `${
-          requestUrl ? '<' + requestUrl + '>: ' : ''
-        }${errorMessage}`
-        console.log('REST API Error', text, { ...error })
-        notify(
-          {
-            group: 'api',
-            title: 'REST API Error, please make screenshot',
-            action: '',
-            text: text.trim()
-          },
-          15000
-        )
-      }
-    } else {
-      console.log('REST API Error (other)', { ...error })
+      // обработку вывода других ошибок
+      // смотри в обработчике window.addEventListener('unhandledrejection'
     }
     return Promise.reject(error)
   }
@@ -137,6 +107,45 @@ router.afterEach((to) => {
 
   /* Full screen mode */
   store.dispatch('fullScreenToggle', !!to.meta.fullScreen)
+})
+
+window.addEventListener('unhandledrejection', (event) => {
+  // ловим не обработанные исключения от axios
+  if (event?.reason?.isAxiosError) {
+    const errorMessage =
+      event.reason.response?.data.message ||
+      event.reason?.response?.data.error ||
+      event.reason?.message ||
+      event.reason?.code
+    const method = event.reason?.config?.method || ''
+    const url = (event.reason?.config?.url || '')
+      .replace(process.env.VUE_APP_LEADERTASK_API, 'leadertask/')
+      .replace(process.env.VUE_APP_INSPECTOR_API, 'inspector/')
+    const requestUrl = `${method ? method.toUpperCase() + ' ' : ''}${url}`
+
+    const avoidedErrorMessages = ['Request aborted', 'canceled']
+    if (typeof errorMessage === 'string') {
+      if (!avoidedErrorMessages.includes(errorMessage)) {
+        const text = `${
+          requestUrl ? '<' + requestUrl + '>: ' : ''
+        }${errorMessage}`
+        console.log('REST API Error', text, { ...event.reason })
+        notify(
+          {
+            group: 'api',
+            title: 'REST API Error, please make screenshot',
+            action: '',
+            text: text.trim()
+          },
+          15000
+        )
+      } else {
+        event.preventDefault()
+      }
+    } else {
+      console.log('REST API Error (other)', { ...event.reason })
+    }
+  }
 })
 
 /* On error send error to Alex's server  */
