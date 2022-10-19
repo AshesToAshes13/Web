@@ -523,7 +523,7 @@ const mutations = {
         board.uid_parent === '00000000-0000-0000-0000-000000000000'
       ) {
         // adding projects to the root
-        state.navigator.new_private_boards[0].items.push(board)
+        state?.navigator?.new_private_boards[0]?.items?.push(board)
       } else {
         // adding projects recursively to subarrays
         visitChildren(state.navigator.new_private_boards[0].items, (value) => {

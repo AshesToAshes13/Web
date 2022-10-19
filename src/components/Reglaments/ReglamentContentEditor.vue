@@ -485,7 +485,7 @@ export default {
     this.buttonDisabled = true
     this.$store.dispatch(REGLAMENTS.REGLAMENT_CONTENT_REQUEST, this.currReglament?.uid).then((res) => {
       console.log(this.$store.state.reglaments.reglaments[this.$route.params.id])
-      this.reglamentContent = res.data[0].content
+      this.reglamentContent = res.data
       this.$store.state.reglaments.reglaments[this.$route.params.id].content = this.reglamentContent
       this.reglamentContentSuccess = true
     })

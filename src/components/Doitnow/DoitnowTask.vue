@@ -1,12 +1,8 @@
 <template>
-  <div
-    class="flex justify-between max-w-[1045px]"
-    :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
-    :class="{
-      'bg-gray-200 dark:bg-gray-800':
-        isTaskComplete &&
-        task.uid_marker !== '00000000-0000-0000-0000-000000000000'
-    }"
+  <DoitnowContent
+    :border-color="colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''"
+    :background-color="isTaskComplete &&
+      task.uid_marker !== '00000000-0000-0000-0000-000000000000' ? 'rgb(229 231 235)' : ''"
   >
     <DoitnowStatusModal
       v-if="showStatusModal"
@@ -16,10 +12,7 @@
       @yes="changeStatus(lastSelectedStatus, true)"
     />
 
-    <div
-      class="py-[23px] px-[32px] w-[85%] bg-white rounded-lg mr-[10px] border-t-[12px] border-transparent"
-      :style="{ borderColor: colors[task.uid_marker] ? colors[task.uid_marker].back_color : ''}"
-    >
+    <div>
       <DoitnowCustomerInfo
         v-if="shouldShowCustomer"
         :task="task"
@@ -38,7 +31,7 @@
           v-model="name"
           v-linkify:options="{ className: 'text-blue-600 mx-[5px]', tagName: 'a' }"
           tag="div"
-          class="p-0.5 ring-0 outline-none max-w-7xl flex overflow-x-hidden font-bold text-[21px] text-[#424242]"
+          class="ring-0 outline-none overflow-hidden font-bold text-[21px] text-[#424242]"
           style="word-break: break-word"
           :contenteditable="task._isEditable"
           placeholder="Введите название задачи"
@@ -126,41 +119,45 @@
         @readTask="readTask"
       />
     </div>
-    <div
-      v-if="!task.mode"
-      class="flex ml-[10px] flex-col gap-[6px] w-[221px]"
-    >
+    <template #buttons>
       <DoitnowRightButtonPostpone
-        v-if="shouldShowPostponeButton"
+        v-if="!task.mode && shouldShowPostponeButton"
         :is-animation-doitnow="isAnimationDoitnow"
         @postpone="onPostpone"
+        @next="nextTask"
       />
       <DoitnowRightButton
-        v-if="shouldShowAcceptButton"
+        v-else-if="isDevelopmentMode"
+        title="Пропустить"
+        icon="next"
+        @click="nextTask"
+      />
+      <DoitnowRightButton
+        v-if="!task.mode && shouldShowAcceptButton"
         :title="acceptButtonText"
         icon="check"
         @click="accept"
       />
       <DoitnowRightButton
-        v-if="shouldShowRefineButton"
+        v-if="!task.mode && shouldShowRefineButton"
         title="На доработку"
         icon="refine"
         @click="refine"
       />
       <DoitnowRightButton
-        v-if="shouldShowRejectButton"
+        v-if="!task.mode && shouldShowRejectButton"
         title="Отклонить"
         icon="cancel"
         @click="reject"
       />
       <DoitnowRightButton
-        v-if="shouldShowCancelButton"
+        v-if="!task.mode && shouldShowCancelButton"
         title="Отменить"
         icon="cancel"
         @click="cancel"
       />
       <DoitnowRightButtonPerform
-        v-if="shouldShowPerformButton"
+        v-if="!task.mode && shouldShowPerformButton"
         :task-type="task.type"
         :current-user-uid="user?.current_user_uid"
         :performer-email="task.email_performer"
@@ -168,12 +165,13 @@
         @reAssign="onReAssignToUser"
       />
       <DoitnowRightButton
+        v-if="!task.mode"
         title="Открыть задачу"
         icon="task-open"
         @click="openTaskFromQueue"
       />
-    </div>
-  </div>
+    </template>
+  </DoitnowContent>
 </template>
 
 <script>
@@ -193,6 +191,7 @@ import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 import DoitnowCustomerInfo from '@/components/Doitnow/DoitnowCustomerInfo.vue'
 import DoitnowPerformerInfo from '@/components/Doitnow/DoitnowPerformerInfo.vue'
 import TaskListTagLabel from '@/components/TasksList/TaskListTagLabel'
+import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
 
 import * as INSPECTOR from '@/store/actions/inspector.js'
 import * as TASK from '@/store/actions/tasks'
@@ -216,7 +215,8 @@ export default {
     DoitnowStatusModal,
     contenteditable,
     DoitnowChatMessages,
-    TaskListTagLabel
+    TaskListTagLabel,
+    DoitnowContent
   },
   directives: {
     linkify
@@ -286,6 +286,9 @@ export default {
     }
   },
   computed: {
+    isDevelopmentMode () {
+      return window.location.origin === 'http://localhost:8080'
+    },
     acceptButtonText () {
       if (this.isCustomer && this.isPerformer) {
         return 'Завершить'
@@ -469,6 +472,8 @@ export default {
 
       this.$store.dispatch(MSG.CREATE_MESSAGE_REQUEST, data)
         .then(() => {
+          this.$emit('changeValue', { has_msgs: true })
+
           const lastInspectorMessage = this.taskMessagesAndFiles[this.taskMessagesAndFiles.length - 2].uid_creator === 'inspector' ? this.taskMessagesAndFiles[this.taskMessagesAndFiles.length - 2] : false
           console.log('lastInspectorMessage: ', lastInspectorMessage)
           if (lastInspectorMessage) {
@@ -485,8 +490,12 @@ export default {
               this.$emit('changeValue', { status: TASK_STATUS.TASK_REFINE })
             }
           }
+        }).catch((e) => {
+          // задача удалена - сервер отвечает 500 и user has not task
+          if (e.response?.status === 500 && e.response?.data?.error === 'user has not task') {
+            this.$emit('nextTask')
+          }
         })
-      this.$emit('changeValue', { has_msgs: true })
       this.taskMsg = ''
     },
     openTaskFromQueue () {
@@ -836,6 +845,13 @@ export default {
         this.$emit('changeValue', { status: status })
         this.showStatusModal = false
         this.$emit('nextTask')
+      }).catch((e) => {
+        // задача удалена - сервер отвечает 500 и error while updating the status
+        if (e.response?.status === 500 && e.response?.data?.error === 'error while updating the status') {
+          this.showStatusModal = false
+          console.log('CHANGE_TASK_STATUS error', e)
+          // this.$emit('nextTask')
+        }
       })
     },
     getDate (time, withHours) {

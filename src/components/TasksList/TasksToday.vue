@@ -1,14 +1,16 @@
 <template>
   <div class="w-full">
-    <NavBarTasks
-      id="NavBarToday"
-      class="pt-[8px]"
-      title="Сегодня"
-      @reload="reload"
-    />
-    <TasksListNew
-      :new-task-props="newTaskProps"
-    />
+    <div>
+      <NavBarTasks
+        id="NavBarToday"
+        class="pt-[8px]"
+        title="Сегодня"
+        @reload="reload"
+      />
+      <TasksListNew
+        :new-task-props="newTaskProps"
+      />
+    </div>
   </div>
 </template>
 

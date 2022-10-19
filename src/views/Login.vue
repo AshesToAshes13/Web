@@ -213,7 +213,6 @@ import * as QUESTIONS from '@/store/actions/reglament_questions'
 import * as ANSWER from '@/store/actions/reglament_answers'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
-import * as NAVIGATOR from '@/store/actions/navigator'
 import * as CLIENTS from '@/store/actions/clients'
 
 export default {
@@ -314,6 +313,123 @@ export default {
         })
     },
     createDemoElementsAfterRegister () {
+      // демо-доска
+      const boardData = {
+        uid: uuidv4(),
+        name: 'Как работают доски',
+        email_creator: this.form.email
+      }
+      this.$store.dispatch(BOARD.CREATE_BOARD_REQUEST, boardData).then((res) => {
+        const board = res.data
+        board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
+        board.color = '#A998B6'
+        this.$store.commit(BOARD.PUSH_BOARD, [board])
+
+        // колонки для демо-доски
+        // колонка Новое
+        this.$store
+          .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+            boardUid: boardData.uid,
+            newStageTitle: 'Новое'
+          }).then((resp) => {
+            // 1 карточка
+            this.$store
+              .dispatch(CARD.ADD_CARD, {
+                name: 'Прочитайте эту карточку и отправьте ее в Архив',
+                order: 1,
+                comment: 'В очередь попадают и карточки из досок. Если вы становитесь ответственным за какую-то карточку, то она обязательно попадет к вам в Очередь.\r\n\r\nКарточкой может быть заявкой, заказом от клиента или задачей в рамках системы Канбан',
+                uid_board: boardData.uid,
+                uid_stage: resp.UID,
+                user: this.form.email
+              }).then(() => {
+                // 2 карточка
+                this.$store
+                  .dispatch(CARD.ADD_CARD, {
+                    name: 'Карточка может быть «Заявкой»',
+                    order: 2,
+                    comment: 'Создайте форму сбора заявок для этой доски через Меню в верхнем правом углу',
+                    uid_board: boardData.uid,
+                    uid_stage: resp.UID
+                  }).then(() => {
+                    // 3 карточка
+                    this.$store
+                      .dispatch(CARD.ADD_CARD, {
+                        name: 'А может быть "Целью"',
+                        order: 3,
+                        comment: 'И при этом с красивой обложкой',
+                        cover_color: '#276162',
+                        cover_link: 'https://web.leadertask.com/api/v1/cover/getimage?uid=70bd0e8a-7a9a-4779-a363-ad9f6ecd266c',
+                        cover_size_x: 1497,
+                        cover_size_y: 993,
+                        uid_board: boardData.uid,
+                        uid_stage: resp.UID,
+                        uid_cover_file: '70bd0e8a-7a9a-4779-a363-ad9f6ecd266c'
+                      }).then(() => {
+                        // 4 карточка
+                        this.$store
+                          .dispatch(CARD.ADD_CARD, {
+                            name: 'Или даже «Заказом»',
+                            order: 4,
+                            comment: 'И даже с установленным бюджетом\r↵\r↵А в колонке отображается сумма бюджетов всех карточек в ней',
+                            uid_board: boardData.uid,
+                            uid_stage: resp.UID
+                          }).then(() => {
+                            // колонка В работе
+                            this.$store
+                              .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+                                boardUid: boardData.uid,
+                                newStageTitle: 'В работе'
+                              }).then((resp) => {
+                                // 1 карточка
+                                this.$store
+                                  .dispatch(CARD.ADD_CARD, {
+                                    name: 'Карточки можно перетаскивать между колонками мышкой',
+                                    comment: '',
+                                    uid_board: boardData.uid,
+                                    uid_stage: resp.UID
+                                  }).then(() => {
+                                    // колонка Достигнуто
+                                    this.$store
+                                      .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
+                                        boardUid: boardData.uid,
+                                        newStageTitle: 'Достигнуто'
+                                      }).then((resp) => {
+                                        // 1 карточка
+                                        this.$store
+                                          .dispatch(CARD.ADD_CARD, {
+                                            name: 'В доске может быть любое количество колонок',
+                                            comment: 'Колонки можно точно также перетаскивать мышкой вместе со всеми карточками',
+                                            uid_board: boardData.uid,
+                                            uid_stage: resp.UID
+                                          }).then(() => {
+                                            // 2 карточка
+                                            this.$store
+                                              .dispatch(CARD.ADD_CARD, {
+                                                name: 'Автоматизируйте получение новых заявок и заказов',
+                                                comment: 'Создайте форму сбора заявок и разместите ее у себя на сайте - смотрите Меню в верхнем правом углу',
+                                                uid_board: boardData.uid,
+                                                uid_stage: resp.UID
+                                              }).then(() => {
+                                                // 3 карточка
+                                                this.$store
+                                                  .dispatch(CARD.ADD_CARD, {
+                                                    name: 'C помощью досок можно сделать CRM для работы с клиентами, Канбан или красивую визуализацию целей',
+                                                    comment: 'Добавьте свои доски',
+                                                    uid_board: boardData.uid,
+                                                    uid_stage: resp.UID
+                                                  })
+                                              })
+                                          })
+                                      })
+                                  })
+                              })
+                          })
+                      })
+                  })
+              })
+          })
+      })
+      this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT)
       // демо-метки
       const firstTag = {
         back_color: '#4AC7BF',
@@ -513,7 +629,7 @@ export default {
         })
       })
 
-      // // демо-регламент
+      // демо-регламент
       const reglamentContent = '<h1>Поздравляем! Вы присоединились к тысячам пользователей и бизнесов, использующих ЛидерТаск для управления задачами, поручениями, проектами каждый день!</h1><p><br></p><h2>Что такое регламенты и как они помогут вам в вашем бизнесе?</h2><p><br></p><p>Регламенты - это инструкции, правила, руководства, которые позволят вам наладить работу команды, автоматизируют процесс внедрения новых сотрудников и позволят вам управлять бизнесом удаленно.</p><p><br></p><p>Создавайте регламенты, чтобы составить: </p><p><br></p><ul><li>инструкции по работе конкретных сотрудников или отделов (что и как нужно делать)</li><li>правила компании (общие правила, касающиеся всех и каждого)</li><li>миссию вашего бизнеса (чтобы каждый знал для чего и на что он работает)</li><li>систему мотивации "KPI" (пропишите правила премирования, проценты с продаж и многое другое)</li></ul><p><br></p><p>Регламенты состоят из:</p><p><br></p><ul><li>текста описания инструкции, правил, руководств</li><li>теста на знание этих правил</li><li>данных об успешном прохождении регламентов (в любой момент вы сможете посмотреть кто прошел регламент, а кто нет)</li></ul><p><br></p><p>Вы также можете предоставить доступ к редактированию регламента вашим сотрудникам. Используйте правило "Принес проблему - захвати решение". Вы всего знать не можете и не должны. Если что-то изменилось в работе отдела или сотрудника, дайте доступ к инструкции ответственному сотруднику и пускай он сам внесет необходимые изменения.</p><p><br></p><p><strong>Регламенты решают проблему внедрения новых сотрудников в компанию</strong>. Вы просто добавляете его в ЛидерТаск, он изучает все регламенты, сдает по ним тесты и приступает к работе. Вам больше не надо каждый раз объяснять новичкам одно и тоже. </p><p><br></p><h2>Создайте свой первый регламент! </h2><p><br></p><ol><li>Нажмите на кнопку +</li><li>Подробно опишите правила или инструкцию</li><li>Создайте тест</li><li>Пройдите его сами</li><li>Поручите вашим сотрудникам изучить регламент и выполнить тест</li><li>Получите обратную связь (ответственный сотрудник внимательно прочитает инструкцию, выполнит тест и, возможно, попросит внести правки; неответственный в лучшем случае сделает все не сразу, в худшем вообще проигнорирует. Дальше выводы делать вам)</li></ol><p><br></p><p>А теперь пройдите тест на знание регламентов)</p>'
       const reglament = {
         bold: 0,
@@ -678,137 +794,25 @@ export default {
           this.$store.dispatch(ANSWER.CREATE_REGLAMENT_ANSWER_REQUEST, fourthQuestionSecondAnswer)
         })
       })
-
       // демо-клиент
+      // можно я не буду комментировать это
+      let phone
+      try {
+        phone = '+74852685820'.replace(/[^a-zA-Z0-9+]/g, '')
+      } catch (err) {
+        console.log(err)
+        phone = ''
+      }
       const clientToSend = {
         uid: uuidv4(),
         organization: this.form.email,
-        name: this.form.username,
-        email: this.form.email,
-        phone: this.form.phone,
-        comment: 'Комментарий контакта',
+        name: 'Поддержка ЛидерТаск',
+        email: '911@leadertask.com',
+        phone: phone,
+        comment: 'Все контакты доступны в разделе Помощь, смотрите Настройки',
         date_create: new Date().toLocaleString()
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
-
-      // демо-доска
-      const boardData = {
-        uid: uuidv4(),
-        name: 'Как работают доски',
-        email_creator: this.form.email,
-        members: this.user.current_user_uid
-      }
-      this.$store.dispatch(BOARD.CREATE_BOARD_REQUEST, boardData).then((res) => {
-        const board = res.data
-        board.global_property_uid = '1b30b42c-b77e-40a4-9b43-a19991809add'
-        board.color = '#A998B6'
-        this.$store.commit(BOARD.PUSH_BOARD, [board])
-        this.$store.commit(NAVIGATOR.NAVIGATOR_PUSH_BOARD, [board])
-
-        // колонки для демо-доски
-        // колонка Новое
-        this.$store
-          .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
-            boardUid: boardData.uid,
-            newStageTitle: 'Новое'
-          }).then((resp) => {
-            // 1 карточка
-            this.$store
-              .dispatch(CARD.ADD_CARD, {
-                name: 'Прочитайте эту карточку и отправьте ее в Архив',
-                order: 1,
-                comment: 'В очередь попадают и карточки из досок. Если вы становитесь ответственным за какую-то карточку, то она обязательно попадет к вам в Очередь.\r\n\r\nКарточкой может быть заявкой, заказом от клиента или задачей в рамках системы Канбан',
-                uid_board: boardData.uid,
-                uid_stage: resp.UID,
-                user: this.form.email
-              }).then(() => {
-                // 2 карточка
-                this.$store
-                  .dispatch(CARD.ADD_CARD, {
-                    name: 'Карточка может быть «Заявкой»',
-                    order: 2,
-                    comment: 'Создайте форму сбора заявок для этой доски через Меню в верхнем правом углу',
-                    uid_board: boardData.uid,
-                    uid_stage: resp.UID
-                  }).then(() => {
-                    // 3 карточка
-                    this.$store
-                      .dispatch(CARD.ADD_CARD, {
-                        name: 'А может быть "Целью"',
-                        order: 3,
-                        comment: 'И при этом с красивой обложкой',
-                        cover_color: '#276162',
-                        cover_link: 'https://web.leadertask.com/api/v1/cover/getimage?uid=70bd0e8a-7a9a-4779-a363-ad9f6ecd266c',
-                        cover_size_x: 1497,
-                        cover_size_y: 993,
-                        uid_board: boardData.uid,
-                        uid_stage: resp.UID,
-                        uid_cover_file: '70bd0e8a-7a9a-4779-a363-ad9f6ecd266c'
-                      }).then(() => {
-                        // 4 карточка
-                        this.$store
-                          .dispatch(CARD.ADD_CARD, {
-                            name: 'Или даже «Заказом»',
-                            order: 4,
-                            comment: 'И даже с установленным бюджетом\r↵\r↵А в колонке отображается сумма бюджетов всех карточек в ней',
-                            uid_board: boardData.uid,
-                            uid_stage: resp.UID
-                          }).then(() => {
-                            // колонка В работе
-                            this.$store
-                              .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
-                                boardUid: boardData.uid,
-                                newStageTitle: 'В работе'
-                              }).then((resp) => {
-                                // 1 карточка
-                                this.$store
-                                  .dispatch(CARD.ADD_CARD, {
-                                    name: 'Карточки можно перетаскивать между колонками мышкой',
-                                    comment: '',
-                                    uid_board: boardData.uid,
-                                    uid_stage: resp.UID
-                                  }).then(() => {
-                                    // колонка Достигнуто
-                                    this.$store
-                                      .dispatch(BOARD.ADD_STAGE_BOARD_REQUEST, {
-                                        boardUid: boardData.uid,
-                                        newStageTitle: 'Достигнуто'
-                                      }).then((resp) => {
-                                        // 1 карточка
-                                        this.$store
-                                          .dispatch(CARD.ADD_CARD, {
-                                            name: 'В доске может быть любое количество колонок',
-                                            comment: 'Колонки можно точно также перетаскивать мышкой вместе со всеми карточками',
-                                            uid_board: boardData.uid,
-                                            uid_stage: resp.UID
-                                          }).then(() => {
-                                            // 2 карточка
-                                            this.$store
-                                              .dispatch(CARD.ADD_CARD, {
-                                                name: 'Автоматизируйте получение новых заявок и заказов',
-                                                comment: 'Создайте форму сбора заявок и разместите ее у себя на сайте - смотрите Меню в верхнем правом углу',
-                                                uid_board: boardData.uid,
-                                                uid_stage: resp.UID
-                                              }).then(() => {
-                                                // 3 карточка
-                                                this.$store
-                                                  .dispatch(CARD.ADD_CARD, {
-                                                    name: 'C помощью досок можно сделать CRM для работы с клиентами, Канбан или красивую визуализацию целей',
-                                                    comment: 'Добавьте свои доски',
-                                                    uid_board: boardData.uid,
-                                                    uid_stage: resp.UID
-                                                  })
-                                              })
-                                          })
-                                      })
-                                  })
-                              })
-                          })
-                      })
-                  })
-              })
-          })
-      })
     },
     register () {
       if (!this.form.password || !this.form.username) { return }
@@ -842,14 +846,16 @@ export default {
               visible: true
             })
           })
-          this.$store.dispatch(USER_START_ONBOARDING)
+          this.$store.dispatch(USER_START_ONBOARDING).then(() => {
           // демо-данные для новых пользователей
-          this.createDemoElementsAfterRegister()
-          this.$router.push('/doitnow')
+            this.createDemoElementsAfterRegister()
+          })
         })
         .catch(() => {
           this.form.showError = true
           this.form.errorMessage = 'Unknown error'
+        }).finally(() => {
+          this.$router.push('/doitnow')
         })
     },
     pad2 (n) {

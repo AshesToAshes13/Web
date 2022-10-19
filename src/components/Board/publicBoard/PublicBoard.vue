@@ -142,8 +142,8 @@
 <script>
 import draggable from 'vuedraggable'
 import { dragscroll } from 'vue-dragscroll'
-import PublicBoardCard from '@/components/Board/PublicBoardCard.vue'
-import BoardSkeleton from '@/components/Board/BoardSkeleton.vue'
+import PublicBoardCard from '@/components/Board/publicBoard/PublicBoardCard.vue'
+import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 

@@ -2,10 +2,14 @@ import axios from 'axios'
 import * as PROJECT from '../actions/projects'
 import { visitChildren } from '@/store/helpers/functions'
 
-const state = {
-  projects: {},
-  selectedProject: undefined
+const getDefaultState = () => {
+  return {
+    projects: {},
+    selectedProject: undefined
+  }
 }
+
+const state = getDefaultState()
 const getters = {
   favoriteProjects (state) {
     const arr = []
@@ -205,8 +209,7 @@ const mutations = {
     state.selectedProject = project
   },
   [PROJECT.RESET_STATE_PROJECT]: (state) => {
-    state.projects = {}
-    state.selectedProject = undefined
+    Object.assign(state, getDefaultState())
   }
 }
 export default {

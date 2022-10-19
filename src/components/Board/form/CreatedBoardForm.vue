@@ -103,7 +103,7 @@
 <script>
 import * as BOARD from '@/store/actions/boards'
 import * as BOARD_FORMS from '@/store/actions/boardforms'
-import CreatedBoardFormSkeleton from '@/components/Board/CreatedBoardFormSkeleton'
+import CreatedBoardFormSkeleton from '@/components/Board/form/CreatedBoardFormSkeleton'
 
 export default {
   components: { CreatedBoardFormSkeleton },

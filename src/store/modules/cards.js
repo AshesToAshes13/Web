@@ -111,7 +111,7 @@ const actions = {
   },
   [CARD.ADD_CARD]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'card'
+      const url = process.env.VUE_APP_INSPECTOR_API + 'cards/card'
       axios({ url: url, method: 'POST', data })
         .then((resp) => {
           commit(CARD.CHANGE_CARD, resp.data)
@@ -138,7 +138,7 @@ const actions = {
   },
   [CARD.MOVE_CARD]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
-      let url = process.env.VUE_APP_INSPECTOR_API + 'card/stage?uid=' + data.uid
+      let url = process.env.VUE_APP_INSPECTOR_API + 'cards/stage?uid=' + data.uid
       url = url + '&stage=' + data.stageUid
       if (data.newOrder !== undefined) url = url + '&order=' + data.newOrder
       axios({ url: url, method: 'PATCH' })
@@ -156,7 +156,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'card/responsible?uid=' +
+        'cards/responsible?uid=' +
         data.cardUid
       axios({ url: url, method: 'PATCH', data: { user: data.email } })
         .then((resp) => {
@@ -171,7 +171,7 @@ const actions = {
   [CARD.CHANGE_CARD_NAME]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'card/name?uid=' + data.cardUid
+        process.env.VUE_APP_INSPECTOR_API + 'cards/name?uid=' + data.cardUid
       axios({ url: url, method: 'PATCH', data: { name: data.name } })
         .then((resp) => {
           commit(CARD.CHANGE_CARD, resp.data)
@@ -185,7 +185,7 @@ const actions = {
   [CARD.CHANGE_CARD_COMMENT]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'card/comment?uid=' + data.cardUid
+        process.env.VUE_APP_INSPECTOR_API + 'cards/comment?uid=' + data.cardUid
       axios({ url: url, method: 'PATCH', data: { comment: data.comment } })
         .then((resp) => {
           commit(CARD.CHANGE_CARD, resp.data)
@@ -199,7 +199,7 @@ const actions = {
   [CARD.CHANGE_CARD_BUDGET]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'card/cost?uid=' + data.cardUid
+        process.env.VUE_APP_INSPECTOR_API + 'cards/cost?uid=' + data.cardUid
       axios({ url: url, method: 'PATCH', data: { cost: data.budget } })
         .then((resp) => {
           commit(CARD.CHANGE_CARD, resp.data)
@@ -213,7 +213,7 @@ const actions = {
   [CARD.CHANGE_CARD_COLOR]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       const url =
-        process.env.VUE_APP_INSPECTOR_API + 'card/color?uid=' + data.cardUid
+        process.env.VUE_APP_INSPECTOR_API + 'cards/color?uid=' + data.cardUid
       axios({ url: url, method: 'PATCH', data: { color: data.color } })
         .then((resp) => {
           commit(CARD.CHANGE_CARD, resp.data.card)
@@ -228,7 +228,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'card/cover?uid_card=' +
+        'cards/cover?uid_card=' +
         data.cardUid
       axios({ url: url, method: 'PATCH', data: data.file })
         .then((resp) => {
@@ -244,7 +244,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
-        'card/clearcover?uid=' +
+        'cards/clearcover?uid=' +
         data.cardUid
       axios({ url: url, method: 'PATCH' })
         .then((resp) => {

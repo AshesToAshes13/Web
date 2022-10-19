@@ -6,11 +6,15 @@ import {
 import axios from 'axios'
 import * as EMPLOYEE from '../actions/employees'
 
-const state = {
-  employees: {},
-  employeesByEmail: {},
-  selectedEmployee: null
+const getDefaultState = () => {
+  return {
+    employees: {},
+    employeesByEmail: {},
+    selectedEmployee: null
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {
   getOwnerEmployee (state) {
@@ -154,9 +158,7 @@ const mutations = {
     state.selectedEmployee = employee
   },
   [EMPLOYEE.RESET_EMPLOYEE_STATE]: (state) => {
-    state.employees = {}
-    state.employeesByEmail = {}
-    state.selectedEmployee = null
+    Object.assign(state, getDefaultState())
   },
   ChangeEmployeeName: (state, data) => {
     const employee = state.employeesByEmail[data.email.toLowerCase()]

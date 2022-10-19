@@ -1,12 +1,16 @@
 import * as CLIENTS from '@/store/actions/clients.js'
 import axios from 'axios'
 
-const state = {
-  selectedClient: null,
-  paging: {},
-  clients: [],
-  status: 'loading'
+const getDefaultState = () => {
+  return {
+    selectedClient: null,
+    paging: {},
+    clients: [],
+    status: 'loading'
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [CLIENTS.GET_CLIENTS]: ({ commit, dispatch, state }, data) => {
@@ -23,6 +27,21 @@ const actions = {
           resolve(resp)
         })
         .catch((err) => {
+          reject(err)
+        })
+    })
+  },
+  // TODO: Пока инспектор не залит, испрользуем метод "заглушку"
+  // В дальнейшем передаем сюда строку UID клиента, а не объект data {organization: string, search: string}
+  [CLIENTS.GET_CLIENT]: ({ commit, dispatch }, data) => {
+    const url = process.env.VUE_APP_INSPECTOR_API + 'clients/client?uid=' + data
+    return new Promise((resolve, reject) => {
+      axios({ url, method: 'GET' })
+        .then(resp => {
+          commit(CLIENTS.SELECT_CLIENT, resp.data)
+          resolve(resp)
+        })
+        .catch(err => {
           reject(err)
         })
     })
@@ -109,10 +128,7 @@ const mutations = {
     state.clients.find(cl => cl.uid === client.uid).name = client.name
   },
   [CLIENTS.RESET_CLIENT_STATE]: (state) => {
-    state.selectedClient = null
-    state.paging = {}
-    state.clients = []
-    state.status = 'loading'
+    Object.assign(state, getDefaultState())
   },
   UPDATE_PAGING: (state, paging) => {
     state.paging = paging

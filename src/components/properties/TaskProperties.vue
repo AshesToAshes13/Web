@@ -747,13 +747,12 @@ export default {
           this.selectedTask.performerreaded = resp.data.performerreaded
           this.selectedTask.uid_performer = resp.data.uid_performer
           this.selectedTask.type = resp.data.type
+          if (this.$route.name === 'tasksToday' || this.$route.name === 'tasksByDate' || this.$route.params.employee_uid !== this.selectedTask.uid_performer) {
+            this.$store.commit(TASK.REMOVE_TASK, taskUid)
+            this.$store.dispatch('asidePropertiesToggle', false)
+          }
         }
       )
-
-      if (this.$route.name === 'tasksToday' || this.$route.name === 'tasksByDate') {
-        this.$store.commit(TASK.REMOVE_TASK, taskUid)
-        this.$store.dispatch('asidePropertiesToggle', false)
-      }
     },
     onChangeDates: function (begin, end) {
       const taskUid = this.selectedTaskUid

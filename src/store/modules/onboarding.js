@@ -7,23 +7,27 @@ import {
 import { setLocalStorageItem } from '@/store/helpers/functions'
 import * as TASK from '@/store/actions/tasks'
 
-const state = {
-  justRegistered: localStorage.getItem('justRegistered'),
-  visitedModals: localStorage.getItem('visitedModals') ? JSON.parse(localStorage.getItem('visitedModals')) : null,
-  hideNavBar: false,
-  newUserTasks: false,
-  showOnboarding: false,
-  showModals: localStorage.getItem('visitedModals'),
-  hintUid: {
-    '2cf6b167-6506-4b05-bc34-70a8d88e3b25': 'doitnow',
-    '901841d9-0016-491d-ad66-8ee42d2b496b': 'tasks',
-    '169d728b-b88b-462d-bd8e-3ac76806605b': 'assignment',
-    '7af232ff-0e29-4c27-a33b-866b5fd6eade': 'project',
-    '92413f6c-2ef3-476e-9429-e76d7818685d': 'reglaments',
-    '1b30b42c-b77e-40a4-9b43-a19991809add': 'boards',
-    'd28e3872-9a23-4158-aea0-246e2874da73': 'employee'
+const getDefaultState = () => {
+  return {
+    justRegistered: localStorage.getItem('justRegistered'),
+    visitedModals: localStorage.getItem('visitedModals') ? JSON.parse(localStorage.getItem('visitedModals')) : null,
+    hideNavBar: false,
+    newUserTasks: false,
+    showOnboarding: false,
+    showModals: localStorage.getItem('visitedModals'),
+    hintUid: {
+      '2cf6b167-6506-4b05-bc34-70a8d88e3b25': 'doitnow',
+      '901841d9-0016-491d-ad66-8ee42d2b496b': 'tasks',
+      '169d728b-b88b-462d-bd8e-3ac76806605b': 'assignment',
+      '7af232ff-0e29-4c27-a33b-866b5fd6eade': 'project',
+      '92413f6c-2ef3-476e-9429-e76d7818685d': 'reglaments',
+      '1b30b42c-b77e-40a4-9b43-a19991809add': 'boards',
+      'd28e3872-9a23-4158-aea0-246e2874da73': 'employee'
+    }
   }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [USER_START_ONBOARDING]: ({ commit, dispatch }, data) => {
@@ -58,12 +62,7 @@ const mutations = {
     }
   },
   [RESET_ONBOARDING_STATE]: (state) => {
-    state.justRegistered = null
-    state.visitedModals = null
-    state.hideNavBar = false
-    state.newUserTasks = false
-    state.showOnboarding = false
-    state.showModals = null
+    Object.assign(state, getDefaultState())
   }
 }
 

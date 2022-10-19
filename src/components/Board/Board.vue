@@ -268,7 +268,7 @@
             <draggable
               :id="column.UID"
               :data-column-id="column.UID"
-              :list="getPaginatedCards(column.cards, cardQuantityByColumns[column.UID])"
+              :list="column.paginatedCards"
               ghost-class="ghost-card"
               item-key="uid"
               group="cards"
@@ -395,21 +395,24 @@ import PopMenuItem from '@/components/Common/PopMenuItem.vue'
 import draggable from 'vuedraggable'
 import { dragscroll } from 'vue-dragscroll'
 import BoardCard from '@/components/Board/BoardCard.vue'
-import BoardModalBoxDelete from '@/components/Board/BoardModalBoxDelete.vue'
-import BoardModalBoxColor from '@/components/Board/BoardModalBoxColor.vue'
-import BoardModalBoxMove from '@/components/Board/BoardModalBoxMove.vue'
-import BoardModalBoxCardMove from '@/components/Board/BoardModalBoxCardMove.vue'
-import BoardSkeleton from '@/components/Board/BoardSkeleton.vue'
+import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'
+import BoardModalBoxColor from '@/components/Board/modalboxes/BoardModalBoxColor.vue'
+import BoardModalBoxMove from '@/components/Board/modalboxes/BoardModalBoxMove.vue'
+
+import BoardModalBoxCardMove from '@/components/Board/modalboxes/BoardModalBoxCardMove.vue'
+import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
 import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
-import BoardInputValue from './Board/BoardInputValue.vue'
+import BoardInputValue from './BoardInputValue.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import BoardModalBoxColumnBoardChange from './Board/BoardModalBoxColumnBoardChange.vue'
-import BoardTextareaValue from './Board/BoardTextareaValue.vue'
+import BoardModalBoxColumnBoardChange from '@/components/Board/modalboxes/BoardModalBoxColumnBoardChange.vue'
+import BoardTextareaValue from './BoardTextareaValue.vue'
 import { notify } from 'notiwind'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
-import BoardOnboarding from './Board/BoardOnboarding.vue'
+import BoardOnboarding from './BoardOnboarding.vue'
+
+const DEF_COUNT_CARDS_BY_PAGE = 50
 
 export default {
   directives: {
@@ -519,9 +522,11 @@ export default {
     filteredColumns () {
       return this.storeCards.map((column) => {
         const cards = this.getColumnCards(column)
+        const paginatedCards = this.getPaginatedCards(cards, this.cardQuantityByColumns[column.UID] || DEF_COUNT_CARDS_BY_PAGE)
         return {
           ...column,
-          cards: cards
+          cards: cards,
+          paginatedCards
         }
       })
     },
@@ -550,7 +555,7 @@ export default {
       immediate: true,
       handler: function (val) {
         val.forEach((column) => {
-          this.cardQuantityByColumns[column.UID] = 50
+          this.cardQuantityByColumns[column.UID] = DEF_COUNT_CARDS_BY_PAGE
         })
       }
     },
@@ -575,7 +580,7 @@ export default {
       const { scrollTop, offsetHeight, scrollHeight } = event.target
 
       if ((scrollTop + offsetHeight) >= scrollHeight && this.cardQuantityByColumns[columnUid] < cardsLength) {
-        this.cardQuantityByColumns[columnUid] += 50
+        this.cardQuantityByColumns[columnUid] += DEF_COUNT_CARDS_BY_PAGE
       }
     },
     getContrastYIQ (hexcolor) {

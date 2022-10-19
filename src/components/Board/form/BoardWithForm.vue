@@ -190,11 +190,11 @@
 <script>
 import NavBar from '@/components/Navbar/NavBar'
 import JbButton from '@/components/JbButton.vue'
-import FormCheckbox from '@/components/Board/FormCheckbox.vue'
+import FormCheckbox from '@/components/Board/form/FormCheckbox.vue'
 
 import * as BOARD_FORMS from '@/store/actions/boardforms.js'
-import BoardWithFormSkeleton from '@/components/Board/BoardWithFormSkeleton'
-import BoardSmallButton from '@/components/Board/BoardSmallButton.vue'
+import BoardWithFormSkeleton from '@/components/Board/form/BoardWithFormSkeleton'
+import BoardSmallButton from '@/components/Board/buttons/BoardSmallButton.vue'
 
 export default {
   components: {

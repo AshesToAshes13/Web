@@ -137,16 +137,16 @@
 </template>
 
 <script>
-import BoardArchiveNavbar from '@/components/Board/BoardArchiveNavbar'
+import BoardArchiveNavbar from '@/components/Board/archive/BoardArchiveNavbar'
 import * as CARD from '@/store/actions/cards'
 import BoardCard from '@/components/Board/BoardCard'
-import BoardModalBoxDelete from '@/components/Board/BoardModalBoxDelete'
-import BoardModalBoxCardMove from '@/components/Board/BoardModalBoxCardMove'
+import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'
+import BoardModalBoxCardMove from '@/components/Board/modalboxes/BoardModalBoxCardMove.vue'
 import { FETCH_FILES_AND_MESSAGES, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import { notify } from 'notiwind'
 import * as BOARD from '@/store/actions/boards'
-import BoardSkeleton from '@/components/Board/BoardSkeleton'
+import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 
 export default {
   components: { BoardSkeleton, BoardModalBoxCardMove, BoardModalBoxDelete, BoardArchiveNavbar, BoardCard },

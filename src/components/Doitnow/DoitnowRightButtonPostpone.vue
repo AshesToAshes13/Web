@@ -66,6 +66,16 @@
           >
             Выбрать дату
           </PopMenuItem>
+          <PopMenuDivider
+            v-if="isDevelopmentMode"
+          />
+          <PopMenuItem
+            v-if="isDevelopmentMode"
+            class="!h-[40px] !justify-center"
+            @click="onNext"
+          >
+            Пропустить
+          </PopMenuItem>
         </div>
       </template>
     </PopMenu>
@@ -75,13 +85,15 @@
 <script>
 import PopMenu from '@/components/Common/PopMenu.vue'
 import PopMenuItem from '@/components/Common/PopMenuItem.vue'
-import DoitnowModalBoxSetDate from '@/components/Doitnow/DoitnowModalBoxSetDate.vue'
+import DoitnowModalBoxSetDate from '@/components/Doitnow/modals/DoitnowModalBoxSetDate.vue'
+import PopMenuDivider from '@/components/Common/PopMenuDivider.vue'
 
 export default {
   components: {
     DoitnowModalBoxSetDate,
     PopMenu,
-    PopMenuItem
+    PopMenuItem,
+    PopMenuDivider
   },
   props: {
     taskEndDate: {
@@ -93,7 +105,7 @@ export default {
       default: false
     }
   },
-  emits: ['postpone'],
+  emits: ['postpone', 'next'],
   data () {
     return {
       postponeValue: {
@@ -101,6 +113,11 @@ export default {
         days: 0
       },
       showSetDate: false
+    }
+  },
+  computed: {
+    isDevelopmentMode () {
+      return window.location.origin === 'http://localhost:8080'
     }
   },
   methods: {
@@ -125,6 +142,9 @@ export default {
     onSetDate (date) {
       this.showSetDate = false
       this.$emit('postpone', date)
+    },
+    onNext () {
+      this.$emit('next')
     }
   }
 }

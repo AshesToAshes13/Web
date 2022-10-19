@@ -103,7 +103,7 @@
 </template>
 <script>
 import ReglamentAnswer from './ReglamentAnswer.vue'
-import BoardModalBoxDelete from '@/components/Board/BoardModalBoxDelete.vue'
+import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'
 import { uuidv4 } from '@/helpers/functions'
 
 export default {
