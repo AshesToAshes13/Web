@@ -129,13 +129,6 @@ export default {
         this.$emit('onSave')
         if (this.isClear) {
           this.$emit('clearContributors')
-          const data = {
-            uid_reglament: this.$route.params.id,
-            uid_user: this.user.current_user_uid
-          }
-          this.$store.dispatch(REGLAMENTS.DELETE_REGLAMENT_REMINDER, data).then(() => {
-            this.$store.state.reglaments.reglaments[this.$route.params.id].reminder = ''
-          })
         }
         const data = {
           uid_employee: this.user.current_user_uid,
