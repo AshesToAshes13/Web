@@ -2191,3 +2191,27 @@ input.multiselect_checkbox {
 .multiselect_checkbox:checked ~ .field_multiselect_help {
   opacity: 1;
 }
+
+/* Создал стиль для видео в слайдах, т.к на ноутбуках появляется скролл, который не убрать классами tailwind */
+
+.doitnow-slide-body {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.doitnow-frame {
+  width: 540px;
+  height: 315px;
+}
+
+@media screen and (max-height: 900px) {
+  .doitnow-frame {
+    width: 415px;
+    height: 240px;
+  }
+
+  .doitnow-slide-body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+}
