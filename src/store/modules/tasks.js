@@ -353,13 +353,13 @@ const actions = {
           const unreadTasks = [...respAll[0].data.tasks].filter(
             (task) =>
               task.status !== TASK_STATUS.TASK_COMPLETED &&
-              task.status !== TASK_STATUS.TASK_REJECTED
+              task.status !== TASK_STATUS.TASK_CANCELLED
           )
           const overdueTasks = [...respAll[1].data.tasks].filter(
             (task) =>
               unreadTasks.findIndex((t) => t.uid === task.uid) === -1 &&
               task.status !== TASK_STATUS.TASK_COMPLETED &&
-              task.status !== TASK_STATUS.TASK_REJECTED
+              task.status !== TASK_STATUS.TASK_CANCELLED
           )
           const pad2 = function (n) {
             return (n < 10 ? '0' : '') + n
@@ -378,7 +378,7 @@ const actions = {
               overdueTasks.findIndex((t) => t.uid === task.uid) === -1 &&
               task.date_begin < dateNowStr &&
               task.status !== TASK_STATUS.TASK_COMPLETED &&
-              task.status !== TASK_STATUS.TASK_REJECTED
+              task.status !== TASK_STATUS.TASK_CANCELLED
           )
           const readyTasks = [...respAll[3].data.tasks].filter(
             (task) =>
@@ -386,7 +386,7 @@ const actions = {
               overdueTasks.findIndex((t) => t.uid === task.uid) === -1 &&
               todayTasks.findIndex((t) => t.uid === task.uid) === -1 &&
               task.status !== TASK_STATUS.TASK_COMPLETED &&
-              task.status !== TASK_STATUS.TASK_REJECTED
+              task.status !== TASK_STATUS.TASK_CANCELLED
           )
           const tasks = [
             ...unreadTasks,

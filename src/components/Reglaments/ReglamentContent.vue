@@ -374,7 +374,7 @@ export default {
       if (res.data.length === 0) {
         this.$store.state.reglaments.lastCommentDate = ''
       } else {
-        this.$store.state.reglaments.lastCommentDate = res.data[0].comment_date
+        this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date(res.data[0].comment_date))
         this.$store.state.reglaments.lastCommentText = res.data[0].comment
       }
     })
@@ -408,6 +408,16 @@ export default {
     },
     clearContributors () {
       this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, this.reglament.uid)
+    },
+    dateToLabelFormatForComment (calendarDate) {
+      const day = calendarDate.getDate()
+      const month = calendarDate.toLocaleString('default', { month: 'short' })
+      const weekday = calendarDate.toLocaleString('default', { weekday: 'short' })
+      const hours = String(calendarDate.getHours()).padStart(2, '0')
+      const minutes = String(calendarDate.getMinutes()).padStart(2, '0')
+      const seconds = String(calendarDate.getSeconds()).padStart(2, '0')
+
+      return `${day} ${month}, ${weekday}, ${hours}:${minutes}:${seconds}`
     }
   }
 }
