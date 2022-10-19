@@ -649,12 +649,14 @@ export default {
           console.log('Card is moved')
         })
     },
-    onChangeClient (payload) {
+    async onChangeClient (payload) {
       const [uid, name] = payload
       if (this.selectedCard) {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
-        this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
+        this.clientInCard = clientResponse.data
       }
     },
     removeClientFromCard () {
