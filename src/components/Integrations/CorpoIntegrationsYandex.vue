@@ -158,7 +158,7 @@ export default {
       return this.$store.state.employees.employees
     },
     canEdit () {
-      return true // this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2
+      return this.employees[this.user.current_user_uid].type === 1 || this.employees[this.user.current_user_uid].type === 2
     }
   },
   methods: {
