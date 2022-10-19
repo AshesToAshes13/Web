@@ -34,26 +34,14 @@ const actions = {
   // TODO: Пока инспектор не залит, испрользуем метод "заглушку"
   // В дальнейшем передаем сюда строку UID клиента, а не объект data {organization: string, search: string}
   [CLIENTS.GET_CLIENT]: ({ commit, dispatch }, data) => {
-  //   const url = process.env.VUE_APP_INSPECTOR_API + 'clients/client?uid=' + data
-  //   return new Promise((resolve, reject) => {
-  //     axios({ url, method: 'GET' })
-  //       .then(resp => {
-  //         commit(CLIENTS.SELECT_CLIENT, resp)
-  //         resolve(resp)
-  //       })
-  //       .catch(err => {
-  //         reject(err)
-  //       })
-  //   })
-    data.page = 0
-    const url = process.env.VUE_APP_INSPECTOR_API + 'clients?organization=' + data.organization + '&page=' + data.page + '&search=' + data.search
+    const url = process.env.VUE_APP_INSPECTOR_API + 'clients/client?uid=' + data
     return new Promise((resolve, reject) => {
       axios({ url, method: 'GET' })
-        .then((resp) => {
-          commit(CLIENTS.SELECT_CLIENT, resp.data.clients[0])
-          resolve(resp.data.clients[0])
+        .then(resp => {
+          commit(CLIENTS.SELECT_CLIENT, resp)
+          resolve(resp)
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err)
         })
     })
