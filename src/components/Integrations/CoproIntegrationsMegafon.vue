@@ -20,31 +20,31 @@
     :breadcrumbs="[{ name: 'Мегафон', selected: true }]"
   />
   <div class="flex items-center justify-center">
-    <div class="w-[75%] px-[50px] py-[50px] bg-white rounded-[8px]">
+    <div class="w-[60%] px-[50px] py-[50px] bg-white rounded-[8px]">
       <div
         class="flex w-[450px] justify-center flex-col"
       >
         <div class="flex items-center">
-          <span class="font-[700] text-[21px] leading-[29px]">
+          <span class="font-[700] text-[21px] leading-[29px] text-[#424242]">
             Корпоративная интеграция через Мегафон
           </span>
         </div>
         <span
           v-if="isOrganizationIntegrated"
-          class="my-[20px] text-[16px] leading-[25px] text-gray-500"
+          class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
         >
           Интегрировано с: {{ atsLink }}
         </span>
         <button
           v-if="!isOrganizationIntegrated"
-          class="mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300"
+          class="mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300 text-[#2E2E2E]"
           @click="changeShowIntegrationState(true)"
         >
           Интеграция
         </button>
         <button
           v-else
-          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C]"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию
@@ -56,7 +56,7 @@
       >
         <span class="mb-[8px] font-[500] text-[18px] leading-[28px]">Пользователи Мегафон</span>
         <span class="mb-[30px] text-[14px] leading-[22px]">Установите пользователям ЛидерТаск их логины из ЛК Мегафон</span>
-        <div class="flex flex-row w-[98%]">
+        <div class="flex flex-row w-[97%]">
           <span class="flex-1 flex text-[13px] leading-[15px] font-[700]">Сотрудник</span>
           <span class="flex-1 flex text-[13px] leading-[15px] font-[700]">Логин</span>
         </div>
@@ -177,19 +177,23 @@
               stroke-linecap="round"
             />
           </svg>
-          <span class="ml-[8px]">Добавить</span>
+          <span class="ml-[8px] text-[13px] leading-[15px]">Добавить</span>
         </button>
       </div>
       <article
         v-if="!isOrganizationIntegrated"
         class="mt-[40px]"
       >
-        <span class="font-[400] text-[16px] leading-[25px]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
+        <span class="font-[400] text-[16px] leading-[25px] text-[#4C4C4D]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
+        <img
+          src="@/assets/images/megafon/video-container.png"
+          class="cursor-pointer w-[650px] h-[360px] mt-[35px]"
+        >
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
         <p class="mt-[25px]">
-          <ul class="list-inside text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
+          <ul class="ml-[15px] text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
             <li class="my-[30px]">
               <span class="mb-[25px]">Зарегистрируйтесь на сайте</span>
               <a

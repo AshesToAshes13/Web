@@ -4,6 +4,7 @@ import { removeCard } from '@/websync/card.js'
 import { removeEmployee } from '@/websync/employee.js'
 import { removeProject } from '@/websync/project.js'
 import { deleteReglament } from '@/websync/reglaments.js'
+import { removeIntegration } from '@/websync/yandexCorpInt.js'
 import { deleteReglamentQuestion } from '@/websync/reglament_question'
 import { deleteReglamentAnswer } from '@/websync/reglament_answer'
 import { removeCardFileMessage } from '@/websync/card_message'
@@ -53,6 +54,9 @@ export default function processRemove (obj) {
       removeColor(obj)
       break
     case TYPES.TYPE_OBJECT_PERIOD:
+      break
+    case TYPES.TYPE_OBJECT_YANDEX_CORP_INT:
+      removeIntegration()
       break
     case TYPES.TYPE_OBJECT_PROJECT_MEMBER:
       break
