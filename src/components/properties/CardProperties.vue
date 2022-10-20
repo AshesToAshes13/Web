@@ -48,7 +48,6 @@
     </div>
     <div
       id="generalscroll"
-      class="column-resize overflow-hidden"
     >
       <CardCover
         :cover-color="
@@ -376,15 +375,11 @@ export default {
   watch: {
     selectedCardUid: {
       immediate: true,
-      handler: function () {
+      handler: async function () {
         this.currentQuote = false
         this.cardMessageInputValue = ''
         if (this.isClientInCard) {
-          this.showClientSkeleton = true
-          this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
-            this.clientInCard = resp.data
-            this.showClientSkeleton = false
-          })
+          await this.getClientInCurrentCard()
         } else {
           this.isClientInCard = {}
         }
@@ -394,11 +389,7 @@ export default {
   },
   mounted () {
     if (this.isClientInCard) {
-      this.showClientSkeleton = true
-      this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
-        this.clientInCard = resp.data
-        this.showClientSkeleton = false
-      })
+      this.getClientInCurrentCard()
     }
   },
   methods: {
@@ -455,6 +446,14 @@ export default {
         data.name = 'Карточка без названия'
       }
       this.$store.dispatch(CHANGE_CARD_NAME, data)
+    },
+    async getClientInCurrentCard () {
+      this.showClientSkeleton = true
+      const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
+      this.clientInCard = clientResponse.data
+      if (this.clientInCard.uid === clientResponse.data.uid) {
+        this.showClientSkeleton = false
+      }
     },
     clickCardBudget () {
       if (!this.canEdit) return
@@ -674,13 +673,10 @@ export default {
     async onChangeClient (payload) {
       const [uid, name] = payload
       if (this.selectedCard) {
-        this.showClientSkeleton = true
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
-        const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-        this.clientInCard = clientResponse.data
-        this.showClientSkeleton = false
+        await this.getClientInCurrentCard()
       }
     },
     removeClientFromCard () {
@@ -704,7 +700,10 @@ export default {
 
 <style scoped>
 #generalscroll {
-  height: calc(100vh - var(--hex-parent-height) - 30px);
+  height: calc(100vh - 126px);
   scrollbar-width: none;
+  overflow-y: auto;
+  width: 100%;
+  overflow-x: hidden;
 }
 </style>
