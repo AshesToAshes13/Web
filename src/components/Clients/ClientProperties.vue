@@ -185,11 +185,7 @@ export default {
         )
     },
     showCallButton () {
-      return (
-        this.$store.state.corpMegafonIntegration.isIntegrated &&
-        this.currClient.phone &&
-        this.$store.state.corpMegafonIntegration.megafonUsers.findIndex((megafonUser) => megafonUser.uidUser === this.user.current_user_uid) !== -1
-      )
+      return this.currClient.phone && this.$store.getters.isMegafonCanCall
     },
     user () {
       return this.$store.state.user.user

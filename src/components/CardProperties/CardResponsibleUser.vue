@@ -72,7 +72,7 @@
         >
           <div
             class="flex items-center text-[#4C4C4D] font-[400] text-[13px] leading-[14px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
-            @click="$emit('changeResponsible', employee.email), close()"
+            @click="$emit('changeResponsible', employee.email)"
           >
             <img
               :src="employee.fotolink"

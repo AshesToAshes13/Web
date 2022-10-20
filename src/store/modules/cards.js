@@ -313,6 +313,9 @@ const actions = {
     })
   },
   [CARD.CHANGE_CARD_UID_CLIENT]: ({ commit }, data) => {
+    if (data.date_reminder === '') {
+      data.date_reminder = null
+    }
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_INSPECTOR_API + 'cards'
       axios({ url: url, method: 'POST', data: data })

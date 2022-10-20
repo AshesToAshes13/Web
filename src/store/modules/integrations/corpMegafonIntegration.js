@@ -14,6 +14,20 @@ const getDefaultState = () => {
   }
 }
 
+const getters = {
+  isMegafonCanCall (state, getters, rootState) {
+    return (
+      state.isIntegrated &&
+      state.atsKey &&
+      state.atsKey &&
+      state.megafonUsers.findIndex(
+        (megafonUser) =>
+          megafonUser.uidUser === rootState.user.user?.current_user_uid
+      ) !== -1
+    )
+  }
+}
+
 const state = getDefaultState()
 
 const actions = {
@@ -178,7 +192,7 @@ const actions = {
         (megafonUser) => megafonUser.uidUser === currentUserUid
       )?.megafonUserLogin
       const atsLink = state.atsLink
-      if (!state.isIntegrated || !atsKey || !atsKey) {
+      if (!state.isIntegrated || !atsLink || !atsKey) {
         return reject(new Error('not find megafon integration data'))
       }
       if (!login) {
@@ -225,5 +239,6 @@ const mutations = {
 export default {
   state,
   actions,
+  getters,
   mutations
 }

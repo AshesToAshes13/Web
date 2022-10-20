@@ -1264,10 +1264,10 @@ export default {
 }
 
 #task-prop-content {
-  scrollbar-width: none;
   height: calc(100vh - var(--task-props-static-height));
   overflow-y: auto;
   width: 100%;
   overflow-x: hidden;
 }
+#task-prop-content::-webkit-scrollbar { width: 0; }
 </style>
