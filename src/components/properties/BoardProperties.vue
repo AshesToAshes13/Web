@@ -169,34 +169,36 @@
         </div>
       </template>
     </PopMenu>
-    <BoardPropsUserButton
-      class="mt-[8px]"
-      :user-email="selectedBoardCreatorEmail"
-      status="Владелец"
-      disabled
-    />
-    <BoardPropsUserButton
-      v-for="user in usersBoard"
-      :key="user.email"
-      :user-email="user.email"
-      :status="user.status"
-      :disabled="!isCanEdit || user.email === currentUser.current_user_email"
-      @delete="deleteMember(user.uid)"
-      @admin="setMemberStatus(user.uid, 1)"
-      @reader="setMemberStatus(user.uid, 0)"
-      @writer="setMemberStatus(user.uid, 2)"
-    />
-    <BoardPropsDepButton
-      v-for="dep in depsBoard"
-      :key="dep.uid"
-      :name="dep.name"
-      :status="dep.status"
-      :disabled="!isCanEdit"
-      @delete="deleteDepartment(dep.uid)"
-      @setAdmin="setDepartmentStatus(dep.uid,1)"
-      @setReader="setDepartmentStatus(dep.uid,0)"
-      @setWriter="setDepartmentStatus(dep.uid,2)"
-    />
+    <div class="flex flex-col gap-y-[5px]">
+      <BoardPropsUserButton
+        class="mt-[8px]"
+        :user-email="selectedBoardCreatorEmail"
+        status="Владелец"
+        disabled
+      />
+      <BoardPropsUserButton
+        v-for="user in usersBoard"
+        :key="user.email"
+        :user-email="user.email"
+        :status="user.status"
+        :disabled="!isCanEdit || user.email === currentUser.current_user_email"
+        @delete="deleteMember(user.uid)"
+        @admin="setMemberStatus(user.uid, 1)"
+        @reader="setMemberStatus(user.uid, 0)"
+        @writer="setMemberStatus(user.uid, 2)"
+      />
+      <BoardPropsDepButton
+        v-for="dep in depsBoard"
+        :key="dep.uid"
+        :name="dep.name"
+        :status="dep.status"
+        :disabled="!isCanEdit"
+        @delete="deleteDepartment(dep.uid)"
+        @setAdmin="setDepartmentStatus(dep.uid,1)"
+        @setReader="setDepartmentStatus(dep.uid,0)"
+        @setWriter="setDepartmentStatus(dep.uid,2)"
+      />
+    </div>
   </div>
 
   <div v-else>
