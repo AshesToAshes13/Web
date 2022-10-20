@@ -100,12 +100,7 @@ export default {
     callClient () {
       this.disableButton = true
       const phone = stripPhoneNumber(this.currentClient.phone)
-      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
-        phone: phone,
-        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
-        login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
-        atsLink: this.$store.state.corpMegafonIntegration.atsLink
-      })
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, phone)
       setTimeout(() => {
         this.disableButton = false
       }, 2000)
