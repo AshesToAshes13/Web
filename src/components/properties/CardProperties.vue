@@ -458,20 +458,18 @@ export default {
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
       this.clientInCard = clientResponse.data
-      if (this.clientInCard.uid === clientResponse.data.uid) {
-        this.showClientSkeleton = false
+      this.showClientSkeleton = false
 
-        const data = {
-          clientUid: this.clientInCard.uid,
-          clientEmail: this.clientInCard.email,
-          clientPhone: this.clientInCard.phone,
-          crmKey: this.$store.state.corpMegafonIntegration.crmKey,
-          corpYandexInt: this.corpYandexIntegration,
-          personalYandexInt: this.personalYandexIntegration,
-          megafonIntegration: this.isCorpMegafonIntegrated
-        }
-        await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
+      const data = {
+        clientUid: this.clientInCard.uid,
+        clientEmail: this.clientInCard.email,
+        clientPhone: this.clientInCard.phone,
+        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+        corpYandexInt: this.corpYandexIntegration,
+        personalYandexInt: this.personalYandexIntegration,
+        megafonIntegration: this.isCorpMegafonIntegrated
       }
+      await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
     },
     clickCardBudget () {
       if (!this.canEdit) return
