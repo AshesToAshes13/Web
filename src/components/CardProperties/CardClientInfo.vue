@@ -29,7 +29,8 @@
       <div class="flex justify-between">
         <button
           v-if="showCallButton"
-          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5] disabled:bg-[#807e7e]"
+          :disabled="disableButton"
           @click="callClient"
         >
           <svg
@@ -65,7 +66,6 @@ import { stripPhoneNumber } from '@/helpers/functions'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 export default {
-
   props: {
     currentClient: {
       type: Object,
@@ -73,6 +73,11 @@ export default {
     }
   },
   emits: ['clickShowClientModalEmit', 'removeClientFromCardEmit'],
+  data () {
+    return {
+      disableButton: false
+    }
+  },
   computed: {
     user () {
       return this.$store.state.user.user
@@ -93,6 +98,7 @@ export default {
       this.$emit('removeClientFromCardEmit')
     },
     callClient () {
+      this.disableButton = true
       const phone = stripPhoneNumber(this.currentClient.phone)
       this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
         phone: phone,
@@ -100,6 +106,9 @@ export default {
         login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
         atsLink: this.$store.state.corpMegafonIntegration.atsLink
       })
+      setTimeout(() => {
+        this.disableButton = false
+      }, 2000)
     }
   }
 }
