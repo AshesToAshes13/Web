@@ -329,7 +329,7 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        const clientMessages = [...this.$store.state.clientfilesandmessages.messages].filter(message => !message.clientFile)
+        const clientMessages = [...this.$store.state.clientfilesandmessages.messages]
         return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
       }
       return this.$store.state.cardfilesandmessages.messages
@@ -457,20 +457,18 @@ export default {
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
       this.clientInCard = clientResponse.data
-      if (this.clientInCard.uid === clientResponse.data.uid) {
-        this.showClientSkeleton = false
+      this.showClientSkeleton = false
 
-        const data = {
-          clientUid: this.clientInCard.uid,
-          clientEmail: this.clientInCard.email,
-          clientPhone: this.clientInCard.phone,
-          crmKey: this.$store.state.corpMegafonIntegration.crmKey,
-          corpYandexInt: this.corpYandexIntegration,
-          personalYandexInt: this.personalYandexIntegration,
-          megafonIntegration: this.isCorpMegafonIntegrated
-        }
-        await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
+      const data = {
+        clientUid: this.clientInCard.uid,
+        clientEmail: this.clientInCard.email,
+        clientPhone: this.clientInCard.phone,
+        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+        corpYandexInt: this.corpYandexIntegration,
+        personalYandexInt: this.personalYandexIntegration,
+        megafonIntegration: this.isCorpMegafonIntegrated
       }
+      await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
     },
     clickCardBudget () {
       if (!this.canEdit) return
