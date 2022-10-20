@@ -48,7 +48,6 @@
     </div>
     <div
       id="generalscroll"
-      class="column-resize overflow-hidden"
     >
       <CardCover
         :cover-color="
@@ -704,7 +703,10 @@ export default {
 
 <style scoped>
 #generalscroll {
-  height: calc(100vh - var(--hex-parent-height) - 30px);
+  height: calc(100vh - 126px);
   scrollbar-width: none;
+  overflow-y: auto;
+  width: 100%;
+  overflow-x: hidden;
 }
 </style>
