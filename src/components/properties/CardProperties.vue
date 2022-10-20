@@ -431,7 +431,7 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('aside-right')
+      const asideRight = document.getElementById('generalscroll')
       asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
