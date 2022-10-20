@@ -3,7 +3,7 @@
     class="flex flex-col items-center text-center justify-center"
   >
     <SlideBodyTitle title="Добавьте сотрудника!" />
-    <div class="flex flex-col items-center md:gap-[20px] xl:gap-[35px] 2xl:gap-[45px]">
+    <div class="flex flex-col items-center md:gap-[10px] xl:gap-[20px] 2xl:gap-[35px]">
       <div class="max-w-[600px]">
         <article class="font-normal md:text-[16px] lg:text-[18px] text-center leading-[29px] w-full pl-0">
           <p class="text-[#4C4C4D]">
@@ -15,7 +15,7 @@
       <img
         v-if="showPreviewPicture"
         src="@/assets/images/slides/addEmployes.png"
-        class="cursor-pointer xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px]"
+        class="cursor-pointer doitnow-frame"
         @click="playVideo"
       >
       <iframe
@@ -24,7 +24,7 @@
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        class="border-[3px] xl:w-[415px] xl:h-[240px] 2xl:w-[560px] 2xl:h-[315px] rounded-xl border-[#2E2E2E]"
+        class="border-[3px] doitnow-frame rounded-xl border-[#2E2E2E]"
       />
 
       <SlideBodyButton

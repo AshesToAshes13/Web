@@ -20,7 +20,7 @@
           v-if="client.date_create"
           title="Дата добавления:"
         >
-          {{ client.date_create }}
+          {{ dateToLabelFormat(new Date(client.date_create)) }}
         </PopMenuHeader>
         <PopMenuItem
           icon="delete"
@@ -63,6 +63,17 @@ export default {
     removeClient () {
       this.showConfirm = false
       this.$emit('deleteClient')
+    },
+    dateToLabelFormat (calendarDate) {
+      const day = calendarDate.getDate()
+      const month = calendarDate.toLocaleString('default', { month: 'short' })
+      const weekday = calendarDate.toLocaleString('default', { weekday: 'short' })
+      const year = calendarDate.getFullYear()
+      const hours = String(calendarDate.getHours()).padStart(2, '0')
+      const minutes = String(calendarDate.getMinutes()).padStart(2, '0')
+      const seconds = String(calendarDate.getSeconds()).padStart(2, '0')
+
+      return `${day} ${month} ${year}, ${weekday}, ${hours}:${minutes}:${seconds}`
     }
   }
 }

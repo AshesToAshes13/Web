@@ -78,7 +78,7 @@
               @openMenu="loadUsers"
             >
               <div
-                class="flex items-center rounded-[6px] border border-gray-200 px-[8px] py-[9px] bg-white text-[#575758] cursor-pointer"
+                class="flex items-center w-[105%] rounded-[6px] border border-gray-200 px-[8px] py-[9px] bg-white text-[#575758] cursor-pointer"
               >
                 <svg
                   width="15"

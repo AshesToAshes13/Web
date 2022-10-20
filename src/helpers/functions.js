@@ -31,9 +31,10 @@ export function getNavstackPath (tree, uid) {
 
 export function stripPhoneNumber (phoneString) {
   let preparedClientPhone = phoneString
-
-  if (preparedClientPhone[0] === '8') {
-    preparedClientPhone[0] = '7'
+  if (preparedClientPhone.length) {
+    if (preparedClientPhone[0] === '8') {
+      preparedClientPhone[0] = '7'
+    }
   }
 
   preparedClientPhone = preparedClientPhone.replaceAll(/(\s|\(|\)|\+|-)/g, '')

@@ -303,7 +303,9 @@ export default {
   computed: {
     status () { return this.$store.state.cardfilesandmessages.status },
     selectedCard () { return this.$store.getters.selectedCard },
-    selectedCardUid () { return this.$store.state.cards.cards.selectedCardUid },
+    selectedCardUid () {
+      return this.$store.state.cards.selectedCardUid
+    },
     isClientInCard () {
       return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
     },
@@ -367,9 +369,20 @@ export default {
     }
   },
   watch: {
-    selectedCardUid (oldValue, newValue) {
-      this.currentQuote = false
-      this.cardMessageInputValue = ''
+    selectedCardUid: {
+      immediate: true,
+      handler: function () {
+        this.currentQuote = false
+        this.cardMessageInputValue = ''
+        if (this.isClientInCard) {
+          this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
+            this.clientInCard = resp.data
+          })
+        } else {
+          this.isClientInCard = {}
+        }
+      }
+
     }
   },
   mounted () {
@@ -649,12 +662,14 @@ export default {
           console.log('Card is moved')
         })
     },
-    onChangeClient (payload) {
+    async onChangeClient (payload) {
       const [uid, name] = payload
       if (this.selectedCard) {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
-        this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
+        this.clientInCard = clientResponse.data
       }
     },
     removeClientFromCard () {
