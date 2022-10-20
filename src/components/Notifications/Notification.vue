@@ -105,7 +105,12 @@ export default {
   methods: {
 
     redirect (notification) {
-      const link = `${window.location.origin}/project/${notification.obj.obj.uid}`
+      let link
+      if (notification.obj.type === 2) {
+        link = `${window.location.origin}/project/${notification.obj.obj.uid}`
+      } else {
+        link = `${window.location.origin}/task/${notification.obj.obj.uid}`
+      }
       window.location.href = link
       this.$store.commit(NAVIGATOR_SUCCESS)
     }
