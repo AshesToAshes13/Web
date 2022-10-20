@@ -48,6 +48,7 @@
     </div>
     <div
       id="generalscroll"
+      class="scroll-style"
     >
       <CardCover
         :cover-color="
