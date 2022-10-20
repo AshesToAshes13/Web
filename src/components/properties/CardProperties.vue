@@ -151,12 +151,14 @@
         />
       </div>
       <CardClientInfo
-        v-if="isClientInCard"
+        v-if="isClientInCard && !showClientSkeleton"
         :current-client="clientInCard"
         @clickShowClientModalEmit="clickShowClientModal"
         @removeClientFromCardEmit="removeClientFromCard"
       />
-
+      <ClientInfoSkeleton
+        v-if="isClientInCard && showClientSkeleton"
+      />
       <TaskPropsCommentEditor
         v-if="canEdit || selectedCard?.comment?.length > 0"
         class="mt-3 h-32 break-words"
@@ -259,6 +261,7 @@ import { uuidv4 } from '@/helpers/functions'
 import ClientModal from '@/components/Clients/ClientModal'
 import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
+import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
 
 export default {
   components: {
@@ -283,7 +286,8 @@ export default {
     PropsButtonClose,
     TaskPropertiesModalBoxFileSizeLimit,
     CardSetDate,
-    CardClientInfo
+    CardClientInfo,
+    ClientInfoSkeleton
   },
   data () {
     return {
@@ -297,7 +301,8 @@ export default {
       cardMessageInputValue: '',
       currentCard: null,
       tooBigFiles: [],
-      clientInCard: {}
+      clientInCard: {},
+      showClientSkeleton: false
     }
   },
   computed: {
@@ -375,8 +380,10 @@ export default {
         this.currentQuote = false
         this.cardMessageInputValue = ''
         if (this.isClientInCard) {
+          this.showClientSkeleton = true
           this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
             this.clientInCard = resp.data
+            this.showClientSkeleton = false
           })
         } else {
           this.isClientInCard = {}
@@ -387,8 +394,10 @@ export default {
   },
   mounted () {
     if (this.isClientInCard) {
+      this.showClientSkeleton = true
       this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
         this.clientInCard = resp.data
+        this.showClientSkeleton = false
       })
     }
   },
@@ -665,11 +674,13 @@ export default {
     async onChangeClient (payload) {
       const [uid, name] = payload
       if (this.selectedCard) {
+        this.showClientSkeleton = true
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
         const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
         this.clientInCard = clientResponse.data
+        this.showClientSkeleton = false
       }
     },
     removeClientFromCard () {
