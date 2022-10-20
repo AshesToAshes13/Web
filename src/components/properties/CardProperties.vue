@@ -262,6 +262,7 @@ import ClientModal from '@/components/Clients/ClientModal'
 import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
 import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
+import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 
 export default {
   components: {
@@ -307,6 +308,15 @@ export default {
   },
   computed: {
     status () { return this.$store.state.cardfilesandmessages.status },
+    corpYandexIntegration () {
+      return this.$store.state.corpYandexIntegration.isIntegrated
+    },
+    personalYandexIntegration () {
+      return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    isCorpMegafonIntegrated () {
+      return this.$store.state.corpMegafonIntegration.isIntegrated
+    },
     selectedCard () { return this.$store.getters.selectedCard },
     selectedCardUid () {
       return this.$store.state.cards.selectedCardUid
@@ -380,17 +390,12 @@ export default {
         this.currentQuote = false
         this.cardMessageInputValue = ''
         if (this.isClientInCard) {
-          await this.getClientInCurrentCard()
+          await this.getClientInCurrentCardAndFetchHisMessages()
         } else {
           this.isClientInCard = {}
         }
       }
 
-    }
-  },
-  mounted () {
-    if (this.isClientInCard) {
-      this.getClientInCurrentCard()
     }
   },
   methods: {
@@ -448,12 +453,24 @@ export default {
       }
       this.$store.dispatch(CHANGE_CARD_NAME, data)
     },
-    async getClientInCurrentCard () {
+    async getClientInCurrentCardAndFetchHisMessages () {
       this.showClientSkeleton = true
+
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
       this.clientInCard = clientResponse.data
       if (this.clientInCard.uid === clientResponse.data.uid) {
         this.showClientSkeleton = false
+
+        const data = {
+          clientUid: this.clientInCard.uid,
+          clientEmail: this.clientInCard.email,
+          clientPhone: this.clientInCard.phone,
+          crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+          corpYandexInt: this.corpYandexIntegration,
+          personalYandexInt: this.personalYandexIntegration,
+          megafonIntegration: this.isCorpMegafonIntegrated
+        }
+        await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
       }
     },
     clickCardBudget () {
@@ -677,7 +694,7 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
-        await this.getClientInCurrentCard()
+        await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
     removeClientFromCard () {
