@@ -330,7 +330,7 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        const clientMessages = [...this.$store.state.clientfilesandmessages.messages].filter(message => !message.clientFile)
+        const clientMessages = [...this.$store.state.clientfilesandmessages.messages]
         return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
       }
       return this.$store.state.cardfilesandmessages.messages
