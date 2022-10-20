@@ -36,7 +36,6 @@
           Интеграция
         </button>
         <span
-          v-if="!isOrganizationIntegrated"
           class="mt-[35px] font-[400] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
           Чтобы получить полную картину всех взаимодействий с контактом по электронной почте
