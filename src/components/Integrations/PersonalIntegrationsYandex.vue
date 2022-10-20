@@ -18,7 +18,7 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Яндекс.Почта', selected: true }]"
   />
-  <div class="flex flex-col w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]">
+  <div class="flex flex-col h-[calc(100%-64px)] w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]">
     <div
       class="flex justify-center flex-col w-[80%]"
     >
@@ -55,7 +55,7 @@
           Интегрировано с: {{ corpLogin }}
         </span>
         <button
-          class="mt-[10px] rounded-[10px] h-[40px] text-white bg-[#CD5C5C]"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию

@@ -20,7 +20,7 @@
     :breadcrumbs="[{ name: 'Мегафон', selected: true }]"
   />
   <div class="flex items-center justify-center">
-    <div class="w-[60%] px-[50px] py-[50px] bg-white rounded-[8px]">
+    <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
         class="flex w-[450px] justify-center flex-col"
       >
