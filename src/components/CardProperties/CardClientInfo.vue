@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[#F4F5F7] w-[340px] h-[185px] rounded-[8px] py-[20px] px-[16px] mb-[15px]">
     <div class="flex flex-col gap-[20px]">
-      <div class="flex justify-between items-center">
+      <div class="hover-svg-fill flex justify-between items-center">
         <span class="font-medium text-[16px]">{{ currentClient.name }}</span>
         <svg
           width="14"
@@ -95,3 +95,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.hover-svg-fill svg:hover path {
+  fill: #EF4444;
+  transition: all ease 0.3s;
+}
+
+</style>
