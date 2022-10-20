@@ -48,7 +48,6 @@
     </div>
     <div
       id="generalscroll"
-      class="scroll-style"
     >
       <CardCover
         :cover-color="
@@ -717,9 +716,9 @@ export default {
 <style scoped>
 #generalscroll {
   height: calc(100vh - 126px);
-  scrollbar-width: none;
   overflow-y: auto;
   width: 100%;
   overflow-x: hidden;
 }
+#generalscroll::-webkit-scrollbar {width: 0;}
 </style>
