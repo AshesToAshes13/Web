@@ -28,6 +28,7 @@
       </div>
       <div class="flex justify-between">
         <button
+          v-if="showCallButton"
           class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
           @click="callClient"
         >
@@ -49,7 +50,8 @@
           </span>
         </button>
         <button
-          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          class="h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          :class="showCallButton ? 'w-[150px]' : 'w-full'"
           @click="clickShowClientModal"
         >
           Открыть контакт
@@ -74,6 +76,13 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showCallButton () {
+      return (
+        this.$store.state.corpMegafonIntegration.isIntegrated &&
+        this.currentClient.phone &&
+        this.$store.state.corpMegafonIntegration.megafonUsers.findIndex((megafonUser) => megafonUser.uidUser === this.user.current_user_uid) !== -1
+      )
     }
   },
   methods: {
