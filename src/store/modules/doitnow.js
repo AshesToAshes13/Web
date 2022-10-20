@@ -14,8 +14,13 @@ function getCurrDateTimeString () {
 }
 
 const state = {
-  reglaments: [],
   status: '',
+  reglaments: [],
+  cards: [],
+  unreadTasks: [],
+  todayTasks: [],
+  readyTasks: [],
+  greetingSlides: [],
   slides: [
     {
       uid: 'doitnowstart',
