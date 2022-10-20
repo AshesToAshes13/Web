@@ -182,19 +182,18 @@
       </div>
       <article
         v-if="!isOrganizationIntegrated"
-        class="mt-[40px] w-[70%]"
+        class="mt-[40px]"
       >
         <span class="font-[400] text-[16px] leading-[25px] text-[#4C4C4D]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
         <img
           src="@/assets/images/megafon/video-container.png"
-          class="cursor-pointer w-[650px] h-[360px] doitnow-frame mt-[35px]"
-          @click="playVideo"
+          class="cursor-pointer w-[650px] h-[360px] mt-[35px]"
         >
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
         <p class="mt-[25px]">
-          <ul class="list-inside text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
+          <ul class="ml-[15px] text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
             <li class="my-[30px]">
               <span class="mb-[25px]">Зарегистрируйтесь на сайте</span>
               <a

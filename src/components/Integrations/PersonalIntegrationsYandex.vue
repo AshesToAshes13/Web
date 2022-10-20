@@ -31,7 +31,7 @@
       </div>
       <span
         v-if="isPersonalIntegrated"
-        class="my-[20px]"
+        class="mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300 text-[#2E2E2E]"
       >
         Интегрировано с: {{ persLogin }}
       </span>
