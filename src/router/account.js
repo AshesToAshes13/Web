@@ -2,7 +2,7 @@ import { prefixRoutes } from './utils'
 import Home from '@/views/Home'
 
 export default [
-  ...prefixRoutes('/account/', Home, [
+  ...prefixRoutes('/account', Home, [
     {
       path: 'myaccount',
       name: 'myaccount',
