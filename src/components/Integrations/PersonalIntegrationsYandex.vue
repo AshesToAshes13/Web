@@ -18,7 +18,7 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Яндекс.Почта', selected: true }]"
   />
-  <div class="w-full px-10 py-5 h-auto bg-white rounded-[8px]">
+  <div class="flex flex-col justify-center px-10 py-5 h-auto bg-white rounded-[8px]">
     <div
       class="flex w-[450px] justify-center flex-col"
     >
