@@ -9,7 +9,8 @@ const state = {
   boardUid: '',
   currentBoard: {},
   status: '',
-  cardsAbortController: null
+  cardsAbortController: null,
+  clientInCard: {}
 }
 
 const getters = {

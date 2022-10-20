@@ -301,7 +301,6 @@ export default {
       cardMessageInputValue: '',
       currentCard: null,
       tooBigFiles: [],
-      clientInCard: {},
       showClientSkeleton: false
     }
   },
@@ -319,6 +318,9 @@ export default {
     selectedCard () { return this.$store.getters.selectedCard },
     selectedCardUid () {
       return this.$store.state.cards.selectedCardUid
+    },
+    clientInCard () {
+      return this.$store.state.cards.clientInCard
     },
     isClientInCard () {
       return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
@@ -456,13 +458,13 @@ export default {
       this.showClientSkeleton = true
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-      this.clientInCard = clientResponse.data
+      this.$store.state.cards.clientInCard = clientResponse.data
       this.showClientSkeleton = false
 
       const data = {
-        clientUid: this.clientInCard.uid,
-        clientEmail: this.clientInCard.email,
-        clientPhone: this.clientInCard.phone,
+        clientUid: this.$store.state.cards.clientInCard.uid,
+        clientEmail: this.$store.state.cards.clientInCard.email,
+        clientPhone: this.$store.state.cards.clientInCard.phone,
         crmKey: this.$store.state.corpMegafonIntegration.crmKey,
         corpYandexInt: this.corpYandexIntegration,
         personalYandexInt: this.personalYandexIntegration,
