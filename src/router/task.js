@@ -12,7 +12,7 @@ export default [
     component: () => import('@/components/TasksList/TaskByUid.vue'),
     beforeEnter: shouldRedirectToLogin
   },
-  ...prefixRoutes('/tasks/', Home, [
+  ...prefixRoutes('/tasks', Home, [
     {
       path: ':date',
       name: 'tasksByDate',
