@@ -221,7 +221,7 @@ export default {
     this.$store.dispatch('fullScreenToggle', 'add')
   },
   unmounted: function () {
-    this.$store.dispatch('NOTIFICATION_TASKS_CLEAR')
+    this.$store.dispatch('REGLAMENTS_CLEAR')
   },
   methods: {
     async loadAll () {
@@ -232,12 +232,12 @@ export default {
         this.cards = await this.$store.dispatch(CARD.DOITNOW_CARDS_REQUEST)
         // ждем пока сгенерируются регламенты
         // потом их получаем
-        await this.$store.dispatch('NOTIFICATION_TASKS_GENERATE')
-        this.reglaments = [...this.$store.state.notificationtasks.notificationtasks]
+        await this.$store.dispatch('REGLAMENTS_GENERATE')
+        this.reglaments = [...this.$store.state.doitnow.reglaments]
         // получаем слайды (только если мы только что зарегились)
         if (this.justRegistered) {
           const currDate = new Date()
-          const storeSlides = this.$store.state.slides.slides
+          const storeSlides = this.$store.state.doitnow.slides
           this.greetingSlides = storeSlides.filter(slide => !!slide.visible && (new Date(slide.reminder) <= currDate))
         }
         // получаем задачи

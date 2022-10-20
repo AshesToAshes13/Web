@@ -261,7 +261,7 @@ import ModalBox from '@/components/modals/ModalBox.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 import UploadAvatar from '@/components/UploadAvatar'
 import * as TASK from '@/store/actions/tasks.js'
-import * as SLIDES from '@/store/actions/slides.js'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 
 export default {
   components: {
@@ -338,19 +338,19 @@ export default {
       this.startSlides()
     },
     startSlides () {
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
         name: 'doitnowstart',
         visible: true
       })
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
         name: 'addEmployees',
         visible: true
       })
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
         name: 'delegateTasks',
         visible: true
       })
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, {
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
         name: 'addAvatar',
         visible: true
       })
