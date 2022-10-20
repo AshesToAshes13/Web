@@ -173,26 +173,28 @@
         </div>
       </template>
     </PopMenu>
-    <ProjectPropsUserButton
-      class="mt-[8px]"
-      :user-email="selectedProjectCreatorEmail"
-      status="Владелец"
-      disabled
-    />
-    <ProjectPropsUserButton
-      v-for="user in usersBoard"
-      :key="user.email"
-      :user-email="user.email"
-      :disabled="!isCanEdit"
-      @delete="deleteMember(user.email)"
-    />
-    <ProjectPropsDepButton
-      v-for="dep in depsProject"
-      :key="dep.uid"
-      :name="dep.name"
-      :disabled="!isCanEdit"
-      @delete="deleteDepartment(dep.uid)"
-    />
+    <div class="flex flex-col gap-y-[5px]">
+      <ProjectPropsUserButton
+        class="mt-[8px]"
+        :user-email="selectedProjectCreatorEmail"
+        status="Владелец"
+        disabled
+      />
+      <ProjectPropsUserButton
+        v-for="user in usersBoard"
+        :key="user.email"
+        :user-email="user.email"
+        :disabled="!isCanEdit"
+        @delete="deleteMember(user.email)"
+      />
+      <ProjectPropsDepButton
+        v-for="dep in depsProject"
+        :key="dep.uid"
+        :name="dep.name"
+        :disabled="!isCanEdit"
+        @delete="deleteDepartment(dep.uid)"
+      />
+    </div>
   </div>
 </template>
 

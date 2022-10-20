@@ -105,12 +105,6 @@ export default {
   },
   data () {
     return {
-      cards: [],
-      unreadTasks: [],
-      todayTasks: [],
-      readyTasks: [],
-      greetingSlides: [],
-      reglaments: [],
       childrens: [],
       isTaskMessagesLoading: false,
       isLoadingDoits: false,
@@ -118,34 +112,52 @@ export default {
     }
   },
   computed: {
+    cards () {
+      return this.$store.state.doitnow.cards
+    },
+    unreadTasks () {
+      return this.$store.state.doitnow.unreadTasks
+    },
+    todayTasks () {
+      return this.$store.state.doitnow.todayTasks
+    },
+    readyTasks () {
+      return this.$store.state.doitnow.readyTasks
+    },
+    greetingSlides () {
+      return this.$store.state.doitnow.greetingSlides
+    },
+    reglaments () {
+      return this.$store.state.doitnow.reglaments
+    },
     tasksCount () {
       return (
-        this.greetingSlides.length +
-        this.unreadTasks.length +
-        this.readyTasks.length +
-        this.todayTasks.length +
-        this.reglaments.length +
-        this.cards.length
+        this.greetingSlides?.length +
+        this.unreadTasks?.length +
+        this.readyTasks?.length +
+        this.todayTasks?.length +
+        this.reglaments?.length +
+        this.cards?.length
       )
     },
     firstTask () {
       if (this.greetingSlides.length) {
-        return this.greetingSlides[0]
+        return this.$store.state.doitnow?.greetingSlides[0]
       }
       if (this.reglaments.length) {
-        return this.reglaments[0]
+        return this.$store.state.doitnow?.reglaments[0]
       }
       if (this.cards.length) {
-        return this.cards[0]
+        return this.$store.state.doitnow?.cards[0]
       }
       if (this.unreadTasks.length) {
-        return this.unreadTasks[0]
+        return this.$store.state.doitnow?.unreadTasks[0]
       }
       if (this.readyTasks.length) {
-        return this.readyTasks[0]
+        return this.$store.state.doitnow?.readyTasks[0]
       }
       if (this.todayTasks.length) {
-        return this.todayTasks[0]
+        return this.$store.state.doitnow?.todayTasks[0]
       }
       return null
     },
@@ -221,7 +233,7 @@ export default {
     this.$store.dispatch('fullScreenToggle', 'add')
   },
   unmounted: function () {
-    this.$store.dispatch('NOTIFICATION_TASKS_CLEAR')
+    this.$store.dispatch('REGLAMENTS_CLEAR')
   },
   methods: {
     async loadAll () {
@@ -229,16 +241,15 @@ export default {
       //
       try {
       // получаем карточки
-        this.cards = await this.$store.dispatch(CARD.DOITNOW_CARDS_REQUEST)
+        this.$store.state.doitnow.cards = await this.$store.dispatch(CARD.DOITNOW_CARDS_REQUEST)
         // ждем пока сгенерируются регламенты
         // потом их получаем
-        await this.$store.dispatch('NOTIFICATION_TASKS_GENERATE')
-        this.reglaments = [...this.$store.state.notificationtasks.notificationtasks]
+        await this.$store.dispatch('REGLAMENTS_GENERATE')
         // получаем слайды (только если мы только что зарегились)
         if (this.justRegistered) {
           const currDate = new Date()
-          const storeSlides = this.$store.state.slides.slides
-          this.greetingSlides = storeSlides.filter(slide => !!slide.visible && (new Date(slide.reminder) <= currDate))
+          const storeSlides = this.$store.state.doitnow.slides
+          this.$store.state.doitnow.greetingSlides = storeSlides.filter(slide => !!slide.visible && (new Date(slide.reminder) <= currDate))
         }
         // получаем задачи
         const [tasksUnread, tasksOwerdue, tasksToday, tasksReady] = await this.$store.dispatch(TASK.DOITNOW_TASKS_REQUEST)
@@ -246,26 +257,26 @@ export default {
         const unreadDelegateByMe = tasksUnread.filter(task => task.uid_customer === currentUserUid)
         const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && task.uid_performer === currentUserUid)
         // заполняем главные массивы задач очереди
-        this.unreadTasks = [
+        this.$store.state.doitnow.unreadTasks = [
         // в массив не попали непрочитанные расшаренные мне задачи
         // только задачи с которыми я связан как заказчик или исполнитель
           ...unreadDelegateByMe,
           ...unreadDelegateToMe
         ]
-        this.readyTasks = [...tasksReady]
-        this.todayTasks = [
+        this.$store.state.doitnow.readyTasks = [...tasksReady]
+        this.$store.state.doitnow.todayTasks = [
           ...tasksOwerdue, // просроченные
           ...tasksToday // сегодня
         ]
       } catch (e) {
         // очищаем все массивы, как буд-то очередь пустая
         // (по хорошему нужно сделать на экране сообщение - не удалось загрузить, кнопка попробовать еще раз)
-        this.greetingSlides = []
-        this.unreadTasks = []
-        this.readyTasks = []
-        this.todayTasks = []
-        this.reglaments = []
-        this.cards = []
+        this.$store.state.doitnow.greetingSlides = []
+        this.$store.state.doitnow.unreadTasks = []
+        this.$store.state.doitnow.readyTasks = []
+        this.$store.state.doitnow.todayTasks = []
+        this.$store.state.doitnow.reglaments = []
+        this.$store.state.doitnow.cards = []
         // репортим ошибку
         console.log('Doitnow loadAll error', e)
       }
@@ -283,28 +294,28 @@ export default {
       document.querySelectorAll('.popper').forEach(popper => popper.remove())
 
       if (this.greetingSlides.length) {
-        this.greetingSlides.shift()
+        this.$store.state.doitnow.greetingSlides.shift()
         return
       }
       if (this.reglaments.length) {
-        this.reglaments.shift()
+        this.$store.state.doitnow.reglaments.shift()
         return
       }
       if (this.cards.length) {
-        this.cards.shift()
+        this.$store.state.doitnow.cards.shift()
         return
       }
       this.readTask()
       if (this.unreadTasks.length) {
-        this.unreadTasks.shift()
+        this.$store.state.doitnow.unreadTasks.shift()
         return
       }
       if (this.readyTasks.length) {
-        this.readyTasks.shift()
+        this.$store.state.doitnow.readyTasks.shift()
         return
       }
       if (this.todayTasks.length) {
-        this.todayTasks.shift()
+        this.$store.state.doitnow.todayTasks.shift()
       }
     },
     changeValue (objWithValues) {

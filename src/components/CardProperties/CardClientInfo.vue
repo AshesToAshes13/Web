@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-[#F4F5F7] w-[340px] h-[185px] rounded-[8px] py-[20px] px-[16px] mb-[15px]">
+  <div class="bg-[#F4F5F7] w-full h-[185px] rounded-[8px] py-[20px] px-[16px] mb-[15px]">
     <div class="flex flex-col gap-[20px]">
-      <div class="flex justify-between items-center">
+      <div class="hover-svg-fill flex justify-between items-center">
         <span class="font-medium text-[16px]">{{ currentClient.name }}</span>
         <svg
           width="14"
@@ -28,7 +28,9 @@
       </div>
       <div class="flex justify-between">
         <button
-          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          v-if="showCallButton"
+          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5] disabled:bg-[#807e7e]"
+          :disabled="disableButton"
           @click="callClient"
         >
           <svg
@@ -49,7 +51,8 @@
           </span>
         </button>
         <button
-          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          class="h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5]"
+          :class="showCallButton ? 'w-[150px]' : 'w-full'"
           @click="clickShowClientModal"
         >
           Открыть контакт
@@ -63,7 +66,6 @@ import { stripPhoneNumber } from '@/helpers/functions'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 export default {
-
   props: {
     currentClient: {
       type: Object,
@@ -71,9 +73,17 @@ export default {
     }
   },
   emits: ['clickShowClientModalEmit', 'removeClientFromCardEmit'],
+  data () {
+    return {
+      disableButton: false
+    }
+  },
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showCallButton () {
+      return this.currentClient.phone && this.$store.getters.isMegafonCanCall
     }
   },
   methods: {
@@ -84,14 +94,20 @@ export default {
       this.$emit('removeClientFromCardEmit')
     },
     callClient () {
+      this.disableButton = true
       const phone = stripPhoneNumber(this.currentClient.phone)
-      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
-        phone: phone,
-        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
-        login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
-        atsLink: this.$store.state.corpMegafonIntegration.atsLink
-      })
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, phone)
+      setTimeout(() => {
+        this.disableButton = false
+      }, 2000)
     }
   }
 }
 </script>
+<style scoped>
+.hover-svg-fill svg:hover path {
+  fill: #EF4444;
+  transition: all ease 0.3s;
+}
+
+</style>

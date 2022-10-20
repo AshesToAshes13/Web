@@ -71,11 +71,22 @@ export default {
   emits: ['next'],
   computed: {
     dateCommon () {
-      if (this.lastChange) return `${this.date}:`
-      return this.date
+      const dateStr = this.dateToLabelFormatForComment(new Date(this.date))
+      return this.lastChange ? `${dateStr}:` : dateStr
     }
   },
   methods: {
+    dateToLabelFormatForComment (calendarDate) {
+      if (isNaN(calendarDate)) return ''
+
+      const day = calendarDate.getDate()
+      const month = calendarDate.toLocaleString('default', { month: 'short' })
+      const weekday = calendarDate.toLocaleString('default', { weekday: 'short' })
+      const hours = String(calendarDate.getHours()).padStart(2, '0')
+      const minutes = String(calendarDate.getMinutes()).padStart(2, '0')
+
+      return `${day} ${month}, ${weekday}, ${hours}:${minutes}`
+    },
     gotoReglamentContent () {
       this.$router.push('/reglaments/' + this.uid)
       this.$store.state.reglaments.returnDoitnow = true

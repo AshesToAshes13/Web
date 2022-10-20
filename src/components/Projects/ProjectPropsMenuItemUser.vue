@@ -1,17 +1,23 @@
 <template>
   <PopMenuItem
     style="padding-left: 8px;"
+    class="!h-auto py-[5px] pl-[6px]"
   >
-    <div class="flex items-center">
+    <div class="flex items-center max-w-[205px]">
       <img
         v-if="photo"
         :src="photo"
         class="flex-none rounded-[7px] mr-[6px]"
-        width="24"
-        height="24"
+        width="30"
+        height="30"
       >
-      <div class="ml-[2px] truncate w-[196px]">
-        {{ name }}
+      <div class="grow overflow-hidden ml-[2px]">
+        <div class="truncate">
+          {{ name }}
+        </div>
+        <div class="truncate">
+          {{ userEmail }}
+        </div>
       </div>
     </div>
   </PopMenuItem>

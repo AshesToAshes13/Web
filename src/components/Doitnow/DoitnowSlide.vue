@@ -80,7 +80,7 @@ import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonP
 
 import InspectorModalBox from '@/components/Inspector/InspectorModalBox.vue'
 import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
-import * as SLIDES from '@/store/actions/slides.js'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 import UploadAvatar from '../UploadAvatar.vue'
 import * as EMPLOYEE from '@/store/actions/employees'
 import DoitnowSlideDoitnowStart from './DoitnowSlides/DoitnowSlideDoitnowStart.vue'
@@ -209,14 +209,14 @@ export default {
             }
           })
           .then((resp) => {
-            this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'addEmployees', visible: false })
+            this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, { name: 'addEmployees', visible: false })
             this.nextTask()
             console.log('onAddNewEmp', resp)
           })
       }
     },
     clickDoitnowStartSuccess () {
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'doitnowstart', visible: false })
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, { name: 'doitnowstart', visible: false })
       this.nextTask()
     },
     onPostpone (date) {
@@ -233,7 +233,7 @@ export default {
         visible: true,
         reminder: dateStr
       }
-      this.$store.commit(SLIDES.CHANGE_VISIBLE, slide)
+      this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, slide)
       this.nextTask()
     },
     playVideo () {

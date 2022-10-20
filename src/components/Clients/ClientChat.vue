@@ -20,7 +20,7 @@
           :href="message.link"
           target="_blank"
           class="flex items-center justify-center"
-          :class="{'hover:underline': message.status === 'Success'}"
+          :class="{'hover:underline': message.link !== null}"
         >
           <svg
             v-if="message.direction === 'in' && message.status === 'Success'"

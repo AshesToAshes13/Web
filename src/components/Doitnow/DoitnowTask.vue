@@ -50,10 +50,10 @@
           @changeStatus="changeStatus"
         />
         <DoitnowBadge
-          v-if="createTaskDate"
+          v-if="dateClearWords"
           class="ml-1"
-          icon="calendar"
-          :text="createTaskDate"
+          :icon="isCustomer ? 'calendar' : 'calendar-red'"
+          :text="dateClearWords"
         />
         <template
           v-for="(tag, index) in task.tags"

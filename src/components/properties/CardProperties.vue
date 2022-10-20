@@ -48,7 +48,6 @@
     </div>
     <div
       id="generalscroll"
-      class="column-resize overflow-hidden"
     >
       <CardCover
         :cover-color="
@@ -151,12 +150,14 @@
         />
       </div>
       <CardClientInfo
-        v-if="isClientInCard"
+        v-if="isClientInCard && !showClientSkeleton"
         :current-client="clientInCard"
         @clickShowClientModalEmit="clickShowClientModal"
         @removeClientFromCardEmit="removeClientFromCard"
       />
-
+      <ClientInfoSkeleton
+        v-if="isClientInCard && showClientSkeleton"
+      />
       <TaskPropsCommentEditor
         v-if="canEdit || selectedCard?.comment?.length > 0"
         class="mt-3 h-32 break-words"
@@ -259,6 +260,8 @@ import { uuidv4 } from '@/helpers/functions'
 import ClientModal from '@/components/Clients/ClientModal'
 import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
+import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
+import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 
 export default {
   components: {
@@ -283,7 +286,8 @@ export default {
     PropsButtonClose,
     TaskPropertiesModalBoxFileSizeLimit,
     CardSetDate,
-    CardClientInfo
+    CardClientInfo,
+    ClientInfoSkeleton
   },
   data () {
     return {
@@ -297,14 +301,26 @@ export default {
       cardMessageInputValue: '',
       currentCard: null,
       tooBigFiles: [],
-      clientInCard: {}
+      showClientSkeleton: false
     }
   },
   computed: {
     status () { return this.$store.state.cardfilesandmessages.status },
+    corpYandexIntegration () {
+      return this.$store.state.corpYandexIntegration.isIntegrated
+    },
+    personalYandexIntegration () {
+      return this.$store.state.personalYandexIntegration.isIntegrated
+    },
+    isCorpMegafonIntegrated () {
+      return this.$store.state.corpMegafonIntegration.isIntegrated
+    },
     selectedCard () { return this.$store.getters.selectedCard },
     selectedCardUid () {
       return this.$store.state.cards.selectedCardUid
+    },
+    clientInCard () {
+      return this.$store.state.cards.clientInCard
     },
     isClientInCard () {
       return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
@@ -315,7 +331,7 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        const clientMessages = [...this.$store.state.clientfilesandmessages.messages].filter(message => !message.clientFile)
+        const clientMessages = [...this.$store.state.clientfilesandmessages.messages]
         return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
       }
       return this.$store.state.cardfilesandmessages.messages
@@ -371,25 +387,16 @@ export default {
   watch: {
     selectedCardUid: {
       immediate: true,
-      handler: function () {
+      handler: async function () {
         this.currentQuote = false
         this.cardMessageInputValue = ''
         if (this.isClientInCard) {
-          this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
-            this.clientInCard = resp.data
-          })
+          await this.getClientInCurrentCardAndFetchHisMessages()
         } else {
           this.isClientInCard = {}
         }
       }
 
-    }
-  },
-  mounted () {
-    if (this.isClientInCard) {
-      this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client).then(resp => {
-        this.clientInCard = resp.data
-      })
     }
   },
   methods: {
@@ -425,7 +432,7 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('aside-right')
+      const asideRight = document.getElementById('generalscroll')
       asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
@@ -446,6 +453,24 @@ export default {
         data.name = 'Карточка без названия'
       }
       this.$store.dispatch(CHANGE_CARD_NAME, data)
+    },
+    async getClientInCurrentCardAndFetchHisMessages () {
+      this.showClientSkeleton = true
+
+      const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
+      this.$store.state.cards.clientInCard = clientResponse.data
+      this.showClientSkeleton = false
+
+      const data = {
+        clientUid: this.$store.state.cards.clientInCard.uid,
+        clientEmail: this.$store.state.cards.clientInCard.email,
+        clientPhone: this.$store.state.cards.clientInCard.phone,
+        crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+        corpYandexInt: this.corpYandexIntegration,
+        personalYandexInt: this.personalYandexIntegration,
+        megafonIntegration: this.isCorpMegafonIntegrated
+      }
+      await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
     },
     clickCardBudget () {
       if (!this.canEdit) return
@@ -668,8 +693,7 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
-        const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-        this.clientInCard = clientResponse.data
+        await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
     removeClientFromCard () {
@@ -693,7 +717,10 @@ export default {
 
 <style scoped>
 #generalscroll {
-  height: calc(100vh - var(--hex-parent-height) - 30px);
-  scrollbar-width: none;
+  height: calc(100vh - 126px);
+  overflow-y: auto;
+  width: 100%;
+  overflow-x: hidden;
 }
+#generalscroll::-webkit-scrollbar {width: 0;}
 </style>

@@ -58,7 +58,7 @@
 
 <script>
 import { shouldAddTaskIntoList } from '@/websync/utils'
-import * as SLIDES from '@/store/actions/slides.js'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 
 import CardComponent from '@/components/CardComponent.vue'
 import Overlay from '@/components/modals/Overlay.vue'
@@ -197,7 +197,7 @@ export default {
           is_inspectable: 1,
           taskJson: JSON.stringify(resp.data)
         }).then(() => {
-          this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'delegateTasks', visible: false })
+          this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, { name: 'delegateTasks', visible: false })
           this.$emit('delegated')
         })
         // update both, performer and customer in inspector service

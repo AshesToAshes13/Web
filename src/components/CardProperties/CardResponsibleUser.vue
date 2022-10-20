@@ -1,7 +1,7 @@
 <template>
-  <Popper
-    class="light overflow-hidden"
+  <PopMenu
     :disabled="!canEdit"
+    class="h-full max-h-[240px]"
   >
     <div
       class="rounded-[6px] text-[12px] px-[8px] py-[5px] font-[500]"
@@ -63,38 +63,42 @@
         <span class="truncate">{{ userName }}</span>
       </div>
     </div>
-    <template
-      #content="{ close }"
-    >
+    <template #menu>
       <div class="max-h-[156px] max-w-[300px] overflow-y-scroll scroll-style">
-        <div
+        <PopMenuItem
           v-for="(employee, index) in orgEmployees"
           :key="index"
+          class="!h-auto"
         >
           <div
             class="flex items-center text-[#4C4C4D] font-[400] text-[13px] leading-[14px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
-            @click="$emit('changeResponsible', employee.email), close()"
+            @click="$emit('changeResponsible', employee.email)"
           >
             <img
               :src="employee.fotolink"
               class="rounded-[7px] mr-[5px]"
-              width="24"
-              height="24"
+              width="30"
+              height="30"
             >
-            <span class="truncate">{{ employee.name }}</span>
+            <div class="flex flex-col grow overflow-hidden">
+              <span class="truncate">{{ employee.name }}</span>
+              <span class="truncate">{{ employee.email }}</span>
+            </div>
           </div>
-        </div>
+        </PopMenuItem>
       </div>
     </template>
-  </Popper>
+  </PopMenu>
 </template>
 
 <script>
-import Popper from 'vue3-popper'
+import PopMenu from '@/components/Common/PopMenu'
+import PopMenuItem from '@/components/Common/PopMenuItem'
 
 export default {
   components: {
-    Popper
+    PopMenuItem,
+    PopMenu
   },
   props: {
     responsible: {

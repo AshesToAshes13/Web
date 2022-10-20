@@ -185,11 +185,7 @@ export default {
         )
     },
     showCallButton () {
-      return (
-        this.$store.state.corpMegafonIntegration.isIntegrated &&
-        this.currClient.phone &&
-        this.$store.state.corpMegafonIntegration.megafonUsers.findIndex((megafonUser) => megafonUser.uidUser === this.user.current_user_uid) !== -1
-      )
+      return this.currClient.phone && this.$store.getters.isMegafonCanCall
     },
     user () {
       return this.$store.state.user.user
@@ -208,7 +204,9 @@ export default {
   methods: {
     updateClient () {
       if (this.checkForm()) {
-        this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
+        this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient).then((res) => {
+          this.$store.state.cards.clientInCard = res.data
+        })
       }
     },
     checkForm () {
@@ -217,12 +215,7 @@ export default {
     },
     callClient () {
       const phone = stripPhoneNumber(this.currClient.phone)
-      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, {
-        phone: phone,
-        atsKey: this.$store.state.corpMegafonIntegration.atsKey,
-        login: this.$store.state.corpMegafonIntegration.megafonUsers.find((megafonUser) => megafonUser.uidUser === this.user.current_user_uid).megafonUserLogin,
-        atsLink: this.$store.state.corpMegafonIntegration.atsLink
-      })
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, phone)
     }
   }
 }

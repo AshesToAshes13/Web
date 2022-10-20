@@ -33,6 +33,7 @@
           :maxLength="maxLengthInput"
           class="bg-[#f4f5f7]/50 rounded-[6px] focus:ring-0 border w-full px-[14px] py-[11px] text-[14px] leading-[16px] text-[#4c4c4d] font-roboto"
           :class="onValidateField('phone')"
+          @paste="replacePhoneNumber"
         >
         <span
           v-if="!validationInputs.phone"
@@ -180,6 +181,17 @@ export default {
           return !email ? errorClass : defaultClass
         default:
           return defaultClass
+      }
+    },
+    replacePhoneNumber (e) {
+      const text = (e.clipboardData || window.clipboardData).getData('text').split('')
+
+      if (text.length === 11 && text[0] === '8') {
+        e.preventDefault()
+        text.splice(0, 1)
+        const number = [text.splice(0, 3), text.splice(0, 3), text.splice(0, 2), text.splice(0, 2)]
+        // Формируем номер телефона по v-maska
+        this.phone = `+7 (${number[0].join('')}) ${number[1].join('')}-${number[2].join('')}-${number[3].join('')}`
       }
     }
   }

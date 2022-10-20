@@ -1,4 +1,4 @@
-import * as SLIDES from '@/store/actions/slides.js'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 import store from '@/store/index.js'
 import axios from 'axios'
 import {
@@ -40,7 +40,7 @@ const actions = {
           commit('ChangeCurrentUserObj', resp.data)
           commit(USER_SUCCESS, resp)
           if (state.user.current_user_email !== state.user.owner_email) {
-            commit(SLIDES.CHANGE_VISIBLE, {
+            commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
               name: 'addEmployees',
               visible: false
             })

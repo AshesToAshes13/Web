@@ -9,28 +9,11 @@
       v-else
       class="flex"
     >
-      <div
+      <ClientMailMessage
         v-if="message?.emailSender"
-        class="flex flex-col w-full"
-      >
-        <span
-          class="text-[14px]"
-          style="color: rgba(0, 0, 0, 0.4);"
-        >
-          Тема: {{ message.subject }}
-        </span>
-        <span
-          v-if="message?.emailSender"
-          class="w-full break-words"
-          v-html="message.msg"
-        />
-        <p
-          class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
-          style="color: rgba(0, 0, 0, 0.4);"
-        >
-          {{ getMessageTimeString(message.date_create) }}
-        </p>
-      </div>
+        :message="message"
+        :time="getMessageTimeString(message.date_create)"
+      />
       <div
         v-else
         class="flex"
@@ -89,9 +72,11 @@
 <script>
 import ClientChatMessageOptionsPopMenu from '@/components/Clients/ClientChatMessageOptionsPopMenu.vue'
 import ClientChatDeletedMsg from '@/components/Clients/ClientChatDeletedMsg.vue'
+import ClientMailMessage from '@/components/Clients/ClientMailMessage'
 
 export default {
   components: {
+    ClientMailMessage,
     ClientChatMessageOptionsPopMenu,
     ClientChatDeletedMsg
   },

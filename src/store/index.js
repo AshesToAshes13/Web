@@ -1,7 +1,6 @@
 import { darkModeKey } from '@/config.js'
 import { setLocalStorageItem } from '@/store/helpers/functions'
 import onboarding from '@/store/modules/onboarding.js'
-import slides from '@/store/modules/slides.js'
 import axios from 'axios'
 import { createStore } from 'vuex'
 import auth from './modules/auth'
@@ -21,7 +20,7 @@ import corpYandexIntegration from './modules/integrations/corpYandexIntegration'
 import personalYandexIntegration from './modules/integrations/personalYandexIntegration'
 import localization from './modules/localization'
 import navigator from './modules/navigator'
-import notificationtasks from './modules/notification_tasks'
+import doitnow from './modules/doitnow'
 import projects from './modules/projects'
 import reglaments from './modules/reglaments'
 import reglamentAnswers from './modules/reglament_answers'
@@ -171,7 +170,6 @@ export default createStore({
     calendar,
     user,
     tasks,
-    slides,
     corpMegafonIntegration,
     personalYandexIntegration,
     corpYandexIntegration,
@@ -190,7 +188,7 @@ export default createStore({
     colors,
     localization,
     inspector,
-    notificationtasks,
+    doitnow,
     tabs,
     clientfilesandmessages,
     boardforms,

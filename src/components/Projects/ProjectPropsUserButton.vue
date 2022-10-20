@@ -3,10 +3,15 @@
     <img
       v-if="photo"
       :src="photo"
-      class="flex-none border border-[#7e7e80] rounded-[4px] w-[20px] h-[20px] mr-[7px]"
+      class="flex-none border border-[#7e7e80] rounded-[4px] w-[30px] h-[30px] mr-[10px]"
     >
-    <div class="grow truncate font-roboto text-[13px] leading-[20px] font-medium text-[#4c4c4d] mr-[7px]">
-      {{ name }}
+    <div class="grow">
+      <div class="font-roboto text-[13px] leading-[16px] font-medium text-[#4c4c4d] mr-[7px] overflow-hidden text-ellipsis">
+        {{ name }}
+      </div>
+      <div class="font-roboto text-[12px] leading-[16px] font-medium text-[#7D7D91] mr-[7px] overflow-hidden">
+        {{ userEmail }}
+      </div>
     </div>
     <div class="flex-none">
       <div

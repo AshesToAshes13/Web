@@ -14,6 +14,20 @@ const getDefaultState = () => {
   }
 }
 
+const getters = {
+  isMegafonCanCall (state, getters, rootState) {
+    return (
+      state.isIntegrated &&
+      state.atsKey &&
+      state.atsKey &&
+      state.megafonUsers.findIndex(
+        (megafonUser) =>
+          megafonUser.uidUser === rootState.user.user?.current_user_uid
+      ) !== -1
+    )
+  }
+}
+
 const state = getDefaultState()
 
 const actions = {
@@ -170,21 +184,32 @@ const actions = {
         })
     })
   },
-  [CORP_MEGAFON.CALL_CLIENT]: ({ commit, dispatch }, data) => {
+  [CORP_MEGAFON.CALL_CLIENT]: ({ state, rootState }, phone) => {
     return new Promise((resolve, reject) => {
-      const url =
-        process.env.VUE_APP_INSPECTOR_API + 'megafon/call/' + data.phone
+      const currentUserUid = rootState.user.user?.current_user_uid
+      const atsKey = state.atsKey
+      const login = state.megafonUsers.find(
+        (megafonUser) => megafonUser.uidUser === currentUserUid
+      )?.megafonUserLogin
+      const atsLink = state.atsLink
+      if (!state.isIntegrated || !atsLink || !atsKey) {
+        return reject(new Error('not find megafon integration data'))
+      }
+      if (!login) {
+        return reject(new Error('not find megafon user'))
+      }
+
+      const url = process.env.VUE_APP_INSPECTOR_API + 'megafon/call/' + phone
       const body = {
-        atsKey: data.atsKey,
-        login: data.login,
-        atsLink: data.atsLink
+        atsKey: atsKey,
+        login: login,
+        atsLink: atsLink
       }
       axios({ url: url, method: 'POST', data: body })
         .then((resp) => {
           resolve(resp)
         })
         .catch((err) => {
-          console.log('ошибка при запросе организации')
           reject(err)
         })
     })
@@ -214,5 +239,6 @@ const mutations = {
 export default {
   state,
   actions,
+  getters,
   mutations
 }
