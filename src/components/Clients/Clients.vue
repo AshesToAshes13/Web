@@ -16,7 +16,7 @@
       <NavBarClients
         title="Контакты"
         class="pt-[8px]"
-        @search="requestClients"
+        @search="searchClients"
         @clickAddClient="clickAddClient"
       />
       <div class="h-[calc(100%-120px)] bg-white rounded-xl">
@@ -141,6 +141,9 @@ export default {
     currentPageRouter () {
       return Number(this.$route.query.page) || 1
     },
+    currentSearchRouter () {
+      return this.$route.query.search || ''
+    },
     isCorpYandexIntegrated () {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
@@ -160,6 +163,9 @@ export default {
     },
     currentPageRouter () {
       this.requestClients()
+    },
+    currentSearchRouter () {
+      this.requestClients()
     }
   },
   mounted () {
@@ -168,29 +174,28 @@ export default {
   methods: {
     async requestClients () {
       this.clientUndefined = false
-      if (this.$route.query.page < 1) {
-        this.$router.push('/clients?page=1')
-        this.$route.query.page = 1
-      }
-      this.currentPage = +this.$route.query.page || 1
+      this.currentPage = this.currentPageRouter < 1 ? 1 : this.currentPageRouter
       const data = {
         organization: this.user?.owner_email,
         page: this.currentPage
       }
-      if (this.$route.query.search && !(this.$store.state.user.user.tarif === 'free' || this.$store.getters.isLicenseExpired)) {
-        data.search = this.$route.query.search
+      if (this.currentSearchRouter && !(this.$store.state.user.user.tarif === 'free' || this.$store.getters.isLicenseExpired)) {
+        data.search = this.currentSearchRouter
       }
       await this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then(() => {
         this.wasLoaded = true
       })
-      if (this.currentPageRouter > this.paging.pages) {
-        if (this.paging.pages === 0 && this.$route.query.search?.length > 1) {
+      if (this.currentPage > this.paging.pages) {
+        if (this.paging.pages === 0 && this.currentSearchRouter.length > 1) {
           this.clientUndefined = true
           return
         }
         this.currentPage = this.paging.pages
         this.changePage()
       }
+    },
+    searchClients (text) {
+      this.$router.push({ path: '/clients', query: { search: text } })
     },
     showClientProperties (client) {
       this.$store.commit(CLIENTS.SELECT_CLIENT, client)
