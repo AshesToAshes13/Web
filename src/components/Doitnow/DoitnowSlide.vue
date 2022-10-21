@@ -71,12 +71,18 @@
         @postpone="onPostpone"
         @next="nextTask"
       />
+      <DoitnowRightButton
+        title="Дальше"
+        icon="next"
+        @click="nextTask"
+      />
     </template>
   </DoitnowContent>
 </template>
 <script>
 import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
+import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 
 import InspectorModalBox from '@/components/Inspector/InspectorModalBox.vue'
 import { NAVIGATOR_SUCCESS } from '@/store/actions/navigator'
@@ -94,6 +100,7 @@ import DoitnowSlidesAddAvatar from './DoitnowSlides/DoitnowSlidesAddAvatar.vue'
 
 export default {
   components: {
+    DoitnowRightButton,
     DoitnowRightButtonPostpone,
     DoitnowContent,
     InspectorModalBox,

@@ -127,8 +127,7 @@
         @next="nextTask"
       />
       <DoitnowRightButton
-        v-else-if="isDevelopmentMode"
-        title="Пропустить"
+        title="Дальше"
         icon="next"
         @click="nextTask"
       />
@@ -397,6 +396,7 @@ export default {
       return this.task?.checklist || this.checklistshow || this.checklistSavedNow
     },
     shouldShowPostponeButton () {
+      if (this.isDevelopmentMode) return true
       return this.shouldShowAcceptButton && this.task.status !== TASK_STATUS.TASK_READY
     },
     shouldShowAcceptButton () {
