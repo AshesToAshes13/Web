@@ -2,7 +2,7 @@
   <NavBar
     id="NavBarClients"
     title="Контакты"
-    route="/clients"
+    :route="getBreadCrumbs?.length ? '/clients' : ''"
     :breadcrumbs="getBreadCrumbs"
   >
     <ReglamentSmallButton
@@ -39,33 +39,24 @@ export default {
     NavBarSearch,
     NavBar
   },
-  props: {
-    boardUid: {
-      type: String,
-      default: ''
-    }
-  },
   emits: ['search', 'clickAddClient'],
   computed: {
     getBreadCrumbs () {
       const searchValue = this.$route.query.search || ''
       return searchValue
         ? [{
-            name: searchValue,
+            name: 'Поиск: ' + searchValue,
             selected: true
           }]
         : []
     }
   },
   methods: {
-    async onSearch (text) {
-      await this.$router.push({ path: '/clients', query: { search: text } })
+    onSearch (text) {
       this.$emit('search', text)
     },
     onEraseSearch () {
       this.$router.push({ path: '/clients' })
-      this.$route.query.search = ''
-      this.$emit('search')
     },
     clickAddClient () {
       this.$emit('clickAddClient')
