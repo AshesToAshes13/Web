@@ -27,7 +27,7 @@
             v-if="clientUndefined"
           >
             <h1 class="text-3xl text-gray-600 font-bold m-5">
-              Клиент не найден
+              Контакт не найден
             </h1>
           </div>
           <div
