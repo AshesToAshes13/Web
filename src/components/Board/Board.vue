@@ -720,6 +720,7 @@ export default {
       this.showRenameColumn = true
     },
     onRenameColumn (name) {
+      this.$store.dispatch('asidePropertiesToggle', false)
       this.showRenameColumn = false
       if (this.selectedColumn.Name === name) return
       const title = name.trim()
