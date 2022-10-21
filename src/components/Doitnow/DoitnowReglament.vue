@@ -31,6 +31,11 @@
         @postpone="onPostpone"
         @next="nextTask"
       />
+      <DoitnowRightButton
+        title="Дальше"
+        icon="next"
+        @click="nextTask"
+      />
     </template>
   </DoitnowContent>
 </template>
@@ -40,11 +45,13 @@ import * as REGLAMENTS from '@/store/actions/reglaments.js'
 
 import DoitnowContent from '@/components/Doitnow/DoitnowContent.vue'
 import DoitnowRightButtonPostpone from '@/components/Doitnow/DoitnowRightButtonPostpone.vue'
+import DoitnowRightButton from '@/components/Doitnow/DoitnowRightButton.vue'
 
 export default {
   components: {
     DoitnowContent,
-    DoitnowRightButtonPostpone
+    DoitnowRightButtonPostpone,
+    DoitnowRightButton
   },
   props: {
     uid: {

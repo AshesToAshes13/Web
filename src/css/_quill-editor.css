@@ -83,3 +83,8 @@
   word-break: break-word !important;
   overflow: hidden !important;
 }
+
+.ql-editor .ql-video {
+  width: 70% !important;
+  height: 400px !important;
+}

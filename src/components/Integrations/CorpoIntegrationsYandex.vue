@@ -18,7 +18,12 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Яндекс.Почта', selected: true }]"
   />
-  <div class="flex flex-col w-[60%] h-[calc(100%-64px)] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]">
+  <IntegrationsLimit v-if="showLimitMessage" />
+
+  <div
+    v-else
+    class="flex flex-col w-[60%] h-[calc(100%-64px)] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+  >
     <div
       class="flex justify-center flex-col w-[80%]"
     >
@@ -134,6 +139,7 @@
 import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt.js'
 
 import IntegrationsModalBoxYandex from '@/components/Integrations/IntegrationsModalBoxYandex.vue'
+import IntegrationsLimit from '@/components/Integrations/IntegrationsLimit.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import NavBar from '../Navbar/NavBar.vue'
 
@@ -141,7 +147,8 @@ export default {
   components: {
     NavBar,
     IntegrationsModalBoxYandex,
-    ModalBoxDelete
+    ModalBoxDelete,
+    IntegrationsLimit
   },
   data () {
     return {
@@ -152,6 +159,10 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showLimitMessage () {
+      const tarif = this.$store.state.user.user.tarif
+      return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     },
     corpLogin () {
       return this.$store.state.corpYandexIntegration.login

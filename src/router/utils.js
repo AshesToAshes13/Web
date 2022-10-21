@@ -39,7 +39,6 @@ export const ifRouteNotExists = (to, from, next) => {
 }
 
 export function prefixRoutes (prefix, layout, routes) {
-  console.log(routes)
   return routes.map(route => {
     route.path = prefix + '/' + route.path
     route.meta.layout = layout

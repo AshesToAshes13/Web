@@ -142,8 +142,6 @@ import * as CARD from '@/store/actions/cards'
 import BoardCard from '@/components/Board/BoardCard'
 import BoardModalBoxDelete from '@/components/Board/modalboxes/BoardModalBoxDelete.vue'
 import BoardModalBoxCardMove from '@/components/Board/modalboxes/BoardModalBoxCardMove.vue'
-import { FETCH_FILES_AND_MESSAGES, REFRESH_FILES, REFRESH_MESSAGES } from '@/store/actions/cardfilesandmessages'
-import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import { notify } from 'notiwind'
 import * as BOARD from '@/store/actions/boards'
 import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
@@ -315,16 +313,7 @@ export default {
       if (this.$store.state.cards.selectedCardUid === card.uid) {
         return
       }
-
-      this.$store.commit(REFRESH_MESSAGES)
-      this.$store.commit(REFRESH_FILES)
       this.$store.commit(CARD.SELECT_CARD, card.uid)
-      if (card?.uid_client !== '00000000-0000-0000-0000-000000000000' && card?.uid_client) {
-        this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, card.uid_client)
-        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
-      } else {
-        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
-      }
 
       this.$store.commit('basic', { key: 'propertiesState', value: 'card' })
       this.$store.dispatch('asidePropertiesToggle', true)

@@ -107,6 +107,11 @@
         @postpone="onPostpone"
         @next="nextTask"
       />
+      <DoitnowRightButton
+        title="Дальше"
+        icon="next"
+        @click="nextTask"
+      />
       <DoitnowRightButtonContact
         :title="contactButtonTitle"
         @changeContact="onChangeClient"

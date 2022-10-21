@@ -31,7 +31,6 @@ function isNotificationSoundOn () {
 }
 
 function parseObject (obj) {
-  console.log('object from websync', obj)
   switch (obj.operation) {
     case TYPES.TYPE_OPERATION_CREATE:
       processCreate(obj)
