@@ -14,7 +14,7 @@
         id="chat-component"
         class="grow relative overflow-hidden scroll-style overflow-y-auto"
       >
-        <template v-if="cardMessages">
+        <template v-if="cardMessages && shouldntShowSkeletonMsg">
           <div
             v-for="(card, index) in cardMessages"
             :key="index"
@@ -35,7 +35,7 @@
         <!-- Chat skeleton -->
         <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
-          v-else
+          v-if="shouldntShowSkeletonMsg"
           class="!pb-[20px]"
           :messages="clientMessages"
           :current-user-uid="user.current_user_uid"
@@ -112,7 +112,10 @@ export default {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.cardsStatus === 'loading' && this.messagesStatus === 'loading' && this.yandexIntegrationStatus
+      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || this.yandexIntegrationStatus
+    },
+    shouldntShowSkeletonMsg () {
+      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && !this.yandexIntegrationStatus
     },
     corpMsgsLoading () {
       return this.$store.state.corpYandexIntegration.isLoading
