@@ -13,7 +13,7 @@
 
       <span
         v-if="message.type === 'call'"
-        class="flex p-[10px] rounded-t-[12px] mb-[5px] max-w-[300px] text-[#4C4C4D] text-[14px]"
+        class="flex py-[10px] px-[15px] rounded-t-[12px] mb-[5px] max-w-[300px] text-[#4C4C4D] text-[14px]"
         :class="{'float-left rounded-br-[12px] bg-[#FCEBEB]': message.direction === 'in', 'float-right rounded-bl-[12px] bg-[#F4F5F7]': message.direction === 'out'}"
       >
         <a
@@ -64,9 +64,14 @@
               d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zm9.261 1.135a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z"
             />
           </svg>
-
-          {{ getCallText(message) }}
+          <span>{{ getCallText(message) }}</span>
         </a>
+        <p
+          style="color: rgba(0, 0, 0, 0.4);"
+          class="text-right font-[700] ml-[8px] leading-[14px] text-[11px] self-end min-w-[30px]"
+        >
+          {{ getMessageTimeString(message.date_create) }}
+        </p>
       </span>
       <!-- New creator -->
       <div
@@ -196,6 +201,18 @@ export default {
         return msg.emailSender.includes(this.corpYandexIntegration?.login) || msg.emailSender.includes(this.personalYandexIntegration?.login)
       }
       return false
+    },
+    getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
+      const date = new Date(dateCreate)
+      return date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
     },
     getMessageByUid (uid) {
       for (const message of this.messages) {
