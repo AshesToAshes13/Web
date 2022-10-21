@@ -31,9 +31,9 @@
   />
   <div
     v-if="selectedCard"
-    class="break-words z-1"
+    class="h-[calc(100vh-20px)] flex flex-col"
   >
-    <div class="flex items-center justify-between mb-[10px]">
+    <div class="flex-none flex items-center justify-between mb-[10px]">
       <CardOptions
         :date-create="selectedCard?.date_create"
         :can-edit="canEdit"
@@ -47,7 +47,8 @@
       />
     </div>
     <div
-      id="generalscroll"
+      id="card-prop-content"
+      class="flex-1 overflow-x-hidden w-full scroll-style"
     >
       <CardCover
         :cover-color="
@@ -184,7 +185,7 @@
     </div>
 
     <!-- Card chat input -->
-    <div class="flex flex-col fixed bottom-[0px] w-[340px] bg-white pt-2 pb-5">
+    <div class="flex-none flex flex-col pt-[8px] pb-[20px]">
       <CardMessageQuoteUnderInput
         v-if="currentQuote"
         class="quote-request border-l-2 border-[#7E7E80] h-[40px]"
@@ -448,7 +449,7 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('generalscroll')
+      const asideRight = document.getElementById('card-prop-content')
       asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
@@ -734,11 +735,7 @@ export default {
 </script>
 
 <style scoped>
-#generalscroll {
-  height: calc(100vh - 126px);
-  overflow-y: auto;
-  width: 100%;
-  overflow-x: hidden;
+#card-prop-content::-webkit-scrollbar {
+  width: 0;
 }
-#generalscroll::-webkit-scrollbar {width: 0;}
 </style>
