@@ -3,6 +3,8 @@
     v-if="displayModal"
     @okToModal="okToModal"
   />
+  <ClientLimit v-if="showLimitMessage" />
+
   <template
     v-else
   >
@@ -102,6 +104,7 @@ import ModalBoxAddClient from './ModalBoxAddClient.vue'
 import ClientsSkeleton from '@/components/Clients/ClientsSkeleton.vue'
 import ClientsOnboarding from '@/components/Clients/ClientsOnboarding.vue'
 import Pagination from '../Pagination.vue'
+import ClientLimit from './ClientLimit.vue'
 
 export default {
   components: {
@@ -109,6 +112,7 @@ export default {
     ClientsOnboarding,
     ModalBoxAddClient,
     ClientsSkeleton,
+    ClientLimit,
     Pagination
   },
   data () {
@@ -152,6 +156,10 @@ export default {
     },
     isCorpMegafonIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated
+    },
+    showLimitMessage () {
+      const tarif = this.$store.state.user.user.tarif
+      return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     }
   },
   watch: {

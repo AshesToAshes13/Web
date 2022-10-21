@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-center px-5 bg-white rounded-lg max-w-full h-[calc(100%-64px)]"
+    class="flex items-center justify-center px-5 bg-white rounded-lg max-w-full h-[calc(100%-30px)] my-[15px]"
   >
     <div class="flex flex-col items-center">
       <svg
@@ -286,7 +286,7 @@
         </p>
         <div class="flex flex-col">
           <p class="text-[18px] font-bold leading-[25px] text-[#4C4C4D]">
-            Интеграции — функция тарифа "Бизнес+"
+            Контакты — функция тарифа "Бизнес+"
           </p>
           <div class="w-[465px] flex justify-end">
             <svg
@@ -306,7 +306,7 @@
           </div>
         </div>
         <p class="font-normal text-[18px] text-[#4C4C4D]">
-          С помощью данного раздела вы сможете интегрировать различные сервисы в вашу организацию!
+          Контакты - функция тарифа Бизнес+ Записывайте и храните всю историю взаимодействия с клиентами
         </p>
       </div>
       <a
