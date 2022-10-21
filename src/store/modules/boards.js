@@ -1,8 +1,8 @@
+import { uuidv4 } from '@/helpers/functions'
 import { visitChildren } from '@/store/helpers/functions'
+import store from '@/store/index.js'
 import axios from 'axios'
 import * as BOARD from '../actions/boards'
-import { uuidv4 } from '@/helpers/functions'
-import store from '@/store/index.js'
 
 const getDefaultState = () => {
   return {
@@ -40,11 +40,11 @@ const actions = {
    * @returns Ответ от сервера
    */
   [BOARD.CREATE_BOARD_REQUEST]: ({ commit, dispatch }, data) => {
-    const maxOrder = state.boards[0]?.items?.reduce(
-      (maxOrder, child) =>
-        child.order > maxOrder ? child.order : maxOrder,
-      0
-    ) || 0
+    const maxOrder =
+      state.boards[0]?.items?.reduce(
+        (maxOrder, child) => (child.order > maxOrder ? child.order : maxOrder),
+        0
+      ) || 0
 
     const boardData = {
       uid: uuidv4(),
@@ -91,7 +91,8 @@ const actions = {
   },
   [BOARD.GET_BOARD_REQUEST]: ({ commit, dispatch }, uid) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_LEADERTASK_API + '/api/v1/board/entity?uid=' + uid
+      const url =
+        process.env.VUE_APP_LEADERTASK_API + '/api/v1/board/entity?uid=' + uid
       axios({ url: url, method: 'GET' })
         .then((resp) => {
           resolve(resp)
@@ -116,7 +117,10 @@ const actions = {
   },
   [BOARD.PUBLIC_LINK_STATUS_BOARD_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_LEADERTASK_API + '/api/v1/board/publiclinkstatus?uid=' + data.uid
+      const url =
+        process.env.VUE_APP_LEADERTASK_API +
+        '/api/v1/board/publiclinkstatus?uid=' +
+        data.uid
       axios({ url: url, method: 'PATCH', data: data })
         .then((resp) => {
           commit(BOARD.PUBLIC_LINK_STATUS_BOARD_REQUEST, data)
@@ -150,6 +154,20 @@ const actions = {
       const board = state.boards[data.boardUid]
       if (!board) return reject(new Error(`not find board ${data.boardUid}`))
       board.name = data.newBoardTitle
+      dispatch(BOARD.UPDATE_BOARD_REQUEST, board)
+        .then((resp) => {
+          resolve(resp)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  },
+  [BOARD.CHANGE_BOARD_COMMENT]: ({ commit, dispatch }, data) => {
+    return new Promise((resolve, reject) => {
+      const board = state.boards[data.boardUid]
+      if (!board) return reject(new Error(`not find board ${data.boardUid}`))
+      board.comment = data.newBoardComment
       dispatch(BOARD.UPDATE_BOARD_REQUEST, board)
         .then((resp) => {
           resolve(resp)
@@ -236,10 +254,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       const boardToStagesLength = state.boards[data.boardTo].stages.length
       const url =
-      process.env.VUE_APP_LEADERTASK_API +
-      '/api/v1/boardsstages/move?uid_stage=' + data.stageUid +
-      '&uid_board=' + data.boardTo +
-      '&order=' + boardToStagesLength
+        process.env.VUE_APP_LEADERTASK_API +
+        '/api/v1/boardsstages/move?uid_stage=' +
+        data.stageUid +
+        '&uid_board=' +
+        data.boardTo +
+        '&order=' +
+        boardToStagesLength
       axios({ url: url, method: 'PATCH' })
         .then((resp) => {
           commit(BOARD.ADD_STAGE_BOARD, {

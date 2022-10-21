@@ -91,6 +91,14 @@
         Избранная доска
       </div>
     </div>
+    <textarea
+      v-model="currComment"
+      :disabled="!isCanEdit"
+      type="text"
+      class="mt-[30px] bg-[#F4F5F7] rounded-[6px] min-h-[99px] scroll-style break-words px-[16px] py-[12px] font-roboto font-normal font-[15px] leading-[25px] text-[#424242] w-full border-none focus:ring-0 focus:outline-none"
+      placeholder="Комментарий"
+      @blur="changeBoardComment"
+    />
     <div
       class="mt-[30px] mb-[8px] font-roboto text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
     >
@@ -237,7 +245,8 @@ export default {
   data () {
     return {
       showConfirm: false,
-      currName: ''
+      currName: '',
+      currComment: ''
     }
   },
   computed: {
@@ -294,6 +303,9 @@ export default {
     },
     selectedBoardName () {
       return this.selectedBoard?.name || ''
+    },
+    selectedBoardComment () {
+      return this.selectedBoard?.comment || ''
     },
     selectedBoardCreatorEmail () {
       return this.selectedBoard?.email_creator || ''
@@ -381,6 +393,12 @@ export default {
       handler: function (val) {
         this.currName = val
       }
+    },
+    selectedBoardComment: {
+      immediate: true,
+      handler: function (val) {
+        this.currComment = val
+      }
     }
   },
   methods: {
@@ -463,6 +481,17 @@ export default {
           .dispatch(BOARD.CHANGE_BOARD_NAME, {
             boardUid: this.selectedBoardUid,
             newBoardTitle: title
+          })
+      }
+    },
+    changeBoardComment () {
+      const comment = this.currComment.trim()
+      if (this.isCanEdit && this.selectedBoardComment !== comment) {
+        this.selectedBoard.comment = comment
+        this.$store
+          .dispatch(BOARD.CHANGE_BOARD_COMMENT, {
+            boardUid: this.selectedBoardUid,
+            newBoardComment: comment
           })
       }
     },
