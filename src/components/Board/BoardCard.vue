@@ -19,6 +19,89 @@
       >
     </div>
     <div
+      v-show="!readOnly"
+      class="flex justify-end mt-[-10px] mr-[-10px] mb-[5px]"
+      :class="{'mb-[10px]': haveCover} "
+    >
+      <div
+        :ref="`card-icon-${card.uid}`"
+        class="w-[20px] h-[20px] overflow-hidden cursor-pointer invisible group-hover:visible transition-colors bg-[#ffffff8e] hover:bg-[#fffffff8] rounded"
+        :style="getDotsStyle"
+        @click.stop=""
+      >
+        <PopMenu
+          @openMenu="lockVisibility(card.uid)"
+          @closeMenu="unlockVisibility(card.uid)"
+        >
+          <div
+            class="flex items-center justify-center w-[20px] h-[20px]"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M9.35524 16.1055C8.37421 16.1055 7.57892 15.3102 7.57892 14.3291C7.57892 13.3481 8.37421 12.5528 9.35524 12.5528C10.3363 12.5528 11.1316 13.3481 11.1316 14.3291C11.1316 15.3102 10.3363 16.1055 9.35524 16.1055ZM9.35524 10.7765C8.37421 10.7765 7.57892 9.9812 7.57892 9.00016C7.57892 8.01912 8.37421 7.22383 9.35524 7.22383C10.3363 7.22383 11.1316 8.01912 11.1316 9.00016C11.1316 9.9812 10.3363 10.7765 9.35524 10.7765ZM7.57892 3.67118C7.57892 4.65222 8.37421 5.4475 9.35524 5.4475C10.3363 5.4475 11.1316 4.65222 11.1316 3.67118C11.1316 2.69015 10.3363 1.89486 9.35524 1.89486C8.37421 1.89486 7.57892 2.69015 7.57892 3.67118Z"
+                fill="#7e7e80"
+              />
+            </svg>
+          </div>
+          <template #menu>
+            <PopMenuItem
+              class="min-w-[150px]"
+              icon="move"
+              @click="clickMove"
+            >
+              Переместить
+            </PopMenuItem>
+            <PopMenuItem
+              v-if="!isArchive"
+              class="min-w-[150px]"
+              @click="clickMoveToTop"
+            >
+              В начало колонки
+            </PopMenuItem>
+            <PopMenuItem
+              v-if="!isArchive"
+              class="min-w-[150px]"
+              @click="clickMoveToBottom"
+            >
+              В конец колонки
+            </PopMenuItem>
+            <PopMenuDivider v-if="!isArchive" />
+            <PopMenuItem
+              v-if="!isArchive"
+              class="min-w-[150px]"
+              @click="clickSuccess"
+            >
+              Архивировать: Успех
+            </PopMenuItem>
+            <PopMenuItem
+              v-if="!isArchive"
+              class="min-w-[150px]"
+              @click="clickReject"
+            >
+              Архивировать: Отказ
+            </PopMenuItem>
+            <PopMenuDivider />
+            <PopMenuItem
+              class="min-w-[150px]"
+              icon="delete"
+              type="delete"
+              @click="clickDelete"
+            >
+              Удалить
+            </PopMenuItem>
+          </template>
+        </PopMenu>
+      </div>
+    </div>
+    <div
       v-if="haveCover"
       class="overflow-hidden rounded-[6px] mb-[20px] flex place-content-center"
       :style="{ background: card.cover_color, height: `${coverHeight}px` }"
@@ -39,92 +122,10 @@
     <div class="flex items-start justify-between">
       <div class="w-full">
         <p
-          class="text-[#424242] font-['Roboto'] text-[14px] leading-[18px] font-medium tracking-[.02em] break-words"
+          class="text-[#424242] font-['Roboto'] mt-[-15px] text-[14px] leading-[18px] font-medium tracking-[.02em] break-words"
         >
           {{ card.name }}
         </p>
-      </div>
-      <div
-        v-show="!readOnly"
-        class="ml-[-20px] flex-none"
-      >
-        <div
-          :ref="`card-icon-${card.uid}`"
-          class="w-[20px] h-[20px] overflow-hidden cursor-pointer invisible group-hover:visible transition-colors bg-[#ffffff8e] hover:bg-[#fffffff8] rounded"
-          :style="getDotsStyle"
-          @click.stop=""
-        >
-          <PopMenu
-            @openMenu="lockVisibility(card.uid)"
-            @closeMenu="unlockVisibility(card.uid)"
-          >
-            <div
-              class="flex items-center justify-center w-[20px] h-[20px]"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9.35524 16.1055C8.37421 16.1055 7.57892 15.3102 7.57892 14.3291C7.57892 13.3481 8.37421 12.5528 9.35524 12.5528C10.3363 12.5528 11.1316 13.3481 11.1316 14.3291C11.1316 15.3102 10.3363 16.1055 9.35524 16.1055ZM9.35524 10.7765C8.37421 10.7765 7.57892 9.9812 7.57892 9.00016C7.57892 8.01912 8.37421 7.22383 9.35524 7.22383C10.3363 7.22383 11.1316 8.01912 11.1316 9.00016C11.1316 9.9812 10.3363 10.7765 9.35524 10.7765ZM7.57892 3.67118C7.57892 4.65222 8.37421 5.4475 9.35524 5.4475C10.3363 5.4475 11.1316 4.65222 11.1316 3.67118C11.1316 2.69015 10.3363 1.89486 9.35524 1.89486C8.37421 1.89486 7.57892 2.69015 7.57892 3.67118Z"
-                  fill="#7e7e80"
-                />
-              </svg>
-            </div>
-            <template #menu>
-              <PopMenuItem
-                class="min-w-[150px]"
-                icon="move"
-                @click="clickMove"
-              >
-                Переместить
-              </PopMenuItem>
-              <PopMenuItem
-                v-if="!isArchive"
-                class="min-w-[150px]"
-                @click="clickMoveToTop"
-              >
-                В начало колонки
-              </PopMenuItem>
-              <PopMenuItem
-                v-if="!isArchive"
-                class="min-w-[150px]"
-                @click="clickMoveToBottom"
-              >
-                В конец колонки
-              </PopMenuItem>
-              <PopMenuDivider v-if="!isArchive" />
-              <PopMenuItem
-                v-if="!isArchive"
-                class="min-w-[150px]"
-                @click="clickSuccess"
-              >
-                Архивировать: Успех
-              </PopMenuItem>
-              <PopMenuItem
-                v-if="!isArchive"
-                class="min-w-[150px]"
-                @click="clickReject"
-              >
-                Архивировать: Отказ
-              </PopMenuItem>
-              <PopMenuDivider />
-              <PopMenuItem
-                class="min-w-[150px]"
-                icon="delete"
-                type="delete"
-                @click="clickDelete"
-              >
-                Удалить
-              </PopMenuItem>
-            </template>
-          </PopMenu>
-        </div>
       </div>
     </div>
     <div
