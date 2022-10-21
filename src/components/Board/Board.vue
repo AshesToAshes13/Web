@@ -411,9 +411,7 @@ import BoardModalBoxCardMove from '@/components/Board/modalboxes/BoardModalBoxCa
 import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
-import { FETCH_FILES_AND_MESSAGES, REFRESH_MESSAGES, REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import BoardInputValue from './BoardInputValue.vue'
-import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import BoardModalBoxColumnBoardChange from '@/components/Board/modalboxes/BoardModalBoxColumnBoardChange.vue'
 import BoardTextareaValue from './BoardTextareaValue.vue'
 import { notify } from 'notiwind'
@@ -841,16 +839,7 @@ export default {
       if (this.$store.state.cards.selectedCardUid === card.uid) {
         return
       }
-
-      this.$store.commit(REFRESH_MESSAGES)
-      this.$store.commit(REFRESH_FILES)
       this.$store.commit(CARD.SELECT_CARD, card.uid)
-      if (card?.uid_client !== '00000000-0000-0000-0000-000000000000' && card?.uid_client) {
-        this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST, card.uid_client)
-        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
-      } else {
-        this.$store.dispatch(FETCH_FILES_AND_MESSAGES, card.uid)
-      }
 
       this.$store.commit('basic', { key: 'propertiesState', value: 'card' })
       this.$store.dispatch('asidePropertiesToggle', true)

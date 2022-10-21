@@ -262,6 +262,7 @@ import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
 import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import * as CARD_FILES_AND_MESSAGES from '@/store/actions/cardfilesandmessages'
 
 export default {
   components: {
@@ -396,9 +397,18 @@ export default {
   watch: {
     selectedCardUid: {
       immediate: true,
-      handler: function () {
+      handler: function (val) {
         this.currentQuote = false
         this.cardMessageInputValue = ''
+        this.$store.commit(CARD_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CARD_FILES_AND_MESSAGES.REFRESH_FILES)
+        if (val) {
+          this.$store.dispatch(CARD_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, val)
+        }
+
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+
         if (this.isClientInCard) {
           this.getClientInCurrentCardAndFetchHisMessages()
         }
@@ -699,6 +709,8 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
         await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
