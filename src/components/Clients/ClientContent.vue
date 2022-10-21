@@ -47,7 +47,7 @@
         />
       </div>
       <div
-        v-if="status === 'success'"
+        v-if="messagesStatus === 'success'"
         class="flex flex-col bg-white"
       >
         <ClientMessageQuoteUnderInput
@@ -106,12 +106,13 @@ export default {
     cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
     user () { return this.$store.state.user.user },
     employees () { return this.$store.state.employees.employees },
-    status () { return this.$store.state.clientfilesandmessages.status },
+    messagesStatus () { return this.$store.state.clientfilesandmessages.status },
+    cardsStatus () { return this.$store.state.clientfilesandmessages.cards.status },
     corpYandexIntegration () {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.status === 'loading' && !this.yandexIntegrationStatus
+      return this.cardsStatus === 'loading' && this.messagesStatus === 'loading' && this.yandexIntegrationStatus
     },
     corpMsgsLoading () {
       return this.$store.state.corpYandexIntegration.isLoading
