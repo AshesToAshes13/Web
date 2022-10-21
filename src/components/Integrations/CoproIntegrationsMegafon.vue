@@ -19,7 +19,11 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Мегафон', selected: true }]"
   />
-  <div class="flex items-center justify-center">
+  <IntegrationsLimit v-if="showLimitMessage" />
+  <div
+    v-else
+    class="flex items-center justify-center"
+  >
     <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
         class="flex w-[450px] justify-center flex-col"
@@ -271,6 +275,7 @@ import PopMenuItem from '@/components/Common/PopMenuItem.vue'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 import IntegrationsModalBoxMegafon from '@/components/Integrations/IntegrationsModalBoxMegafon.vue'
+import IntegrationsLimit from '@/components/Integrations/IntegrationsLimit.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import NavBar from '../Navbar/NavBar.vue'
 import EmployeesPopper from './components/EmployeesPopper.vue'
@@ -280,6 +285,7 @@ export default {
   components: {
     NavBar,
     IntegrationsModalBoxMegafon,
+    IntegrationsLimit,
     ModalBoxDelete,
     EmployeesPopper,
     ButtonCopy,
@@ -299,6 +305,10 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showLimitMessage () {
+      const tarif = this.$store.state.user.user.tarif
+      return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     },
     isOrganizationIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated

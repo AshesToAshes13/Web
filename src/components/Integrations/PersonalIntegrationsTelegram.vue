@@ -5,7 +5,11 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Телеграм', selected: true }]"
   />
-  <div class="flex flex-col h-[calc(100%-64px)] w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]">
+  <IntegrationsLimit v-if="showLimitMessage" />
+  <div
+    v-else
+    class="flex flex-col h-[calc(100%-64px)] w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+  >
     <div
       class="flex w-[450px] justify-center flex-col"
     >
@@ -51,15 +55,22 @@
 
 <script>
 import NavBar from '../Navbar/NavBar.vue'
+import IntegrationsLimit from '@/components/Integrations/IntegrationsLimit.vue'
+
 import * as PERSONAL_TELEGERAM from '@/store/actions/integrations/personalTelegramIntegration.js'
 
 export default {
   components: {
-    NavBar
+    NavBar,
+    IntegrationsLimit
   },
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showLimitMessage () {
+      const tarif = this.$store.state.user.user.tarif
+      return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     },
     integration () {
       return this.$store.state.telegramIntegration.integration
