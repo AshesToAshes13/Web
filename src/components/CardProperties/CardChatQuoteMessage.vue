@@ -16,7 +16,6 @@ export default {
 <template>
   <div
     class="flex items-start space-x-[10px] w-full"
-    :class="{ 'bg-white': showCloseIcon }"
   >
     <svg
       width="14"

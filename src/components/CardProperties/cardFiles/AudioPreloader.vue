@@ -125,7 +125,8 @@ export default {
   },
   methods: {
     loadAudioFromInternet () {
-      this.$store.dispatch(this.fileAction, this.fileUid).then((resp) => {
+      const action = this.fileAction || FILE_REQUEST
+      this.$store.dispatch(action, this.fileUid).then((resp) => {
         const imageBlob = new Blob([resp.data], { type: 'audio/' + this.fileExtension })
         writeCache(this.fileUid, imageBlob)
         const urlCreator = window.URL || window.webkitURL

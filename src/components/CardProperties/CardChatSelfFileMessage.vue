@@ -19,6 +19,7 @@
       :file-uid="message.uid"
       :file-extension="fileExtension"
       :file-name="message.file_name"
+      :file-action="message.clientFile ? FILE_REQUEST : null"
       :file-date-create="getMessageTimeString(message.date_create)"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
@@ -31,6 +32,7 @@
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :is-file-uploading="message.is_uploading"
+      :file-action="message.clientFile ? FILE_REQUEST : null"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -41,6 +43,7 @@
       :file-name="message.file_name"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
+      :route-file-name="message.clientFile ? 'clientfile' : null"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -52,6 +55,7 @@
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :is-file-uploading="message.is_uploading"
+      :file-action="message.clientFile ? FILE_REQUEST : null"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -65,6 +69,7 @@ import DocPreloader from '@/components/CardProperties/cardFiles/DocPreloader.vue
 import MoviePreloader from '@/components/CardProperties/cardFiles/MoviePreloader.vue'
 import FilePreloader from '@/components/CardProperties/cardFiles/FilePreloader.vue'
 import CardChatDeletedMessageContent from '@/components/CardProperties/CardChatDeletedMessageContent.vue'
+import { FILE_REQUEST } from '@/store/actions/clientfilesandmessages'
 
 export default {
   components: {
@@ -84,6 +89,12 @@ export default {
   },
 
   emits: ['onQuoteMessage', 'onDeleteFile'],
+
+  data () {
+    return {
+      FILE_REQUEST
+    }
+  },
 
   computed: {
     fileExtension () {

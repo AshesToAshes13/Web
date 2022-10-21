@@ -4,7 +4,10 @@
     width="400"
     @cancel="$emit('closeModal')"
   >
-    <div v-html="insideMessage" />
+    <div
+      class="text-[15px]"
+      v-html="message"
+    />
   </ModalBox>
 </template>
 <script>
@@ -22,11 +25,6 @@ export default {
       default: ''
     }
   },
-  emits: ['closeModal'],
-  data (props) {
-    return {
-      insideMessage: props.message
-    }
-  }
+  emits: ['closeModal']
 }
 </script>

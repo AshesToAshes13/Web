@@ -31,9 +31,9 @@
   />
   <div
     v-if="selectedCard"
-    class="break-words z-1"
+    class="h-[calc(100vh-20px)] flex flex-col"
   >
-    <div class="flex items-center justify-between mb-[10px]">
+    <div class="flex-none flex items-center justify-between mb-[10px]">
       <CardOptions
         :date-create="selectedCard?.date_create"
         :can-edit="canEdit"
@@ -47,7 +47,8 @@
       />
     </div>
     <div
-      id="generalscroll"
+      id="card-prop-content"
+      class="flex-1 overflow-x-hidden w-full scroll-style"
     >
       <CardCover
         :cover-color="
@@ -184,7 +185,7 @@
     </div>
 
     <!-- Card chat input -->
-    <div class="flex flex-col fixed bottom-[0px] w-[340px] bg-white pt-2 pb-5">
+    <div class="flex-none flex flex-col pt-[8px] pb-[20px]">
       <CardMessageQuoteUnderInput
         v-if="currentQuote"
         class="quote-request border-l-2 border-[#7E7E80] h-[40px]"
@@ -262,6 +263,7 @@ import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
 import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import * as CARD_FILES_AND_MESSAGES from '@/store/actions/cardfilesandmessages'
 
 export default {
   components: {
@@ -301,7 +303,6 @@ export default {
       cardMessageInputValue: '',
       currentCard: null,
       tooBigFiles: [],
-      clientInCard: {},
       showClientSkeleton: false
     }
   },
@@ -320,6 +321,9 @@ export default {
     selectedCardUid () {
       return this.$store.state.cards.selectedCardUid
     },
+    clientInCard () {
+      return this.$store.state.cards.clientInCard
+    },
     isClientInCard () {
       return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
     },
@@ -329,8 +333,17 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        const clientMessages = [...this.$store.state.clientfilesandmessages.messages]
-        return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
+        const allMessages = [...this.$store.state.clientfilesandmessages.messages, ...this.$store.state.cardfilesandmessages.messages]
+        allMessages.sort((a, b) => {
+          if (!a.file_name && !a?.date_create.includes('Z')) {
+            a.date_create += 'Z'
+          }
+          if (!b.file_name && !b.date_create.includes('Z')) {
+            b.date_create += 'Z'
+          }
+          return new Date(a.date_create) - new Date(b.date_create)
+        })
+        return allMessages
       }
       return this.$store.state.cardfilesandmessages.messages
     },
@@ -385,16 +398,22 @@ export default {
   watch: {
     selectedCardUid: {
       immediate: true,
-      handler: async function () {
+      handler: function (val) {
         this.currentQuote = false
         this.cardMessageInputValue = ''
+        this.$store.commit(CARD_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CARD_FILES_AND_MESSAGES.REFRESH_FILES)
+        if (val) {
+          this.$store.dispatch(CARD_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, val)
+        }
+
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+
         if (this.isClientInCard) {
-          await this.getClientInCurrentCardAndFetchHisMessages()
-        } else {
-          this.isClientInCard = {}
+          this.getClientInCurrentCardAndFetchHisMessages()
         }
       }
-
     }
   },
   methods: {
@@ -430,7 +449,7 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('generalscroll')
+      const asideRight = document.getElementById('card-prop-content')
       asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
@@ -456,13 +475,13 @@ export default {
       this.showClientSkeleton = true
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-      this.clientInCard = clientResponse.data
+      this.$store.state.cards.clientInCard = clientResponse.data
       this.showClientSkeleton = false
 
       const data = {
-        clientUid: this.clientInCard.uid,
-        clientEmail: this.clientInCard.email,
-        clientPhone: this.clientInCard.phone,
+        clientUid: this.$store.state.cards.clientInCard.uid,
+        clientEmail: this.$store.state.cards.clientInCard.email,
+        clientPhone: this.$store.state.cards.clientInCard.phone,
         crmKey: this.$store.state.corpMegafonIntegration.crmKey,
         corpYandexInt: this.corpYandexIntegration,
         personalYandexInt: this.personalYandexIntegration,
@@ -691,6 +710,8 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
         await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
@@ -714,11 +735,7 @@ export default {
 </script>
 
 <style scoped>
-#generalscroll {
-  height: calc(100vh - 126px);
-  overflow-y: auto;
-  width: 100%;
-  overflow-x: hidden;
+#card-prop-content::-webkit-scrollbar {
+  width: 0;
 }
-#generalscroll::-webkit-scrollbar {width: 0;}
 </style>

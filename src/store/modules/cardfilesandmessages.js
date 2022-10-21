@@ -4,7 +4,8 @@ import axios from 'axios'
 const state = {
   messages: [],
   files: [],
-  status: 'loading'
+  status: 'loading',
+  messageSuccess: true
 }
 
 const getters = {}
@@ -24,10 +25,12 @@ const actions = {
     })
   },
   [CARD_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: ({ commit, dispatch }, data) => {
+    state.messageSuccess = false
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsmsgs'
       axios({ url: url, method: 'POST', data: data })
         .then(resp => {
+          state.messageSuccess = true
           commit(CARD_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST, data)
           resolve(resp)
         }).catch(err => {

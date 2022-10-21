@@ -98,9 +98,9 @@
             -->
             <!-- Name, Status -->
             <div
-              class="flex gap-[6px] items-center w-full"
+              class="flex gap-[6px] w-full"
             >
-              <div class="flex-none h-[20px] w-[20px] leading-[20px]">
+              <div class="flex-none h-[20px] w-[20px] leading-[20px] my-[2px]">
                 <TaskStatus
                   :task="props.node.info"
                   @changeStatus="onChangeStatus($event, props.node.info)"

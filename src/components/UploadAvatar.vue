@@ -40,7 +40,7 @@
 import Overlay from '@/components/modals/Overlay'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-import * as SLIDES from '@/store/actions/slides.js'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 import { USER_CHANGE_PHOTO } from '@/store/actions/user'
 
 export default {
@@ -74,7 +74,7 @@ export default {
         }
         this.$store.dispatch(USER_CHANGE_PHOTO, data)
           .then((resp) => {
-            this.$store.commit(SLIDES.CHANGE_VISIBLE, { name: 'addAvatar', visible: false })
+            this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, { name: 'addAvatar', visible: false })
           })
         this.$emit('closeWindow')
         this.$emit('nextTask')

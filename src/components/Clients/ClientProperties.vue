@@ -204,7 +204,9 @@ export default {
   methods: {
     updateClient () {
       if (this.checkForm()) {
-        this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient)
+        this.$store.dispatch(CLIENTS.UPDATE_CLIENT, this.currClient).then((res) => {
+          this.$store.state.cards.clientInCard = res.data
+        })
       }
     },
     checkForm () {

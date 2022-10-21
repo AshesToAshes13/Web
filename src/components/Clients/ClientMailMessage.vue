@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex group"
+    class="flex w-full"
   >
     <ClientMailMessageModal
       v-if="showModal"
@@ -8,7 +8,7 @@
       :message="message.msg"
       @closeModal="showModal = false"
     />
-    <div class="flex flex-col w-full mr-[10px]">
+    <div class="flex flex-col w-[calc(100%-40px)] mr-[10px]">
       <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
         <svg
           class="shrink-0"
@@ -26,6 +26,7 @@
 
         <p
           class="text-[14px] text-[#747476] font-[400] truncate"
+          :title="message.subject"
         >
           Тема: {{ message.subject }}
         </p>
@@ -36,14 +37,14 @@
         v-html="croppedMessage"
       />
       <button
-        class="bg-white px-[10px] py-[5px] self-end rounded-[4px] font-[#4C4C4D] font-[500] text-[12px]"
+        class="bg-white px-[10px] py-[5px] self-end rounded-[4px] font-[#4C4C4D] font-[500] text-[12px] hover:bg-slate-300"
         @click="showModal = true"
       >
         Открыть
       </button>
     </div>
     <p
-      class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px] text-[rgba(0,0,0,.5)] group-hover:hidden"
+      class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px] text-[rgba(0,0,0,.5)] grow"
     >
       {{ time }}
     </p>
@@ -71,8 +72,11 @@ export default {
     }
   },
   computed: {
+    messageWithOutTags () {
+      return this.message?.msg?.replace(/<\/?[a-zA-Z]+>/gi, '')
+    },
     croppedMessage () {
-      const firstSentence = this.message?.msg?.match(/^(.*?)[.?!]\s/)
+      const firstSentence = this.messageWithOutTags.match(/^(.*?)[.?!]\s/)
       return firstSentence?.length ? firstSentence[0].trim() : ''
     }
   }

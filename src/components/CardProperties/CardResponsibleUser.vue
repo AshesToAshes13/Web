@@ -71,7 +71,7 @@
           class="!h-auto"
         >
           <div
-            class="flex items-center text-[#4C4C4D] font-[400] text-[13px] leading-[14px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
+            class="flex items-center text-[#4C4C4D] font-[400] text-[13px] leading-[14px] py-[5px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
             @click="$emit('changeResponsible', employee.email)"
           >
             <img

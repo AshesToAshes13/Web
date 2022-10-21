@@ -184,6 +184,12 @@ export default {
         isInspectorMessage: message.uid_creator === 'inspector',
         isMyMessage: message.uid_creator === this.currentUserUid
       }))
+    },
+    corpYandexIntegration () {
+      return this.$store.state.corpYandexIntegration
+    },
+    personalYandexIntegration () {
+      return this.$store.state.personalYandexIntegration
     }
   },
   methods: {

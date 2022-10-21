@@ -13,13 +13,11 @@
         v-if="!message.isMyMessage && message.isMessage && !showFilesOnly"
         :message="message"
         :employee="employees[message.uid_creator]"
-        @onQuoteMessage="setCurrentQuote"
       />
       <CardChatInterlocutorFileMessage
         v-if="!message.isMyMessage && message.isFile"
         :message="message"
         :employee="employees[message.uid_creator]"
-        @onQuoteMessage="setCurrentQuote"
       />
 
       <CardChatSelfMessage

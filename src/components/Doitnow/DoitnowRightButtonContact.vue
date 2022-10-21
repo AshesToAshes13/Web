@@ -60,7 +60,7 @@
           >
             <div
               class="flex items-center px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer"
-              @click="$emit('changeContact', [contact.uid, contact.name]), close()"
+              @click="$emit('changeContact', contact), close()"
             >
               <svg
                 class="flex-none mr-[5px]"

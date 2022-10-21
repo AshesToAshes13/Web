@@ -37,3 +37,13 @@ export const ifRouteNotExists = (to, from, next) => {
     next('/login')
   }
 }
+
+export function prefixRoutes (prefix, layout, routes) {
+  return routes.map(route => {
+    route.path = prefix + '/' + route.path
+    route.meta.layout = layout
+    route.beforeEnter = shouldRedirectToLogin
+
+    return route
+  })
+}

@@ -19,8 +19,12 @@
     route="/settings/integrations"
     :breadcrumbs="[{ name: 'Мегафон', selected: true }]"
   />
-  <div class="flex items-center justify-center">
-    <div class="w-[60%] px-[50px] py-[50px] bg-white rounded-[8px]">
+  <IntegrationsLimit v-if="showLimitMessage" />
+  <div
+    v-else
+    class="flex items-center justify-center"
+  >
+    <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
         class="flex w-[450px] justify-center flex-col"
       >
@@ -185,11 +189,15 @@
         class="mt-[40px]"
       >
         <span class="font-[400] text-[16px] leading-[25px] text-[#4C4C4D]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
+        <img
+          src="@/assets/images/megafon/video-container.png"
+          class="cursor-pointer w-[650px] h-[360px] mt-[35px]"
+        >
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
         <p class="mt-[25px]">
-          <ul class="list-inside text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
+          <ul class="ml-[15px] text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
             <li class="my-[30px]">
               <span class="mb-[25px]">Зарегистрируйтесь на сайте</span>
               <a
@@ -267,6 +275,7 @@ import PopMenuItem from '@/components/Common/PopMenuItem.vue'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 import IntegrationsModalBoxMegafon from '@/components/Integrations/IntegrationsModalBoxMegafon.vue'
+import IntegrationsLimit from '@/components/Integrations/IntegrationsLimit.vue'
 import ModalBoxDelete from '@/components/Common/ModalBoxDelete.vue'
 import NavBar from '../Navbar/NavBar.vue'
 import EmployeesPopper from './components/EmployeesPopper.vue'
@@ -276,6 +285,7 @@ export default {
   components: {
     NavBar,
     IntegrationsModalBoxMegafon,
+    IntegrationsLimit,
     ModalBoxDelete,
     EmployeesPopper,
     ButtonCopy,
@@ -295,6 +305,10 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    showLimitMessage () {
+      const tarif = this.$store.state.user.user.tarif
+      return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     },
     isOrganizationIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated

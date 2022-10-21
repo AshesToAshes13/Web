@@ -69,19 +69,4 @@ export default {
 </script>
 
 <style scoped>
-.scroll-style::-webkit-scrollbar {
-  width: 15px;
-  height: 14px;
-}
-
-.scroll-style::-webkit-scrollbar-thumb {
-  border: 4px solid transparent;
-  border-radius: 9999px;
-  background-clip: padding-box;
-  background-color: rgb(215 215 215);
-}
-
-.scroll-style::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(190 190 190);
-}
 </style>

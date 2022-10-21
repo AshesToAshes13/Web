@@ -107,9 +107,20 @@
         @postpone="onPostpone"
         @next="nextTask"
       />
+      <DoitnowRightButton
+        title="Дальше"
+        icon="next"
+        @click="nextTask"
+      />
       <DoitnowRightButtonContact
         :title="contactButtonTitle"
         @changeContact="onChangeClient"
+      />
+      <DoitnowRightButton
+        v-if="showCallButton"
+        title="Позвонить"
+        icon="call"
+        @click="onCallClient"
       />
       <DoitnowRightButton
         title="Архивировать: успех"
@@ -155,6 +166,10 @@ import { REFRESH_MESSAGES } from '@/store/actions/taskmessages'
 import { REFRESH_FILES } from '@/store/actions/taskfiles'
 import { CARD_STAGE } from '@/constants'
 import DoitnowBadge from '@/components/Doitnow/DoitnowBadge'
+import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import * as CLIENTS from '@/store/actions/clients'
+import { stripPhoneNumber } from '@/helpers/functions'
+import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 
 export default {
   components: {
@@ -188,9 +203,9 @@ export default {
       title: this.card.name || '',
       comment: this.card.comment || '',
       clientUid: this.card.uid_client || '',
-      clientName: this.card.client_name || '',
       showChangeCardBudget: false,
-      showMoveCard: false
+      showMoveCard: false,
+      clientInCard: null
     }
   },
   computed: {
@@ -198,17 +213,23 @@ export default {
       const userEmail = this.card?.user?.toLowerCase() || ''
       return this.$store.state.employees.employeesByEmail[userEmail]
     },
+    showCallButton () {
+      return this.clientPhone && this.$store.getters.isMegafonCanCall
+    },
     clientPhone () {
-      return ''
+      return this.clientInCard?.phone || ''
+    },
+    clientName () {
+      return this.clientInCard?.name || ''
     },
     contactButtonTitle () {
-      if (this.clientName.length !== 0) {
+      if (this.clientName) {
         return 'Изменить контакт'
       }
       return 'Установить контакт'
     },
     clientEmail () {
-      return ''
+      return this.clientInCard?.email || ''
     },
     remind () {
       if (!this.card?.date_reminder) return ''
@@ -237,8 +258,11 @@ export default {
       return this.card?.cost / 100
     },
     cardMessages () {
-      if (this.card.uid_client !== '00000000-0000-0000-0000-000000000000' && this.card.uid_client) {
-        return this.$store.state.clientfilesandmessages.messages.slice().reverse()
+      if (this.isClientInCard) {
+        return [
+          ...this.$store.state.cardfilesandmessages.messages,
+          ...this.$store.state.clientfilesandmessages.messages
+        ].reverse()
       }
       return this.$store.state.cardfilesandmessages.messages.slice().reverse()
     },
@@ -259,14 +283,45 @@ export default {
         }
       }
       return ''
+    },
+    isClientInCard () {
+      return this.clientUid !== '00000000-0000-0000-0000-000000000000' && this.clientUid
     }
   },
   mounted () {
     this.$store.commit(REFRESH_MESSAGES)
     this.$store.commit(REFRESH_FILES)
     this.$store.dispatch(FETCH_FILES_AND_MESSAGES, this.card.uid)
+    this.loadClientData()
   },
   methods: {
+    loadClientData () {
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+      this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+      if (this.isClientInCard) {
+        this.$store.dispatch(CLIENTS.GET_CLIENT, this.clientUid).then((resp) => {
+          this.clientInCard = resp?.data || null
+          if (this.clientInCard?.uid) {
+            console.log('load contact', this.clientInCard)
+            const data = {
+              clientUid: this.clientInCard.uid,
+              clientEmail: this.clientInCard.email,
+              clientPhone: this.clientInCard.phone,
+              crmKey: this.$store.state.corpMegafonIntegration.crmKey,
+              corpYandexInt: this.$store.state.corpYandexIntegration.isIntegrated,
+              personalYandexInt: this.$store.state.personalYandexIntegration.isIntegrated,
+              megafonIntegration: this.$store.state.corpMegafonIntegration.isIntegrated
+            }
+            this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
+          }
+        }).catch((err) => {
+          this.clientInCard = null
+          throw err
+        })
+      } else {
+        this.clientInCard = null
+      }
+    },
     onPostpone (date) {
       if (date) {
         const day = String(date.getDate()).padStart(2, '0')
@@ -305,16 +360,20 @@ export default {
         }
       }
     },
-    onChangeClient (payload) {
-      const [uid, name] = payload
-      this.clientUid = uid
-      this.clientName = name
+    onChangeClient (contact) {
+      this.clientUid = contact?.uid || ''
+      this.clientInCard = contact
       this.$store.dispatch(
         CHANGE_CARD_UID_CLIENT, {
           ...this.card,
           uid_client: this.clientUid,
           client_name: this.clientName
         })
+      this.loadClientData()
+    },
+    onCallClient () {
+      const phone = stripPhoneNumber(this.clientPhone)
+      this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, phone)
     },
     onSetSuccess () {
       this.setColumn(CARD_STAGE.ARCHIVE_SUCCESS)
