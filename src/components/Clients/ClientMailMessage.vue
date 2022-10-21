@@ -37,7 +37,7 @@
         v-html="croppedMessage"
       />
       <button
-        class="bg-white px-[10px] py-[5px] self-end rounded-[4px] font-[#4C4C4D] font-[500] text-[12px]"
+        class="bg-white px-[10px] py-[5px] self-end rounded-[4px] font-[#4C4C4D] font-[500] text-[12px] hover:bg-slate-300"
         @click="showModal = true"
       >
         Открыть
