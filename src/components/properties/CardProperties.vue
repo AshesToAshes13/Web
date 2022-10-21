@@ -396,16 +396,13 @@ export default {
   watch: {
     selectedCardUid: {
       immediate: true,
-      handler: async function () {
+      handler: function () {
         this.currentQuote = false
         this.cardMessageInputValue = ''
         if (this.isClientInCard) {
-          await this.getClientInCurrentCardAndFetchHisMessages()
-        } else {
-          this.isClientInCard = {}
+          this.getClientInCurrentCardAndFetchHisMessages()
         }
       }
-
     }
   },
   methods: {
