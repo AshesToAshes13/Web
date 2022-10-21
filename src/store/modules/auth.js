@@ -18,6 +18,7 @@ import {
 } from '../actions/auth'
 import { RESET_STATE_BOARD } from '../actions/boards'
 import { RESET_DEPARTMENTS_STATE } from '../actions/departments'
+import { RESET_DOITNOW_STATE } from '../actions/doitnow'
 import { RESET_EMPLOYEE_STATE } from '../actions/employees'
 import { MEGAFON_RESET_CORP_INTEGRATION } from '../actions/integrations/corpoMegafonInt'
 import { RESET_STATE_PROJECT } from '../actions/projects'
@@ -173,6 +174,7 @@ const actions = {
       commit(MEGAFON_RESET_CORP_INTEGRATION)
       commit(RESET_CORP_YANDEX_STATE)
       commit(RESET_PERSONAL_YANDEX_STATE)
+      commit(RESET_DOITNOW_STATE)
       axios
         .get(url)
         .then((resp) => {

@@ -13,60 +13,64 @@ function getCurrDateTimeString () {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
 }
 
-const state = {
-  status: '',
-  reglaments: [],
-  cards: [],
-  unreadTasks: [],
-  todayTasks: [],
-  readyTasks: [],
-  greetingSlides: [],
-  slides: [
-    {
-      uid: 'doitnowstart',
-      name: 'doitnowstart',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.visible ??
-        true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.reminder ??
-        getCurrDateTimeString()
-    },
-    {
-      uid: 'addEmployees',
-      name: 'addEmployees',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.addEmployees?.visible ??
-        true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.addEmployees?.reminder ??
-        getCurrDateTimeString()
-    },
-    {
-      uid: 'delegateTasks',
-      name: 'delegateTasks',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.visible ??
-        true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.reminder ??
-        getCurrDateTimeString()
-    },
-    {
-      uid: 'addAvatar',
-      name: 'addAvatar',
-      mode: 'slide',
-      visible:
-        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.visible ?? true,
-      reminder:
-        JSON.parse(localStorage.getItem('slides'))?.addAvatar?.reminder ??
-        getCurrDateTimeString()
-    }
-  ]
+const getDefaultState = () => {
+  return {
+    status: '',
+    reglaments: [],
+    cards: [],
+    unreadTasks: [],
+    todayTasks: [],
+    readyTasks: [],
+    greetingSlides: [],
+    slides: [
+      {
+        uid: 'doitnowstart',
+        name: 'doitnowstart',
+        mode: 'slide',
+        visible:
+          JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.visible ??
+          true,
+        reminder:
+          JSON.parse(localStorage.getItem('slides'))?.doitnowstart?.reminder ??
+          getCurrDateTimeString()
+      },
+      {
+        uid: 'addEmployees',
+        name: 'addEmployees',
+        mode: 'slide',
+        visible:
+          JSON.parse(localStorage.getItem('slides'))?.addEmployees?.visible ??
+          true,
+        reminder:
+          JSON.parse(localStorage.getItem('slides'))?.addEmployees?.reminder ??
+          getCurrDateTimeString()
+      },
+      {
+        uid: 'delegateTasks',
+        name: 'delegateTasks',
+        mode: 'slide',
+        visible:
+          JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.visible ??
+          true,
+        reminder:
+          JSON.parse(localStorage.getItem('slides'))?.delegateTasks?.reminder ??
+          getCurrDateTimeString()
+      },
+      {
+        uid: 'addAvatar',
+        name: 'addAvatar',
+        mode: 'slide',
+        visible:
+          JSON.parse(localStorage.getItem('slides'))?.addAvatar?.visible ?? true,
+        reminder:
+          JSON.parse(localStorage.getItem('slides'))?.addAvatar?.reminder ??
+          getCurrDateTimeString()
+      }
+    ]
+  }
 }
+
+const state = getDefaultState()
 
 const actions = {
   [DOITNOW.REGLAMENTS_GENERATE]: async ({
@@ -168,6 +172,9 @@ const mutations = {
         localStorage.setItem('slides', JSON.stringify(data))
       }
     }
+  },
+  [DOITNOW.RESET_DOITNOW_STATE]: (state) => {
+    Object.assign(state, getDefaultState())
   }
 }
 
