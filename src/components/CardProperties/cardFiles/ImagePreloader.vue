@@ -176,7 +176,8 @@ export default {
     },
 
     loadImageFromInternet () {
-      this.$store.dispatch(this.fileAction, this.fileUid).then((resp) => {
+      const action = this.fileAction || FILE_REQUEST
+      this.$store.dispatch(action, this.fileUid).then((resp) => {
         const imageBlob = new Blob([resp.data], { type: 'image/' + this.fileExtension })
         this.blobImageForm = imageBlob
         writeCache(this.fileUid, imageBlob)

@@ -155,7 +155,8 @@ export default {
 
   methods: {
     loadFileFromInternet () {
-      this.$store.dispatch(this.fileAction, this.fileUid).then((resp) => {
+      const action = this.fileAction || FILE_REQUEST
+      this.$store.dispatch(action, this.fileUid).then((resp) => {
         const imageBlob = new Blob([resp.data], { type: 'text/plain' })
         const urlCreator = window.URL || window.webkitURL
         this.fileURL = urlCreator.createObjectURL(imageBlob)
