@@ -1,7 +1,6 @@
 <template>
   <div
     class="flex items-start space-x-[10px] w-full justify-between"
-    :class="{ 'bg-white': showCloseIcon }"
   >
     <div class="grow w-[calc(100%-20px)]">
       <div
