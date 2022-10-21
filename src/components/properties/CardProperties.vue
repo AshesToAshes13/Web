@@ -331,8 +331,17 @@ export default {
     orgEmployees () { return this.$store.state.navigator.navigator.emps.items },
     cardMessages () {
       if (this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client) {
-        const clientMessages = [...this.$store.state.clientfilesandmessages.messages]
-        return [...clientMessages, ...this.$store.state.cardfilesandmessages.messages]
+        const allMessages = [...this.$store.state.clientfilesandmessages.messages, ...this.$store.state.cardfilesandmessages.messages]
+        allMessages.sort((a, b) => {
+          if (!a.file_name && !a?.date_create.includes('Z')) {
+            a.date_create += 'Z'
+          }
+          if (!b.file_name && !b.date_create.includes('Z')) {
+            b.date_create += 'Z'
+          }
+          return new Date(a.date_create) - new Date(b.date_create)
+        })
+        return allMessages
       }
       return this.$store.state.cardfilesandmessages.messages
     },
