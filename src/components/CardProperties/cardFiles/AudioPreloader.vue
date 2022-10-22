@@ -1,5 +1,11 @@
 <template>
   <div
+    v-if="errorMessage"
+    class="text-red-500"
+  >
+    {{ errorMessage }}
+  </div>
+  <div
     v-if="!audioLoaded"
   >
     <svg
@@ -19,7 +25,7 @@
     </svg>
     <span class="sr-only">Loading...</span>
   </div>
-  <div v-if="audioLoaded">
+  <div v-if="audioLoaded && !errorMessage">
     <figure>
       <audio
         class="w-[280px]"
@@ -116,7 +122,8 @@ export default {
   data () {
     return {
       audioLoaded: false,
-      audoSrc: ''
+      audoSrc: '',
+      errorMessage: ''
     }
   },
 
@@ -132,6 +139,9 @@ export default {
         const urlCreator = window.URL || window.webkitURL
         const imageURL = urlCreator.createObjectURL(imageBlob)
         this.audioSrc = imageURL
+        this.audioLoaded = true
+      }).catch(err => {
+        this.errorMessage = err.message
         this.audioLoaded = true
       })
     }
