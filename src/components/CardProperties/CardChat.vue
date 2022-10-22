@@ -70,6 +70,12 @@
 
           {{ getCallText(message) }}
         </a>
+        <p
+          style="color: rgba(0, 0, 0, 0.4);"
+          class="text-right font-[700] ml-[8px] leading-[14px] text-[11px] self-end min-w-[30px]"
+        >
+          {{ getMessageTimeString(message.date_create) }}
+        </p>
       </span>
       <div
         v-if="message.emailSender"
@@ -243,6 +249,18 @@ export default {
       const minutes = Math.floor(message.duration / 60)
       const seconds = (message.duration % 60).toString().padStart(2, '0')
       return (message.direction === 'in' ? 'Звонок от клиента' : `Звонок от ${message.user}`) + ` (${minutes}:${seconds})`
+    },
+    getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
+      const date = new Date(dateCreate)
+      return date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
     },
     isMessageIncludesIntegrationLogin (msg) {
       if (msg?.emailSender) {
