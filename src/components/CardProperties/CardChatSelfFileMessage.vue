@@ -43,7 +43,7 @@
       :file-name="message.file_name"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :route-file-name="message.clientFile ? 'clientfile' : null"
+      :route-file-name="message.clientFile && 'clientfile'"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
