@@ -33,7 +33,7 @@
       <div class="rounded-l-[10px] flex items-center justify-center bg-[#F4F5F7] pl-[15px]">
         <label
           v-if="canAddFiles"
-          for="file-input"
+          for="file-input-add"
         >
           <svg
             width="18"
@@ -52,12 +52,12 @@
         </label>
         <input
           v-if="canAddFiles"
-          id="file-input"
-          ref="fileInput"
+          id="file-input-add"
+          ref="fileInputAdd"
           type="file"
           multiple="multiple"
           style="display: none;"
-          name="file-input"
+          name="file-input-add"
           @change="createClientFileEmit"
         >
         <svg
@@ -183,7 +183,7 @@ export default {
     },
     createClientFileEmit (e) {
       this.$emit('createClientFile', e)
-      this.$refs.fileInput.value = ''
+      this.$refs.fileInputAdd.value = ''
     }
   }
 }
