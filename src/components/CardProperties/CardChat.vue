@@ -14,7 +14,7 @@
       </div>
 
       <!-- звоночек) -->
-      <CardChatCallMessage
+      <CardAndClientChatCallMessage
         v-if="message.type === 'call'"
         :message="message"
       />
@@ -73,7 +73,7 @@ import CardChatInterlocutorFileMessage from '@/components/CardProperties/CardCha
 import CardChatSelfMessage from '@/components/CardProperties/CardChatSelfMessage.vue'
 import CardChatSelfFileMessage from '@/components/CardProperties/CardChatSelfFileMessage.vue'
 import CardChatQuoteMessage from '@/components/CardProperties/CardChatQuoteMessage.vue'
-import CardChatCallMessage from '@/components/CardProperties/CardChatCallMessage.vue'
+import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
 
 export default {
   components: {
@@ -82,7 +82,7 @@ export default {
     CardChatSelfMessage,
     CardChatSelfFileMessage,
     CardChatQuoteMessage,
-    CardChatCallMessage
+    CardAndClientChatCallMessage
   },
   props: {
     key: {

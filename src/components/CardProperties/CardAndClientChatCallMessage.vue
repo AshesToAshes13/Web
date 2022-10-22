@@ -75,7 +75,8 @@
 export default {
   props: {
     message: {
-      type: Object
+      type: Object,
+      default: () => {}
     }
   },
   methods: {
