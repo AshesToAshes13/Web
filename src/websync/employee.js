@@ -8,6 +8,9 @@ export function createEmployee (obj) {
 
 export function removeEmployee (uid) {
   store.commit(NAVIGATOR_REMOVE_EMPLOYEE, { uid: uid })
+  if (uid === store.state.user.user.current_user_uid) {
+    location.reload()
+  }
 }
 
 export function updateEmployee (obj) {
