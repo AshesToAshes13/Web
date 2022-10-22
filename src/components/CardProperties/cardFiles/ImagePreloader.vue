@@ -1,7 +1,13 @@
 
 <template>
   <div
-    v-if="!imageLoaded"
+    v-if="errorMessage"
+    class="text-red-500"
+  >
+    {{ errorMessage }}
+  </div>
+  <div
+    v-if="!imageLoaded && !errorMessage"
     class="rounded-[6px] animate-pulse"
   >
     <ChatLoader
@@ -125,7 +131,8 @@ export default {
     return {
       imageLoaded: false,
       imageSrc: '',
-      blobImageForm: ''
+      blobImageForm: '',
+      errorMessage: ''
     }
   },
   computed: {
@@ -186,6 +193,10 @@ export default {
         this.imageSrc = imageURL
         this.imageLoaded = true
       })
+        .catch(err => {
+          this.errorMessage = err.message
+          this.imageLoaded = true
+        })
     },
 
     loadImageFromCache () {
