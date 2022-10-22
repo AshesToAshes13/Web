@@ -5,7 +5,7 @@
     @cancel="$emit('closeModal')"
   >
     <div
-      class="text-[15px]"
+      class="text-[15px] max-w-[100%] break-words max-h-[500px] overflow-auto scroll-style"
       v-html="message"
     />
   </ModalBox>
