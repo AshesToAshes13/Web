@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isPassed"
-    class="py-3 rounded-[10px] flex flex-col items-center space-y-[35px]"
+    class="h-full py-3 rounded-[10px] flex flex-col items-center justify-center space-y-[35px]"
   >
     <svg
       width="312"
