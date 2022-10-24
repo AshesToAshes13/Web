@@ -1,11 +1,6 @@
 <template>
-  <BoardOnboarding
-    v-if="displayModal"
-    class="mt-[100px]"
-    @okToModal="okToModal"
-  />
   <BoardSkeleton
-    v-else-if="status == 'loading'"
+    v-if="status == 'loading'"
   />
   <div
     v-else-if="status == 'success'"
@@ -415,8 +410,6 @@ import BoardInputValue from './BoardInputValue.vue'
 import BoardModalBoxColumnBoardChange from '@/components/Board/modalboxes/BoardModalBoxColumnBoardChange.vue'
 import BoardTextareaValue from './BoardTextareaValue.vue'
 import { notify } from 'notiwind'
-import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
-import BoardOnboarding from './BoardOnboarding.vue'
 
 const DEF_COUNT_CARDS_BY_PAGE = 50
 
@@ -433,7 +426,6 @@ export default {
     BoardModalBoxCardMove,
     BoardSkeleton,
     BoardCard,
-    BoardOnboarding,
     draggable,
     BoardInputValue,
     BoardModalBoxColumnBoardChange,
@@ -690,9 +682,6 @@ export default {
       }
 
       return column.cards
-    },
-    okToModal () {
-      this.$store.commit(USER_VIEWED_MODAL, 'boards')
     },
     addCard (column) {
       this.showAddCard = true

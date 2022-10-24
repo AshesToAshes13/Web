@@ -1,11 +1,17 @@
 <template>
   <div class="h-screen overflow-hidden">
+    <BoardOnboarding
+      v-if="displayModal"
+      class="mt-[100px]"
+      @okToModal="okToModal"
+    />
     <NavBarBoards
+      v-if="!displayModal"
       class="pt-[8px]"
       :board-uid="boardUid"
     />
     <div
-      v-if="currentBoard"
+      v-if="currentBoard && !displayModal"
       class="w-full h-[calc(100%-56px)] flex flex-col"
     >
       <BoardModalBoxBoardsLimit
@@ -35,7 +41,7 @@
       </div>
     </div>
     <div
-      v-else
+      v-else-if="!displayModal"
     >
       <h1 class="text-3xl text-gray-600 font-bold mb-5">
         Нет доступа к доске
@@ -51,9 +57,12 @@ import BoardModalBoxBoardsLimit from '@/components/Board/modalboxes/BoardModalBo
 import BoardBlocItem from '@/components/Board/BoardBlocItem.vue'
 import Board from '@/components/Board/Board.vue'
 import * as CARD from '@/store/actions/cards'
+import BoardOnboarding from '@/components/Board/BoardOnboarding'
+import { USER_VIEWED_MODAL } from '@/store/actions/onboarding'
 
 export default {
   components: {
+    BoardOnboarding,
     BoardModalBoxBoardsLimit,
     BoardBlocItem,
     NavBarBoards,
@@ -85,7 +94,11 @@ export default {
       return !this.currentBoard ||
         !Object.keys(this.$store.state.boards.boards).includes(
           this.$route.params.board_id)
+    },
+    displayModal () {
+      return !this.$store.state.onboarding?.visitedModals?.includes('boards') && this.$store.state?.onboarding?.showModals
     }
+
   },
   watch: {
     boardUid (newUid) {
@@ -117,6 +130,9 @@ export default {
     },
     goToChildBoard (board) {
       this.$router.push(`/board/${board.uid}`)
+    },
+    okToModal () {
+      this.$store.commit(USER_VIEWED_MODAL, 'boards')
     }
   }
 }
