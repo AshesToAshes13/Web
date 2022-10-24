@@ -3,7 +3,7 @@
     v-if="displayModal"
     @okToModal="okToModal"
   />
-  <ClientLimit v-if="showLimitMessage" />
+  <ClientLimit v-else-if="showLimitMessage" />
 
   <template
     v-else
