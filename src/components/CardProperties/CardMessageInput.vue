@@ -90,7 +90,6 @@
         @input="onInputTaskMsg"
         @paste="$emit('onPaste', $event)"
         @keydown.enter.exact.prevent="createCardMessage"
-        @keydown.enter.prevent="$store.state.cardfilesandmessages.messageSuccess"
       />
 
       <div
