@@ -586,7 +586,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
-      if (this.cardMessageInputValue <= 0) {
+      if (this.cardMessageInputValue.length < 1) {
         return
       }
       const uid = uuidv4()
