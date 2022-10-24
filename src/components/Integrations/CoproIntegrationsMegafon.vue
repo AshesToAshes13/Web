@@ -22,7 +22,7 @@
   <IntegrationsLimit v-if="showLimitMessage" />
   <div
     v-else
-    class="flex items-center justify-center"
+    class="flex items-center"
   >
     <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
