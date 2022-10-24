@@ -71,7 +71,7 @@
       </div>
       <draggable
         v-dragscroll:nochilddrag
-        class="flex items-start overflow-y-hidden overflow-x-auto scroll-style"
+        class="flex h-full items-start overflow-y-hidden overflow-x-auto scroll-style"
         :list="filteredColumns"
         ghost-class="ghost-column"
         item-key="UID"
@@ -709,6 +709,7 @@ export default {
       this.showRenameColumn = true
     },
     onRenameColumn (name) {
+      this.$store.dispatch('asidePropertiesToggle', false)
       this.showRenameColumn = false
       if (this.selectedColumn.Name === name) return
       const title = name.trim()
