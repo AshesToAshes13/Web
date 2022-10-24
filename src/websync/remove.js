@@ -15,6 +15,7 @@ import { removeDepartment } from '@/websync/departments'
 import { removeBoard } from '@/websync/board'
 import { removeClient } from '@/websync/clients'
 import { removeClientChatMessage } from '@/websync/clients_chat'
+import { removeMegafonIntegration } from './megafonCorpInt'
 
 export default function processRemove (obj) {
   switch (obj.type) {
@@ -57,6 +58,9 @@ export default function processRemove (obj) {
       break
     case TYPES.TYPE_OBJECT_YANDEX_CORP_INT:
       removeIntegration()
+      break
+    case TYPES.TYPE_OBJECT_MEGAFON_CORP_INT:
+      removeMegafonIntegration(obj)
       break
     case TYPES.TYPE_OBJECT_PROJECT_MEMBER:
       break

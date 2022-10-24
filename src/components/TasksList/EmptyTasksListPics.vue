@@ -10,24 +10,8 @@
         src="@/assets/images/emptytaskpic.png"
         alt="Empty task image"
       >
-      <!-- Анбоардинг -->
-      <div
-        v-if="displayModal"
-        class="flex flex-col w-[600px]"
-      >
-        <p class="font-bold p-3">
-          Не отвлекайтесь на другие задачи, а работайте только с одной конкретной задачей
-        </p>
-        <p class="text-sm p-3">
-          Работайте с задачами и поручениями, которые должны быть выполнены сегодня
-        </p>
-        <OnBoardingButton
-          @okToModal="okToModal"
-        />
-      </div>
       <!-- Пустой таск лист -->
       <div
-        v-if="!displayModal"
         class="mb-[35px]"
       >
         <div class="flex flex-col text-center">
@@ -281,12 +265,10 @@ import Icon from '@/components/Icon.vue'
 import ready from '@/icons/ready.js'
 import * as TASK from '@/store/actions/tasks.js'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
-import OnBoardingButton from '../onBoarding/onBoardingButton.vue'
 
 export default {
   components: {
-    Icon,
-    OnBoardingButton
+    Icon
   },
   data () {
     return {
@@ -302,10 +284,7 @@ export default {
     isTags () { return this.$route.name === 'tags' },
     isProjects () { return this.$route.name === 'project' },
     isColors () { return this.$route.name === 'colors' },
-    isTasks () { return this.$route.name === 'tasksToday' },
-    displayModal () {
-      return !this.$store.state.onboarding.visitedModals?.includes('tasks') && this.$store.state.onboarding.showModals
-    }
+    isTasks () { return this.$route.name === 'tasksToday' }
   },
   methods: {
     dateToLabelFormat (calendarDate) {

@@ -10,7 +10,7 @@
     />
     <NavBar
       title="Контакты"
-      route="/clients"
+      route="/clients?page=1"
       :breadcrumbs="breadcrumbs"
     />
     <PopMenu>

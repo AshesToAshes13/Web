@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center mt-[100px]">
     <svg
+      class="mb-[20px]"
       width="160"
       height="160"
       viewBox="0 0 160 160"
@@ -22,11 +23,11 @@
       />
     </svg>
     <div class="w-[600px] font-roboto text-[#424242]">
-      <p class="font-[700] p-3 text-left text-[25px] leading-[35px] text-center">
+      <p class="font-[700] p-3 text-left text-[25px] mb-[20px] leading-[35px] text-center">
         Храните всех клиентов с помощью контактов
       </p>
       <p class="font-[400] text-[18px] text-center leading-[28px]">
-        ЛидерТаск сохранит всех ваших клиентов и историю взаимодействия с ними
+        ЛидерТаск сохранит всех ваших клиентов и историю <br> взаимодействия с ними
       </p>
     </div>
     <OnBoardingButton

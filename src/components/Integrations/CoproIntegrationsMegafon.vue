@@ -22,7 +22,7 @@
   <IntegrationsLimit v-if="showLimitMessage" />
   <div
     v-else
-    class="flex items-center justify-center"
+    class="flex items-center"
   >
     <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
@@ -35,7 +35,7 @@
         </div>
         <span
           v-if="isOrganizationIntegrated"
-          class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
+          class="my-[20px] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
           Интегрировано с: {{ atsLink }}
         </span>
@@ -48,7 +48,7 @@
         </button>
         <button
           v-else
-          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию
@@ -190,9 +190,19 @@
       >
         <span class="font-[400] text-[16px] leading-[25px] text-[#4C4C4D]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
         <img
+          v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
-          class="cursor-pointer w-[650px] h-[360px] mt-[35px]"
+          class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          @click="playVideo"
         >
+        <iframe
+          v-if="!showPreviewPicture"
+          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          title="YouTube video player"
+          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+        />
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
@@ -297,14 +307,17 @@ export default {
       error: '',
       showIntegration: false,
       removeIntegrationModal: false,
-      megafonUsers: [...this.$store.state.corpMegafonIntegration.megafonUsers],
       atsLogins: [],
-      areAtsLoginsLoading: false
+      areAtsLoginsLoading: false,
+      showPreviewPicture: true
     }
   },
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    megafonUsers () {
+      return this.$store.state.corpMegafonIntegration.megafonUsers
     },
     showLimitMessage () {
       const tarif = this.$store.state.user.user.tarif
@@ -362,10 +375,12 @@ export default {
         })
     },
     onAddNewMegafonUser () {
-      this.megafonUsers.push({
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers.push({
         uidUser: '',
         megafonUserLogin: ''
       })
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
     },
     async loadUsers () {
       this.areAtsLoginsLoading = true
@@ -378,15 +393,25 @@ export default {
       this.areAtsLoginsLoading = false
     },
     setUserUid (index, uid) {
-      this.megafonUsers[index].uidUser = uid
-      this.saveUsers()
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers[index].uidUser = uid
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
+      if (this.megafonUsers[index].megafonUserLogin !== '') {
+        this.saveUsers()
+      }
     },
     setUserLogin (index, login) {
-      this.megafonUsers[index].megafonUserLogin = login
-      this.saveUsers()
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers[index].megafonUserLogin = login
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
+      if (this.megafonUsers[index].uidUser !== '') {
+        this.saveUsers()
+      }
     },
     deleteUserLogin (index) {
-      this.megafonUsers.splice(index, 1)
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers.splice(index, 1)
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
       this.saveUsers()
     },
     async saveUsers () {
@@ -398,6 +423,13 @@ export default {
         organizationEmail: this.user.owner_email,
         crmKey: this.ownerKey
       })
+    },
+    playVideo () {
+      this.showPreviewPicture = false
+    },
+    beforeRouteLeave (to, from) {
+      const newMegafonUsers = this.megafonUsers.filter(user => user.uidUser !== '' && user.megafonUserLogin !== '')
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
     }
   }
 }

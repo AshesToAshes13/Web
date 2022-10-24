@@ -51,7 +51,7 @@ const actions = {
             atsKey: data.atsKey,
             crmKey: data.crmKey,
             atsLink: atsLink,
-            megafonUsers: JSON.stringify([])
+            megafonUsers: []
           })
           resolve(resp)
         })
@@ -132,7 +132,7 @@ const actions = {
             atsLink: resp.data.integration.ats_link,
             megafonUsers: resp.data.users.map((user) => ({
               id: user.id,
-              organizationEmail: user.organizationEmail,
+              organizationEmail: user.organization_email,
               uidUser: user.uid_user,
               megafonUserLogin: user.megafon_user_login
             }))
@@ -230,6 +230,9 @@ const mutations = {
     state.atsLink = ''
     state.megafonUsers = []
     state.isIntegrated = false
+  },
+  [CORP_MEGAFON.SET_MEGAFON_USERS]: (state, data) => {
+    state.megafonUsers = data
   },
   [CORP_MEGAFON.MEGAFON_RESET_CORP_INTEGRATION]: (state) => {
     Object.assign(state, getDefaultState())

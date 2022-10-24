@@ -21,7 +21,7 @@
         v-if="!showPreviewPicture"
         width="560"
         height="315"
-        :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+        :src="`https://www.youtube.com/embed/yVpK1qrJ2gc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
         title="YouTube video player"
         allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen

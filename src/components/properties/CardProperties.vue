@@ -586,7 +586,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
-      if (this.cardMessageInputValue <= 0) {
+      if (this.cardMessageInputValue.length < 1) {
         return
       }
       const uid = uuidv4()
@@ -602,9 +602,9 @@ export default {
         order: 0,
         deleted: 0
       }
+      this.cardMessageInputValue = ''
       this.$store.dispatch(CREATE_MESSAGE_REQUEST, data).then(() => {
         if (this.selectedCard) this.selectedCard.has_msgs = true
-        this.cardMessageInputValue = ''
         this.currentQuote = false
         this.scrollDown()
       })

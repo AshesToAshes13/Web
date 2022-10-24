@@ -22,7 +22,7 @@
 
   <div
     v-else
-    class="flex flex-col w-[60%] h-[calc(100%-64px)] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+    class="flex flex-col w-[60%] mr-auto px-[50px] py-[50px] bg-white rounded-[8px] mb-[20px]"
   >
     <div
       class="flex justify-center flex-col w-[80%]"
@@ -46,9 +46,19 @@
           Чтобы получить полную картину всех взаимодействий с контактом по электронной почте
         </span>
         <img
+          v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
           class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          @click="playVideo"
         >
+        <iframe
+          v-if="!showPreviewPicture"
+          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          title="YouTube video player"
+          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+        />
       </div>
       <div
         v-else
@@ -153,7 +163,8 @@ export default {
   data () {
     return {
       showIntegration: false,
-      removeIntegrationModal: false
+      removeIntegrationModal: false,
+      showPreviewPicture: true
     }
   },
   computed: {
@@ -203,6 +214,9 @@ export default {
         .then(() => {
           this.showRemoveIntegration(false)
         })
+    },
+    playVideo () {
+      this.showPreviewPicture = false
     }
   }
 }

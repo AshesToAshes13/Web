@@ -9,9 +9,9 @@
       @closeModal="showModal = false"
     />
     <div class="flex flex-col w-[calc(100%-40px)] mr-[10px]">
-      <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
+      <div class="flex w-full items-start gap-x-[10px] mb-[13px]">
         <svg
-          class="shrink-0"
+          class="shrink-0 mt-[5px]"
           width="14"
           height="11"
           viewBox="0 0 14 11"
@@ -25,17 +25,12 @@
         </svg>
 
         <p
-          class="text-[14px] text-[#747476] font-[400]"
+          class="text-[14px] text-[#747476] font-[400] break-words"
           :title="message.subject"
         >
           Тема: {{ message.subject }}
         </p>
       </div>
-      <span
-        v-if="true"
-        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] bg-[#F4F5F7] min-h-[60px]"
-        v-html="croppedMessage"
-      />
       <button
         class="bg-white px-[10px] py-[5px] self-end rounded-[4px] font-[#4C4C4D] font-[500] text-[12px] hover:bg-slate-300"
         @click="showModal = true"
@@ -73,11 +68,7 @@ export default {
   },
   computed: {
     messageWithOutTags () {
-      return this.message?.msg?.replace(/( |<([^>]+)>)/ig, ' ')
-    },
-    croppedMessage () {
-      const firstSentence = this.messageWithOutTags.match(/^(.*?)[.?!]\s/)
-      return firstSentence?.length ? firstSentence[0].trim() : this.messageWithOutTags
+      return this.message?.msg?.replace(/<\/?[a-zA-Z]+>/gi, '')
     }
   }
 }

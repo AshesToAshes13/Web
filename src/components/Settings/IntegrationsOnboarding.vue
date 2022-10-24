@@ -21,7 +21,7 @@
     />
   </svg>
 
-  <div class="w-[600px] font-roboto text-[#424242]">
+  <div class="w-[550px] font-roboto text-[#424242]">
     <p class="font-[700] p-3 text-left text-[25px] leading-[35px] text-center">
       Объедините разные системы в одной среде с помощью интеграций
     </p>
