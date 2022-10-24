@@ -21,7 +21,7 @@
   <IntegrationsLimit v-if="showLimitMessage" />
   <div
     v-else
-    class="flex flex-col w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+    class="flex flex-col w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px] mb-[20px]"
   >
     <div
       class="flex justify-center flex-col w-[80%]"
