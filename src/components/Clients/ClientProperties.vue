@@ -37,7 +37,9 @@
       </div>
       <button
         v-if="showCallButton"
-        class="flex gap-[5px] items-center justify-center py-[12px] px-[20px] border border-[#F2B679] rounded-[10px] font-roboto text-[#4C4C4D] text-[14px] w-5/12 mt-[25px] hover:bg-[#dbdada88]"
+        class="flex gap-[5px] items-center justify-center py-[12px] px-[20px] border border-[#F2B679] rounded-[10px] font-roboto text-[#4C4C4D] text-[14px] w-5/12 mt-[25px] hover:bg-[#dbdada88] disabled:bg-[#807e7e]"
+        :disabled="disableButton"
+
         @click="callClient"
       >
         <svg
@@ -152,7 +154,8 @@ export default {
         comment: ''
       },
       currentQuote: false,
-      clientMessageInputValue: ''
+      clientMessageInputValue: '',
+      disableButton: false
     }
   },
   computed: {
@@ -207,8 +210,12 @@ export default {
       return name.length && this.validateNumber && this.validateEmail
     },
     callClient () {
+      this.disableButton = true
       const phone = stripPhoneNumber(this.currClient.phone)
       this.$store.dispatch(CORP_MEGAFON.CALL_CLIENT, phone)
+      setTimeout(() => {
+        this.disableButton = false
+      }, 2000)
     }
   }
 }
