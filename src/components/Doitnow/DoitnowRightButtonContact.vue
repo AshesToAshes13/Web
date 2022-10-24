@@ -25,7 +25,8 @@
         @eraseSearch="requestClients"
       />
       <div
-        class="h-[156px] w-[300px] overflow-y-scroll scroll-style relative"
+        class="h-[156px] w-[300px] relative"
+        :class="{' overflow-y-scroll scroll-style': clientsStatus !== 'loading' && searchText}"
       >
         <svg
           v-if="clientsStatus === 'loading'"
