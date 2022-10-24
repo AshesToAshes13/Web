@@ -14,6 +14,7 @@ import { removeTaskMessage } from '@/websync/task_message'
 import * as TYPES from '@/websync/types.js'
 import { updateCurrentUser } from '@/websync/user.js'
 import { updateClient } from '@/websync/clients.js'
+import { updateMegafonIntegration } from './megafonCorpInt'
 
 export default function processUpdate (obj) {
   switch (obj.type) {
@@ -52,6 +53,9 @@ export default function processUpdate (obj) {
       break
     case TYPES.TYPE_OBJECT_MARKER:
       updateColor(obj)
+      break
+    case TYPES.TYPE_OBJECT_MEGAFON_CORP_INT:
+      updateMegafonIntegration(obj)
       break
     case TYPES.TYPE_OBJECT_PERIOD:
       break

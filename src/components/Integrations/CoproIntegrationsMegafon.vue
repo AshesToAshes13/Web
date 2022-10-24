@@ -35,7 +35,7 @@
         </div>
         <span
           v-if="isOrganizationIntegrated"
-          class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
+          class="my-[20px] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
           Интегрировано с: {{ atsLink }}
         </span>
@@ -48,7 +48,7 @@
         </button>
         <button
           v-else
-          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию
@@ -307,7 +307,6 @@ export default {
       error: '',
       showIntegration: false,
       removeIntegrationModal: false,
-      megafonUsers: [...this.$store.state.corpMegafonIntegration.megafonUsers],
       atsLogins: [],
       areAtsLoginsLoading: false,
       showPreviewPicture: true
@@ -316,6 +315,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    megafonUsers () {
+      return this.$store.state.corpMegafonIntegration.megafonUsers
     },
     showLimitMessage () {
       const tarif = this.$store.state.user.user.tarif
@@ -373,10 +375,12 @@ export default {
         })
     },
     onAddNewMegafonUser () {
-      this.megafonUsers.push({
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers.push({
         uidUser: '',
         megafonUserLogin: ''
       })
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
     },
     async loadUsers () {
       this.areAtsLoginsLoading = true
@@ -389,15 +393,25 @@ export default {
       this.areAtsLoginsLoading = false
     },
     setUserUid (index, uid) {
-      this.megafonUsers[index].uidUser = uid
-      this.saveUsers()
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers[index].uidUser = uid
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
+      if (this.megafonUsers[index].megafonUserLogin !== '') {
+        this.saveUsers()
+      }
     },
     setUserLogin (index, login) {
-      this.megafonUsers[index].megafonUserLogin = login
-      this.saveUsers()
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers[index].megafonUserLogin = login
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
+      if (this.megafonUsers[index].uidUser !== '') {
+        this.saveUsers()
+      }
     },
     deleteUserLogin (index) {
-      this.megafonUsers.splice(index, 1)
+      const newMegafonUsers = [...this.megafonUsers]
+      newMegafonUsers.splice(index, 1)
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
       this.saveUsers()
     },
     async saveUsers () {
@@ -412,6 +426,10 @@ export default {
     },
     playVideo () {
       this.showPreviewPicture = false
+    },
+    beforeRouteLeave (to, from) {
+      const newMegafonUsers = this.megafonUsers.filter(user => user.uidUser !== '' && user.megafonUserLogin !== '')
+      this.$store.commit(CORP_MEGAFON.SET_MEGAFON_USERS, newMegafonUsers)
     }
   }
 }
