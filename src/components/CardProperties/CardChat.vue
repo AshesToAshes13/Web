@@ -12,7 +12,12 @@
       >
         {{ getMessageWeekDateString(message.date_create) }}
       </div>
-
+      <CardMailMessage
+        v-if="message?.emailSender"
+        :message="message"
+        :time="getMessageTimeString(message.date_create)"
+        class="py-[10px] px-[15px] rounded-t-[12px] rounded-br-[12px] mb-[5px] float-left max-w-[300px] group bg-[#FCEBEB]"
+      />
       <!-- звоночек) -->
       <CardAndClientChatCallMessage
         v-if="message.type === 'call'"
@@ -74,6 +79,7 @@ import CardChatSelfMessage from '@/components/CardProperties/CardChatSelfMessage
 import CardChatSelfFileMessage from '@/components/CardProperties/CardChatSelfFileMessage.vue'
 import CardChatQuoteMessage from '@/components/CardProperties/CardChatQuoteMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
+import CardMailMessage from './CardMailMessage.vue'
 
 export default {
   components: {
@@ -82,7 +88,8 @@ export default {
     CardChatSelfMessage,
     CardChatSelfFileMessage,
     CardChatQuoteMessage,
-    CardAndClientChatCallMessage
+    CardAndClientChatCallMessage,
+    CardMailMessage
   },
   props: {
     key: {
@@ -140,6 +147,18 @@ export default {
         if (message.uid === uid) return message
       }
       return false
+    },
+    getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
+      const date = new Date(dateCreate)
+      return date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
     },
     isChangedDate (index) {
       if (index === 0) return true
