@@ -22,8 +22,8 @@
       />
     </svg>
 
-    <div class="w-[600px] font-roboto text-[#424242]">
-      <p class="font-[700] p-3 text-left text-[25px] leading-[35px] text-center">
+    <div class="w-[550px] mt-[35px] font-roboto text-[#424242]">
+      <p class="font-[700] mb-[28px] text-left text-[25px] leading-[35px] text-center">
         Организуйте командную работу над задачами с помощью Проектов
       </p>
       <p class="font-[400] text-[18px] text-center leading-[28px]">
