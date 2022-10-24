@@ -22,7 +22,7 @@
 
   <div
     v-else
-    class="flex flex-col w-[60%] h-[calc(100%-64px)] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+    class="flex flex-col w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
   >
     <div
       class="flex justify-center flex-col w-[80%]"
