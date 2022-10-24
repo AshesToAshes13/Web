@@ -198,6 +198,9 @@ export default {
     },
     searchText () {
       return this.$store.state.boards.searchText?.toLowerCase() || ''
+    },
+    isPropertiesMobileExpanded () {
+      return this.$store.state.isPropertiesMobileExpanded
     }
   },
   watch: {
@@ -207,6 +210,14 @@ export default {
         val.forEach((column) => {
           this.cardQuantityByColumns[column.UID] = 50
         })
+      }
+    },
+    isPropertiesMobileExpanded: {
+      immediate: true,
+      handler: function (val) {
+        if (!val) {
+          this.$store.commit(CARD.SELECT_CARD, '')
+        }
       }
     }
   },
@@ -375,6 +386,7 @@ export default {
     closeProperties () {
       this.$store.dispatch('asidePropertiesToggle', false)
       this.$store.commit(CARD.SELECT_CARD, '')
+      console.log('this.$store.state.cards.selectedCardUid -->', this.$store.state.cards.selectedCardUid)
     },
     handleCardsScroll (event, columnUid, cardsLength) {
       const { scrollTop, offsetHeight, scrollHeight } = event.target
