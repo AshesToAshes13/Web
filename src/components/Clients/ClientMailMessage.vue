@@ -77,7 +77,7 @@ export default {
     },
     croppedMessage () {
       const firstSentence = this.messageWithOutTags.match(/^(.*?)[.?!]\s/)
-      return firstSentence?.length ? firstSentence[0].trim() : ''
+      return firstSentence?.length ? firstSentence[0].trim() : this.messageWithOutTags
     }
   }
 }
