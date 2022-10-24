@@ -730,6 +730,7 @@ export default {
       this.showDeleteColumn = true
     },
     onDeleteColumn () {
+      this.$store.dispatch('asidePropertiesToggle', false)
       this.showDeleteColumn = false
       if (this.selectedColumn) {
         const data = {
