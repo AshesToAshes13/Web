@@ -9,9 +9,9 @@
       @closeModal="showModal = false"
     />
     <div class="flex flex-col w-[calc(100%-40px)] mr-[10px]">
-      <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
+      <div class="flex w-full items-start gap-x-[10px] mb-[13px]">
         <svg
-          class="shrink-0"
+          class="shrink-0 mt-[5px]"
           width="14"
           height="11"
           viewBox="0 0 14 11"
