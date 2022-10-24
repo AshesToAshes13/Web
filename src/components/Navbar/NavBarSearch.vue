@@ -114,7 +114,7 @@ export default {
     },
 
     selectedBoardUid () {
-      return this.$store.state.boards.selectedBoard.uid
+      return this.$store.state.boards?.selectedBoard?.uid || ''
     },
     getInputLoadingWidth () {
       if (this.isLoading && this.isFull) {
