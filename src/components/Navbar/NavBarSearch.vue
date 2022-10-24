@@ -113,6 +113,9 @@ export default {
       return this.isFull ? 'w-full' : ''
     },
 
+    selectedBoardUid () {
+      return this.$store.state.boards.selectedBoard.uid
+    },
     getInputLoadingWidth () {
       if (this.isLoading && this.isFull) {
         return 'w-[calc(100%_-_30px)]'
@@ -133,6 +136,9 @@ export default {
       if (!searchValue) {
         this.searchText = ''
       }
+    },
+    selectedBoardUid () {
+      this.closeSearch()
     }
   },
   methods: {
