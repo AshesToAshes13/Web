@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     messageWithOutTags () {
-      return this.message?.msg?.replace(/<\/?[a-zA-Z]+>/gi, '')
+      return this.message?.msg?.replace(/( |<([^>]+)>)/ig, ' ')
     },
     croppedMessage () {
       const firstSentence = this.messageWithOutTags.match(/^(.*?)[.?!]\s/)
