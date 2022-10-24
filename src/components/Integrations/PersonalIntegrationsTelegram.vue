@@ -11,7 +11,7 @@
     class="flex flex-col h-[calc(100%-64px)] w-[60%] ml-auto mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
   >
     <div
-      class="flex w-[450px] justify-center flex-col"
+      class="flex justify-center flex-col"
     >
       <span class="font-[700] text-[21px] leading-[29px] text-[#424242]">Персональная интеграция через Телеграм</span>
       <span
@@ -32,6 +32,10 @@
         >
           <span>Интеграция</span>
         </a>
+        <img
+          src="@/assets/images/megafon/video-container.png"
+          class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+        >
         <span
           class="mt-[35px] font-[400] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
