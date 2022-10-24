@@ -37,7 +37,7 @@
       </div>
       <button
         v-if="showCallButton"
-        class="flex gap-[5px] items-center justify-center py-[12px] px-[20px] border border-[#F2B679] rounded-[10px] font-roboto text-[#4C4C4D] text-[14px] w-5/12 mt-[25px] hover:bg-[#dbdada88] disabled:bg-[#807e7e]"
+        class="flex gap-[5px] items-center justify-center py-[12px] px-[20px] border border-[#F2B679] rounded-[10px] font-roboto text-[#4C4C4D] text-[14px] w-5/12 mt-[25px] hover:bg-[#dbdada88] disabled:bg-[#a3a3a362]"
         :disabled="disableButton"
 
         @click="callClient"

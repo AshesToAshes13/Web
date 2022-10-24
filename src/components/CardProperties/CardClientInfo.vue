@@ -29,7 +29,7 @@
       <div class="flex justify-between">
         <button
           v-if="showCallButton"
-          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5] disabled:bg-[#807e7e]"
+          class="w-[150px] h-[31px] border-[1px] border-[#0000001F] rounded-[8px] text-[#424242] text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#ffffff] hover:text-[#007BE5] disabled:bg-[#a3a3a362]"
           :disabled="disableButton"
           @click="callClient"
         >
