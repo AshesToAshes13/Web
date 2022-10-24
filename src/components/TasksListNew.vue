@@ -687,6 +687,9 @@ export default {
               arg.children.push(task.uid)
             }
           }
+          this.$store.dispatch(TASK.GET_INSPECTABLE_TASKS, {
+            uids: this.storeTasks[arg.id]?.children
+          })
         })
     },
     returnFocus () {

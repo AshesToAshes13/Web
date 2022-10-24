@@ -230,9 +230,6 @@ const actions = {
           if (resp.data.anothers_markers.length) {
             commit(PUSH_COLOR, resp.data.anothers_markers)
           }
-          dispatch(TASK.GET_INSPECTABLE_TASKS, {
-            uids: state.newtasks[taskUid]?.children
-          })
           resolve(resp)
         })
         .catch((err) => {
