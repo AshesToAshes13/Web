@@ -25,7 +25,6 @@
         class="flex flex-col"
       >
         <a
-          v-if="!integration?.telegram_id"
           class="flex justify-center items-center mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300 text-[#2E2E2E]"
           :href="integrationLink"
           target="_blank"
@@ -33,9 +32,19 @@
           <span>Интеграция</span>
         </a>
         <img
+          v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
           class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          @click="playVideo"
         >
+        <iframe
+          v-if="!showPreviewPicture"
+          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          title="YouTube video player"
+          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+        />
         <span
           class="mt-[35px] font-[400] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
@@ -68,6 +77,11 @@ export default {
     NavBar,
     IntegrationsLimit
   },
+  data () {
+    return {
+      showPreviewPicture: true
+    }
+  },
   computed: {
     user () {
       return this.$store.state.user.user
@@ -89,6 +103,9 @@ export default {
   methods: {
     deleteIntegration () {
       this.$store.dispatch(PERSONAL_TELEGERAM.TELEGRAM_DELETE_PERSONAL_INTEGRATION, { uid: this.user.current_user_uid })
+    },
+    playVideo () {
+      this.showPreviewPicture = false
     }
   }
 }

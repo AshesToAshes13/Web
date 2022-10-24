@@ -190,9 +190,19 @@
       >
         <span class="font-[400] text-[16px] leading-[25px] text-[#4C4C4D]">Чтобы звонить контакту прямо из LeaderTask и хранить историю звонков по клиентам (контакты)</span>
         <img
+          v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
-          class="cursor-pointer w-[650px] h-[360px] mt-[35px]"
+          class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          @click="playVideo"
         >
+        <iframe
+          v-if="!showPreviewPicture"
+          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          title="YouTube video player"
+          allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+        />
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
@@ -299,7 +309,8 @@ export default {
       removeIntegrationModal: false,
       megafonUsers: [...this.$store.state.corpMegafonIntegration.megafonUsers],
       atsLogins: [],
-      areAtsLoginsLoading: false
+      areAtsLoginsLoading: false,
+      showPreviewPicture: true
     }
   },
   computed: {
@@ -398,6 +409,9 @@ export default {
         organizationEmail: this.user.owner_email,
         crmKey: this.ownerKey
       })
+    },
+    playVideo () {
+      this.showPreviewPicture = false
     }
   }
 }
