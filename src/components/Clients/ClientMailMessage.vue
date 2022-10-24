@@ -25,7 +25,7 @@
         </svg>
 
         <p
-          class="text-[14px] text-[#747476] font-[400] truncate"
+          class="text-[14px] text-[#747476] font-[400]"
           :title="message.subject"
         >
           Тема: {{ message.subject }}
@@ -33,7 +33,7 @@
       </div>
       <span
         v-if="true"
-        class="w-full break-words text-[#4C4C4D] mb-[14px]"
+        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] bg-[#F4F5F7] min-h-[60px]"
         v-html="croppedMessage"
       />
       <button
