@@ -94,10 +94,10 @@ export default {
       return this.$store.state.telegramIntegration.integration
     },
     integrationLink () {
-      return 'https://telegram.me/LeaderTaskNotificationBot?start=' + this.user.current_user_uid
+      return 'https://telegram.me/LeaderTaskNotificationBot?start=' + this.integration.token
     }
   },
-  mounted () {
+  beforeMount () {
     this.$store.dispatch(PERSONAL_TELEGERAM.TELEGRAM_GET_PERSONAL_INTEGRATION, { uid: this.user.current_user_uid })
   },
   methods: {
