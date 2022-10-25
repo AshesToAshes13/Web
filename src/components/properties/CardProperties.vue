@@ -586,7 +586,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
-      if (this.cardMessageInputValue.length < 1) {
+      if (this.cardMessageInputValue.trim().length < 1) {
         return
       }
       const uid = uuidv4()
@@ -597,8 +597,8 @@ export default {
         date_create: new Date().toISOString(),
         uid_creator: this.user.current_user_uid,
         uid_quote: this.currentQuote?.uid ?? '',
-        text: this.cardMessageInputValue,
-        msg: this.cardMessageInputValue,
+        text: this.cardMessageInputValue.trim(),
+        msg: this.cardMessageInputValue.trim(),
         order: 0,
         deleted: 0
       }
