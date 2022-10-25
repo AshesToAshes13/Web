@@ -8,7 +8,7 @@
   <IntegrationsLimit v-if="showLimitMessage" />
   <div
     v-else
-    class="flex flex-col h-[calc(100%-64px)] w-[60%] mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
+    class="flex flex-col w-[60%] mr-auto px-[50px] py-[50px] bg-white rounded-[8px]"
   >
     <div
       class="flex justify-center flex-col"
@@ -31,6 +31,11 @@
         >
           <span>Интеграция</span>
         </a>
+        <span
+          class="mt-[35px] font-[400] text-[16px] leading-[25px] text-[#4C4C4D]"
+        >
+          Чтобы получать уведомления о поручениях в реальном времени и выполнять их в срок
+        </span>
         <img
           v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
@@ -45,11 +50,6 @@
           allowfullscreen
           class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
         />
-        <span
-          class="mt-[35px] font-[400] text-[16px] leading-[25px] text-[#4C4C4D]"
-        >
-          Чтобы получать уведомления о поручениях в реальном времени и выполнять их в срок
-        </span>
       </div>
       <div
         v-else
