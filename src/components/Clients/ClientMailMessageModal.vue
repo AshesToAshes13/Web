@@ -1,11 +1,11 @@
 <template>
   <ModalBox
     :title="subject"
-    width="400"
+    width="800"
     @cancel="$emit('closeModal')"
   >
     <div
-      class="text-[15px] max-w-[100%] break-words max-h-[500px] overflow-auto scroll-style"
+      class="text-[15px] w-[100%] break-words max-h-[500px] overflow-auto scroll-style"
       v-html="message"
     />
   </ModalBox>
