@@ -264,7 +264,7 @@
             </div>
             <!--карточки -->
             <div
-              class="min-h-0 overflow-y-hidden scroll-style hover:overflow-y-auto"
+              class="min-h-0 overflow-y-hidden scroll-style hover:overflow-y-auto pt-[3px]"
               @scroll="handleCardsScroll($event, column.UID, column.cards.length)"
             >
               <draggable
@@ -730,6 +730,7 @@ export default {
       this.showDeleteColumn = true
     },
     onDeleteColumn () {
+      this.$store.dispatch('asidePropertiesToggle', false)
       this.showDeleteColumn = false
       if (this.selectedColumn) {
         const data = {

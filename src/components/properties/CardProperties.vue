@@ -180,6 +180,7 @@
         :show-files-only="showFilesOnly"
         @onQuote="setCurrentQuote"
         @onDeleteMessage="deleteCardMessage"
+        @deleteClientMessage="deleteClientMessage"
         @onDeleteFile="deleteCardFileMessage"
       />
     </div>
@@ -426,7 +427,7 @@ export default {
       this.showClientModal = true
     },
     isFilePreloadable (fileExtension) {
-      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
+      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mp3', 'wav']
       return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
@@ -564,6 +565,9 @@ export default {
     deleteCardMessage (uid) {
       this.$store.dispatch(DELETE_MESSAGE_REQUEST, uid)
     },
+    deleteClientMessage (uid) {
+      this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, uid)
+    },
     deleteCardFileMessage (uid) {
       const messages = this.$store.state.cardfilesandmessages.messages
       let hasMessage = false
@@ -586,7 +590,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
-      if (this.cardMessageInputValue.length < 1) {
+      if (this.cardMessageInputValue.trim().length < 1) {
         return
       }
       const uid = uuidv4()
@@ -597,8 +601,8 @@ export default {
         date_create: new Date().toISOString(),
         uid_creator: this.user.current_user_uid,
         uid_quote: this.currentQuote?.uid ?? '',
-        text: this.cardMessageInputValue,
-        msg: this.cardMessageInputValue,
+        text: this.cardMessageInputValue.trim(),
+        msg: this.cardMessageInputValue.trim(),
         order: 0,
         deleted: 0
       }

@@ -4,6 +4,9 @@
       :id="callLink"
       ref="callMessage"
       class="hidden"
+      @timeupdate="playback"
+      @ended="ended"
+      @pause="pause"
     >
       <source :src="callLink">
     </audio>
@@ -95,31 +98,12 @@ export default {
     },
     isPlaying: function () {
       if (this.isPlaying) {
-        const audio = this.$refs.callMessage
         this.initSlider()
         if (!this.listenerActive) {
           this.listenerActive = true
-          audio.addEventListener('timeupdate', this.playbackListener)
         }
       }
     }
-  },
-  mounted: function () {
-    this.$nextTick(function () {
-      const audio = this.$refs.callMessage
-      audio.addEventListener(
-        'loadedmetadata',
-        function (e) {
-          this.initSlider()
-        }.bind(this)
-      )
-      audio.addEventListener(
-        'canplay',
-        function (e) {
-          this.audioLoaded = true
-        }.bind(this)
-      )
-    })
   },
   methods: {
     initSlider () {
@@ -128,27 +112,17 @@ export default {
         this.audioDuration = Math.round(audio.duration)
       }
     },
-    playbackListener (e) {
+    playback (e) {
       const audio = this.$refs.callMessage
       this.playbackTime = audio.currentTime
-      audio.addEventListener('ended', this.endListener)
-      audio.addEventListener('pause', this.pauseListener)
     },
-    pauseListener () {
+    pause () {
       this.isPlaying = false
       this.listenerActive = false
-      this.cleanupListeners()
     },
-    endListener () {
+    end () {
       this.isPlaying = false
       this.listenerActive = false
-      this.cleanupListeners()
-    },
-    cleanupListeners () {
-      const audio = this.$refs.callMessage
-      audio.removeEventListener('timeupdate', this.playbackListener)
-      audio.removeEventListener('ended', this.endListener)
-      audio.removeEventListener('pause', this.pauseListener)
     },
     toggleAudio () {
       const audio = this.$refs.callMessage

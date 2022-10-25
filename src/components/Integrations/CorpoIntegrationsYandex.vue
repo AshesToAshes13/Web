@@ -1,7 +1,7 @@
 <template>
   <IntegrationsModalBoxYandex
     v-if="showIntegration"
-    title="Интеграция с Яндекс.Почта"
+    title="Корпоративная Интеграция с Яндекс.Почта"
     @cancel="changeShowIntegrationState(false)"
     @onSave="emailIntegrate"
   />
@@ -16,7 +16,7 @@
     class="pt-[8px]"
     title="Интеграции"
     route="/settings/integrations"
-    :breadcrumbs="[{ name: 'Яндекс.Почта', selected: true }]"
+    :breadcrumbs="[{ name: 'Корпоративная Яндекс.Почта', selected: true }]"
   />
   <IntegrationsLimit v-if="showLimitMessage" />
 
@@ -35,6 +35,7 @@
         class="flex flex-col"
       >
         <button
+          v-if="shouldShowIntegrate"
           class="mt-[25px] rounded-[10px] w-[170px] h-[40px] font-[500] bg-orange-300 text-[#2E2E2E]"
           @click="changeShowIntegrationState(true)"
         >
@@ -65,12 +66,13 @@
         class="flex flex-col"
       >
         <span
-          class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
+          class="my-[20px] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
           Интегрировано с: {{ corpLogin }}
         </span>
         <button
-          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
+          v-if="shouldShowIntegrate"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию
@@ -175,6 +177,10 @@ export default {
       const tarif = this.$store.state.user.user.tarif
       return (tarif !== 'alpha' && tarif !== 'trial') || this.$store.getters.isLicenseExpired
     },
+    shouldShowIntegrate () {
+      const userType = this.employees[this.user.current_user_uid].type
+      return userType === 1 || userType === 2
+    },
     corpLogin () {
       return this.$store.state.corpYandexIntegration.login
     },
@@ -206,7 +212,6 @@ export default {
         organization: this.user.owner_email
       }).then(() => {
         this.changeShowIntegrationState(false)
-        this.$store.state.corpYandexIntegration.login = login
       })
     },
     removeIntegration () {

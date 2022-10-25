@@ -1,5 +1,7 @@
 import store from '@/store/index.js'
 import * as MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
+import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import { stripPhoneNumber } from '@/helpers/functions'
 
 export function createMegafonIntegration (obj) {
   store.commit(MEGAFON.SET_MEGAFON_INTEGRATION, {
@@ -27,6 +29,13 @@ export function updateMegafonIntegration (obj) {
       megafonUserLogin: user.megafon_user_login
     }))
   })
+}
+
+export function addMegafonCallToClientChat (obj) {
+  if (obj.obj.phone === stripPhoneNumber(store.state.clients.selectedClient.phone)) {
+    store.commit(CLIENT_FILES_AND_MESSAGES.PUSH_CALL_HISTORY, obj.obj)
+    store.commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
+  }
 }
 
 export function removeMegafonIntegration () {

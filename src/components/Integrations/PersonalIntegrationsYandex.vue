@@ -66,7 +66,7 @@
         <span
           class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
         >
-          Интегрировано с: {{ corpLogin }}
+          Интегрировано с: {{ persLogin }}
         </span>
         <button
           class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
@@ -198,7 +198,6 @@ export default {
         user_email: this.user.current_user_email
       }).then(() => {
         this.changeShowIntegrationState(false)
-        this.$store.state.personalYandexIntegration.login = login
       })
     },
     removeIntegration () {
