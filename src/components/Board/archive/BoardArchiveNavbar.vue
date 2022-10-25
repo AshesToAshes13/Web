@@ -1,8 +1,9 @@
 <template>
   <nav class="flex items-center justify-between pt-[15px] mb-[15px]">
-    <div class="font-roboto text-[16px] font-medium text-[#4C4C4D]">
-      Архив: {{ boardName }}
-    </div>
+    <NavBar
+      :title="'Архив: ' + boardName"
+    />
+    <div class="font-roboto text-[16px] font-medium text-[#4C4C4D]" />
     <div class="flex items-center gap-[10px]">
       <router-link
         :to="`/board/${boardUid}`"
@@ -63,9 +64,10 @@ import * as BOARD from '@/store/actions/boards'
 import PopMenuDivider from '@/components/Common/PopMenuDivider'
 import BoardSmallButton from '@/components/Board/buttons/BoardSmallButton'
 import NavBarSearch from '@/components/Navbar/NavBarSearch'
+import NavBar from '@/components/Navbar/NavBar.vue'
 
 export default {
-  components: { NavBarSearch, BoardSmallButton, PopMenuDivider, PopMenuItem, NavBarButtonIcon, PopMenu },
+  components: { NavBarSearch, BoardSmallButton, PopMenuDivider, PopMenuItem, NavBarButtonIcon, PopMenu, NavBar },
   props: {
     boardUid: {
       type: String,
