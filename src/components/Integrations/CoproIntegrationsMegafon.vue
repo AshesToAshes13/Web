@@ -197,7 +197,7 @@
         >
         <iframe
           v-if="!showPreviewPicture"
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          :src="`https://www.youtube.com/embed/JlsbiJv78qg?${!showPreviewPicture ? 'autoplay=1' : ''}`"
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
