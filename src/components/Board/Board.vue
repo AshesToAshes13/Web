@@ -264,7 +264,7 @@
             </div>
             <!--карточки -->
             <div
-              class="min-h-0 overflow-y-hidden scroll-style hover:overflow-y-auto"
+              class="min-h-0 overflow-y-hidden scroll-style hover:overflow-y-auto pt-[3px]"
               @scroll="handleCardsScroll($event, column.UID, column.cards.length)"
             >
               <draggable
