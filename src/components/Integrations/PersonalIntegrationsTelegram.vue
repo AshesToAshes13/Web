@@ -15,13 +15,13 @@
     >
       <span class="font-[700] text-[21px] leading-[29px] text-[#424242]">Персональная интеграция через Телеграм</span>
       <span
-        v-if="integration?.telegram_id"
+        v-if="integration.telegram_id"
         class="my-[20px]"
       >
         Интегрировано
       </span>
       <div
-        v-if="!integration?.telegram_id"
+        v-if="!integration.telegram_id"
         class="flex flex-col"
       >
         <a

@@ -97,7 +97,6 @@
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
           <span
-            v-if="message.isMyMessage"
             class="mr-[10px]"
           >
             {{ message.uid_client ? selectedCard.client_name : '' }}
@@ -107,12 +106,6 @@
             class="text-[#4C4C4D]"
           >
             {{ employees[message.uid_creator].name }}
-          </span>
-          <span
-            v-if="!message.isMyMessage"
-            class="ml-[10px]"
-          >
-            {{ message.uid_client ? selectedCard.client_name : '' }}
           </span>
         </span>
       </div>
