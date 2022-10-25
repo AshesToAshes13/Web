@@ -198,7 +198,6 @@ export default {
         user_email: this.user.current_user_email
       }).then(() => {
         this.changeShowIntegrationState(false)
-        this.$store.state.personalYandexIntegration.login = login
       })
     },
     removeIntegration () {

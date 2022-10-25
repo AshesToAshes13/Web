@@ -212,7 +212,6 @@ export default {
         organization: this.user.owner_email
       }).then(() => {
         this.changeShowIntegrationState(false)
-        this.$store.state.corpYandexIntegration.login = login
       })
     },
     removeIntegration () {
