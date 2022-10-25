@@ -14,24 +14,6 @@
         id="chat-component"
         class="grow relative overflow-hidden scroll-style overflow-y-auto"
       >
-        <template v-if="cardMessages && shouldntShowSkeletonMsg">
-          <div
-            v-for="(card, index) in cardMessages"
-            :key="index"
-          >
-            <div
-              class="mt-3 p-3 bg-[#f5f5f5] rounded-[10px] border font-roboto xl:text-[13px] 2xl:text-[16px] leading-[19px] font-medium text-[#4c4c4d]"
-            >
-              <ClientCardChatMessages
-                v-if="card"
-                :card-name="cards[index].name"
-                :messages="card"
-                :employees="employees"
-                :current-user-uid="user.current_user_uid"
-              />
-            </div>
-          </div>
-        </template>
         <!-- Chat skeleton -->
         <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
@@ -74,7 +56,6 @@ import ClientMessageInput from '@/components/Clients/ClientMessageInput'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput'
 import ClientChat from '@/components/Clients/ClientChat'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton'
-import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages'
 import ClientProperties from '@/components/Clients/ClientProperties'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
@@ -84,7 +65,7 @@ import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandm
 import { GET_CLIENT } from '@/store/actions/clients'
 
 export default {
-  components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientCardChatMessages, ClientProperties },
+  components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientProperties },
   props: {
     clientUid: {
       type: String,
