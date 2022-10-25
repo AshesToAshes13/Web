@@ -15,7 +15,6 @@ const actions = {
       const url = process.env.VUE_APP_INSPECTOR_API + 'telegram/'
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
-          console.log(resp.data)
           commit(
             PERSONAL_TELEGERAM.TELEGRAM_GET_PERSONAL_INTEGRATION,
             resp.data
