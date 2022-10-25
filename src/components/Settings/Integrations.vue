@@ -127,6 +127,7 @@ export default {
       return !this.$store.state.onboarding.visitedModals?.includes('integrations') && this.$store.state.onboarding.showModals
     },
     integrations () {
+      const [owner, admin, user] = [1, 2, 3]
       return [
         {
           title: 'Мои интеграции',
@@ -142,8 +143,7 @@ export default {
               icon: 'telegram'
             }
           ],
-          // TODO: сделать userType константами с понятным названием вроде OWNER, ADMIN
-          typeAccess: [1, 2, 3]
+          typeAccess: [owner, admin, user]
         },
         {
           title: 'Общие интеграции',
@@ -159,7 +159,7 @@ export default {
               icon: 'megafon'
             }
           ],
-          typeAccess: [1, 2, 3]
+          typeAccess: [owner, admin]
         }
       ]
     }
