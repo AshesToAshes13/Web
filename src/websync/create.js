@@ -6,7 +6,7 @@ import { createReglamentQuestion } from '@/websync/reglament_question'
 import { createReglamentAnswer } from '@/websync/reglament_answer'
 import { createCardMessage } from '@/websync/card_message.js'
 import { createIntegration } from '@/websync/yandexCorpInt.js'
-import { createMegafonIntegration } from '@/websync/megafonCorpInt.js'
+import { addMegafonCallToClientChat, createMegafonIntegration } from '@/websync/megafonCorpInt.js'
 import { createColor } from '@/websync/colors_dop.js'
 import { createEmployee } from '@/websync/employee.js'
 import { createProject } from '@/websync/project.js'
@@ -97,6 +97,9 @@ export default function processCreate (obj) {
       break
     case TYPES.TYPE_OBJECT_MEGAFON_CORP_INT:
       createMegafonIntegration(obj)
+      break
+    case TYPES.TYPE_OBJECT_MEGAFON_CALL:
+      addMegafonCallToClientChat(obj)
       break
     case TYPES.TYPE_OBJECT_PERIOD:
       break
