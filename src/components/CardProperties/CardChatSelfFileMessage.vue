@@ -41,6 +41,7 @@
       :file-uid="message.uid"
       :file-extension="fileExtension"
       :file-name="message.file_name"
+      :is-file-uploading="message.is_uploading"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :route-file-name="message.clientFile && 'clientfile'"

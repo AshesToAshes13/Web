@@ -426,7 +426,7 @@ export default {
       this.showClientModal = true
     },
     isFilePreloadable (fileExtension) {
-      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
+      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'wav']
       return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
