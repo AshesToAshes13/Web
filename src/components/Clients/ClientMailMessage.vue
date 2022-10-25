@@ -8,7 +8,7 @@
       :message="message.msg"
       @closeModal="showModal = false"
     />
-    <div class="flex flex-col w-[calc(100%-40px)] mr-[10px]">
+    <div class="flex flex-col max-w-[800px] mr-[10px]">
       <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
         <svg
           class="shrink-0"
