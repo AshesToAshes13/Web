@@ -19,7 +19,7 @@ export default {
   components: { ClientContent, ClientNavbar },
   computed: {
     selectedClient () {
-      return this.$store.state.clients.selectedClient ?? ''
+      return this.$store.state.clients.selectedClient ?? {}
     },
     breadcrumbs () {
       return [{ name: this.selectedClient?.name, selected: true }]
