@@ -16,7 +16,7 @@
         Сделать обложкой
       </PopMenuItem>
       <PopMenuItem
-        v-if="canDelete"
+        v-if="canDelete && !message.uid_client"
         icon="delete"
         type="delete"
         @click="onDeleteMessage"
@@ -38,6 +38,10 @@ export default {
     canDelete: {
       type: Boolean,
       default: true
+    },
+    message: {
+      type: Object,
+      default: () => ({})
     },
     isShowNewCover: {
       type: Boolean,

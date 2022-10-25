@@ -143,7 +143,6 @@
         :employee="employees[message.uid_creator]"
         @onQuoteMessage="setCurrentQuote"
         @onDeleteMessage="deleteMessage"
-        @deleteClientMessage="deleteClientMessage"
       />
       <CardChatSelfFileMessage
         v-if="message.isMyMessage && message.isFile"
@@ -205,7 +204,7 @@ export default {
       default: ''
     }
   },
-  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile', 'deleteClientMessage'],
+  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile'],
   computed: {
     cardMessages () {
       return this.messages.map((message) => ({

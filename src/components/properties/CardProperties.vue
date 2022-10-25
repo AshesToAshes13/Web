@@ -180,7 +180,6 @@
         :show-files-only="showFilesOnly"
         @onQuote="setCurrentQuote"
         @onDeleteMessage="deleteCardMessage"
-        @deleteClientMessage="deleteClientMessage"
         @onDeleteFile="deleteCardFileMessage"
       />
     </div>
@@ -564,9 +563,6 @@ export default {
     },
     deleteCardMessage (uid) {
       this.$store.dispatch(DELETE_MESSAGE_REQUEST, uid)
-    },
-    deleteClientMessage (uid) {
-      this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, uid)
     },
     deleteCardFileMessage (uid) {
       const messages = this.$store.state.cardfilesandmessages.messages
