@@ -150,7 +150,7 @@ export default {
           items: [
             {
               path: 'corporationYandexMail',
-              name: 'Яндекс.Почта',
+              name: 'Корпоративная Яндекс.Почта',
               icon: 'yandex'
             },
             {

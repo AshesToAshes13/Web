@@ -1,7 +1,7 @@
 <template>
   <IntegrationsModalBoxYandex
     v-if="showIntegration"
-    title="Интеграция с Яндекс.Почта"
+    title="Корпоративная Интеграция с Яндекс.Почта"
     @cancel="changeShowIntegrationState(false)"
     @onSave="emailIntegrate"
   />
@@ -16,7 +16,7 @@
     class="pt-[8px]"
     title="Интеграции"
     route="/settings/integrations"
-    :breadcrumbs="[{ name: 'Яндекс.Почта', selected: true }]"
+    :breadcrumbs="[{ name: 'Корпоративная Яндекс.Почта', selected: true }]"
   />
   <IntegrationsLimit v-if="showLimitMessage" />
 
