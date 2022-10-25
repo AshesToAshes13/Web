@@ -143,6 +143,7 @@
         :employee="employees[message.uid_creator]"
         @onQuoteMessage="setCurrentQuote"
         @onDeleteMessage="deleteMessage"
+        @deleteClientMessage="deleteClientMessage"
       />
       <CardChatSelfFileMessage
         v-if="message.isMyMessage && message.isFile"
@@ -204,7 +205,7 @@ export default {
       default: ''
     }
   },
-  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile'],
+  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile', 'deleteClientMessage'],
   computed: {
     cardMessages () {
       return this.messages.map((message) => ({
@@ -264,6 +265,9 @@ export default {
     },
     deleteMessage (uid) {
       this.$emit('onDeleteMessage', uid)
+    },
+    deleteClientMessage (uid) {
+      this.$emit('deleteClientMessage', uid)
     },
     deleteFile (uid) {
       this.$emit('onDeleteFile', uid)
