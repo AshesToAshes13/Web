@@ -40,11 +40,11 @@
     </p>
   </span>
   <div
-    v-if="message.emailSender"
+    v-if="message.type === 'yandex'"
     class="text-[#7E7E80] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
     :class="{ 'text-left': !isMessageIncludesIntegrationLogin(message), 'text-right': isMessageIncludesIntegrationLogin(message) }"
   >
-    <span class="w-[300px] overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">{{ message.emailSender }}</span>
+    <span class="w-[300px] overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">{{ message.email_creator }}</span>
   </div>
 </template>
 
@@ -80,8 +80,8 @@ export default {
       })
     },
     isMessageIncludesIntegrationLogin (msg) {
-      if (msg?.emailSender) {
-        return msg.emailSender.includes(this.corpYandexIntegration?.login) || msg.emailSender.includes(this.personalYandexIntegration?.login)
+      if (msg.type === 'yandex') {
+        return msg.email_creator.includes(this.corpYandexIntegration?.login) || msg.email_creator.includes(this.personalYandexIntegration?.login)
       }
       return false
     }

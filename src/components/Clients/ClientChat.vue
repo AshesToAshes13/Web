@@ -165,8 +165,8 @@ export default {
       return cardName
     },
     isMessageIncludesIntegrationLogin (msg) {
-      if (msg?.emailSender) {
-        return msg.emailSender.includes(this.corpYandexIntegration?.login) || msg.emailSender.includes(this.personalYandexIntegration?.login)
+      if (msg.type === 'yandex') {
+        return msg.email_creator.includes(this.corpYandexIntegration?.login) || msg.email_creator.includes(this.personalYandexIntegration?.login)
       }
       return false
     },
