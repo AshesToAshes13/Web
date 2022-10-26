@@ -1,20 +1,5 @@
 <template>
   <div class="flex flex-col pb-[100px]">
-    <!-- скрыл пока не готово -->
-    <template v-if="false">
-      <div
-        v-for="(card, index) in cardMessages"
-        :key="index"
-      >
-        <ClientCardChatMessages
-          v-if="card"
-          :card-name="cards[index]?.name"
-          :messages="card"
-          :employees="employees"
-          :current-user-uid="user.current_user_uid"
-        />
-      </div>
-    </template>
     <div
       v-for="(message, index) in clientMessages"
       :key="message"
@@ -25,7 +10,6 @@
       >
         {{ getMessageWeekDateString(message.date_create) }}
       </div>
-
       <!-- звоночек) -->
       <CardAndClientChatCallMessage
         v-if="message.type === 'call'"
@@ -87,7 +71,6 @@ import ClientChatInterlocutorFileMessage from '@/components/Clients/ClientChatIn
 import ClientChatSelfMessage from '@/components/Clients/ClientChatSelfMessage.vue'
 import ClientChatSelfFileMessage from '@/components/Clients/ClientChatSelfFileMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
-import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages'
 
 export default {
   components: {
@@ -96,8 +79,7 @@ export default {
     ClientChatSelfMessage,
     ClientChatQuoteMessage,
     ClientChatSelfFileMessage,
-    CardAndClientChatCallMessage,
-    ClientCardChatMessages
+    CardAndClientChatCallMessage
   },
   props: {
     key: {
@@ -135,7 +117,6 @@ export default {
       }))
     },
     cards () { return this.$store.state.clientfilesandmessages.cards.cards },
-    cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
     user () {
       return this.$store.state.user.user
     },
@@ -146,13 +127,16 @@ export default {
       return this.$store.state.personalYandexIntegration
     }
   },
+  mounted () {
+    console.log(this.clientMessages)
+  },
   methods: {
     onDeleteMessage (msgUid) {
       this.$store.dispatch(CLIENTS_CHAT.DELETE_MESSAGE_REQUEST, msgUid)
     },
     isMessageIncludesIntegrationLogin (msg) {
-      if (msg?.emailSender) {
-        return msg.emailSender.includes(this.corpYandexIntegration?.login) || msg.emailSender.includes(this.personalYandexIntegration?.login)
+      if (msg.type === 'yandex') {
+        return msg.email_creator.includes(this.corpYandexIntegration?.login) || msg.email_creator.includes(this.personalYandexIntegration?.login)
       }
       return false
     },
