@@ -739,7 +739,7 @@ export default {
           this.selectedTask.performerreaded = resp.data.performerreaded
           this.selectedTask.uid_performer = resp.data.uid_performer
           this.selectedTask.type = resp.data.type
-          if (this.$route.name === 'tasksToday' || this.$route.name === 'tasksByDate' || this.$route.params.employee_uid !== this.selectedTask.uid_performer) {
+          if (!this.shouldAddTaskIntoList(this.selectedTask)) {
             this.$store.commit(TASK.REMOVE_TASK, taskUid)
             this.$store.dispatch('asidePropertiesToggle', false)
           }

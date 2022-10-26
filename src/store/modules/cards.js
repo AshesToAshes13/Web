@@ -343,15 +343,18 @@ const mutations = {
         })
         return acc
       }, {})
+
       const card = cardsMap[cardUid]
       if (cardUid) console.log('select card', card, cardUid)
-      //
-      sendInspectorMessage({
-        type: 'cardOnline',
-        uid_user: store.state.user.user.current_user_uid,
-        uid_board: store.state.boardUid,
-        uid_card: cardUid
-      })
+
+      if (card) {
+        sendInspectorMessage({
+          type: 'cardOnline',
+          uid_user: store.state.user.user.current_user_uid,
+          uid_board: card.uid_board,
+          uid_card: card.uid
+        })
+      }
     }
     state.selectedCardUid = cardUid
   },

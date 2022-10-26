@@ -407,7 +407,12 @@ export default {
       return this.$store.state.employees.employeesByEmail[email]?.fotolink
     },
     clearContributors () {
-      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, this.reglament.uid)
+      const data = {
+        uidReglament: this.reglament.uid,
+        uidUser: this.user.current_user_uid
+      }
+      console.log(this.user.current_user_uid)
+      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
     dateToLabelFormatForComment (calendarDate) {
       const day = calendarDate.getDate()

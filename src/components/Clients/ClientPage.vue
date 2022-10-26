@@ -34,7 +34,7 @@ export default {
   methods: {
     deleteClient () {
       this.$store.dispatch(CLIENTS.REMOVE_CLIENT, this.selectedClient).then(() => {
-        this.$router.push('/clients')
+        this.$router.push('/clients?page=1')
       })
     }
   }

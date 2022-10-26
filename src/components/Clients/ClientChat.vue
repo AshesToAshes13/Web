@@ -10,7 +10,6 @@
       >
         {{ getMessageWeekDateString(message.date_create) }}
       </div>
-
       <!-- звоночек) -->
       <CardAndClientChatCallMessage
         v-if="message.type === 'call'"
@@ -117,9 +116,7 @@ export default {
         isMyMessage: (message?.uid_creator === this.currentUserUid) || this.isMessageIncludesIntegrationLogin(message)
       }))
     },
-    cardsMessages () {
-      return this.messages.filter((message) => message.uid_creator === 'inspector')
-    },
+    cards () { return this.$store.state.clientfilesandmessages.cards.cards },
     user () {
       return this.$store.state.user.user
     },
@@ -129,6 +126,9 @@ export default {
     personalYandexIntegration () {
       return this.$store.state.personalYandexIntegration
     }
+  },
+  mounted () {
+    console.log(this.clientMessages)
   },
   methods: {
     onDeleteMessage (msgUid) {

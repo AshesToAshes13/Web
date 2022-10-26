@@ -511,7 +511,11 @@ export default {
       this.$store.commit(REGLAMENTS.REGLAMENT_SET_RIGHT_ANSWER, data)
     },
     clearContributors () {
-      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, this.reglament.uid)
+      const data = {
+        uidReglament: this.reglament.uid,
+        uidUser: this.user.current_user_uid
+      }
+      this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
     editorName (email) {
       return this.$store.state.employees.employeesByEmail[email]?.name

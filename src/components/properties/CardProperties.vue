@@ -262,6 +262,9 @@ import ClientModal from '@/components/Clients/ClientModal'
 import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
 import ClientInfoSkeleton from '../CardProperties/ClientInfoSkeleton.vue'
+
+import { sendInspectorMessage } from '@/inspector'
+
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import * as CARD_FILES_AND_MESSAGES from '@/store/actions/cardfilesandmessages'
 
@@ -502,6 +505,12 @@ export default {
     },
     closeProperties () {
       this.$store.dispatch('asidePropertiesToggle', false)
+      sendInspectorMessage({
+        type: 'cardOnline',
+        uid_user: this.$store.state.user.user.current_user_uid,
+        uid_board: '',
+        uid_card: ''
+      })
     },
     changeComment (text) {
       if (!this.selectedCard) return
