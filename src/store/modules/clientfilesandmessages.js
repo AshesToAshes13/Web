@@ -259,7 +259,6 @@ const mutations = {
       }
       if (!state.messages.find(msg => msg.yandexId === data[i].messageId)) {
         state.messages.push({
-          type: 'yandexMail',
           date_create: data[i].date,
           msg: data[i].html,
           type: 'yandex',
