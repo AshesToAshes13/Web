@@ -11,7 +11,7 @@
         Коментарии
       </p>
       <div
-        id="chat-component"
+        ref="chatComponent"
         class="grow relative overflow-hidden scroll-style overflow-y-auto"
       >
         <!-- Chat skeleton -->
@@ -248,7 +248,7 @@ export default {
     },
     scrollDown () {
       this.$nextTick(() => {
-        const asideRight = document.getElementById('chat-component')
+        const asideRight = this.$refs.chatComponent
         asideRight.scrollTop = asideRight.scrollHeight
       })
     },
@@ -272,8 +272,10 @@ export default {
         megafonIntegration: this.isCorpMegafonIntegrated
       }
 
-      this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
-      this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
+      await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
+      await this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
+
+      this.scrollDown()
     }
   }
 }

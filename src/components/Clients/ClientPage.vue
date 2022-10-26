@@ -25,7 +25,6 @@ export default {
       return [{ name: this.selectedClient?.name, selected: true }]
     },
     clientUid () {
-      console.log('this.$router -->', this.$route)
       return this.$route.params.client_id
     }
   },
