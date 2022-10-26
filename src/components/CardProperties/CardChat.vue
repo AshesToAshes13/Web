@@ -75,7 +75,7 @@
       <!-- New creator -->
       <div
         v-if="employees[message.uid_creator]"
-        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px]"
+        class="text-[13px] font-[500] text-[#747476] flex flex-row leading-[15px] tracking-wide mb-[6px]"
         :class="{ 'justify-start': !message.isMyMessage, 'justify-end': message.isMyMessage }"
       >
         <span>
@@ -97,7 +97,6 @@
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
           <span
-            v-if="message.isMyMessage"
             class="mr-[10px]"
           >
             {{ message.uid_client ? selectedCard.client_name : '' }}
@@ -107,12 +106,6 @@
             class="text-[#4C4C4D]"
           >
             {{ employees[message.uid_creator].name }}
-          </span>
-          <span
-            v-if="!message.isMyMessage"
-            class="ml-[10px]"
-          >
-            {{ message.uid_client ? selectedCard.client_name : '' }}
           </span>
         </span>
       </div>
@@ -143,7 +136,6 @@
         :employee="employees[message.uid_creator]"
         @onQuoteMessage="setCurrentQuote"
         @onDeleteMessage="deleteMessage"
-        @deleteClientMessage="deleteClientMessage"
       />
       <CardChatSelfFileMessage
         v-if="message.isMyMessage && message.isFile"
@@ -205,7 +197,7 @@ export default {
       default: ''
     }
   },
-  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile', 'deleteClientMessage'],
+  emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile'],
   computed: {
     cardMessages () {
       return this.messages.map((message) => ({

@@ -197,7 +197,7 @@
         >
         <iframe
           v-if="!showPreviewPicture"
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          :src="`https://www.youtube.com/embed/xM9vMQmNx5Q?${!showPreviewPicture ? 'autoplay=1' : ''}`"
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -206,7 +206,7 @@
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона
         </p>
-        <p class="mt-[25px]">
+        <div class="mt-[25px]">
           <ul class="ml-[15px] text-[#4C4C4D] list-decimal font-[400] text-[16px] leading-[22px]">
             <li class="my-[30px]">
               <span class="mb-[25px]">Зарегистрируйтесь на сайте</span>
@@ -222,7 +222,7 @@
             <li class="my-[30px]">
               <span class="mb-[25px]">Зайдите в раздел "Настройки" и выберите "Интеграция с CRM" в правом верхнем углу.</span>
               <img
-                class="block max-w-[800px] mt-[50px]"
+                class="block mt-[50px]"
                 src="@/assets/images/megafon/step_1.png"
                 alt="Интерфейс личного кабинета"
               >
@@ -230,7 +230,7 @@
             <li class="my-[50px]">
               <span class="mb-[25px]">Найдите пункт "Ваша CRM" в списке и нажмите подключить.</span>
               <img
-                class="block max-w-[800px] mt-[50px]"
+                class="block mt-[50px]"
                 src="@/assets/images/megafon/step_2.png"
                 alt="Список CRM в ЛК"
               >
@@ -267,13 +267,13 @@
                 </li>
               </ul>
               <img
-                class="block max-w-[800px] mt-[50px]"
+                class="block mt-[50px]"
                 src="@/assets/images/megafon/step_3.png"
                 alt="Параметры CRM в ЛК"
               >
             </li>
           </ul>
-        </p>
+        </div>
       </article>
     </div>
   </div>

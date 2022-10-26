@@ -21,8 +21,9 @@
       </p>
       <div class="self-end group-hover:flex hidden">
         <CardChatMessageOptionsPopMenu
+          :message="message"
           @onQuoteMessage="$emit('onQuoteMessage', message)"
-          @onDeleteMessage="!message.uid_client ? $emit('onDeleteMessage', message.uid) : $emit('deleteClientMessage', message.uid)"
+          @onDeleteMessage="$emit('onDeleteMessage', message.uid)"
         >
           <div class="min-w-[30px] min-h-[16px] flex cursor-pointer items-end justify-center">
             <svg
@@ -70,7 +71,7 @@ export default {
     }
   },
 
-  emits: ['onQuoteMessage', 'onDeleteMessage', 'deleteClientMessage'],
+  emits: ['onQuoteMessage', 'onDeleteMessage'],
 
   methods: {
 

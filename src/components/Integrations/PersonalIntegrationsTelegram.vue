@@ -15,13 +15,13 @@
     >
       <span class="font-[700] text-[21px] leading-[29px] text-[#424242]">Персональная интеграция через Телеграм</span>
       <span
-        v-if="integration?.telegram_id"
+        v-if="integration.telegram_id"
         class="my-[20px]"
       >
         Интегрировано
       </span>
       <div
-        v-if="!integration?.telegram_id"
+        v-if="!integration.telegram_id"
         class="flex flex-col"
       >
         <a
@@ -39,7 +39,7 @@
         <img
           v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
-          class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          class="lg:w-[415px] lg:h-[240px] cursor-pointer mt-[35px] 2xl:w-[650px] 2xl:h-[360px]"
           @click="playVideo"
         >
         <iframe
@@ -48,7 +48,7 @@
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+          class="lg:w-[415px] lg:h-[240px] border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] 2xl:w-[650px] 2xl:h-[360px]"
         />
       </div>
       <div

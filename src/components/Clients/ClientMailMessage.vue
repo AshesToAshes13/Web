@@ -8,7 +8,7 @@
       :message="message.msg"
       @closeModal="showModal = false"
     />
-    <div class="flex flex-col w-[calc(100%-40px)] mr-[10px]">
+    <div class="flex flex-col max-w-[800px] mr-[10px]">
       <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
         <svg
           class="shrink-0"
@@ -33,7 +33,7 @@
       </div>
       <span
         v-if="true"
-        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] bg-[#F4F5F7] min-h-[60px]"
+        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] min-h-[60px]"
         v-html="croppedMessage"
       />
       <button

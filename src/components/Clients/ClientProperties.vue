@@ -87,7 +87,7 @@
       <contenteditable
         v-model="currClient.comment"
         tag="div"
-        contenteditable="true"
+        :contenteditable="true"
         :no-html="true"
         :no-nl="true"
         placeholder="Комментарий"

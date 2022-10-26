@@ -12,6 +12,7 @@ const state = {
   messages: [],
   files: [],
   status: 'loading',
+  yandexMsgsId: [],
   cards: {
     status: 'loading',
     messages: [],
@@ -183,20 +184,28 @@ const actions = {
     }
 
     if (data.corpYandexInt) {
-      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
+      dispatch(CORP_YANDEX.GET_CORP_EXISTS_MSGS, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
+      })
+      dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
       })
-      await dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
+      dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
       })
     }
 
     if (data.personalYandexInt) {
-      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
+      dispatch(PERSONAL_YANDEX.GET_PERSONAL_EXISTS_MSGS, data).then((resp) => {
+        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
+      })
+      dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
         console.log('personal msgs from us', resp.data)
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
       })
-      await dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
+      dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
         console.log('personal msgs to us', resp.data)
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
       })
@@ -233,20 +242,26 @@ const mutations = {
     }
   },
   [CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL]: (state, data) => {
-    console.log('data from req', data)
     for (let i = 0; i < data.length; i++) {
       if (data[i].html.lastIndexOf('--')) {
         data[i].html = data[i].html.slice(0, data[i].html.lastIndexOf('--'))
       }
-      state.messages.push({
-        date_create: data[i].date,
-        msg: data[i].html,
-        emailSender: data[i].from.value[0].address,
-        subject: data[i].subject,
-        uid_message: uuidv4(),
-        isYandex: true
-      })
+      if (!state.yandexMsgsId.includes(data[i].messageId)) {
+        state.messages.push({
+          date_create: data[i].date,
+          msg: data[i].html,
+          emailSender: data[i].from.value[0].address,
+          subject: data[i].subject,
+          yandexId: data[i].messageId,
+          uid_message: uuidv4(),
+          isYandex: true
+        })
+        state.yandexMsgsId.push(data[i].messageId)
+      }
     }
+    state.messages.sort((a, b) => {
+      return new Date(a.date_create) - new Date(b.date_create)
+    })
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     console.log('IN STATE MESSAGES', state.messages)

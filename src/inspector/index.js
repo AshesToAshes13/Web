@@ -99,7 +99,7 @@ function parseMessage (data) {
     } else if (
       ['userOnline', 'boardOnline', 'cardOnline'].includes(parsedData.type)
     ) {
-      updateOnlineMap(parsedData)
+      updateOnline(parsedData)
     }
 
     if (typeof parsedData?.type === 'number') {
@@ -110,7 +110,7 @@ function parseMessage (data) {
   }
 }
 
-function updateOnlineMap (message) {
+function updateOnline (message) {
   switch (message.type) {
     case 'userOnline':
       store.commit('ChangeUserOnline', {
@@ -125,6 +125,10 @@ function updateOnlineMap (message) {
       })
       break
     case 'cardOnline':
+      store.commit('ChangeUserOnlineBoard', {
+        uidUser: message.uid_user,
+        onlineBoardUid: message.uid_board
+      })
       store.commit('ChangeUserOnlineCard', {
         uidUser: message.uid_user,
         onlineCardUid: message.uid_card

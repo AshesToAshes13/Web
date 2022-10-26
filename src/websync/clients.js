@@ -4,9 +4,11 @@ import router from '@/router'
 
 function helperFuncUpdate () {
   if (router.currentRoute.value.path === '/clients') {
+    const currentPage = router.currentRoute.value.query.page
     const data = {
       organization: store.state.user.user?.owner_email,
-      page: router.currentRoute.value.query.page
+      // проверяем, если у пользователя почему-то страница меньше чем 1, то page будет 1(если не выдавать 1 будет ошибка), в обычном случае просто выдаем страницу на которой пользователь
+      page: currentPage < 1 ? 1 : currentPage
     }
     store.dispatch(CLIENTS.GET_CLIENTS_UPDATE, data)
   }

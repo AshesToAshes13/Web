@@ -12,6 +12,7 @@
     </audio>
   </div>
   <div
+    v-if="callLink"
     class="px-2 m-auto"
   >
     <div
@@ -27,6 +28,7 @@
           viewBox="0 0 12 14"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          class="cursor-pointer"
           @click="toggleAudio()"
         >
           <path
