@@ -1,5 +1,20 @@
 <template>
   <div class="flex flex-col pb-[100px]">
+    <!-- скрыл пока не готово -->
+    <template v-if="false">
+      <div
+        v-for="(card, index) in cardMessages"
+        :key="index"
+      >
+        <ClientCardChatMessages
+          v-if="card"
+          :card-name="cards[index]?.name"
+          :messages="card"
+          :employees="employees"
+          :current-user-uid="user.current_user_uid"
+        />
+      </div>
+    </template>
     <div
       v-for="(message, index) in clientMessages"
       :key="message"
@@ -72,6 +87,7 @@ import ClientChatInterlocutorFileMessage from '@/components/Clients/ClientChatIn
 import ClientChatSelfMessage from '@/components/Clients/ClientChatSelfMessage.vue'
 import ClientChatSelfFileMessage from '@/components/Clients/ClientChatSelfFileMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
+import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages'
 
 export default {
   components: {
@@ -80,7 +96,8 @@ export default {
     ClientChatSelfMessage,
     ClientChatQuoteMessage,
     ClientChatSelfFileMessage,
-    CardAndClientChatCallMessage
+    CardAndClientChatCallMessage,
+    ClientCardChatMessages
   },
   props: {
     key: {
@@ -117,9 +134,8 @@ export default {
         isMyMessage: (message?.uid_creator === this.currentUserUid) || this.isMessageIncludesIntegrationLogin(message)
       }))
     },
-    cardsMessages () {
-      return this.messages.filter((message) => message.uid_creator === 'inspector')
-    },
+    cards () { return this.$store.state.clientfilesandmessages.cards.cards },
+    cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
     user () {
       return this.$store.state.user.user
     },

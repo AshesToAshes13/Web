@@ -136,13 +136,15 @@ const actions = {
   },
   [REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS]: (
     { commit, dispatch },
-    uidReglament
+    data
   ) => {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
         'deleteUserReglamentAnswers?uid_reglament=' +
-        uidReglament
+        data.uidReglament +
+        '&uid_user=' + data.uidUser
+      console.log(url)
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
           commit(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS)
