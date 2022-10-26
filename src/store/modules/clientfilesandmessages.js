@@ -248,6 +248,7 @@ const mutations = {
       }
       if (!state.yandexMsgsId.includes(data[i].messageId)) {
         state.messages.push({
+          type: 'yandexMail',
           date_create: data[i].date,
           msg: data[i].html,
           emailSender: data[i].from.value[0].address,
@@ -265,7 +266,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     console.log('IN STATE MESSAGES', state.messages)
-    state.messages.push(data)
+    state.messages.push({ ...data, type: 'client' })
   },
   [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
     state.cards.status = 'success'

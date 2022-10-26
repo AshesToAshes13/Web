@@ -14,6 +14,20 @@
         ref="chatComponent"
         class="grow relative overflow-hidden scroll-style overflow-y-auto"
       >
+        <template v-if="cardMessages && shouldntShowSkeletonMsg">
+          <div
+            v-for="(card, index) in cardMessages"
+            :key="index"
+          >
+            <ClientCardChatMessages
+              v-if="card"
+              :card-name="cards[index].name"
+              :messages="card"
+              :employees="employees"
+              :current-user-uid="user.current_user_uid"
+            />
+          </div>
+        </template>
         <!-- Chat skeleton -->
         <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
@@ -54,6 +68,7 @@
 <script>
 import ClientMessageInput from '@/components/Clients/ClientMessageInput'
 import ClientMessageQuoteUnderInput from '@/components/Clients/ClientMessageQuoteUnderInput'
+import ClientCardChatMessages from '@/components/Clients/ClientCardChatMessages.vue'
 import ClientChat from '@/components/Clients/ClientChat'
 import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton'
 import ClientProperties from '@/components/Clients/ClientProperties'
@@ -65,7 +80,7 @@ import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandm
 import { GET_CLIENT } from '@/store/actions/clients'
 
 export default {
-  components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientProperties },
+  components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientProperties, ClientCardChatMessages },
   props: {
     clientUid: {
       type: String,
@@ -110,19 +125,7 @@ export default {
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
     },
-    clientMessages () {
-      const allMessages = [...this.$store.state.clientfilesandmessages.messages, ...this.$store.state.cardfilesandmessages.messages]
-      allMessages.sort((a, b) => {
-        if (!a.file_name && !a?.date_create.includes('Z')) {
-          a.date_create += 'Z'
-        }
-        if (!b.file_name && !b.date_create.includes('Z')) {
-          b.date_create += 'Z'
-        }
-        return new Date(a.date_create) - new Date(b.date_create)
-      })
-      return allMessages
-    },
+    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
     isCorpMegafonIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated
