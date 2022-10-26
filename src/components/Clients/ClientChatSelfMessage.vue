@@ -10,7 +10,7 @@
       class="flex break-words"
     >
       <ClientMailMessage
-        v-if="message?.emailSender"
+        v-if="message.type === 'yandex'"
         :message="message"
         :time="getMessageTimeString(message.date_create)"
       />

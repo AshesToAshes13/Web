@@ -13,7 +13,7 @@
         {{ getMessageWeekDateString(message.date_create) }}
       </div>
       <div
-        v-if="message?.emailSender"
+        v-if="message.type === 'yandex'"
         class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px]"
       >
         <span>
@@ -37,7 +37,7 @@
         </span>
       </div>
       <CardMailMessage
-        v-if="message?.emailSender"
+        v-if="message.type === 'yandex'"
         :message="message"
         :time="getMessageTimeString(message.date_create)"
         class="py-[10px] px-[15px] rounded-t-[12px] rounded-br-[12px] mb-[5px] float-left max-w-[300px] group bg-[#FCEBEB]"
@@ -118,7 +118,7 @@
       />
 
       <CardChatInterlocutorMessage
-        v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && !message.emailSender"
+        v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
         :message="message"
         :employee="employees[message.uid_creator]"
         @onQuoteMessage="setCurrentQuote"
@@ -131,7 +131,7 @@
       />
 
       <CardChatSelfMessage
-        v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && !message.emailSender"
+        v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
         :message="message"
         :employee="employees[message.uid_creator]"
         @onQuoteMessage="setCurrentQuote"

@@ -250,7 +250,8 @@ const mutations = {
         state.messages.push({
           date_create: data[i].date,
           msg: data[i].html,
-          emailSender: data[i].from.value[0].address,
+          type: 'yandex',
+          email_creator: data[i].from.value[0].address,
           subject: data[i].subject,
           yandexId: data[i].messageId,
           uid_message: uuidv4(),
