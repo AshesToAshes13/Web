@@ -33,7 +33,7 @@
       </div>
       <span
         v-if="true"
-        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] bg-[#F4F5F7] min-h-[60px]"
+        class="w-full break-words py-[10px] px-[17px] text-[#4C4C4D] mb-[14px] min-h-[60px]"
         v-html="croppedMessage"
       />
       <button
