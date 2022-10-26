@@ -12,7 +12,6 @@ const state = {
   messages: [],
   files: [],
   status: 'loading',
-  yandexMsgsId: [],
   cards: {
     status: 'loading',
     messages: [],
@@ -246,7 +245,7 @@ const mutations = {
       if (data[i].html.lastIndexOf('--')) {
         data[i].html = data[i].html.slice(0, data[i].html.lastIndexOf('--'))
       }
-      if (!state.yandexMsgsId.includes(data[i].messageId)) {
+      if (!state.messages.find(msg => msg.yandexId === data[i].messageId)) {
         state.messages.push({
           date_create: data[i].date,
           msg: data[i].html,
@@ -257,12 +256,12 @@ const mutations = {
           uid_message: uuidv4(),
           isYandex: true
         })
-        state.yandexMsgsId.push(data[i].messageId)
       }
     }
     state.messages.sort((a, b) => {
       return new Date(a.date_create) - new Date(b.date_create)
     })
+    console.log('state msgs is', state.messages)
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     console.log('IN STATE MESSAGES', state.messages)
