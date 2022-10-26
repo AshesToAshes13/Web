@@ -72,6 +72,27 @@ const actions = {
         })
     })
   },
+  [PERSONAL_YANDEX.GET_PERSONAL_EXISTS_MSGS]: ({ commit, dispatch }, emails) => {
+    return new Promise((resolve, reject) => {
+      const data = {
+        ya_login: state.login,
+        ya_password: state.password,
+        email: emails.clientEmail
+      }
+      const url =
+        process.env.VUE_APP_INSPECTOR_API +
+        'personalYandexInt/getExistPersMsgs'
+      axios({ url: url, method: 'POST', data: data })
+        .then((resp) => {
+          console.log('get all pers msgs success')
+          resolve(resp)
+        })
+        .catch((error) => {
+          console.log('error while connecting', error)
+          reject(error)
+        })
+    })
+  },
   [PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US]: (
     { commit, dispatch },
     emails
