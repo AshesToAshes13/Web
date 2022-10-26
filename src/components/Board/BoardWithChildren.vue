@@ -116,6 +116,12 @@ export default {
       uid_user: this.$store.state.user.user.current_user_uid,
       uid_board: ''
     })
+    sendInspectorMessage({
+      type: 'cardOnline',
+      uid_user: this.$store.state.user.user.current_user_uid,
+      uid_board: '',
+      uid_card: ''
+    })
   },
   methods: {
     canAddChild () {
