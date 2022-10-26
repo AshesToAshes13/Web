@@ -8,6 +8,7 @@
       :file-uid="message.uid"
       :file-extension="fileExtension"
       :file-name="message.file_name"
+      :file-action="message.clientFile && FILE_REQUEST"
       :file-date-create="getMessageTimeString(message.date_create)"
       :can-delete="false"
       preloader-color="#FCEBEB"
