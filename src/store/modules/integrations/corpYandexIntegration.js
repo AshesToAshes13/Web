@@ -70,6 +70,25 @@ const actions = {
         })
     })
   },
+  [CORP_YANDEX.GET_CORP_EXISTS_MSGS]: ({ commit, dispatch }, emails) => {
+    return new Promise((resolve, reject) => {
+      const data = {
+        ya_login: state.login,
+        ya_password: state.password,
+        email: emails.clientEmail
+      }
+      const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/getExistCorpMsgs'
+      axios({ url: url, method: 'POST', data: data })
+        .then((resp) => {
+          console.log('all corp exists msgs get success')
+          resolve(resp)
+        })
+        .catch((error) => {
+          console.log('error while get corp exists msgs', error)
+          reject(error)
+        })
+    })
+  },
   [CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US]: (
     { commit, dispatch },
     emails
