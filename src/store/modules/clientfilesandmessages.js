@@ -47,7 +47,13 @@ const actions = {
         const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsmsgs/bycard?uid=' + card.uid
         axios({ url: url, method: 'GET' })
           .then(resp => {
-            resolve(resp.data.msgs)
+            const preparedMessages = resp.data.msgs.map((message) => {
+              return {
+                ...message,
+                uid_card: card.uid
+              }
+            })
+            resolve(preparedMessages)
           }).catch(err => {
             reject(err)
           })
@@ -60,7 +66,13 @@ const actions = {
         const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsfiles/bycard?uid=' + card.uid
         axios({ url: url, method: 'GET' })
           .then(resp => {
-            resolve(resp)
+            const preparedFiles = resp.data.files.map((message) => {
+              return {
+                ...message,
+                uid_card: card.uid
+              }
+            })
+            resolve(preparedFiles)
           }).catch(err => {
             reject(err)
           })
@@ -308,7 +320,7 @@ const mutations = {
     const cardsFilesAndMessages = []
 
     for (let i = 0; i < cardsLength; i++) {
-      cardsFilesAndMessages.push([...messages[i], ...files[i].data.files])
+      cardsFilesAndMessages.push([...messages[i], ...files[i]])
     }
 
     state.cards.messages = cardsFilesAndMessages.map((card) => {
