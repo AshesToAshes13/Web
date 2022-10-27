@@ -104,19 +104,19 @@ export default {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || this.yandexIntegrationStatus
+      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
     },
     shouldntShowSkeletonMsg () {
-      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && !this.yandexIntegrationStatus
+      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
     },
     corpMsgsLoading () {
-      return this.$store.state.corpYandexIntegration.isLoading
+      return this.$store.getters.isCorpLoaded
     },
     personalYandexIntegration () {
       return this.$store.state.personalYandexIntegration.isIntegrated
     },
     personalMsgsLoading () {
-      return this.$store.state.personalYandexIntegration.isLoading
+      return this.$store.getters.isPersonalLoaded
     },
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
