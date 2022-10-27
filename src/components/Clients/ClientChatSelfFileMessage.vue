@@ -77,7 +77,7 @@ export default {
       :file-extension="fileExtension"
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       preloader-color="#F4F5F7"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
@@ -88,7 +88,7 @@ export default {
       :file-extension="fileExtension"
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -100,7 +100,7 @@ export default {
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :is-file-uploading="message.is_uploading"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -111,7 +111,7 @@ export default {
       :file-name="message.file_name"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :route-file-name="'clientfile'"
+      :route-file-name="!message.cardfile ? 'clientfile' : undefined"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
@@ -123,7 +123,7 @@ export default {
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :is-file-uploading="message.is_uploading"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />

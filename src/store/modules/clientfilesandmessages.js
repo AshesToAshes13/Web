@@ -315,6 +315,13 @@ const mutations = {
     const messages = resp[0]
     const files = resp[1]
 
+    // Устанавливаем флаг cardfile, чтобы в чате клиента понимать, где находятся файлы из карточки
+    files.forEach(cardWithFiles => {
+      for (let i = 0; i < cardWithFiles.length; i++) {
+        cardWithFiles[i].cardfile = true
+      }
+    })
+
     const cardsLength = messages.length === files.length ? messages.length : messages.length > files.length ? messages.length : files.length
     const cardsFilesAndMessages = []
 

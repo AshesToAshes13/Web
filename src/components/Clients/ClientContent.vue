@@ -87,8 +87,8 @@ export default {
     cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
     messages () {
       const allMessages = [...this.$store.state.clientfilesandmessages.messages]
-      for (let i = 0; i < this.$store.state.clientfilesandmessages.cards.messages.length; i++) {
-        allMessages.push(...this.$store.state.clientfilesandmessages.cards.messages[i])
+      for (let i = 0; i < this.cardMessages.length; i++) {
+        allMessages.push(...this.cardMessages[i])
       }
       allMessages.sort((a, b) => {
         return new Date(a.date_create) - new Date(b.date_create)

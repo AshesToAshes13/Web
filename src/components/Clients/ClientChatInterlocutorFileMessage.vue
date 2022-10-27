@@ -9,7 +9,7 @@
       :file-extension="fileExtension"
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       :can-delete="false"
       preloader-color="#FCEBEB"
       @onQuoteMessage="setCurrentQuote"
@@ -21,7 +21,7 @@
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
       :can-delete="false"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
     />
     <DocPreloader
@@ -32,7 +32,7 @@
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :can-delete="false"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
     />
     <MoviePreloader
@@ -43,7 +43,7 @@
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
       :can-delete="false"
-      :route-file-name="'clientfile'"
+      :route-file-name="!message.cardfile ? 'clientfile' : undefined"
       @onQuoteMessage="setCurrentQuote"
     />
     <FilePreloader
@@ -53,7 +53,7 @@
       :file-extension="fileExtension"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :file-action="'CLIENT_FILE_REQUEST'"
+      :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       :can-delete="false"
       @onQuoteMessage="setCurrentQuote"
     />
