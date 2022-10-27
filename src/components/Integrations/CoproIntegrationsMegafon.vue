@@ -26,7 +26,7 @@
   >
     <div class="w-[60%] px-[50px] py-[50px] h-[calc(100%-64px)] bg-white rounded-[8px]">
       <div
-        class="flex w-[450px] justify-center flex-col"
+        class="flex lg:w-[300px] xl:w-[450px] justify-center flex-col"
       >
         <div class="flex items-center">
           <span class="font-[700] text-[21px] leading-[29px] text-[#424242]">
@@ -192,7 +192,7 @@
         <img
           v-if="showPreviewPicture"
           src="@/assets/images/megafon/video-container.png"
-          class="cursor-pointer mt-[35px] w-[650px] h-[360px]"
+          class="cursor-pointer mt-[35px] lg:w-[415px] lg:h-[240px] 2xl:w-[650px] 2xl:h-[360px]"
           @click="playVideo"
         >
         <iframe
@@ -201,7 +201,7 @@
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px] lg:w-[415px] lg:h-[240px] 2xl:w-[650px] 2xl:h-[360px]"
         />
         <p class="mt-[40px] font-[700] text-[22px] leading-[31px]">
           Шаг 1. Добавьте ЛидерТаск в ЛК Мегафона

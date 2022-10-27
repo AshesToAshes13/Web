@@ -20,7 +20,11 @@ export function createClient (obj) {
 }
 
 export function removeClient (obj) {
+  if (router.currentRoute.value.params.client_id === obj) {
+    router.push('/clients')
+  }
   store.commit(CLIENTS.REMOVE_CLIENT, obj.obj)
+
   helperFuncUpdate()
 }
 

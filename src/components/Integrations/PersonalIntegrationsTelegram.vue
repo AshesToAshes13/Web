@@ -56,7 +56,7 @@
         class="flex flex-col"
       >
         <button
-          class="mt-[25px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
+          class="mt-[25px] rounded-[10px] w-[237px] h-[40px] text-[14px] bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="deleteIntegration"
         >
           Разорвать интеграцию

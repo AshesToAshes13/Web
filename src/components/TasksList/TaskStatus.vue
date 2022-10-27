@@ -1,6 +1,6 @@
 <template>
   <PopMenu
-    :disabled="task.type === 4 || task.type === 5 || notAllowedTaskStatus"
+    :disabled="task?.type === 4 || task?.type === 5 || notAllowedTaskStatus"
     placement="right"
   >
     <template #menu>
@@ -9,8 +9,8 @@
         :key="taskStatus"
       >
         <PopMenuItem
-          v-if="showStatusOrNot(task.type, taskStatus - 1) && task.status !== (taskStatus - 1)"
-          @click="changeTaskStatus(task.uid, taskStatus - 1)"
+          v-if="showStatusOrNot(task?.type, taskStatus - 1) && task?.status !== (taskStatus - 1)"
+          @click="changeTaskStatus(task?.uid, taskStatus - 1)"
         >
           <div
             class="border-2 border-gray-300 rounded-md flex items-center justify-center"
@@ -31,7 +31,7 @@
     </template>
     <div
       class="border-2 relative border-gray-300 rounded-md bg-white flex items-center justify-center"
-      :class="{ 'cursor-pointer': [1, 2, 3].includes(task.type), 'cursor-not-allowed': task.type === 4 || notAllowedTaskStatus }"
+      :class="{ 'cursor-pointer': [1, 2, 3].includes(task?.type), 'cursor-not-allowed': task?.type === 4 || notAllowedTaskStatus }"
       style="min-width:20px; min-height: 20px;"
     >
       <Icon

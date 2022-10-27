@@ -72,7 +72,6 @@
           v-if="commonBoards.length"
           title="Общие доски"
           :boards="commonBoards"
-          @goto="closeMenu"
         />
       </div>
     </div>

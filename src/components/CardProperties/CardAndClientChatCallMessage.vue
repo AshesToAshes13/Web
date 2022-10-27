@@ -28,7 +28,7 @@
           {{ getCallText(message) }}
         </p>
       </div>
-      <CardAndClientCallMessageVue
+      <CardAndClientCallPlayer
         :call-link="message.link"
       />
     </div>
@@ -49,11 +49,11 @@
 </template>
 
 <script>
-import CardAndClientCallMessageVue from './CardAndClientCallMessage.vue'
+import CardAndClientCallPlayer from './CardAndClientCallPlayer.vue'
 
 export default {
   components: {
-    CardAndClientCallMessageVue
+    CardAndClientCallPlayer
   },
   props: {
     message: {
@@ -65,7 +65,7 @@ export default {
     getCallText (message) {
       const minutes = Math.floor(message.duration / 60)
       const seconds = (message.duration % 60).toString().padStart(2, '0')
-      return (message.direction === 'in' ? 'Звонок от клиента' : `Звонок от ${message.user}`) + ` (${minutes}:${seconds})`
+      return (message.direction === 'in' ? 'Звонок от контакта' : `Звонок от ${message.user}`) + ` (${minutes}:${seconds})`
     },
     getMessageTimeString (dateCreate) {
       if (!dateCreate) return ''

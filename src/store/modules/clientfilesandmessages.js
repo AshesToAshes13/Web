@@ -33,8 +33,8 @@ const actions = {
           const cardsFiles = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_FILES, resp.data)
           Promise.all([cardsMessages, cardsFiles]).then((resp) => {
             commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MERGE_FILES, resp)
+            resolve(resp)
           })
-          resolve(resp)
         }).catch(err => {
           reject(err)
         })
@@ -46,7 +46,13 @@ const actions = {
         const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsmsgs/bycard?uid=' + card.uid
         axios({ url: url, method: 'GET' })
           .then(resp => {
-            resolve(resp.data.msgs)
+            const preparedMessages = resp.data.msgs.map((message) => {
+              return {
+                ...message,
+                uid_card: card.uid
+              }
+            })
+            resolve(preparedMessages)
           }).catch(err => {
             reject(err)
           })
@@ -59,7 +65,13 @@ const actions = {
         const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/cardsfiles/bycard?uid=' + card.uid
         axios({ url: url, method: 'GET' })
           .then(resp => {
-            resolve(resp)
+            const preparedFiles = resp.data.files.map((message) => {
+              return {
+                ...message,
+                uid_card: card.uid
+              }
+            })
+            resolve(preparedFiles)
           }).catch(err => {
             reject(err)
           })
@@ -92,13 +104,21 @@ const actions = {
         })
     })
   },
-  [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: ({ commit, dispatch }, messageUid) => {
+  [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: ({ commit, dispatch }, message) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat?uid_message=' + messageUid
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat'
+      const body = {
+        uid: message.uid,
+        deleted: 1,
+        uid_creator: message.uid_creator,
+        uid_client: message.uid_client,
+        uid_quote: message.uid_quote,
+        msg: message.msg
+      }
       console.log('store in store', store.state.user.user.owner_email)
-      axios({ url: url, method: 'PATCH', data: { organization: store.state.user.user.owner_email } })
+      axios({ url: url, method: 'PATCH', data: body })
         .then((resp) => {
-          commit(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, messageUid)
+          commit(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, message.uid)
           console.log(resp, 'delete')
           resolve(resp)
         })
@@ -186,12 +206,13 @@ const actions = {
       dispatch(CORP_YANDEX.GET_CORP_EXISTS_MSGS, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
         commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
-      })
-      dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
-        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
-      })
-      dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
-        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      }).then(() => {
+        dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
+          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        })
+        dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_TO_US, data).then((resp) => {
+          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        })
       })
     }
 
@@ -199,14 +220,15 @@ const actions = {
       dispatch(PERSONAL_YANDEX.GET_PERSONAL_EXISTS_MSGS, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
         commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
-      })
-      dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
-        console.log('personal msgs from us', resp.data)
-        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
-      })
-      dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
-        console.log('personal msgs to us', resp.data)
-        commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+      }).then(() => {
+        dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
+          console.log('personal msgs from us', resp.data)
+          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        })
+        dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_TO_US, data).then((resp) => {
+          console.log('personal msgs to us', resp.data)
+          commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
+        })
       })
     }
 
@@ -220,7 +242,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: (state, messageUid) => {
     for (let i = 0; i < state.messages.length; i++) {
-      if (state.messages[i].uid_message === messageUid) {
+      if (state.messages[i].uid === messageUid) {
         state.messages[i].deleted = 1
         return
       }
@@ -236,7 +258,7 @@ const mutations = {
         duration: data[i].duration,
         user: data[i].user,
         link: data[i].link,
-        uid_message: data[i].id
+        uid: data[i].id
       })
     }
   },
@@ -253,7 +275,7 @@ const mutations = {
           email_creator: data[i].from.value[0].address,
           subject: data[i].subject,
           yandexId: data[i].messageId,
-          uid_message: uuidv4(),
+          uid: uuidv4(),
           isYandex: true
         })
       }
@@ -265,7 +287,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_MESSAGE_REQUEST]: (state, data) => {
     console.log('IN STATE MESSAGES', state.messages)
-    state.messages.push(data)
+    state.messages.push({ ...data, type: 'client' })
   },
   [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
     state.cards.status = 'success'
@@ -303,11 +325,18 @@ const mutations = {
     const messages = resp[0]
     const files = resp[1]
 
+    // Устанавливаем флаг cardfile, чтобы в чате клиента понимать, где находятся файлы из карточки
+    files.forEach(cardWithFiles => {
+      for (let i = 0; i < cardWithFiles.length; i++) {
+        cardWithFiles[i].cardfile = true
+      }
+    })
+
     const cardsLength = messages.length === files.length ? messages.length : messages.length > files.length ? messages.length : files.length
     const cardsFilesAndMessages = []
 
     for (let i = 0; i < cardsLength; i++) {
-      cardsFilesAndMessages.push([...messages[i], ...files[i].data.files])
+      cardsFilesAndMessages.push([...messages[i], ...files[i]])
     }
 
     state.cards.messages = cardsFilesAndMessages.map((card) => {

@@ -301,6 +301,7 @@ export default {
       if (this.isClientInCard) {
         this.$store.dispatch(CLIENTS.GET_CLIENT, this.clientUid).then((resp) => {
           this.clientInCard = resp?.data || null
+          this.$store.state.cards.clientInCard = resp.data || null
           if (this.clientInCard?.uid) {
             console.log('load contact', this.clientInCard)
             const data = {

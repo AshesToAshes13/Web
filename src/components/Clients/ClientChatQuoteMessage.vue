@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-start space-x-[10px] w-full"
+    class="flex space-x-[10px] w-fit"
   >
     <svg
       width="14"
@@ -31,8 +31,8 @@
 export default {
   props: {
     quoteMessageUid: {
-      type: Object,
-      default: () => ({})
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
       let employee = ''
       let message = ''
       for (let i = 0; i < this.messages?.length; i++) {
-        if (this.messages[i].uid_message === this.quoteMessageUid) {
+        if (this.messages[i].uid === this.quoteMessageUid) {
           employee = this.employees[this.messages[i].uid_creator]
           message = this.messages[i]
         }

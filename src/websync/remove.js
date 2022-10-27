@@ -14,7 +14,7 @@ import { removeParentTag, removeTag } from '@/websync/tag'
 import { removeDepartment } from '@/websync/departments'
 import { removeBoard } from '@/websync/board'
 import { removeClient } from '@/websync/clients'
-import { removeClientChatMessage } from '@/websync/clients_chat'
+import { removeClientChatMessage, removeClientFile } from '@/websync/clients_chat'
 import { removeMegafonIntegration } from './megafonCorpInt'
 
 export default function processRemove (obj) {
@@ -97,6 +97,7 @@ export default function processRemove (obj) {
       removeClient(obj.obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_FILE:
+      removeClientFile(obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_MSG:
       removeClientChatMessage(obj)

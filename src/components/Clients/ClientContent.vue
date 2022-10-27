@@ -19,10 +19,11 @@
         <ClientChat
           v-if="shouldntShowSkeletonMsg"
           class="!pb-[20px]"
-          :messages="clientMessages"
+          :messages="messages"
           :current-user-uid="user.current_user_uid"
           :employees="employees"
           :show-files-only="showFilesOnly"
+          :client-name="selectedClient.name"
           @onQuote="setCurrentQuote"
           @onDeleteMessage="deleteClientMessage"
           @onDeleteFile="deleteClientFileMessage"
@@ -85,6 +86,16 @@ export default {
     },
     cards () { return this.$store.state.clientfilesandmessages.cards.cards },
     cardMessages () { return this.$store.state.clientfilesandmessages.cards.messages },
+    messages () {
+      const allMessages = [...this.$store.state.clientfilesandmessages.messages]
+      for (let i = 0; i < this.cardMessages.length; i++) {
+        allMessages.push(...this.cardMessages[i])
+      }
+      allMessages.sort((a, b) => {
+        return new Date(a.date_create) - new Date(b.date_create)
+      })
+      return allMessages
+    },
     user () { return this.$store.state.user.user },
     employees () { return this.$store.state.employees.employees },
     messagesStatus () { return this.$store.state.clientfilesandmessages.status },
@@ -110,19 +121,7 @@ export default {
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
     },
-    clientMessages () {
-      const allMessages = [...this.$store.state.clientfilesandmessages.messages, ...this.$store.state.cardfilesandmessages.messages]
-      allMessages.sort((a, b) => {
-        if (!a.file_name && !a?.date_create.includes('Z')) {
-          a.date_create += 'Z'
-        }
-        if (!b.file_name && !b.date_create.includes('Z')) {
-          b.date_create += 'Z'
-        }
-        return new Date(a.date_create) - new Date(b.date_create)
-      })
-      return allMessages
-    },
+    clientMessages () { return this.$store.state.clientfilesandmessages.messages },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
     isCorpMegafonIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated
@@ -166,12 +165,12 @@ export default {
       msgclient = msgclient.replaceAll('<', '&lt;')
       const uid = uuidv4()
       const data = {
-        uid_message: uid,
+        uid: uid,
         date_create: new Date().toISOString(),
         uid_creator: this.user.current_user_uid,
         uid_client: this.selectedClient.uid,
         organization: this.user.owner_email,
-        uid_quote: this.currentQuote.uid_message,
+        uid_quote: this.currentQuote.uid,
         deleted: 0,
         msg: msgclient
       }
@@ -273,7 +272,6 @@ export default {
       if (!this.selectedClient) {
         await this.$store.dispatch(GET_CLIENT, this.clientUid)
       }
-
       const data = {
         clientUid: this.selectedClient.uid,
         clientEmail: this.selectedClient.email,

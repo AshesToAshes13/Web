@@ -1,6 +1,6 @@
 <template>
   <ModalBox
-    :title="title"
+    title="Переместить колонку"
     ok="Переместить"
     @ok="onSave"
     @cancel="onCancel"
@@ -120,15 +120,7 @@ export default {
       type: Boolean,
       default: false
     },
-    title: {
-      type: String,
-      default: 'Переместить карточку'
-    },
     boardUid: {
-      type: String,
-      default: ''
-    },
-    stageUid: {
       type: String,
       default: ''
     }
@@ -171,6 +163,7 @@ export default {
       return result
     },
     favoriteBoards () {
+      const currentUserUid = this.user.current_user_uid
       const arr = []
       const boards = this.$store.state.boards.boards
       Object.keys(boards).forEach(key => {
@@ -178,7 +171,8 @@ export default {
           arr.push(boards[key])
         }
       })
-      return arr.sort((board1, board2) => { return board1.name.localeCompare(board2.name) })
+      const favoriteCanEdit = arr.filter(item => item.members[currentUserUid] === 1)
+      return favoriteCanEdit.sort((board1, board2) => { return board1.name.localeCompare(board2.name) })
     },
     commonBoards () {
       const arrCommonBoards = this.boardsCanEdit.filter(board => board.members[this.user.current_user_uid] !== 0)
@@ -228,7 +222,7 @@ export default {
         this.onCancel()
         return
       }
-      this.$emit('changePosition', { boardUid: this.selectedBoardUid, stageUid: this.selectedStageUid })
+      this.$emit('changePosition', { boardUid: this.selectedBoardUid })
     },
     boardsOpenedToggle () {
       this.boardsOpened = !this.boardsOpened

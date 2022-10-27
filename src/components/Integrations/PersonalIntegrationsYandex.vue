@@ -64,12 +64,12 @@
         class="flex flex-col"
       >
         <span
-          class="my-[20px] text-[16px] leading-[25px] text-gray-500 text-[#4C4C4D]"
+          class="my-[20px] text-[16px] leading-[25px] text-[#4C4C4D]"
         >
           Интегрировано с: {{ persLogin }}
         </span>
         <button
-          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] text-gray-500 bg-white border border-[#CD5C5C] text-[#4C4C4D]"
+          class="mt-[10px] rounded-[10px] w-[237px] h-[40px] text-[14px] bg-white border border-[#CD5C5C] text-[#4C4C4D]"
           @click="showRemoveIntegration(true)"
         >
           Разорвать интеграцию

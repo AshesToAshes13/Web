@@ -48,7 +48,6 @@
     <BoardModalBoxColumnBoardChange
       v-if="showChangeColumnBoard"
       :show="showChangeColumnBoard"
-      :stage-uid="selectedColumn"
       :board-uid="selectedColumn.uid_board"
       @cancel="showChangeColumnBoard = false"
       @changePosition="onChangeColumnBoard"

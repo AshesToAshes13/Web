@@ -15,6 +15,7 @@ import * as TYPES from '@/websync/types.js'
 import { updateCurrentUser } from '@/websync/user.js'
 import { updateClient } from '@/websync/clients.js'
 import { updateMegafonIntegration } from './megafonCorpInt'
+import { updateTelegramIntegration } from './telegramPersInt'
 
 export default function processUpdate (obj) {
   switch (obj.type) {
@@ -105,6 +106,9 @@ export default function processUpdate (obj) {
       break
     case TYPES.TYPE_OBJECT_CURRENT_USER:
       updateCurrentUser(obj)
+      break
+    case TYPES.TYPE_OBJECT_TELEGRAM_PERS_INT:
+      updateTelegramIntegration(obj)
       break
   }
 }

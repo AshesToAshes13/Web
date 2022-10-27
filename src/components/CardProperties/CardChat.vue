@@ -33,7 +33,7 @@
         </span>
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
-          <span>{{ selectedCard.client_name }}</span>
+          <span>{{ selectedCard?.client_name ?? clientNameFromDoitnow }}</span>
         </span>
       </div>
       <CardMailMessage
@@ -65,7 +65,7 @@
         </span>
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
-          <span>{{ selectedCard.client_name }}</span>
+          <span>{{ selectedCard?.client_name ?? clientNameFromDoitnow }}</span>
         </span>
       </div>
       <CardAndClientChatCallMessage
@@ -99,7 +99,7 @@
           <span
             class="mr-[10px]"
           >
-            {{ message.uid_client ? selectedCard.client_name : '' }}
+            {{ message.uid_client ? selectedCard?.client_name ?? clientNameFromDoitnow : '' }}
           </span>
           <span
             v-if="isChangedCreator(index)"
@@ -210,12 +210,9 @@ export default {
         isMyMessage: message.uid_creator === this.currentUserUid
       }))
     },
-    selectedCard () { return this.$store.getters.selectedCard },
-    corpYandexIntegration () {
-      return this.$store.state.corpYandexIntegration
-    },
-    personalYandexIntegration () {
-      return this.$store.state.personalYandexIntegration
+    selectedCard () { return this.$store.getters?.selectedCard },
+    clientNameFromDoitnow () {
+      return this.$store.state.cards.clientInCard.name
     }
   },
   methods: {
@@ -257,9 +254,6 @@ export default {
     },
     deleteMessage (uid) {
       this.$emit('onDeleteMessage', uid)
-    },
-    deleteClientMessage (uid) {
-      this.$emit('deleteClientMessage', uid)
     },
     deleteFile (uid) {
       this.$emit('onDeleteFile', uid)
