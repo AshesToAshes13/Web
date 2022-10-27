@@ -1,6 +1,6 @@
 <template>
   <ModalBox
-    :title="title"
+    title="Переместить колонку"
     ok="Переместить"
     @ok="onSave"
     @cancel="onCancel"
@@ -119,10 +119,6 @@ export default {
     show: {
       type: Boolean,
       default: false
-    },
-    title: {
-      type: String,
-      default: 'Переместить карточку'
     },
     boardUid: {
       type: String,
