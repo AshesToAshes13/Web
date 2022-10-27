@@ -947,6 +947,7 @@ export default {
           stageTo: lastStage
         })
         this.$store.dispatch(CARD.BOARD_CARDS_DELETE_STAGE, data)
+        this.$store.dispatch('asidePropertiesToggle', false)
       })
     },
     onChangeAllCardsPosition (position) {
