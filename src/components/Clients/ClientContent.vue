@@ -23,6 +23,7 @@
           :current-user-uid="user.current_user_uid"
           :employees="employees"
           :show-files-only="showFilesOnly"
+          :client-name="selectedClient.name"
           @onQuote="setCurrentQuote"
           @onDeleteMessage="deleteClientMessage"
           @onDeleteFile="deleteClientFileMessage"
@@ -271,7 +272,6 @@ export default {
       if (!this.selectedClient) {
         await this.$store.dispatch(GET_CLIENT, this.clientUid)
       }
-
       const data = {
         clientUid: this.selectedClient.uid,
         clientEmail: this.selectedClient.email,
