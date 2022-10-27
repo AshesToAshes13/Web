@@ -9,7 +9,7 @@ export function createMessage (obj) {
   if (selectedClient.value) {
     // сейчас вебсокет держит более одного подключения, поэтому создан такой костыль
     for (let i = 0; i < messages.value.length; i++) {
-      if (messages.value[i].uid_message === obj.obj.uid_message) {
+      if (messages.value[i].uid === obj.obj.uid) {
         store.commit(CLIENTS_CHAT.CREATE_MESSAGE_REQUEST, obj.obj)
         return
       }
@@ -21,8 +21,8 @@ export function createMessage (obj) {
 export function removeClientChatMessage (obj) {
   if (selectedClient.value) {
     for (let i = 0; i < messages.value.length; i++) {
-      if (messages.value[i].uid_message === obj.obj) {
-        store.commit(CLIENTS_CHAT.DELETE_MESSAGE_REQUEST, obj.obj)
+      if (messages.value[i].uid === obj.obj.uid) {
+        store.commit(CLIENTS_CHAT.DELETE_MESSAGE_REQUEST, obj.obj.uid)
         return
       }
     }

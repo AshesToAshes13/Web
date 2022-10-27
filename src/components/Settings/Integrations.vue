@@ -127,6 +127,7 @@ export default {
       return !this.$store.state.onboarding.visitedModals?.includes('integrations') && this.$store.state.onboarding.showModals
     },
     integrations () {
+      // TODO: вынести это в константы
       const [owner, admin, user] = [1, 2, 3]
       return [
         {

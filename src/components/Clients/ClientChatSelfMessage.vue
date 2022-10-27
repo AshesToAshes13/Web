@@ -38,7 +38,7 @@
         <ClientChatMessageOptionsPopMenu
           v-if="shouldShowOptions"
           @onQuoteMessage="$emit('onQuoteMessage', message)"
-          @onDeleteMessage="$emit('onDeleteMessage', message.uid_message)"
+          @onDeleteMessage="$emit('onDeleteMessage', message)"
         >
           <div class="min-w-[30px] min-h-[16px] flex cursor-pointer items-end justify-center">
             <svg

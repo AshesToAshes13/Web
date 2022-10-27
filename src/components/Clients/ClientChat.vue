@@ -1,3 +1,5 @@
+<!-- TODO: Переделать вёрстку с float на flex или грид, а то менять что-то - это мучение -->
+<!-- TODO: Вынести логику позиционирования сообщений в этот компонент. Компоненты ClientChatSelfMessage и т.д. не должны сами себе проставлять float -->
 <template>
   <div class="flex flex-col pb-[100px]">
     <div
@@ -72,39 +74,42 @@
         <span>{{ clientName }}</span>
       </div>
 
-      <ClientChatQuoteMessage
-        v-if="message.hasQuote"
-        :quote-message-uid="message.uid_quote"
-      />
-      <ClientChatInterlocutorMessage
-        v-if="!message.isMyMessage && message.isMessage && !showFilesOnly"
-        :message="message"
-        :should-show-options="shouldShowOptions(message)"
-        :employee="employees[message.uid_creator]"
-        @onQuoteMessage="setCurrentQuote"
-      />
-      <ClientChatInterlocutorFileMessage
-        v-if="!message.isMyMessage && message.isFile"
-        :message="message"
-        :employee="employees[message.uid_creator]"
-        @onQuoteMessage="setCurrentQuote"
-      />
+      <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
+        <ClientChatQuoteMessage
+          v-if="message.hasQuote"
+          class="mb-[5px]"
+          :quote-message-uid="message.uid_quote"
+        />
+        <ClientChatInterlocutorMessage
+          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly"
+          :message="message"
+          :should-show-options="shouldShowOptions(message)"
+          :employee="employees[message.uid_creator]"
+          @onQuoteMessage="setCurrentQuote"
+        />
+        <ClientChatInterlocutorFileMessage
+          v-if="!message.isMyMessage && message.isFile"
+          :message="message"
+          :employee="employees[message.uid_creator]"
+          @onQuoteMessage="setCurrentQuote"
+        />
 
-      <ClientChatSelfMessage
-        v-if="message.isMyMessage && message.isMessage && !showFilesOnly"
-        :message="message"
-        :employee="employees[message.uid_creator]"
-        :should-show-options="shouldShowOptions(message)"
-        @onDeleteMessage="onDeleteMessage"
-        @onQuoteMessage="setCurrentQuote"
-      />
-      <ClientChatSelfFileMessage
-        v-if="message.isMyMessage && message.isFile"
-        :message="message"
-        :employee="employees[message.uid_creator]"
-        @onQuoteMessage="setCurrentQuote"
-        @onDeleteFile="deleteFile"
-      />
+        <ClientChatSelfMessage
+          v-if="message.isMyMessage && message.isMessage && !showFilesOnly"
+          :message="message"
+          :employee="employees[message.uid_creator]"
+          :should-show-options="shouldShowOptions(message)"
+          @onDeleteMessage="onDeleteMessage"
+          @onQuoteMessage="setCurrentQuote"
+        />
+        <ClientChatSelfFileMessage
+          v-if="message.isMyMessage && message.isFile"
+          :message="message"
+          :employee="employees[message.uid_creator]"
+          @onQuoteMessage="setCurrentQuote"
+          @onDeleteFile="deleteFile"
+        />
+      </div>
     </div>
   </div>
 </template>

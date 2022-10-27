@@ -104,13 +104,21 @@ const actions = {
         })
     })
   },
-  [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: ({ commit, dispatch }, messageUid) => {
+  [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: ({ commit, dispatch }, message) => {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat?uid_message=' + messageUid
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients_chat'
+      const body = {
+        uid: message.uid,
+        deleted: 1,
+        uid_creator: message.uid_creator,
+        uid_client: message.uid_client,
+        uid_quote: message.uid_quote,
+        msg: message.msg
+      }
       console.log('store in store', store.state.user.user.owner_email)
-      axios({ url: url, method: 'PATCH', data: { organization: store.state.user.user.owner_email } })
+      axios({ url: url, method: 'PATCH', data: body })
         .then((resp) => {
-          commit(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, messageUid)
+          commit(CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST, message.uid)
           console.log(resp, 'delete')
           resolve(resp)
         })
@@ -232,7 +240,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.DELETE_MESSAGE_REQUEST]: (state, messageUid) => {
     for (let i = 0; i < state.messages.length; i++) {
-      if (state.messages[i].uid_message === messageUid) {
+      if (state.messages[i].uid === messageUid) {
         state.messages[i].deleted = 1
         return
       }
@@ -248,7 +256,7 @@ const mutations = {
         duration: data[i].duration,
         user: data[i].user,
         link: data[i].link,
-        uid_message: data[i].id
+        uid: data[i].id
       })
     }
   },
@@ -265,7 +273,7 @@ const mutations = {
           email_creator: data[i].from.value[0].address,
           subject: data[i].subject,
           yandexId: data[i].messageId,
-          uid_message: uuidv4(),
+          uid: uuidv4(),
           isYandex: true
         })
       }

@@ -165,12 +165,12 @@ export default {
       msgclient = msgclient.replaceAll('<', '&lt;')
       const uid = uuidv4()
       const data = {
-        uid_message: uid,
+        uid: uid,
         date_create: new Date().toISOString(),
         uid_creator: this.user.current_user_uid,
         uid_client: this.selectedClient.uid,
         organization: this.user.owner_email,
-        uid_quote: this.currentQuote.uid_message,
+        uid_quote: this.currentQuote.uid,
         deleted: 0,
         msg: msgclient
       }
