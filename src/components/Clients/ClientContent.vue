@@ -127,6 +127,13 @@ export default {
       return this.$store.state.corpMegafonIntegration.isIntegrated
     }
   },
+  watch: {
+    shouldntShowSkeletonMsg (newVal) {
+      if (newVal) {
+        this.scrollDown()
+      }
+    }
+  },
   mounted () {
     this.loadMessages()
   },
@@ -284,8 +291,6 @@ export default {
 
       await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
       await this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
-
-      this.scrollDown()
     }
   }
 }
