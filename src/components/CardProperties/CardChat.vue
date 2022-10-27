@@ -210,13 +210,7 @@ export default {
         isMyMessage: message.uid_creator === this.currentUserUid
       }))
     },
-    selectedCard () { return this.$store.getters.selectedCard },
-    corpYandexIntegration () {
-      return this.$store.state.corpYandexIntegration
-    },
-    personalYandexIntegration () {
-      return this.$store.state.personalYandexIntegration
-    }
+    selectedCard () { return this.$store.getters.selectedCard }
   },
   methods: {
     getMessageByUid (uid) {
@@ -257,9 +251,6 @@ export default {
     },
     deleteMessage (uid) {
       this.$emit('onDeleteMessage', uid)
-    },
-    deleteClientMessage (uid) {
-      this.$emit('deleteClientMessage', uid)
     },
     deleteFile (uid) {
       this.$emit('onDeleteFile', uid)
