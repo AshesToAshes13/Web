@@ -127,10 +127,6 @@ export default {
     boardUid: {
       type: String,
       default: ''
-    },
-    stageUid: {
-      type: String,
-      default: ''
     }
   },
   emits: ['changePosition', 'cancel'],
@@ -228,7 +224,7 @@ export default {
         this.onCancel()
         return
       }
-      this.$emit('changePosition', { boardUid: this.selectedBoardUid, stageUid: this.selectedStageUid })
+      this.$emit('changePosition', { boardUid: this.selectedBoardUid })
     },
     boardsOpenedToggle () {
       this.boardsOpened = !this.boardsOpened
