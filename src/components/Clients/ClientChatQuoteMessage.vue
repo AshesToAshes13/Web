@@ -31,8 +31,8 @@
 export default {
   props: {
     quoteMessageUid: {
-      type: Object,
-      default: () => ({})
+      type: String,
+      default: ''
     }
   },
   computed: {

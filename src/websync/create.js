@@ -18,7 +18,7 @@ import * as TYPES from '@/websync/types.js'
 import { createDepartment } from '@/websync/departments'
 import { addBoard } from '@/websync/board'
 import { createClient } from '@/websync/clients'
-import { createMessage } from '@/websync/clients_chat'
+import { createClientFile, createClientMessage } from '@/websync/clients_chat'
 
 function currentUserUid () {
   return store?.state?.user?.user?.current_user_uid
@@ -152,9 +152,10 @@ export default function processCreate (obj) {
       createClient(obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_FILE:
+      createClientFile(obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_MSG:
-      createMessage(obj)
+      createClientMessage(obj)
       break
     case TYPES.TYPE_OBJECT_CLIENT_EXT_FIELD:
       break
