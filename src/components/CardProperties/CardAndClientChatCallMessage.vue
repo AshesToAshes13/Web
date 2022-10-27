@@ -28,7 +28,7 @@
           {{ getCallText(message) }}
         </p>
       </div>
-      <CardAndClientCallMessageVue
+      <CardAndClientCallPlayer
         :call-link="message.link"
       />
     </div>
@@ -49,11 +49,11 @@
 </template>
 
 <script>
-import CardAndClientCallMessageVue from './CardAndClientCallMessage.vue'
+import CardAndClientCallPlayer from './CardAndClientCallPlayer.vue'
 
 export default {
   components: {
-    CardAndClientCallMessageVue
+    CardAndClientCallPlayer
   },
   props: {
     message: {
