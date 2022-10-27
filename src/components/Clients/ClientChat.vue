@@ -8,7 +8,7 @@
     >
       <div
         v-if="isChangedDate(index)"
-        class="text-[#88888A] text-[11px] font-[400] leading-[13px] tracking-wide my-[15px] text-center"
+        class="text-[#88888A] text-[11px] font-[400] leading-[13px] tracking-wide mb-[25px] mt-[15px] text-center"
       >
         {{ getMessageWeekDateString(message.date_create) }}
       </div>
@@ -20,7 +20,7 @@
       <!-- New creator -->
       <div
         v-if="message.uid_card"
-        class="flex flex-row text-[#7E7E80] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
+        class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
         :class="{ 'justify-start': !isMyMessage(message), 'justify-end': isMyMessage(message) }"
       >
         <svg
@@ -44,7 +44,7 @@
       </div>
       <div
         v-if="isChangedCreator(index) && employees[message.uid_creator]"
-        class="text-[#7E7E80] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
+        class="text-[#7E7E80] text-[13px] font-[500] mt-[12px] leading-[15px] tracking-wide mb-[6px]"
         :class="{ 'text-left': !isMyMessage(message), 'text-right': isMyMessage(message) }"
       >
         <span class="w-[300px] overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
@@ -53,7 +53,7 @@
       </div>
       <div
         v-if="message.type === 'yandex'"
-        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px]"
+        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px]"
         :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
       >
         <span>
