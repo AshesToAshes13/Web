@@ -33,8 +33,8 @@ const actions = {
           const cardsFiles = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_FILES, resp.data)
           Promise.all([cardsMessages, cardsFiles]).then((resp) => {
             commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MERGE_FILES, resp)
+            resolve(resp)
           })
-          resolve(resp)
         }).catch(err => {
           reject(err)
         })
