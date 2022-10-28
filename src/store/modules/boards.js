@@ -61,7 +61,7 @@ const actions = {
       deps: [],
       children: [],
       members: {
-        [store.state?.user?.user?.current_user_Uid]: 1
+        [store.state?.user?.user?.current_user_uid]: 1
       },
       ...data
     }
