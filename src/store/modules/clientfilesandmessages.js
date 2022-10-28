@@ -198,6 +198,8 @@ const actions = {
 
     const response = await Promise.all(promises)
 
+    commit(CLIENT_FILES_AND_MESSAGES.SUCCESS_LOADING)
+
     if (data.megafonIntegration) {
       commit(CLIENT_FILES_AND_MESSAGES.PUSH_CALL_HISTORY, response.find((promise) => promise.name === 'megafonHistory').res.data)
     }
@@ -235,6 +237,9 @@ const actions = {
 }
 
 const mutations = {
+  [CLIENT_FILES_AND_MESSAGES.SUCCESS_LOADING]: (state) => {
+    state.status = 'success'
+  },
   [CLIENT_FILES_AND_MESSAGES.MESSAGES_REQUEST]: state => {
     state.status = 'loading'
   },
@@ -302,11 +307,9 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.MESSAGES_SUCCESS]: (state, resp) => {
     state.messages = resp.data
-    state.status = 'success'
   },
   [CLIENT_FILES_AND_MESSAGES.FILES_SUCCESS]: (state, resp) => {
     state.files = resp.data
-    state.status = 'success'
   },
   [CLIENT_FILES_AND_MESSAGES.CHANGE_MESSAGE]: (state, data) => {
     for (let i = 0; i < state.messages.length; i++) {
