@@ -681,7 +681,6 @@ export default {
         this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date())
         reglament.last_comment_text = this.$store.state.reglaments.lastCommentText
         reglament.last_comment_date = this.$store.state.reglaments.lastCommentDate
-        this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, reglament)
       }).catch(() => {
         this.saveContentStatus = 2
       })
