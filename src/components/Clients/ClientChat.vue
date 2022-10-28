@@ -38,7 +38,7 @@
             fill="#747476"
           />
         </svg>
-        <div>
+        <div class="w-[600px] truncate">
           {{ getCardName(message.uid_card) }}
         </div>
       </div>
