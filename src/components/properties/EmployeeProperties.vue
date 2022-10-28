@@ -298,6 +298,21 @@ export default {
       console.log(msg, param)
     },
     removeEmployee () {
+      // удаляем отдел у сотрудника
+      if (this.selectedEmployee?.uid_dep !== '00000000-0000-0000-0000-000000000000') {
+        const data = {
+          uidDepartmentOld: this.selectedEmployee?.uid_dep,
+          uidDepartmentNew: '00000000-0000-0000-0000-000000000000',
+          uidEmp: this.selectedEmployee?.uid,
+          emailEmp: this.selectedEmployee?.email,
+          depOld: this.$store.state.departments.deps[this.selectedEmployee?.uid_dep],
+          depNew: '00000000-0000-0000-0000-000000000000'
+        }
+        this.$store.dispatch(EMPLOYEE.CHANGE_EMPLOYEE_DEP, data)
+          .then((resp) => {
+            console.log('setDepartment', resp, data)
+          })
+      }
       this.showConfirm = false
       this.$store.dispatch(EMPLOYEE.REMOVE_EMPLOYEE_REQUEST, this.selectedEmployee)
         .then(() => {
