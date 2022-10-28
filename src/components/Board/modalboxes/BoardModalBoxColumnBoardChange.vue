@@ -140,7 +140,7 @@ export default {
     boardsCanEdit () {
       const currentUserUid = this.user.current_user_uid
       return Object.values(this.$store.state.boards.boards).filter(
-        item => item.members[currentUserUid] === 1 || item.deps[this.currentUserDepUid] === 1
+        item => (item.members[currentUserUid] === 1 || item.deps[this.currentUserDepUid] === 1) && (item.uid !== this.boardUid)
       )
     },
     currentUserDepUid () {
@@ -174,7 +174,7 @@ export default {
           arr.push(boards[key])
         }
       })
-      const favoriteCanEdit = arr.filter(item => item.members[currentUserUid] === 1)
+      const favoriteCanEdit = arr.filter(item => item.members[currentUserUid] === 1 && item.uid !== this.boardUid)
       return favoriteCanEdit.sort((board1, board2) => { return board1.name.localeCompare(board2.name) })
     },
     commonBoards () {
