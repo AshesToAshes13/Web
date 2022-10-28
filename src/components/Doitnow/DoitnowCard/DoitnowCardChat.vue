@@ -13,7 +13,7 @@
     @createCardFile="createCardFile"
     @onPaste="onPasteEvent"
   />
-  <CardChat
+  <DoitnowChatInCard
     :messages="cardMessages"
     :current-user-uid="userUid"
     :employees="employees"
@@ -32,16 +32,16 @@ import {
   DELETE_FILE_REQUEST,
   DELETE_MESSAGE_REQUEST
 } from '@/store/actions/cardfilesandmessages'
-import CardChat from '@/components/CardProperties/CardChat'
 import CardMessageInput from '@/components/CardProperties/CardMessageInput'
 import { uuidv4 } from '@/helpers/functions'
 import CardMessageQuoteUnderInput from '@/components/CardProperties/CardMessageQuoteUnderInput'
+import DoitnowChatInCard from './DoitnowChatInCard.vue'
 
 export default {
   components: {
     CardMessageQuoteUnderInput,
     CardMessageInput,
-    CardChat
+    DoitnowChatInCard
   },
   props: {
     cardMessages: {

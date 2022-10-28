@@ -33,7 +33,7 @@
         </span>
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
-          <span>{{ selectedCard?.client_name }}</span>
+          <span>{{ clientNameFromDoitnow }}</span>
         </span>
       </div>
       <CardMailMessage
@@ -65,7 +65,7 @@
         </span>
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
-          <span>{{ selectedCard?.client_name }}</span>
+          <span>{{ clientNameFromDoitnow }}</span>
         </span>
       </div>
       <CardAndClientChatCallMessage
@@ -99,7 +99,7 @@
           <span
             class="mr-[10px]"
           >
-            {{ message.uid_client ? selectedCard?.client_name : '' }}
+            {{ message.uid_client ? clientNameFromDoitnow : '' }}
           </span>
           <span
             v-if="isChangedCreator(index)"
@@ -155,7 +155,7 @@ import CardChatSelfMessage from '@/components/CardProperties/CardChatSelfMessage
 import CardChatSelfFileMessage from '@/components/CardProperties/CardChatSelfFileMessage.vue'
 import CardChatQuoteMessage from '@/components/CardProperties/CardChatQuoteMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
-import CardMailMessage from './CardMailMessage.vue'
+import CardMailMessage from '@/components/CardProperties/CardMailMessage.vue'
 
 export default {
   components: {
@@ -206,7 +206,9 @@ export default {
         isMyMessage: message.uid_creator === this.currentUserUid
       }))
     },
-    selectedCard () { return this.$store.getters?.selectedCard }
+    clientNameFromDoitnow () {
+      return this.$store.state.cards.clientInCard.name
+    }
   },
   methods: {
     getMessageByUid (uid) {
