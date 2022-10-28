@@ -86,6 +86,7 @@ import NavBar from '@/components/Navbar/NavBar'
 import Icon from '@/components/Icon.vue'
 import ListBlocItem from '@/components/Common/ListBlocItem.vue'
 import IntegrationsOnboarding from '@/components/Settings/IntegrationsOnboarding.vue'
+import { INTEGRATIONS_TYPE_ACCESS } from '@/constants'
 import { USER_VIEWED_MODAL } from '@/store/actions/onboarding.js'
 
 import gridView from '@/icons/grid-view.js'
@@ -103,7 +104,41 @@ export default {
   data () {
     return {
       gridView,
-      listView
+      listView,
+      integrations: [
+        {
+          title: 'Мои интеграции',
+          items: [
+            {
+              path: 'personalYandexMail',
+              name: 'Яндекс.Почта',
+              icon: 'yandex'
+            },
+            {
+              path: 'personalTelegram',
+              name: 'Телеграм',
+              icon: 'telegram'
+            }
+          ],
+          typeAccess: [INTEGRATIONS_TYPE_ACCESS.OWNER, INTEGRATIONS_TYPE_ACCESS.ADMIN, INTEGRATIONS_TYPE_ACCESS.USER]
+        },
+        {
+          title: 'Общие интеграции',
+          items: [
+            {
+              path: 'corporationYandexMail',
+              name: 'Корпоративная Яндекс.Почта',
+              icon: 'yandex'
+            },
+            {
+              path: 'corporateMegafon',
+              name: 'Мегафон',
+              icon: 'megafon'
+            }
+          ],
+          typeAccess: [INTEGRATIONS_TYPE_ACCESS.OWNER, INTEGRATIONS_TYPE_ACCESS.ADMIN]
+        }
+      ]
     }
   },
   computed: {
@@ -125,44 +160,6 @@ export default {
     },
     displayModal () {
       return !this.$store.state.onboarding.visitedModals?.includes('integrations') && this.$store.state.onboarding.showModals
-    },
-    integrations () {
-      // TODO: вынести это в константы
-      const [owner, admin, user] = [1, 2, 3]
-      return [
-        {
-          title: 'Мои интеграции',
-          items: [
-            {
-              path: 'personalYandexMail',
-              name: 'Яндекс.Почта',
-              icon: 'yandex'
-            },
-            {
-              path: 'personalTelegram',
-              name: 'Телеграм',
-              icon: 'telegram'
-            }
-          ],
-          typeAccess: [owner, admin, user]
-        },
-        {
-          title: 'Общие интеграции',
-          items: [
-            {
-              path: 'corporationYandexMail',
-              name: 'Корпоративная Яндекс.Почта',
-              icon: 'yandex'
-            },
-            {
-              path: 'corporateMegafon',
-              name: 'Мегафон',
-              icon: 'megafon'
-            }
-          ],
-          typeAccess: [owner, admin]
-        }
-      ]
     }
   },
   methods: {
