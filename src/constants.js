@@ -28,3 +28,9 @@ export const CARD_STAGE = {
   ARCHIVE_SUCCESS: 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67',
   ARCHIVE_REJECT: 'e70af5e2-6108-4c02-9a7d-f4efee78d28c'
 }
+
+export const INTEGRATIONS_TYPE_ACCESS = {
+  OWNER: 1,
+  ADMIN: 2,
+  USER: 3
+}

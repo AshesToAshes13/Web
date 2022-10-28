@@ -23,25 +23,27 @@
         :class="{ 'justify-start': !isMyMessage(message), 'justify-end': isMyMessage(message) }"
       >
         <div
-          v-if="message.uid_card && isChangedCreator(index)"
+          v-if="message.uid_card"
           class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
         >
-          <svg
-            class="mr-[5px]"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2.33333 2.5H13C13.7353 2.5 14.3333 3.098 14.3333 3.83333V11.8333C14.3333 12.5687 13.7353 13.1667 13 13.1667H2.33333C1.598 13.1667 1 12.5687 1 11.8333V3.83333C1 3.098 1.598 2.5 2.33333 2.5ZM2.33333 3.83333V11.8333H13.0007L13 3.83333H2.33333ZM7.33335 7.17188H4.00002C3.91161 7.17188 3.82683 7.13676 3.76432 7.07424C3.70181 7.01173 3.66669 6.92695 3.66669 6.83854V5.50521C3.66669 5.4168 3.70181 5.33202 3.76432 5.26951C3.82683 5.20699 3.91161 5.17188 4.00002 5.17188H7.33335C7.42176 5.17188 7.50654 5.20699 7.56906 5.26951C7.63157 5.33202 7.66669 5.4168 7.66669 5.50521V6.83854C7.66669 6.92695 7.63157 7.01173 7.56906 7.07424C7.50654 7.13676 7.42176 7.17188 7.33335 7.17188ZM7.66669 9.17188H3.66669V10.5059H7.66669V9.17188ZM11.6667 9.17188H8.33335V10.5059H11.6667V9.17188Z"
-              fill="#747476"
-            />
-          </svg>
           <div>
+            <svg
+              class="mr-[5px]"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.33333 2.5H13C13.7353 2.5 14.3333 3.098 14.3333 3.83333V11.8333C14.3333 12.5687 13.7353 13.1667 13 13.1667H2.33333C1.598 13.1667 1 12.5687 1 11.8333V3.83333C1 3.098 1.598 2.5 2.33333 2.5ZM2.33333 3.83333V11.8333H13.0007L13 3.83333H2.33333ZM7.33335 7.17188H4.00002C3.91161 7.17188 3.82683 7.13676 3.76432 7.07424C3.70181 7.01173 3.66669 6.92695 3.66669 6.83854V5.50521C3.66669 5.4168 3.70181 5.33202 3.76432 5.26951C3.82683 5.20699 3.91161 5.17188 4.00002 5.17188H7.33335C7.42176 5.17188 7.50654 5.20699 7.56906 5.26951C7.63157 5.33202 7.66669 5.4168 7.66669 5.50521V6.83854C7.66669 6.92695 7.63157 7.01173 7.56906 7.07424C7.50654 7.13676 7.42176 7.17188 7.33335 7.17188ZM7.66669 9.17188H3.66669V10.5059H7.66669V9.17188ZM11.6667 9.17188H8.33335V10.5059H11.6667V9.17188Z"
+                fill="#747476"
+              />
+            </svg>
+          </div>
+          <div class="whitespace-nowrap max-w-[250px] truncate">
             {{ getCardName(message.uid_card) }}
           </div>
         </div>
@@ -87,7 +89,6 @@
       >
         <ClientMailMessage
           :class="{ 'bg-[#FCEBEB] rounded-br-[12px]': !isOurIntegrationMailMessage(message), 'rounded-bl-[12px] bg-[#F4F5F7]': isOurIntegrationMailMessage(message) }"
-
           :message="message"
           :time="getMessageTimeString(message.date_create)"
           class="py-[10px] px-[15px] flex rounded-t-[12px] mb-[5px] w-[55%]"
