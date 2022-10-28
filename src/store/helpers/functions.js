@@ -67,7 +67,7 @@ export function setLocalStorageItem (key, value) {
 }
 
 export function writeCache (key, blob) {
-  if (blob.size > 2_000_000) return // Don't cache if blob size is over 2M
+  if (blob.size > 2_000_000 || blob.size === 0) return // Don't cache if blob size is over 2M
   const reader = new FileReader()
   reader.readAsDataURL(blob)
   reader.onloadend = function () {
