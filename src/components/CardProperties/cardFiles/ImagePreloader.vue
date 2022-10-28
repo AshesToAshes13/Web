@@ -82,7 +82,6 @@ import { writeCache } from '@/store/helpers/functions'
 
 import CardChatMessageOptionsPopMenu from '@/components/CardProperties/CardChatMessageOptionsPopMenu.vue'
 import * as CARDS from '@/store/actions/cards'
-import * as CARDSFILESANDMESSAGES from '@/store/actions/cardfilesandmessages'
 import ChatLoader from '../ChatLoader.vue'
 
 export default {
@@ -125,7 +124,7 @@ export default {
     }
   },
 
-  emits: ['onQuoteMessage', 'onDeleteMessage', 'onNewCardCover'],
+  emits: ['onQuoteMessage', 'onDeleteMessage'],
 
   data () {
     return {
@@ -163,22 +162,17 @@ export default {
     },
     onNewCardCover () {
       const formData = new FormData()
-      formData.append('files[0]', this.blobImageForm)
+      formData.append('files[0]', this.blobImageForm, this.fileName)
       const data = {
         cardUid: this.selectedCard?.uid,
         file: formData
       }
+
       this.$store.dispatch(CARDS.CHANGE_CARD_COVER, data).then((resp) => {
         if (this.selectedCard) {
           this.selectedCard.cover_link = resp.data.card.cover_link
           this.selectedCard.cover_color = resp.data.card.cover_color
         }
-        let messageBlob
-        for (const message of resp.data.newfiles) {
-          messageBlob = message
-        }
-        console.log(messageBlob)
-        this.$store.dispatch(CARDSFILESANDMESSAGES.DELETE_FILE_REQUEST, messageBlob.uid)
       })
     },
 
