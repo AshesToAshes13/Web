@@ -70,14 +70,18 @@ const getters = {
   getNavigator: (state) => state.navigator,
   navigatorStatus: (state) => state.status,
   sortedNavigator: (state) => {
-    state.navigator?.new_private_boards[1]?.items.sort((board1, board2) => {
-      return board1?.name.localeCompare(board2?.name)
-    })
-    state.navigator?.new_private_projects[1]?.items.sort(
-      (project1, project2) => {
+    const boards = state.navigator?.new_private_boards
+    if (boards?.length > 1) {
+      boards[1]?.items.sort((board1, board2) => {
+        return board1?.name.localeCompare(board2?.name)
+      })
+    }
+    const projects = state.navigator?.new_private_projects
+    if (projects?.length > 1) {
+      projects[1]?.items.sort((project1, project2) => {
         return project1?.name.localeCompare(project2?.name)
-      }
-    )
+      })
+    }
     return state.navigator
   }
 }
@@ -745,14 +749,11 @@ const mutations = {
   },
   NAVIGATOR_UPDATE_PROJECT: (state, project) => {
     state.navigator.new_private_projects.forEach((privateProject) => {
-      visitChildren(
-        privateProject.items,
-        (value, index) => {
-          if (value.uid === project.uid) {
-            Object.assign(value, project)
-          }
+      visitChildren(privateProject.items, (value, index) => {
+        if (value.uid === project.uid) {
+          Object.assign(value, project)
         }
-      )
+      })
     })
   },
   [NAVIGATOR_ERROR]: (state) => {
