@@ -25,7 +25,7 @@
         </svg>
 
         <p
-          class="text-[14px] text-[#747476] font-[400] break-words"
+          class="text-[14px] text-[#747476] font-[400] break-words overflow-hidden"
           :title="message.subject"
         >
           Тема: {{ message.subject }}
