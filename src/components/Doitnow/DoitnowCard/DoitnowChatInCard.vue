@@ -195,8 +195,16 @@ export default {
   },
   emits: ['onQuote', 'onDeleteMessage', 'onDeleteFile'],
   computed: {
+    sortedMessages () {
+      const msgs = this.messages
+      msgs.sort((a, b) => {
+        return new Date(a.date_create) - new Date(b.date_create)
+      })
+      msgs.reverse()
+      return msgs
+    },
     cardMessages () {
-      return this.messages.map((message) => ({
+      return this.sortedMessages.map((message) => ({
         ...message,
         isFile: !!message.uid_file,
         isMessage: !message.uid_file && message.uid_creator !== 'inspector',
@@ -212,7 +220,7 @@ export default {
   },
   methods: {
     getMessageByUid (uid) {
-      for (const message of this.messages) {
+      for (const message of this.sortedMessages) {
         if (message.uid === uid) return message
       }
       return false
@@ -231,16 +239,16 @@ export default {
     },
     isChangedDate (index) {
       if (index === 0) return true
-      const messagePrev = this.messages[index - 1]
-      const messageCurr = this.messages[index]
+      const messagePrev = this.sortedMessages[index - 1]
+      const messageCurr = this.sortedMessages[index]
       if (!messagePrev || !messageCurr) return false
       return new Date(messagePrev.date_create).toDateString() !==
             new Date(messageCurr.date_create).toDateString()
     },
     isChangedCreator (index) {
       if (index === 0) return true
-      const messagePrev = this.messages[index - 1]
-      const messageCurr = this.messages[index]
+      const messagePrev = this.sortedMessages[index - 1]
+      const messageCurr = this.sortedMessages[index]
       if (!messagePrev || !messageCurr) return false
       return messagePrev.uid_creator !== messageCurr.uid_creator
     },
