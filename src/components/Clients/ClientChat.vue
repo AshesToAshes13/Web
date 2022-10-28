@@ -53,8 +53,7 @@
       </div>
       <div
         v-if="message.type === 'yandex'"
-        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px]"
-        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
+        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px] justify-start"
       >
         <span>
           <svg
@@ -73,7 +72,12 @@
         </span>
         <span>{{ clientName }}</span>
       </div>
-
+      <ClientMailMessage
+        v-if="message.type === 'yandex'"
+        :message="message"
+        :time="getMessageTimeString(message.date_create)"
+        class="bg-[#F4F5F7] py-[10px] px-[15px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] w-fit group"
+      />
       <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
         <ClientChatQuoteMessage
           v-if="message.hasQuote"
@@ -81,7 +85,7 @@
           :quote-message-uid="message.uid_quote"
         />
         <ClientChatInterlocutorMessage
-          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly"
+          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
           :message="message"
           :should-show-options="shouldShowOptions(message)"
           :employee="employees[message.uid_creator]"
@@ -95,7 +99,7 @@
         />
 
         <ClientChatSelfMessage
-          v-if="message.isMyMessage && message.isMessage && !showFilesOnly"
+          v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
           :message="message"
           :employee="employees[message.uid_creator]"
           :should-show-options="shouldShowOptions(message)"
@@ -122,6 +126,7 @@ import ClientChatInterlocutorFileMessage from '@/components/Clients/ClientChatIn
 import ClientChatSelfMessage from '@/components/Clients/ClientChatSelfMessage.vue'
 import ClientChatSelfFileMessage from '@/components/Clients/ClientChatSelfFileMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
+import ClientMailMessage from './ClientMailMessage.vue'
 
 export default {
   components: {
@@ -130,7 +135,8 @@ export default {
     ClientChatSelfMessage,
     ClientChatQuoteMessage,
     ClientChatSelfFileMessage,
-    CardAndClientChatCallMessage
+    CardAndClientChatCallMessage,
+    ClientMailMessage
   },
   props: {
     key: {
@@ -194,6 +200,18 @@ export default {
         }
       }
       return cardName
+    },
+    getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
+      const date = new Date(dateCreate)
+      return date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
     },
     isMessageIncludesIntegrationLogin (msg) {
       if (msg.type === 'yandex') {
