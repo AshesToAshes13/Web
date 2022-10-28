@@ -563,7 +563,6 @@ export default {
       this.$store.commit('addCardMessages', uploadingFiles)
       this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
         if (this.selectedCard) this.selectedCard.has_files = true
-        this.scrollDown()
       })
     },
     setCurrentQuote (quote) {
