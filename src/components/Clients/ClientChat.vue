@@ -83,7 +83,7 @@
         v-if="message.type === 'yandex'"
         :message="message"
         :time="getMessageTimeString(message.date_create)"
-        class="bg-[#F4F5F7] py-[10px] px-[15px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] w-fit group"
+        class="bg-[#F4F5F7] py-[10px] px-[15px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] w-[55%] group"
       />
       <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
         <ClientChatQuoteMessage

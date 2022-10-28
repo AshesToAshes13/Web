@@ -23,9 +23,9 @@
             fill="#747476"
           />
         </svg>
-
         <p
-          class="text-[14px] text-[#747476] font-[400] break-words overflow-hidden"
+          class="text-[14px] w-full text-[#747476] font-[400] overflow-hidden truncate"
+          style="word-break: break-words;"
           :title="message.subject"
         >
           Тема: {{ message.subject }}

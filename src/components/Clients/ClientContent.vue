@@ -6,7 +6,7 @@
         :cards="cards"
       />
     </div>
-    <div class="grow flex flex-col px-[25px] pt-[30px] pb-[10px] border-l border-[rgba(0,0,0,.1)]">
+    <div class="grow flex flex-col px-[25px] pt-[30px] pb-[10px] border-l w-full border-[rgba(0,0,0,.1)]">
       <p class="font-[700] font-[18px] text-[#424242] mb-[30px]">
         Комментарии
       </p>
