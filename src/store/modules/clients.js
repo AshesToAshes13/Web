@@ -15,12 +15,17 @@ const state = getDefaultState()
 const actions = {
   [CLIENTS.GET_CLIENTS]: ({ commit, dispatch, state }, data) => {
     return new Promise((resolve, reject) => {
-      let url = process.env.VUE_APP_INSPECTOR_API + 'clients?organization=' + data.organization + '&page=' + (data.page - 1)
-      if (data.search) {
-        url += '&search=' + data.search
-      }
+      const url = process.env.VUE_APP_INSPECTOR_API + 'clients'
       commit(CLIENTS.GET_CLIENTS)
-      axios({ url: url, method: 'GET' })
+      axios({
+        url: url,
+        method: 'GET',
+        params: {
+          organization: data.organization,
+          page: data.page - 1,
+          search: data.search
+        }
+      })
         .then((resp) => {
           commit(CLIENTS.SET_CLIENTS, resp.data.clients)
           commit('UPDATE_PAGING', resp.data.paging)
