@@ -402,6 +402,7 @@ const mutations = {
   },
   [REGLAMENTS.CHANGE_REGLAMENT]: (state, reglament) => {
     state.reglaments[reglament.uid] = reglament
+    state.reglaments[reglament.uid].reminder = reglament.reminder || null
   },
   [REGLAMENTS.RESET_REGLAMENTS_STATE]: (state) => {
     Object.assign(state, getDefaultState())
