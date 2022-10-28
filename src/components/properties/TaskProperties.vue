@@ -492,9 +492,7 @@ export default {
             // to refine
             this.selectedTask.status = TASK_STATUS.TASK_REFINE
           }
-          this.scrollToBottom()
         })
-      this.scrollToBottom()
     },
     deleteTask () {
       this.showConfirm = false

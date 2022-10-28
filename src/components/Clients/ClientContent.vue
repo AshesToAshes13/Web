@@ -6,7 +6,7 @@
         :cards="cards"
       />
     </div>
-    <div class="grow flex flex-col px-[25px] pt-[30px] pb-[10px] border-l border-[rgba(0,0,0,.1)]">
+    <div class="grow flex flex-col px-[25px] pt-[30px] pb-[10px] border-l w-full border-[rgba(0,0,0,.1)]">
       <p class="font-[700] font-[18px] text-[#424242] mb-[30px]">
         Комментарии
       </p>
@@ -104,19 +104,19 @@ export default {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || this.yandexIntegrationStatus
+      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
     },
     shouldntShowSkeletonMsg () {
-      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && !this.yandexIntegrationStatus
+      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
     },
     corpMsgsLoading () {
-      return this.$store.state.corpYandexIntegration.isLoading
+      return this.$store.getters.isCorpLoaded
     },
     personalYandexIntegration () {
       return this.$store.state.personalYandexIntegration.isIntegrated
     },
     personalMsgsLoading () {
-      return this.$store.state.personalYandexIntegration.isLoading
+      return this.$store.getters.isPersonalLoaded
     },
     yandexIntegrationStatus () {
       return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
@@ -125,6 +125,13 @@ export default {
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
     isCorpMegafonIntegrated () {
       return this.$store.state.corpMegafonIntegration.isIntegrated
+    }
+  },
+  watch: {
+    shouldntShowSkeletonMsg (newVal) {
+      if (newVal) {
+        this.scrollDown()
+      }
     }
   },
   mounted () {
@@ -230,7 +237,6 @@ export default {
       this.$store.commit('addClientMessages', uploadingFiles)
       this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST, data).then(() => {
         if (this.selectedClient) this.selectedClient.has_files = true
-        this.scrollDown()
       })
     },
     isFilePreloadable (fileExtension) {
@@ -284,8 +290,6 @@ export default {
 
       await this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
       await this.$store.dispatch(GET_CLIENT_CARDS, this.selectedClient.uid)
-
-      this.scrollDown()
     }
   }
 }

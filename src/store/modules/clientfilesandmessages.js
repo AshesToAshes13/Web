@@ -28,7 +28,7 @@ const actions = {
       axios({ url: url, method: 'GET' })
         .then(resp => {
           resp.data = resp.data.filter(item => { return item?.uid })
-          commit(CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS, resp.data)
+          commit(CLIENT_FILES_AND_MESSAGES.SET_CLIENT_CARDS, resp.data)
           const cardsMessages = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_MESSAGES, resp.data)
           const cardsFiles = dispatch(CLIENT_FILES_AND_MESSAGES.GET_CARDS_FILES, resp.data)
           Promise.all([cardsMessages, cardsFiles]).then((resp) => {
@@ -205,7 +205,6 @@ const actions = {
     if (data.corpYandexInt) {
       dispatch(CORP_YANDEX.GET_CORP_EXISTS_MSGS, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
-        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
       }).then(() => {
         dispatch(CORP_YANDEX.YANDEX_GET_CORP_MESSAGES_SENT_FROM_US, data).then((resp) => {
           commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
@@ -219,7 +218,6 @@ const actions = {
     if (data.personalYandexInt) {
       dispatch(PERSONAL_YANDEX.GET_PERSONAL_EXISTS_MSGS, data).then((resp) => {
         commit(CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL, resp.data)
-        commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
       }).then(() => {
         dispatch(PERSONAL_YANDEX.YANDEX_GET_PERSONAL_MESSAGES_SENT_FROM_US, data).then((resp) => {
           console.log('personal msgs from us', resp.data)
@@ -289,8 +287,10 @@ const mutations = {
     console.log('IN STATE MESSAGES', state.messages)
     state.messages.push({ ...data, type: 'client' })
   },
-  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state, data) => {
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state) => {
     state.cards.status = 'success'
+  },
+  [CLIENT_FILES_AND_MESSAGES.SET_CLIENT_CARDS]: (state, data) => {
     state.cards.cards = data
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
@@ -350,6 +350,7 @@ const mutations = {
         return new Date(a.date_create) - new Date(b.date_create)
       })
     })
+    state.cards.status = 'success'
   },
   [CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES]: (state) => {
     console.log('merged')

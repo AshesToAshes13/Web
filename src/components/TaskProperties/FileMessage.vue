@@ -133,7 +133,7 @@
       :id="'any_' + file.uid"
       target="_blank"
       download
-      @click="getAnyUrl( file.uid, file.file_name.split('.').pop(), file.file_name)"
+      @click="getAnyUrl(file.uid, file.file_name.split('.').pop(), file.file_name)"
     >
       <svg
         v-if="
@@ -175,19 +175,7 @@ export default {
   emits: ['setLink'],
   data () {
     return {
-      pics: [
-        'jpg',
-        'png',
-        'jpeg',
-        'git',
-        'bmp',
-        'gif',
-        'PNG',
-        'JPG',
-        'JPEG',
-        'BMP',
-        'GIF'
-      ],
+      pics: ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'PNG', 'JPG', 'JPEG', 'BMP', 'GIF'],
       movies: ['mov', 'mp4', 'wmv', 'avi', 'avchd', 'mkv', 'webm', 'mpeg-2'],
       docs: ['doc', 'docx', 'xls', 'xlsx', 'txt', 'pdf', 'csv'],
       audio: ['mp3', 'wav'],
@@ -198,15 +186,13 @@ export default {
     }
   },
   mounted () {
+    // мы здесь запрашиваем только те файлы на onmount, которые нуждаются в preloade (изображения, аудиофайлы)
     if (this.pics.includes(this.file.file_name.split('.').pop())) {
       if (this.isFileInCache()) {
         this.loadImageFromCache()
       } else {
         this.loadImageFromInternet()
       }
-    }
-    if (this.docs.includes(this.file.file_name.split('.').pop())) {
-      this.getDocUrl(this.file.uid, this.file.file_name.split('.').pop(), this.file.file_name)
     }
     if (this.audio.includes(this.file.file_name.split('.').pop())) {
       this.getAudioUrl(this.file.uid, this.file.file_name.split('.').pop(), this.file.file_name)

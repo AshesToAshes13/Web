@@ -8,7 +8,7 @@
       :message="message.msg"
       @closeModal="showModal = false"
     />
-    <div class="flex flex-col max-w-[800px] mr-[10px]">
+    <div class="flex flex-col w-full mr-[10px]">
       <div class="flex w-full items-center gap-x-[10px] mb-[13px]">
         <svg
           class="shrink-0"
@@ -25,7 +25,8 @@
         </svg>
 
         <p
-          class="text-[14px] text-[#747476] font-[400]"
+          class="text-[14px] text-[#747476] font-[400] w-full"
+          style="word-break: break-word;"
           :title="message.subject"
         >
           Тема: {{ message.subject }}
@@ -33,7 +34,8 @@
       </div>
       <span
         v-if="true"
-        class="w-full break-words py-[10px] px-[17px] text-[14px] leading-[21px] text-[#4C4C4D] min-h-[40px]"
+        class="w-full py-[10px] px-[17px] text-[14px] leading-[21px] text-[#4C4C4D] min-h-[40px]"
+        style="word-break: break-word;"
         v-html="croppedMessage"
       />
       <button

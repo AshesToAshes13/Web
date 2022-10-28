@@ -19,42 +19,51 @@
       />
       <!-- New creator -->
       <div
-        v-if="message.uid_card"
-        class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
+        class="flex flex-row gap-[8px]"
         :class="{ 'justify-start': !isMyMessage(message), 'justify-end': isMyMessage(message) }"
       >
-        <svg
-          class="mr-[5px]"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          v-if="message.uid_card"
+          class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
         >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M2.33333 2.5H13C13.7353 2.5 14.3333 3.098 14.3333 3.83333V11.8333C14.3333 12.5687 13.7353 13.1667 13 13.1667H2.33333C1.598 13.1667 1 12.5687 1 11.8333V3.83333C1 3.098 1.598 2.5 2.33333 2.5ZM2.33333 3.83333V11.8333H13.0007L13 3.83333H2.33333ZM7.33335 7.17188H4.00002C3.91161 7.17188 3.82683 7.13676 3.76432 7.07424C3.70181 7.01173 3.66669 6.92695 3.66669 6.83854V5.50521C3.66669 5.4168 3.70181 5.33202 3.76432 5.26951C3.82683 5.20699 3.91161 5.17188 4.00002 5.17188H7.33335C7.42176 5.17188 7.50654 5.20699 7.56906 5.26951C7.63157 5.33202 7.66669 5.4168 7.66669 5.50521V6.83854C7.66669 6.92695 7.63157 7.01173 7.56906 7.07424C7.50654 7.13676 7.42176 7.17188 7.33335 7.17188ZM7.66669 9.17188H3.66669V10.5059H7.66669V9.17188ZM11.6667 9.17188H8.33335V10.5059H11.6667V9.17188Z"
-            fill="#747476"
-          />
-        </svg>
-        <div>
-          {{ getCardName(message.uid_card) }}
+          <div>
+            <svg
+              class="mr-[5px]"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.33333 2.5H13C13.7353 2.5 14.3333 3.098 14.3333 3.83333V11.8333C14.3333 12.5687 13.7353 13.1667 13 13.1667H2.33333C1.598 13.1667 1 12.5687 1 11.8333V3.83333C1 3.098 1.598 2.5 2.33333 2.5ZM2.33333 3.83333V11.8333H13.0007L13 3.83333H2.33333ZM7.33335 7.17188H4.00002C3.91161 7.17188 3.82683 7.13676 3.76432 7.07424C3.70181 7.01173 3.66669 6.92695 3.66669 6.83854V5.50521C3.66669 5.4168 3.70181 5.33202 3.76432 5.26951C3.82683 5.20699 3.91161 5.17188 4.00002 5.17188H7.33335C7.42176 5.17188 7.50654 5.20699 7.56906 5.26951C7.63157 5.33202 7.66669 5.4168 7.66669 5.50521V6.83854C7.66669 6.92695 7.63157 7.01173 7.56906 7.07424C7.50654 7.13676 7.42176 7.17188 7.33335 7.17188ZM7.66669 9.17188H3.66669V10.5059H7.66669V9.17188ZM11.6667 9.17188H8.33335V10.5059H11.6667V9.17188Z"
+                fill="#747476"
+              />
+            </svg>
+          </div>
+          <div class="whitespace-nowrap max-w-[250px] truncate">
+            {{ getCardName(message.uid_card) }}
+          </div>
         </div>
-      </div>
-      <div
-        v-if="isChangedCreator(index) && employees[message.uid_creator]"
-        class="text-[#7E7E80] text-[13px] font-[500] mt-[12px] leading-[15px] tracking-wide mb-[6px]"
-        :class="{ 'text-left': !isMyMessage(message), 'text-right': isMyMessage(message) }"
-      >
-        <span class="w-[300px] overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
-          {{ employees[message.uid_creator].name }}
-        </span>
+        <div
+          v-if="isChangedCreator(index) && employees[message.uid_creator]"
+          class="text-[#7E7E80] tracking-wide mb-[6px]"
+          :class="{ 'text-left': !isMyMessage(message), 'text-right': isMyMessage(message) }"
+        >
+          <span
+            class="overflow-hidden text-[13px] font-[500] mt-[12px] leading-[15px] h-[15px] inline-block text-ellipsis whitespace-nowrap"
+            :class="{ 'text-[#4C4C4D]': message.uid_card, 'text-[#7E7E80]': !message.uid_card }"
+          >
+            {{ employees[message.uid_creator].name }}
+          </span>
+        </div>
       </div>
       <div
         v-if="message.type === 'yandex'"
         class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px]"
-        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
+        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end mr-[4px]': isOurIntegrationMailMessage(message) }"
       >
         <span>
           <svg
@@ -73,7 +82,18 @@
         </span>
         <span>{{ clientName }}</span>
       </div>
-
+      <div
+        v-if="message.type === 'yandex'"
+        class="w-full flex"
+        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
+      >
+        <ClientMailMessage
+          :class="{ 'bg-[#FCEBEB] rounded-br-[12px]': !isOurIntegrationMailMessage(message), 'rounded-bl-[12px] bg-[#F4F5F7]': isOurIntegrationMailMessage(message) }"
+          :message="message"
+          :time="getMessageTimeString(message.date_create)"
+          class="py-[10px] px-[15px] flex rounded-t-[12px] mb-[5px] w-[55%]"
+        />
+      </div>
       <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
         <ClientChatQuoteMessage
           v-if="message.hasQuote"
@@ -81,7 +101,7 @@
           :quote-message-uid="message.uid_quote"
         />
         <ClientChatInterlocutorMessage
-          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly"
+          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
           :message="message"
           :should-show-options="shouldShowOptions(message)"
           :employee="employees[message.uid_creator]"
@@ -95,7 +115,7 @@
         />
 
         <ClientChatSelfMessage
-          v-if="message.isMyMessage && message.isMessage && !showFilesOnly"
+          v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
           :message="message"
           :employee="employees[message.uid_creator]"
           :should-show-options="shouldShowOptions(message)"
@@ -122,6 +142,7 @@ import ClientChatInterlocutorFileMessage from '@/components/Clients/ClientChatIn
 import ClientChatSelfMessage from '@/components/Clients/ClientChatSelfMessage.vue'
 import ClientChatSelfFileMessage from '@/components/Clients/ClientChatSelfFileMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
+import ClientMailMessage from './ClientMailMessage.vue'
 
 export default {
   components: {
@@ -130,7 +151,8 @@ export default {
     ClientChatSelfMessage,
     ClientChatQuoteMessage,
     ClientChatSelfFileMessage,
-    CardAndClientChatCallMessage
+    CardAndClientChatCallMessage,
+    ClientMailMessage
   },
   props: {
     key: {
@@ -194,6 +216,18 @@ export default {
         }
       }
       return cardName
+    },
+    getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
+      const date = new Date(dateCreate)
+      return date.toLocaleString('default', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
     },
     isMessageIncludesIntegrationLogin (msg) {
       if (msg.type === 'yandex') {

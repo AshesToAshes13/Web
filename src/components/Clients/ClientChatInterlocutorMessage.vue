@@ -9,13 +9,7 @@
       v-else
       class="flex"
     >
-      <ClientMailMessage
-        v-if="message.type === 'yandex'"
-        :message="message"
-        :time="getMessageTimeString(message.date_create)"
-      />
       <div
-        v-else
         class="flex"
       >
         <span
@@ -72,11 +66,9 @@
 <script>
 import ClientChatMessageOptionsPopMenu from '@/components/Clients/ClientChatMessageOptionsPopMenu.vue'
 import ClientChatDeletedMsg from '@/components/Clients/ClientChatDeletedMsg.vue'
-import ClientMailMessage from '@/components/Clients/ClientMailMessage'
 
 export default {
   components: {
-    ClientMailMessage,
     ClientChatMessageOptionsPopMenu,
     ClientChatDeletedMsg
   },

@@ -22,7 +22,7 @@ export default [
         name: 'clientPage',
         component: () => import('@/components/Clients/ClientPage'),
         meta: {
-          title: 'Клиент'
+          title: 'Контакт'
         }
       }
     ]

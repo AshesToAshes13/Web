@@ -175,13 +175,20 @@ export default {
     })
   },
   methods: {
+    getFormTitle () {
+      if (this.modelInput1 === '') {
+        return 'Карточка без названия'
+      } else {
+        return this.modelInput1
+      }
+    },
     submitForm () {
       this.validateForm()
       if (this.inputsValidateError) return
       const comment = `${this.item.inputs.input2}: ${this.modelInput2}\n ${this.item.inputs.input3}: ${this.modelInput3}\n ${this.item.inputs.input4}: ${this.modelInput4}`
       const data = {
         board_uid: this.$route.params.board_id,
-        title: this.modelInput1,
+        title: this.getFormTitle(),
         comment
       }
       this.$store.dispatch(BOARD.SEND_BOARD_FORM_REQUEST, data).then(() => {

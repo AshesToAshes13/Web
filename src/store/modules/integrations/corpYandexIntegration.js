@@ -6,11 +6,18 @@ const getDefaultState = () => {
     login: null,
     password: null,
     isIntegrated: false,
-    isLoading: false
+    isSentToUsLoading: false,
+    isSentFromUsLoading: false
   }
 }
 
 const state = getDefaultState()
+
+const getters = {
+  isCorpLoaded: state => {
+    return state.isSentToUsLoading && state.isSentFromUsLoading
+  }
+}
 
 const actions = {
   [CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION]: (
@@ -100,7 +107,7 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentFromUs'
-      commit(CORP_YANDEX.YANDEX_START_LOADING)
+      commit(CORP_YANDEX.YANDEX_SEND_FROM_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent from us success')
@@ -111,7 +118,7 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(CORP_YANDEX.YANDEX_END_LOADING)
+          commit(CORP_YANDEX.YANDEX_SEND_FROM_US_END_LOADING)
         })
     })
   },
@@ -126,7 +133,7 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentToUs'
-      commit(CORP_YANDEX.YANDEX_START_LOADING)
+      commit(CORP_YANDEX.YANDEX_SEND_TO_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent to us success')
@@ -137,7 +144,7 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(CORP_YANDEX.YANDEX_END_LOADING)
+          commit(CORP_YANDEX.YANDEX_SEND_TO_US_END_LOADING)
         })
     })
   }
@@ -147,11 +154,17 @@ const mutations = {
   [CORP_YANDEX.RESET_CORP_YANDEX_STATE]: (state) => {
     Object.assign(state, getDefaultState())
   },
-  [CORP_YANDEX.YANDEX_START_LOADING]: (state) => {
-    state.isLoading = true
+  [CORP_YANDEX.YANDEX_SEND_TO_US_START_LOADING]: (state) => {
+    state.isSentToUsLoading = true
   },
-  [CORP_YANDEX.YANDEX_END_LOADING]: (state) => {
-    state.isLoading = false
+  [CORP_YANDEX.YANDEX_SEND_FROM_US_START_LOADING]: (state) => {
+    state.isSentFromUsLoading = true
+  },
+  [CORP_YANDEX.YANDEX_SEND_TO_US_END_LOADING]: (state) => {
+    state.isSentToUsLoading = true
+  },
+  [CORP_YANDEX.YANDEX_SEND_FROM_US_END_LOADING]: (state) => {
+    state.isSentFromUsLoading = true
   },
   [CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION]: (state, data) => {
     state.isIntegrated = data
@@ -170,6 +183,7 @@ const mutations = {
 
 export default {
   state,
+  getters,
   actions,
   mutations
 }

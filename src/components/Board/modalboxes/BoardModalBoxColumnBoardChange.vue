@@ -140,8 +140,11 @@ export default {
     boardsCanEdit () {
       const currentUserUid = this.user.current_user_uid
       return Object.values(this.$store.state.boards.boards).filter(
-        item => item.members[currentUserUid] === 1
+        item => (item.members[currentUserUid] === 1 || item.deps[this.currentUserDepUid] === 1) && (item.uid !== this.boardUid)
       )
+    },
+    currentUserDepUid () {
+      return this.$store.state.employees.employees[this.user.current_user_uid].uid_dep
     },
     myBoards () {
       const currentUserEmail = this.user.current_user_email.toLowerCase()
@@ -171,11 +174,11 @@ export default {
           arr.push(boards[key])
         }
       })
-      const favoriteCanEdit = arr.filter(item => item.members[currentUserUid] === 1)
+      const favoriteCanEdit = arr.filter(item => item.members[currentUserUid] === 1 && item.uid !== this.boardUid)
       return favoriteCanEdit.sort((board1, board2) => { return board1.name.localeCompare(board2.name) })
     },
     commonBoards () {
-      const arrCommonBoards = this.boardsCanEdit.filter(board => board.members[this.user.current_user_uid] !== 0)
+      const arrCommonBoards = this.boardsCanEdit
       arrCommonBoards.sort((board1, board2) => {
         return board1.name.localeCompare(board2.name)
       })

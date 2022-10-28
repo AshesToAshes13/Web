@@ -21,7 +21,10 @@
           class="mt-2 text-right font-medium mb-2 flex relative"
           :class="{'flex-col': isAudio}"
         >
-          <div class="float-left">
+          <div
+            ref="file"
+            class="float-left"
+          >
             <FileMessage
               :file="file"
               @setLink="setLink"
@@ -42,11 +45,12 @@
             </router-link>
             <a
               v-else
-              :href="!isAudio ? fileUrl : null"
+              ref="fileNameLink"
               :src="isAudio ? fileUrl : null"
               :download="fileName"
-              class="flex max-w-[250px] truncate font-bold text-[#4C4C4D] text-[13px] leading-[15px]"
+              class="flex max-w-[250px] truncate font-bold text-[#4C4C4D] text-[13px] leading-[15px] cursor-pointer"
               :class="!isAudio ? 'pr-[15px]' : 'pr-[9px]'"
+              @click="!isFileDownloaded ? $refs.file.children[0].children[0].click() : false"
             >
               <span class="whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ fileName }}
@@ -369,7 +373,8 @@ export default {
       currentlocation: window.location.href,
       isTaskHoverPopperActive: false,
       fileUrl: '',
-      isAudio: false
+      isAudio: false,
+      isFileDownloaded: false
     }
   },
   computed: {
@@ -386,6 +391,12 @@ export default {
       const [url, isAudio] = payload
       this.fileUrl = url
       this.isAudio = isAudio
+
+      if (!isAudio && !this.isFileDownloaded) {
+        this.$refs.fileNameLink.setAttribute('href', this.fileUrl)
+        this.$refs.fileNameLink.click()
+        this.isFileDownloaded = true
+      }
     },
     onAnswerClick () {
       this.$emit('answer')
