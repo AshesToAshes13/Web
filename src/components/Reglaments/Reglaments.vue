@@ -13,7 +13,10 @@
         class="w-full pt-[8px]"
         title="Регламенты"
       />
-      <div class="flex flex-none px-[12px] pt-[8px]">
+      <div
+        v-if="isReglamentsLoaded"
+        class="flex flex-none px-[12px] pt-[8px]"
+      >
         <Icon
           :path="listView.path"
           :width="listView.width"
@@ -41,62 +44,76 @@
       </div>
     </div>
     <div
-      v-for="(reg, index) in reglaments"
-      :key="index"
+      v-if="!isReglamentsLoaded"
+      class="flex flex-col font-roboto text-[16px] leading-[15px] text-[#7e7e80] font-medium truncate"
     >
-      <div
-        class="flex w-full"
-        :class="{ 'justify-between': index == 0, 'mt-[28px]': index != 0 }"
+      <span class="my-[15px]">Не удалось загрузить регламенты.</span>
+      <span
+        class="my-[15px] w-min underline hover:cursor-pointer"
+        @click="tryToLoadReglaments"
       >
-        <p class="font-['Roboto'] text-[#424242] text-[19px] leading-[22px] font-bold">
-          {{ reg.dep }}
+        Попробовать ещё раз
+      </span>
+    </div>
+    <div v-if="isReglamentsLoaded">
+      <div
+        v-for="(reg, index) in reglaments"
+        :key="index"
+      >
+        <div
+          class="flex w-full"
+          :class="{ 'justify-between': index == 0, 'mt-[28px]': index != 0 }"
+        >
+          <p class="font-['Roboto'] text-[#424242] text-[19px] leading-[22px] font-bold">
+            {{ reg.dep }}
+          </p>
+        </div>
+        <div
+          class="grid gap-2 mt-3 grid-cols-1"
+          :class="{
+            'md:grid-cols-2 lg:grid-cols-4': isGridView,
+            'lg:grid-cols-2': isPropertiesMobileExpanded && isGridView
+          }"
+        >
+          <template
+            v-for="reglament in reg.items"
+            :key="reglament.uid"
+          >
+            <router-link
+              :to="'/reglaments/' + reglament.uid"
+            >
+              <ReglamentBlocItem
+                :reglament="reglament"
+              />
+            </router-link>
+          </template>
+          <ReglamentBlocEmpty
+            v-if="!reg.is_my_dep && reg.items.length === 0"
+          />
+          <InputValue
+            v-if="showAddReglament && addReglamentDepartment === reg.uid"
+            @save="onAddNewReglament"
+            @cancel="showAddReglament = false"
+          />
+          <ListBlocAdd
+            v-else-if="reg.is_my_dep"
+            title="Добавить регламент"
+            @click.stop="clickAddReglament(reg.uid)"
+          />
+        </div>
+      </div>
+      <div
+        v-if="currentUserIsAdmin"
+        class="flex items-center w-full my-[28px] text-[#7e7e80] hover:text-[#424242] cursor-pointer"
+        @click.stop="clickShowAll"
+      >
+        <p
+          v-if="items.length"
+          class="font-roboto text-[17px] leading-[22px]"
+        >
+          {{ showAllReglaments ? 'Показать только доступные' : 'Показать все регламенты' }}
         </p>
       </div>
-      <div
-        class="grid gap-2 mt-3 grid-cols-1"
-        :class="{
-          'md:grid-cols-2 lg:grid-cols-4': isGridView,
-          'lg:grid-cols-2': isPropertiesMobileExpanded && isGridView
-        }"
-      >
-        <template
-          v-for="reglament in reg.items"
-          :key="reglament.uid"
-        >
-          <router-link
-            :to="'/reglaments/' + reglament.uid"
-          >
-            <ReglamentBlocItem
-              :reglament="reglament"
-            />
-          </router-link>
-        </template>
-        <ReglamentBlocEmpty
-          v-if="!reg.is_my_dep && reg.items.length === 0"
-        />
-        <InputValue
-          v-if="showAddReglament && addReglamentDepartment === reg.uid"
-          @save="onAddNewReglament"
-          @cancel="showAddReglament = false"
-        />
-        <ListBlocAdd
-          v-else-if="reg.is_my_dep"
-          title="Добавить регламент"
-          @click.stop="clickAddReglament(reg.uid)"
-        />
-      </div>
-    </div>
-    <div
-      v-if="currentUserIsAdmin"
-      class="flex items-center w-full my-[28px] text-[#7e7e80] hover:text-[#424242] cursor-pointer"
-      @click.stop="clickShowAll"
-    >
-      <p
-        v-if="items.length"
-        class="font-roboto text-[17px] leading-[22px]"
-      >
-        {{ showAllReglaments ? 'Показать только доступные' : 'Показать все регламенты' }}
-      </p>
     </div>
     <EmptyTasksListPics v-if="isEmpty" />
   </div>
@@ -214,12 +231,18 @@ export default {
     },
     displayModal () {
       return !this.$store.state.onboarding.visitedModals?.includes('reglaments') && this.$store.state.onboarding.showModals
+    },
+    isReglamentsLoaded () {
+      return this.$store.state.reglaments.isLoaded
     }
   },
   created () {
     setLocalStorageItem('isGridView', true)
   },
   methods: {
+    tryToLoadReglaments () {
+      location.reload()
+    },
     updateGridView (value) {
       this.$store.commit('basic', { key: 'isGridView', value: value })
       setLocalStorageItem('isGridView', value)

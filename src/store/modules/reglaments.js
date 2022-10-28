@@ -13,7 +13,8 @@ const getDefaultState = () => {
     answersToDelete: [],
     hideSaveParams: false,
     lastCommentDate: '',
-    lastCommentText: ''
+    lastCommentText: '',
+    isLoaded: false
   }
 }
 
@@ -60,6 +61,7 @@ const actions = {
       axios({ url: url, method: 'GET', timeout: 1000 * 10 })
         .then((resp) => {
           commit(REGLAMENTS.REGLAMENT_CHANGE_REGLAMENTS, resp.data)
+          state.isLoaded = true
           resolve(resp)
         })
         .catch((err) => {

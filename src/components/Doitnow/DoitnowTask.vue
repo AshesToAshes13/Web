@@ -11,7 +11,6 @@
       @cancel="showStatusModal = false"
       @yes="changeStatus(lastSelectedStatus, true)"
     />
-
     <div>
       <DoitnowCustomerInfo
         v-if="shouldShowCustomer"
