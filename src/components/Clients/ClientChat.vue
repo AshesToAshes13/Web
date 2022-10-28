@@ -60,7 +60,8 @@
       </div>
       <div
         v-if="message.type === 'yandex'"
-        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px] justify-start"
+        class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px]"
+        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
       >
         <span>
           <svg
@@ -79,12 +80,19 @@
         </span>
         <span>{{ clientName }}</span>
       </div>
-      <ClientMailMessage
+      <div
         v-if="message.type === 'yandex'"
-        :message="message"
-        :time="getMessageTimeString(message.date_create)"
-        class="bg-[#F4F5F7] py-[10px] px-[15px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] w-[55%] group"
-      />
+        class="w-full flex"
+        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
+      >
+        <ClientMailMessage
+          :class="{ 'bg-[#F4F5F7] rounded-br-[12px]': !isOurIntegrationMailMessage(message), 'rounded-bl-[12px] bg-[#FCEBEB]': isOurIntegrationMailMessage(message) }"
+
+          :message="message"
+          :time="getMessageTimeString(message.date_create)"
+          class="py-[10px] px-[15px] flex rounded-t-[12px] mb-[5px] w-[55%]"
+        />
+      </div>
       <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
         <ClientChatQuoteMessage
           v-if="message.hasQuote"
