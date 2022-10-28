@@ -61,7 +61,7 @@
       <div
         v-if="message.type === 'yandex'"
         class="text-[#7E7E80] text-[13px] font-[500] flex flex-row leading-[15px] tracking-wide mb-[6px] mt-[12px]"
-        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
+        :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end mr-[4px]': isOurIntegrationMailMessage(message) }"
       >
         <span>
           <svg
@@ -86,7 +86,7 @@
         :class="{ 'justify-start': !isOurIntegrationMailMessage(message), 'justify-end': isOurIntegrationMailMessage(message) }"
       >
         <ClientMailMessage
-          :class="{ 'bg-[#F4F5F7] rounded-br-[12px]': !isOurIntegrationMailMessage(message), 'rounded-bl-[12px] bg-[#FCEBEB]': isOurIntegrationMailMessage(message) }"
+          :class="{ 'bg-[#FCEBEB] rounded-br-[12px]': !isOurIntegrationMailMessage(message), 'rounded-bl-[12px] bg-[#F4F5F7]': isOurIntegrationMailMessage(message) }"
 
           :message="message"
           :time="getMessageTimeString(message.date_create)"
