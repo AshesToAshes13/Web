@@ -64,6 +64,8 @@ import { uuidv4 } from '@/helpers/functions'
 import { REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages'
 import { GET_CLIENT } from '@/store/actions/clients'
+import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt'
+import * as PERSONAL_YANDEX from '@/store/actions/integrations/personalYandexInt'
 
 export default {
   components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientProperties },
@@ -151,6 +153,10 @@ export default {
   },
   unmounted () {
     this.$store.commit(CLIENTS.SELECT_CLIENT, null)
+    this.$store.commit(CORP_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH)
+    this.$store.commit(CORP_YANDEX.YANDEX_SEND_TO_US_REFRESH)
+    this.$store.commit(PERSONAL_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH)
+    this.$store.commit(PERSONAL_YANDEX.YANDEX_SEND_TO_US_REFRESH)
   },
   methods: {
     setCurrentQuote (quote) {
