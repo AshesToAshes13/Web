@@ -3,6 +3,7 @@ import {
   isKnownInspectorMessageType
 } from '@/inspector/message.js'
 import router from '@/router/index.js'
+import { getUserToken } from '@/services/axios/authorization.js'
 import { showNotify } from '@/store/helpers/functions'
 import store from '@/store/index.js'
 import { createTaskMessage } from '@/websync/task_message.js'
@@ -55,7 +56,7 @@ export function initInspectorSocket (force = false) {
       message: user.value.current_user_uid,
       data: user.value.current_user_email,
       organization: user.value.owner_email,
-      token: localStorage.getItem('user-token'),
+      token: getUserToken(),
       employee: JSON.stringify(employees.value[user.value.current_user_uid])
     }
     socket.send(JSON.stringify(auth))

@@ -1,11 +1,15 @@
-import router from '@/router'
 import { disconnectInspectorSocket } from '@/inspector'
+import router from '@/router'
+import {
+  getUserToken,
+  removeUserToken,
+  setUserToken
+} from '@/services/axios/authorization.js'
 import { RESET_CLIENT_STATE } from '@/store/actions/clients'
 import { RESET_COLOR_STATE } from '@/store/actions/colors'
 import { RESET_CORP_YANDEX_STATE } from '@/store/actions/integrations/corpoYandexInt'
 import { RESET_PERSONAL_YANDEX_STATE } from '@/store/actions/integrations/personalYandexInt'
 import { RESET_ONBOARDING_STATE } from '@/store/actions/onboarding'
-import { setLocalStorageItem } from '@/store/helpers/functions'
 import axios from 'axios'
 import {
   AUTH_CHANGE_PASSWORD,
@@ -26,7 +30,7 @@ import { RESET_STATE_PROJECT } from '../actions/projects'
 import { RESET_REGLAMENTS_STATE } from '../actions/reglaments'
 
 const state = {
-  token: localStorage.getItem('user-token') || '',
+  token: getUserToken(),
   status: '',
   hasLoadedOnce: false
 }
@@ -49,28 +53,13 @@ const actions = {
         '&system=web&type_device=web'
       axios({ url: uri, method: 'POST' })
         .then((resp) => {
-          setLocalStorageItem('user-token', resp.data.access_token)
-          setLocalStorageItem('user-refresh-token', resp.data.refresh_token)
-          axios.defaults.headers.common.Authorization = resp.data.access_token
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'set axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
           commit(AUTH_SUCCESS, resp)
           resolve(resp)
         })
         .catch((err) => {
           commit(AUTH_ERROR, err)
-          localStorage.removeItem('user-token')
-          delete axios.defaults.headers.common.Authorization
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'clear axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          removeUserToken(axios)
           reject(err)
         })
     })
@@ -81,28 +70,13 @@ const actions = {
       const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/new'
       axios({ url: uri, data: user, method: 'POST' })
         .then((resp) => {
-          setLocalStorageItem('user-token', resp.data.access_token)
-          setLocalStorageItem('user-refresh-token', resp.data.refresh_token)
-          axios.defaults.headers.common.Authorization = resp.data.access_token
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'set axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
           commit(AUTH_SUCCESS, resp)
           resolve(resp)
         })
         .catch((err) => {
           commit(AUTH_ERROR, err)
-          localStorage.removeItem('user-token')
-          delete axios.defaults.headers.common.Authorization
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'clear axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          removeUserToken(axios)
           reject(err)
         })
     })
@@ -113,28 +87,13 @@ const actions = {
       const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/tokens/bygoogle'
       axios({ url: uri, data: user, method: 'POST' })
         .then((resp) => {
-          setLocalStorageItem('user-token', resp.data.access_token)
-          setLocalStorageItem('user-refresh-token', resp.data.refresh_token)
-          axios.defaults.headers.common.Authorization = resp.data.access_token
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'set axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
           commit(AUTH_SUCCESS, resp)
           resolve(resp)
         })
         .catch((err) => {
           commit(AUTH_ERROR, err)
-          localStorage.removeItem('user-token')
-          delete axios.defaults.headers.common.Authorization
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'clear axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          removeUserToken(axios)
           reject(err)
         })
     })
@@ -145,15 +104,7 @@ const actions = {
       const url = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/password'
       axios({ url: url, data: data, method: 'PATCH' })
         .then((resp) => {
-          setLocalStorageItem('user-token', resp.data.access_token)
-          setLocalStorageItem('user-refresh-token', resp.data.refresh_token)
-          axios.defaults.headers.common.Authorization = resp.data.access_token
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'set axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
           resolve(resp)
         })
         .catch((err) => {
@@ -165,8 +116,6 @@ const actions = {
   [AUTH_LOGOUT]: ({ commit }) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_LOGOUT)
-      localStorage.removeItem('user-token')
-      localStorage.removeItem('user-refresh-token')
       localStorage.removeItem('visitedModals')
       localStorage.removeItem('justRegistered')
       localStorage.removeItem('slides')
@@ -183,28 +132,16 @@ const actions = {
       commit(RESET_CORP_YANDEX_STATE)
       commit(RESET_PERSONAL_YANDEX_STATE)
       commit(RESET_DOITNOW_STATE)
+      disconnectInspectorSocket()
       axios
         .get(url)
         .then((resp) => {
-          delete axios.defaults.headers.common.Authorization
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'clear axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
-          disconnectInspectorSocket()
+          removeUserToken(axios)
           resolve(resp)
         })
         .catch((err) => {
           commit(AUTH_ERROR, err)
-          delete axios.defaults.headers.common.Authorization
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'clear axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          removeUserToken(axios)
           reject(err)
         })
     })
@@ -217,15 +154,7 @@ const actions = {
       axios
         .post(url)
         .then((resp) => {
-          setLocalStorageItem('user-token', resp.data.access_token)
-          setLocalStorageItem('user-refresh-token', resp.data.refresh_token)
-          axios.defaults.headers.common.Authorization = resp.data.access_token
-          if (process.env.VUE_APP_EXTENDED_LOGS) {
-            console.log(
-              'set axios authorization',
-              axios.defaults.headers.common.Authorization
-            )
-          }
+          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
           resolve(resp)
         })
         .catch((err) => {
