@@ -6,9 +6,19 @@ import {
 } from '@/store/actions/cards'
 import store from '@/store/index.js'
 import { computed } from 'vue'
+import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 
 const selectedCardUid = computed(() => store.state.cards.selectedCardUid)
 const selectedCard = computed(() => store.getters.selectedCard)
+
+function updateClientCard (obj) {
+  const isNeedUpdateClientCard = !store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
+
+  if (isNeedUpdateClientCard) {
+    store.commit(CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD, obj.obj)
+    store.dispatch(CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS, obj.obj.uid_client)
+  }
+}
 
 export function createCard (obj) {
   obj.obj.uid_client = ''
@@ -27,6 +37,10 @@ export function removeCard (uid) {
 }
 
 export function updateCard (obj) {
+  if (router.currentRoute.value.name === 'clientPage' && obj.obj.uid_client === store.state.clients.selectedClient.uid) {
+    updateClientCard(obj)
+  }
+
   if (router.currentRoute.value.name !== 'boardWithChildren') return
   if (
     !store.getters.cardsMap[obj.obj.uid] &&
