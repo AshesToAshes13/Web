@@ -14,7 +14,9 @@ const selectedCard = computed(() => store.getters.selectedCard)
 function updateClientCard (obj) {
   const isNeedUpdateClientCard = !store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
 
-  if (isNeedUpdateClientCard) {
+  const shouldAddMsgToClient = router.currentRoute.value?.params?.client_id === obj.obj?.uid_client
+
+  if (isNeedUpdateClientCard || shouldAddMsgToClient) {
     store.commit(CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD, obj.obj)
     store.dispatch(CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS, obj.obj.uid_client)
   }
@@ -46,6 +48,7 @@ export function updateCard (obj) {
 
   const isDeleteUpdateClientCard = router.currentRoute.value.name === 'clientPage' && !obj.obj.uid_client && store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
 
+  console.log('update card is', isUpdateCard)
   if (isUpdateCard) {
     updateClientCard(obj)
   } else if (isDeleteUpdateClientCard) {
