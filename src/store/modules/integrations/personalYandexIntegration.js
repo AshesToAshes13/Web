@@ -6,8 +6,8 @@ const getDefaultState = () => {
     login: null,
     password: null,
     isIntegrated: false,
-    isSentToUsLoading: false,
-    isSentFromUsLoading: false
+    isSentToUsLoaded: false,
+    isSentFromUsLoaded: false
   }
 }
 
@@ -15,7 +15,7 @@ const state = getDefaultState()
 
 const getters = {
   isPersonalLoaded: state => {
-    return state.isSentToUsLoading && state.isSentFromUsLoading
+    return state.isSentToUsLoaded && state.isSentFromUsLoaded
   }
 }
 
@@ -113,7 +113,6 @@ const actions = {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
         'personalYandexInt/yandexGetPersonalMessagesSentFromUs'
-      commit(PERSONAL_YANDEX.YANDEX_SEND_FROM_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('personal sent from us success')
@@ -124,7 +123,7 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(PERSONAL_YANDEX.YANDEX_SEND_FROM_US_END_LOADING)
+          commit(PERSONAL_YANDEX.YANDEX_SEND_FROM_US_LOADED)
         })
     })
   },
@@ -140,7 +139,6 @@ const actions = {
       }
       const url =
         process.env.VUE_APP_INSPECTOR_API + 'personalYandexInt/yandexGetPersonalMessagesSentToUs'
-      commit(PERSONAL_YANDEX.YANDEX_SEND_TO_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('personal sent to us success')
@@ -151,24 +149,24 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(PERSONAL_YANDEX.YANDEX_SEND_TO_US_END_LOADING)
+          commit(PERSONAL_YANDEX.YANDEX_SEND_TO_US_LOADED)
         })
     })
   }
 }
 
 const mutations = {
-  [PERSONAL_YANDEX.YANDEX_SEND_TO_US_START_LOADING]: (state) => {
-    state.isSentToUsLoading = true
+  [PERSONAL_YANDEX.YANDEX_SEND_TO_US_LOADED]: (state) => {
+    state.isSentToUsLoaded = true
   },
-  [PERSONAL_YANDEX.YANDEX_SEND_FROM_US_START_LOADING]: (state) => {
-    state.isSentFromUsLoading = true
+  [PERSONAL_YANDEX.YANDEX_SEND_FROM_US_LOADED]: (state) => {
+    state.isSentFromUsLoaded = true
   },
-  [PERSONAL_YANDEX.YANDEX_SEND_TO_US_END_LOADING]: (state) => {
-    state.isSentToUsLoading = true
+  [PERSONAL_YANDEX.YANDEX_SEND_TO_US_REFRESH]: (state) => {
+    state.isSentToUsLoaded = false
   },
-  [PERSONAL_YANDEX.YANDEX_SEND_FROM_US_END_LOADING]: (state) => {
-    state.isSentFromUsLoading = true
+  [PERSONAL_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH]: (state) => {
+    state.isSentFromUsLoaded = false
   },
   [PERSONAL_YANDEX.RESET_PERSONAL_YANDEX_STATE]: (state) => {
     Object.assign(state, getDefaultState())
