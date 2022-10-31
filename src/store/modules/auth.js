@@ -1,4 +1,5 @@
 import router from '@/router'
+import { disconnectInspectorSocket } from '@/inspector'
 import { RESET_CLIENT_STATE } from '@/store/actions/clients'
 import { RESET_COLOR_STATE } from '@/store/actions/colors'
 import { RESET_CORP_YANDEX_STATE } from '@/store/actions/integrations/corpoYandexInt'
@@ -192,6 +193,7 @@ const actions = {
               axios.defaults.headers.common.Authorization
             )
           }
+          disconnectInspectorSocket()
           resolve(resp)
         })
         .catch((err) => {
