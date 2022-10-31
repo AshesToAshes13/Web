@@ -365,10 +365,19 @@ const actions = {
 
 const mutations = {
   [BOARD.REMOVE_BOARD_REQUEST]: (state, uid) => {
+    // Удаляем доску из children доски родителя
+    if (state.boards[uid].uid_parent !== '00000000-0000-0000-0000-000000000000') {
+      const parentBoard = state.boards[state.boards[uid].uid_parent]
+      parentBoard.children = parentBoard.children.filter((subBoard) => subBoard.uid !== uid)
+    }
+
     visitChildren(
       [state.boards[uid]],
-      (value) => delete state.boards[value.uid]
+      (value) => {
+        delete state.boards[value.uid]
+      }
     )
+
     delete state.boards[uid]
   },
   [BOARD.PUBLIC_LINK_STATUS_BOARD_REQUEST]: (state, data) => {
