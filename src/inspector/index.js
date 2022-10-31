@@ -166,6 +166,7 @@ function createNotificationAndInspectorMessage (parsedData) {
 export function disconnectInspectorSocket () {
   isSocketForceClosed = true
   socket.close()
+  console.log('inspector disconnected success')
 }
 
 export function sendInspectorMessage (message) {
