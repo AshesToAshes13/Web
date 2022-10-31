@@ -36,9 +36,16 @@ const getters = {
 }
 
 const actions = {
-  [AUTH_REQUEST]: ({ commit, dispatch }, uri) => {
+  [AUTH_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
+      const uri =
+        process.env.VUE_APP_LEADERTASK_API +
+        'api/v1/users/auth?login=' +
+        data.email +
+        '&password=' +
+        encodeURIComponent(data.password) +
+        '&system=web&type_device=web'
       axios({ url: uri, method: 'POST' })
         .then((resp) => {
           setLocalStorageItem('user-token', resp.data.access_token)

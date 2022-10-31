@@ -24,7 +24,7 @@
       >
         <div
           v-if="message.uid_card"
-          class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] font-[500] leading-[15px] tracking-wide mb-[6px]"
+          class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] leading-[15px] tracking-wide mb-[6px]"
         >
           <div>
             <svg
@@ -43,7 +43,7 @@
               />
             </svg>
           </div>
-          <div class="whitespace-nowrap max-w-[250px] truncate">
+          <div class="whitespace-nowrap max-w-[250px] font-[400] truncate">
             {{ getCardName(message.uid_card) }}
           </div>
         </div>

@@ -6,8 +6,8 @@ const getDefaultState = () => {
     login: null,
     password: null,
     isIntegrated: false,
-    isSentToUsLoading: false,
-    isSentFromUsLoading: false
+    isSentToUsLoaded: false,
+    isSentFromUsLoaded: false
   }
 }
 
@@ -15,7 +15,7 @@ const state = getDefaultState()
 
 const getters = {
   isCorpLoaded: state => {
-    return state.isSentToUsLoading && state.isSentFromUsLoading
+    return state.isSentToUsLoaded && state.isSentFromUsLoaded
   }
 }
 
@@ -107,7 +107,6 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentFromUs'
-      commit(CORP_YANDEX.YANDEX_SEND_FROM_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent from us success')
@@ -118,7 +117,7 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(CORP_YANDEX.YANDEX_SEND_FROM_US_END_LOADING)
+          commit(CORP_YANDEX.YANDEX_SEND_FROM_US_LOADED)
         })
     })
   },
@@ -133,7 +132,6 @@ const actions = {
         email: emails.clientEmail
       }
       const url = process.env.VUE_APP_INSPECTOR_API + 'corpYandexInt/yandexCorpMsgsSentToUs'
-      commit(CORP_YANDEX.YANDEX_SEND_TO_US_START_LOADING)
       axios({ url: url, method: 'POST', data: data })
         .then((resp) => {
           console.log('corp sent to us success')
@@ -144,7 +142,7 @@ const actions = {
           reject(err)
         })
         .finally(() => {
-          commit(CORP_YANDEX.YANDEX_SEND_TO_US_END_LOADING)
+          commit(CORP_YANDEX.YANDEX_SEND_TO_US_LOADED)
         })
     })
   }
@@ -154,17 +152,17 @@ const mutations = {
   [CORP_YANDEX.RESET_CORP_YANDEX_STATE]: (state) => {
     Object.assign(state, getDefaultState())
   },
-  [CORP_YANDEX.YANDEX_SEND_TO_US_START_LOADING]: (state) => {
-    state.isSentToUsLoading = true
+  [CORP_YANDEX.YANDEX_SEND_TO_US_LOADED]: (state) => {
+    state.isSentToUsLoaded = true
   },
-  [CORP_YANDEX.YANDEX_SEND_FROM_US_START_LOADING]: (state) => {
-    state.isSentFromUsLoading = true
+  [CORP_YANDEX.YANDEX_SEND_FROM_US_LOADED]: (state) => {
+    state.isSentFromUsLoaded = true
   },
-  [CORP_YANDEX.YANDEX_SEND_TO_US_END_LOADING]: (state) => {
-    state.isSentToUsLoading = true
+  [CORP_YANDEX.YANDEX_SEND_TO_US_REFRESH]: (state) => {
+    state.isSentToUsLoaded = false
   },
-  [CORP_YANDEX.YANDEX_SEND_FROM_US_END_LOADING]: (state) => {
-    state.isSentFromUsLoading = true
+  [CORP_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH]: (state) => {
+    state.isSentFromUsLoaded = false
   },
   [CORP_YANDEX.YANDEX_CREATE_CORP_EMAIL_INTEGRATION]: (state, data) => {
     state.isIntegrated = data

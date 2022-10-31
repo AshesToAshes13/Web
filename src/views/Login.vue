@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import unautorizedApi from '@/services/unauthorizedApiService.js'
 import { mdiEmailOutline, mdiEyeOutline, mdiEyeOffOutline, mdiAccountOutline, mdiArrowRight, mdiCheckBold, mdiChevronLeft, mdiPhoneOutline } from '@mdi/js'
 import FullScreenSection from '@/components/FullScreenSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
@@ -290,8 +290,7 @@ export default {
   },
   methods: {
     login () {
-      const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/auth?login=' + this.form.email + '&password=' + encodeURIComponent(this.form.password) + '&system=' + this.getOSName() + '&type_device=' + this.getSysType()
-      this.$store.dispatch(AUTH_REQUEST, uri)
+      this.$store.dispatch(AUTH_REQUEST, { email: this.form.email, password: this.form.password })
         .then(() => {
           this.$router.push('/doitnow')
           const slideNames = [
@@ -878,27 +877,6 @@ export default {
         this.register()
       }
     },
-    getOSName () {
-      let detectOS = 'web'
-
-      if (navigator.appVersion.indexOf('Mac') !== -1) {
-        detectOS = 'mac'
-      } else if (navigator.appVersion.indexOf('Win') !== -1) {
-        detectOS = 'windows'
-      } else if (navigator.appVersion.indexOf('Android') !== -1) {
-        detectOS = 'android'
-      } else if (navigator.appVersion.indexOf('iPhone') !== -1) {
-        detectOS = 'ios'
-      }
-
-      return detectOS
-    },
-    isMobile () {
-      return navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
-    },
-    getSysType () {
-      return this.isMobile() ? 'mobile' : 'desktop'
-    },
     hideLoginInputs () {
       this.showValues.showLoginInputsValue = false
     },
@@ -941,8 +919,7 @@ export default {
         this.form.isEmailValid = true
         this.form.emailShowError = false
 
-        const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/exists?email=' + this.form.email
-        axios.get(uri)
+        unautorizedApi.validateEmail(this.form.email)
           .then(() => {
             this.showLoginInputs()
             this.form.emailMdi = mdiCheckBold

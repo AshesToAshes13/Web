@@ -1,7 +1,6 @@
 import { darkModeKey } from '@/config.js'
 import { setLocalStorageItem } from '@/store/helpers/functions'
 import onboarding from '@/store/modules/onboarding.js'
-import axios from 'axios'
 import { createStore } from 'vuex'
 import auth from './modules/auth'
 import boardforms from './modules/boardforms'
@@ -13,14 +12,15 @@ import clientfilesandmessages from './modules/clientfilesandmessages'
 import clients from './modules/clients'
 import colors from './modules/colors'
 import departments from './modules/departments'
+import doitnow from './modules/doitnow'
 import employees from './modules/employees'
 import inspector from './modules/inspector'
 import corpMegafonIntegration from './modules/integrations/corpMegafonIntegration'
 import corpYandexIntegration from './modules/integrations/corpYandexIntegration'
+import telegramIntegration from './modules/integrations/personalTelegramIntegration'
 import personalYandexIntegration from './modules/integrations/personalYandexIntegration'
 import localization from './modules/localization'
 import navigator from './modules/navigator'
-import doitnow from './modules/doitnow'
 import projects from './modules/projects'
 import reglaments from './modules/reglaments'
 import reglamentAnswers from './modules/reglament_answers'
@@ -29,7 +29,6 @@ import tabs from './modules/tabs'
 import taskfilesandmessages from './modules/taskfilesandmessages'
 import tasks from './modules/tasks'
 import user from './modules/user'
-import telegramIntegration from './modules/integrations/personalTelegramIntegration'
 
 export default createStore({
   state: {
@@ -146,22 +145,6 @@ export default createStore({
         key: 'darkMode',
         value
       })
-    },
-
-    fetch ({ commit }, payload) {
-      axios
-        .get(`data-sources/${payload}.json`)
-        .then((r) => {
-          if (r.data && r.data.data) {
-            commit('basic', {
-              key: payload,
-              value: r.data.data
-            })
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     }
   },
   modules: {

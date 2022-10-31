@@ -14,9 +14,7 @@ const selectedCard = computed(() => store.getters.selectedCard)
 function updateClientCard (obj) {
   const isNeedUpdateClientCard = !store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
 
-  const shouldAddMsgToClient = router.currentRoute.value?.params?.client_id === obj.obj?.uid_client
-
-  if (isNeedUpdateClientCard || shouldAddMsgToClient) {
+  if (isNeedUpdateClientCard) {
     store.commit(CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD, obj.obj)
     store.dispatch(CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS, obj.obj.uid_client)
   }
