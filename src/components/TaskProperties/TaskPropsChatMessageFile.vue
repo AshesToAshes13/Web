@@ -371,20 +371,10 @@ export default {
     return {
       movies: ['mov', 'mp4', 'wmv', 'avi', 'avchd', 'mkv', 'webm', 'mpeg-2'],
       pics: ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'PNG', 'JPG', 'JPEG', 'BMP', 'GIF'],
-      currentlocation: window.location.href,
       isTaskHoverPopperActive: false,
       fileUrl: '',
       isAudio: false,
       isFileDownloaded: false
-    }
-  },
-  computed: {
-    messageText () {
-      let text = this.message.trim()
-      text = text.replaceAll('&amp;', '&')
-      text = text.replaceAll('&lt;', '<')
-      text = text.replaceAll('&gt;', '>')
-      return text
     }
   },
   methods: {
