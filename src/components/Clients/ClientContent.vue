@@ -104,10 +104,18 @@ export default {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
+      if (this.isYandexIntegrated) {
+        return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
+      } else {
+        return this.cardsStatus === 'loading' || this.messagesStatus === 'loading'
+      }
     },
     shouldntShowSkeletonMsg () {
-      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
+      if (this.isYandexIntegrated) {
+        return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
+      } else {
+        return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading'
+      }
     },
     corpMsgsLoading () {
       return this.$store.getters.isCorpLoaded
@@ -119,7 +127,11 @@ export default {
       return this.$store.getters.isPersonalLoaded
     },
     yandexIntegrationStatus () {
-      return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
+      console.log(this.corpMsgsLoading || this.personalMsgsLoading)
+      return this.corpMsgsLoading || this.personalMsgsLoading
+    },
+    isYandexIntegrated () {
+      return this.corpYandexIntegration || this.personalYandexIntegration
     },
     clientMessages () { return this.$store.state.clientfilesandmessages.messages },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
