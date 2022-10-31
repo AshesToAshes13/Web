@@ -32,16 +32,17 @@
           </div>
           <div
             :class="{'ml-[11.67px] w-full': !isAudio, 'mt-[11.67px] w-full': isAudio}"
-            class="float-right"
           >
             <router-link
               v-if="movies.includes(file.file_name.split('.').pop())"
               :to="{ name: 'taskfile', params: { id: file.uid }, query: { type: 'video', format: file.file_name.split('.').pop().toLowerCase() }}"
               target="_blank"
-              class="table max-w-[160px] truncate font-bold text-[#4C4C4D] text-[13px] leading-[15px]"
+              class="flex max-w-[250px] truncate font-bold text-[#4C4C4D] text-[13px] leading-[15px] cursor-pointer"
               style="word-break: break-word"
             >
-              {{ fileName }}
+              <span class="whitespace-nowrap overflow-hidden text-ellipsis">
+                {{ fileName }}
+              </span>
             </router-link>
             <a
               v-else
