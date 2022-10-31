@@ -14,9 +14,13 @@ const selectedCard = computed(() => store.getters.selectedCard)
 function updateClientCard (obj) {
   const isNeedUpdateClientCard = !store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
 
+  const isNeedUpdateClientCardName = store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid && property.name !== obj.obj.name)
+
   if (isNeedUpdateClientCard) {
     store.commit(CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD, obj.obj)
     store.dispatch(CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS, obj.obj.uid_client)
+  } else if (isNeedUpdateClientCardName) {
+    store.commit(CLIENT_FILES_AND_MESSAGES.UPDATE_CLIENT_CARD_NAME, obj.obj)
   }
 }
 

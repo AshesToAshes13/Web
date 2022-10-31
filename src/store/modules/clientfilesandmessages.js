@@ -308,6 +308,15 @@ const mutations = {
   [CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD]: (state, card) => {
     state.cards.cards = [...state.cards.cards, card]
   },
+  [CLIENT_FILES_AND_MESSAGES.UPDATE_CLIENT_CARD_NAME]: (state, card) => {
+    state.cards.cards.forEach(oneCard => {
+      if (oneCard.uid === card.uid) {
+        oneCard.name = card.name
+        return card
+      }
+      return card
+    })
+  },
   [CLIENT_FILES_AND_MESSAGES.DELETE_UPDATE_CLIENT_CARD]: (state, cardUid) => {
     state.cards.cards = state.cards.cards.filter(oneCard =>
       oneCard.uid !== cardUid
