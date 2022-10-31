@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import unautorizedApi from '@/services/unauthorizedApiService.js'
 import { mdiEmailOutline, mdiEyeOutline, mdiEyeOffOutline, mdiAccountOutline, mdiArrowRight, mdiCheckBold, mdiChevronLeft, mdiPhoneOutline } from '@mdi/js'
 import FullScreenSection from '@/components/FullScreenSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
@@ -941,8 +941,7 @@ export default {
         this.form.isEmailValid = true
         this.form.emailShowError = false
 
-        const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/exists?email=' + this.form.email
-        axios.get(uri)
+        unautorizedApi.validateEmail(this.form.email)
           .then(() => {
             this.showLoginInputs()
             this.form.emailMdi = mdiCheckBold
