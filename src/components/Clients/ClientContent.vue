@@ -255,6 +255,7 @@ export default {
       this.$store.commit('addClientMessages', uploadingFiles)
       this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST, data).then(() => {
         if (this.selectedClient) this.selectedClient.has_files = true
+        this.scrollDown()
       })
     },
     isFilePreloadable (fileExtension) {

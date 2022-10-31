@@ -567,6 +567,7 @@ export default {
       this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
         this.$store.state.cards.blockSelectCard = false
         if (this.selectedCard) this.selectedCard.has_files = true
+        this.scrollDown()
       })
     },
     setCurrentQuote (quote) {
