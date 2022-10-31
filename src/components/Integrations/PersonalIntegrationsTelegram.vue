@@ -43,8 +43,8 @@
           @click="playVideo"
         >
         <iframe
-          v-if="!showPreviewPicture"
-          :src="`https://www.youtube.com/embed/0MQcC2C0JTA?${!showPreviewPicture ? 'autoplay=1' : ''}`"
+          v-else
+          :src="`https://www.youtube.com/embed/0MQcC2C0JTA?autoplay=1`"
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
