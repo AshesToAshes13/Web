@@ -433,6 +433,7 @@ export default {
       return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
+      this.$store.state.cards.blockSelectCard = true
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const index in items) {
         const item = items[index]
@@ -445,6 +446,7 @@ export default {
             name: formData
           }
           this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
+            this.$store.state.cards.blockSelectCard = false
             if (this.selectedCard) this.selectedCard.has_files = true
             this.scrollDown()
           })
@@ -523,6 +525,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
+      this.$store.state.cards.blockSelectCard = true
       const uploadingFiles = []
 
       const files = event.target.files ? event.target.files : event.dataTransfer.files
@@ -562,6 +565,7 @@ export default {
       }
       this.$store.commit('addCardMessages', uploadingFiles)
       this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
+        this.$store.state.cards.blockSelectCard = false
         if (this.selectedCard) this.selectedCard.has_files = true
       })
     },

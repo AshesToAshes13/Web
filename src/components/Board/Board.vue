@@ -826,6 +826,9 @@ export default {
       )
     },
     selectCard (card) {
+      if (this.$store.state.cards.blockSelectCard === true) {
+        return
+      }
       if (this.$store.state.cards.selectedCardUid === card.uid) {
         return
       }

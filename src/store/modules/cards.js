@@ -10,6 +10,7 @@ const state = {
   currentBoard: {},
   status: '',
   cardsAbortController: null,
+  blockSelectCard: false,
   clientInCard: {}
 }
 
