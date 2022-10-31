@@ -20,6 +20,11 @@ function updateClientCard (obj) {
   }
 }
 
+function deleteClientCard (obj) {
+  store.commit(CLIENT_FILES_AND_MESSAGES.DELETE_UPDATE_CLIENT_CARD, obj.obj)
+  store.dispatch(CLIENT_FILES_AND_MESSAGES.GET_CLIENT_CARDS, store.state.clients.selectedClient.uid)
+}
+
 export function createCard (obj) {
   obj.obj.uid_client = ''
   obj.obj.client_name = ''
@@ -37,8 +42,14 @@ export function removeCard (uid) {
 }
 
 export function updateCard (obj) {
-  if (router.currentRoute.value.name === 'clientPage' && obj.obj.uid_client === store.state.clients.selectedClient.uid) {
+  const isUpdateCard = router.currentRoute.value.name === 'clientPage' && obj.obj.uid_client === store.state.clients.selectedClient.uid
+
+  const isDeleteUpdateClientCard = router.currentRoute.value.name === 'clientPage' && !obj.obj.uid_client && store.state.clientfilesandmessages.cards.cards.find(property => property.uid === obj.obj.uid)
+
+  if (isUpdateCard) {
     updateClientCard(obj)
+  } else if (isDeleteUpdateClientCard) {
+    deleteClientCard(obj)
   }
 
   if (router.currentRoute.value.name !== 'boardWithChildren') return
