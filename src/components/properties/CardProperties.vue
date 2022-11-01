@@ -48,6 +48,7 @@
     </div>
     <div
       id="card-prop-content"
+      ref="asideRight"
       class="flex-1 overflow-x-hidden w-full scroll-style"
     >
       <CardCover
@@ -454,8 +455,8 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('card-prop-content')
-      asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
+      const asideRight = this.$refs.asideRight
+      asideRight.scrollTo({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
       const messageInput = document.getElementById('card-message-textarea')
