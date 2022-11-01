@@ -329,7 +329,10 @@ export default {
       return this.$store.state.cards.clientInCard
     },
     isClientInCard () {
-      return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
+      return this.selectedCardUidClient !== '00000000-0000-0000-0000-000000000000' && this.selectedCardUidClient
+    },
+    selectedCardUidClient () {
+      return this.selectedCard?.uid_client
     },
     user () { return this.$store.state.user.user },
     selectedCardBoard () { return this.$store.state.boards.boards[this.selectedCard?.uid_board] || null },
@@ -410,7 +413,11 @@ export default {
         if (val) {
           this.$store.dispatch(CARD_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, val)
         }
-
+      }
+    },
+    selectedCardUidClient: {
+      immediate: true,
+      handler: function (val) {
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
 
@@ -478,10 +485,11 @@ export default {
       this.$store.dispatch(CHANGE_CARD_NAME, data)
     },
     async getClientInCurrentCardAndFetchHisMessages () {
+      this.$store.commit(CARD.UPDATE_CLIENT_IN_CARD, {})
       this.showClientSkeleton = true
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-      this.$store.state.cards.clientInCard = clientResponse.data
+      this.$store.commit(CARD.UPDATE_CLIENT_IN_CARD, clientResponse.data)
       this.showClientSkeleton = false
 
       const data = {
@@ -724,9 +732,6 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
-        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
-        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
-        await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
     removeClientFromCard () {

@@ -336,6 +336,9 @@ const mutations = {
     state.cards = []
     state.status = 'loading'
   },
+  [CARD.UPDATE_CLIENT_IN_CARD]: (state, clientData) => {
+    state.clientInCard = clientData
+  },
   [CARD.SELECT_CARD]: (state, cardUid) => {
     if (state.selectedCardUid !== cardUid) {
       const cardsMap = state.cards.reduce((acc, stage) => {
