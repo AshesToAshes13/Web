@@ -58,7 +58,8 @@ const actions = {
     commit('InitCardsAbortController', cardsAbortController)
     return new Promise((resolve, reject) => {
       commit(CARD.BOARD_CARDS_REQUEST)
-      const url = process.env.VUE_APP_INSPECTOR_API + 'cards?uid=' + boardUid
+      const url =
+        process.env.VUE_APP_INSPECTOR_API + 'cards?archive=0&uid=' + boardUid
       axios({ url: url, method: 'GET', signal: cardsAbortController.signal })
         .then((resp) => {
           if (resp) {
