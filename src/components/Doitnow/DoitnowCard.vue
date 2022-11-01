@@ -24,7 +24,7 @@
           v-if="cardBudget"
           title="Бюджет:"
           icon="budget"
-          :text="cardBudget"
+          :budget="cardBudget"
         />
         <DoitnowBadge
           v-if="currentBoard?.name"
