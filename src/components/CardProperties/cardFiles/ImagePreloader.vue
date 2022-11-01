@@ -42,13 +42,19 @@
   >
     {{ fileDateCreate }}
   </p>
-  <div class="group-hover:flex hidden justify-end">
+  <div
+    :ref="`message-file-icon-${fileUid}`"
+    class="group-hover:flex justify-end"
+    :class="{'hidden': !isShowMenu}"
+  >
     <CardChatMessageOptionsPopMenu
       :can-delete="canDelete"
       :is-show-new-cover="true"
       @onQuoteMessage="onQuoteMessage"
       @onDeleteMessage="onDeleteMessage"
       @onNewCardCover="onNewCardCover"
+      @openMenu="lockVisibility(fileUid)"
+      @closeMenu="unlockVisibility(fileUid)"
     >
       <div class="min-w-[30px] mt-[5px] min-h-[16px] flex cursor-pointer items-end justify-center">
         <svg
@@ -129,6 +135,7 @@ export default {
   data () {
     return {
       imageLoaded: false,
+      isShowMenu: false,
       imageSrc: '',
       blobImageForm: '',
       errorMessage: ''
@@ -150,7 +157,16 @@ export default {
     isFileInCache () {
       return !!localStorage.getItem(this.fileUid)
     },
-
+    lockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = 'visible'
+      this.isShowMenu = true
+    },
+    unlockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = null
+      this.isShowMenu = false
+    },
     b64toBlob (base64) {
       return fetch(base64).then(res => res.blob())
     },

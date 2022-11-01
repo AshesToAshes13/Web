@@ -63,11 +63,17 @@
         >
           {{ fileDateCreate }}
         </p>
-        <div class="group-hover:flex hidden justify-end">
+        <div
+          :ref="`message-file-icon-${fileUid}`"
+          class="group-hover:flex justify-end"
+          :class="{'hidden': !isShowMenu}"
+        >
           <CardChatMessageOptionsPopMenu
             :can-delete="canDelete"
             @onQuoteMessage="$emit('onQuoteMessage')"
             @onDeleteMessage="$emit('onDeleteMessage')"
+            @openMenu="lockVisibility(fileUid)"
+            @closeMenu="unlockVisibility(fileUid)"
           >
             <div class="min-w-[30px] ml-2 min-h-[14px] flex cursor-pointer items-end justify-center">
               <svg
@@ -142,7 +148,20 @@ export default {
   emits: ['onQuoteMessage', 'onDeleteMessage'],
   data () {
     return {
-      currentLocation: window.location.href
+      currentLocation: window.location.href,
+      isShowMenu: false
+    }
+  },
+  methods: {
+    lockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = 'visible'
+      this.isShowMenu = true
+    },
+    unlockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = null
+      this.isShowMenu = false
     }
   }
 }
