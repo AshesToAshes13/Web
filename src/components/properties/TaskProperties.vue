@@ -194,6 +194,7 @@
       <TaskPropsChatMessages
         v-if="taskMessages?.length && status=='success' && (selectedTask?.has_msgs || selectedTask?.has_files)"
         id="content"
+        ref="content"
         :task-messages="taskMessages"
         :current-user-uid="user?.current_user_uid"
         :show-all-messages="showAllMessages"
@@ -578,11 +579,8 @@ export default {
       this.selectedTask.name = taskName
     },
     scrollToBottom () {
-      // TODO: нужно переписать этот кусок
-      // не должен искать по имени класса - сделать ref или еще
-      // как-то по нормальному
       this.$nextTick(() => {
-        const messages = document.getElementsByClassName('messages')
+        const messages = this.$refs?.content?.$refs?.messages
         if (messages) {
           const lastMessage = messages[messages.length - 1]
           if (lastMessage) lastMessage.scrollIntoView(false)

@@ -4,6 +4,7 @@
   >
     <div
       v-for="(message, index) in messages"
+      ref="messages"
       :key="message.uid"
       class="message"
     >
