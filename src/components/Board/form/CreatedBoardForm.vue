@@ -94,7 +94,7 @@
     >
       <div class="flex justify-center items-center flex-col w-full rounded-[8px] bg-[#F9F9F9] p-[25px] shadow-2xl">
         <span>Форма успешно отправлена!</span>
-        <span v-if="item.redirectLink && !isFrame">{{ !linkIsText ? 'Сейчас Вы будете перенаправлены.' : item.redirectLink }}</span>
+        <span v-if="item.redirectLink">{{ !linkIsText ? 'Сейчас Вы будете перенаправлены.' : item.redirectLink }}</span>
       </div>
     </div>
   </div>

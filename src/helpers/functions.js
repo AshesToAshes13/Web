@@ -48,14 +48,3 @@ export function stripPhoneNumber (phoneString) {
     .replaceAll(/(\s|\(|\)|\+|-)/g, '')
   return preparedClientPhone
 }
-
-export const debounceFn = (cb, ms) => {
-  let timeout
-  return function () {
-    const fnCall = () => {
-      cb.apply(this, arguments)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(fnCall, ms)
-  }
-}
