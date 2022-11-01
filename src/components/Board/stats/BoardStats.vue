@@ -97,15 +97,11 @@ export default {
     }
   },
   mounted () {
-    if (!this.boardCards?.length) {
-      this.isLoaded = false
-      this.$store.dispatch(CARD.BOARD_CARDS_REQUEST, this.boardUid).then(() => {
-        this.calculateMembersCost()
-        this.isLoaded = true
-      })
-      return
-    }
-    this.calculateMembersCost()
+    this.isLoaded = false
+    this.$store.dispatch(CARD.BOARD_ALL_CARDS_REQUEST, this.boardUid).then(() => {
+      this.calculateMembersCost()
+      this.isLoaded = true
+    })
   },
   methods: {
     calculateMembersCost () {

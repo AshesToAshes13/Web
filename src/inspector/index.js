@@ -71,6 +71,19 @@ export function initInspectorSocket (force = false) {
         uid_board: router.currentRoute.value.params.board_id
       }
       socket.send(JSON.stringify(data))
+
+      if (
+        store.state.isPropertiesMobileExpanded &&
+        store.state.cards.selectedCardUid
+      ) {
+        const data = {
+          type: 'cardOnline',
+          uid_user: user.value.current_user_uid,
+          uid_board: router.currentRoute.value.params.board_id,
+          uid_card: store.state.cards.selectedCardUid
+        }
+        socket.send(JSON.stringify(data))
+      }
     }
 
     console.log('inspector connected success')
@@ -112,20 +125,33 @@ function parseMessage (data) {
 }
 
 function updateOnline (message) {
+  const userName = employees.value[message.uid_user]?.name || ''
+  const boardTitle = store.state.boards.boards[message.uid_board]?.name || ''
   switch (message.type) {
     case 'userOnline':
+      if (process.env.VUE_APP_EXTENDED_LOGS && userName) {
+        console.log(`userOnline @${userName} ${message.online}`)
+      }
       store.commit('ChangeUserOnline', {
         uidUser: message.uid_user,
         online: message.online
       })
       break
     case 'boardOnline':
+      if (process.env.VUE_APP_EXTENDED_LOGS && userName) {
+        console.log(`boardOnline @${userName} - "${boardTitle}"`)
+      }
       store.commit('ChangeUserOnlineBoard', {
         uidUser: message.uid_user,
         onlineBoardUid: message.uid_board
       })
       break
     case 'cardOnline':
+      if (process.env.VUE_APP_EXTENDED_LOGS && userName) {
+        console.log(
+          `cardOnline @${userName} - "${boardTitle}": "${message.uid_card}"`
+        )
+      }
       store.commit('ChangeUserOnlineBoard', {
         uidUser: message.uid_user,
         onlineBoardUid: message.uid_board
