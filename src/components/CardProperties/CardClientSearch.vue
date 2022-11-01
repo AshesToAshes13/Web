@@ -48,7 +48,7 @@
       maxlength="100"
       type="text"
       class="w-full font-roboto text-[14px] leading-[16px] border-0 focus:ring-0 p-0"
-      @keyup.enter="sendSearchRequest"
+      @input="sendSearchRequest"
       @keydown.esc.stop
       @keyup.esc="closeSearch"
       @blur="onBlurSearchInput"
