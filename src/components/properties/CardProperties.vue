@@ -526,7 +526,6 @@ export default {
         this.showMessagesLimit = true
         return
       }
-      console.log('CREATED CARD FILE')
       this.$store.state.cards.blockSelectCard = true
       const uploadingFiles = []
 
