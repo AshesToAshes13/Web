@@ -48,6 +48,7 @@
     </div>
     <div
       id="card-prop-content"
+      ref="asideRight"
       class="flex-1 overflow-x-hidden w-full scroll-style"
     >
       <CardCover
@@ -328,7 +329,10 @@ export default {
       return this.$store.state.cards.clientInCard
     },
     isClientInCard () {
-      return this.selectedCard?.uid_client !== '00000000-0000-0000-0000-000000000000' && this.selectedCard?.uid_client
+      return this.selectedCardUidClient !== '00000000-0000-0000-0000-000000000000' && this.selectedCardUidClient
+    },
+    selectedCardUidClient () {
+      return this.selectedCard?.uid_client
     },
     user () { return this.$store.state.user.user },
     selectedCardBoard () { return this.$store.state.boards.boards[this.selectedCard?.uid_board] || null },
@@ -409,7 +413,11 @@ export default {
         if (val) {
           this.$store.dispatch(CARD_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, val)
         }
-
+      }
+    },
+    selectedCardUidClient: {
+      immediate: true,
+      handler: function (val) {
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
 
@@ -433,6 +441,7 @@ export default {
       return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
+      this.$store.state.cards.blockSelectCard = true
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const index in items) {
         const item = items[index]
@@ -445,6 +454,7 @@ export default {
             name: formData
           }
           this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
+            this.$store.state.cards.blockSelectCard = false
             if (this.selectedCard) this.selectedCard.has_files = true
             this.scrollDown()
           })
@@ -452,8 +462,8 @@ export default {
       }
     },
     scrollDown () {
-      const asideRight = document.getElementById('card-prop-content')
-      asideRight.scroll({ top: asideRight.scrollHeight + 100000 })
+      const asideRight = this.$refs.asideRight
+      asideRight.scrollTo({ top: asideRight.scrollHeight + 100000 })
     },
     focusMessageInput () {
       const messageInput = document.getElementById('card-message-textarea')
@@ -475,10 +485,11 @@ export default {
       this.$store.dispatch(CHANGE_CARD_NAME, data)
     },
     async getClientInCurrentCardAndFetchHisMessages () {
+      this.$store.commit(CARD.UPDATE_CLIENT_IN_CARD, {})
       this.showClientSkeleton = true
 
       const clientResponse = await this.$store.dispatch(CLIENTS.GET_CLIENT, this.selectedCard?.uid_client)
-      this.$store.state.cards.clientInCard = clientResponse.data
+      this.$store.commit(CARD.UPDATE_CLIENT_IN_CARD, clientResponse.data)
       this.showClientSkeleton = false
 
       const data = {
@@ -523,6 +534,7 @@ export default {
         this.showMessagesLimit = true
         return
       }
+      this.$store.state.cards.blockSelectCard = true
       const uploadingFiles = []
 
       const files = event.target.files ? event.target.files : event.dataTransfer.files
@@ -562,7 +574,9 @@ export default {
       }
       this.$store.commit('addCardMessages', uploadingFiles)
       this.$store.dispatch(CREATE_FILES_REQUEST, data).then(() => {
+        this.$store.state.cards.blockSelectCard = false
         if (this.selectedCard) this.selectedCard.has_files = true
+        this.scrollDown()
       })
     },
     setCurrentQuote (quote) {
@@ -718,9 +732,6 @@ export default {
         this.selectedCard.uid_client = uid
         this.selectedCard.client_name = name
         await this.$store.dispatch(CHANGE_CARD_UID_CLIENT, this.selectedCard)
-        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
-        this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
-        await this.getClientInCurrentCardAndFetchHisMessages()
       }
     },
     removeClientFromCard () {

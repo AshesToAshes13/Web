@@ -1,5 +1,5 @@
 <template>
-  <main-section
+  <MainSection
     :class="componentClass"
     class="flex flex-col"
   >
@@ -7,7 +7,7 @@
       card-class="w-8/12 md:w-5/12 lg:w-4/12 xl:w-3/12 shadow bg-white dark:bg-white"
       card-rounded="rounded-3xl"
     />
-  </main-section>
+  </MainSection>
 </template>
 
 <script>

@@ -221,7 +221,7 @@
             class=" text-left items-center w-fit pb-3 grow font-bold text-[16px]"
             :class="[ icon ? 'px-4' : 'px-6' ]"
           >
-            <icon
+            <Icon
               v-if="icon"
               :path="icon"
               class="mr-3"

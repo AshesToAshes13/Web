@@ -58,7 +58,7 @@
       :z-index="'z-20'"
       @overlay-click="closeSubMenu"
     />
-    <overlay
+    <Overlay
       v-show="isAsideLgActive"
       :z-index="'z-20'"
       @overlay-click="overlayClick"

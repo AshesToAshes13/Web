@@ -1,3 +1,5 @@
+import initAxios from '@/services/axios/init.js'
+import unautorizedApi from '@/services/unauthorizedApiService.js'
 import axios from 'axios'
 import Notifications, { notify } from 'notiwind'
 import { createApp } from 'vue'
@@ -9,13 +11,8 @@ import store from './store'
 
 import './css/main.css'
 
-const token = localStorage.getItem('user-token')
 const isGridView = JSON.parse(localStorage.getItem('isGridView'))
 const clickedOffer = localStorage.getItem('clicked-offer') || ''
-
-function pad2 (n) {
-  return (n < 10 ? '0' : '') + n
-}
 
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
@@ -27,64 +24,7 @@ document.addEventListener('keydown', function (e) {
   }
 })
 
-const chosenDate = new Date()
-const month = pad2(chosenDate.getMonth() + 1)
-const day = pad2(chosenDate.getDate())
-const year = chosenDate.getFullYear()
-const formattedDate = day + '-' + month + '-' + year
-let isRefreshNow = false
-axios.defaults.headers.common.LocalDate = formattedDate
-
-if (token) {
-  axios.defaults.headers.common.Authorization = token
-  if (process.env.VUE_APP_EXTENDED_LOGS) {
-    console.log(
-      'set axios authorization',
-      axios.defaults.headers.common.Authorization
-    )
-  }
-}
-
-// Add a response interceptor
-axios.interceptors.response.use(
-  (resp) => resp,
-  function (error) {
-    const errorMessage =
-      error?.response?.data.message ||
-      error?.response?.data.error ||
-      error?.message ||
-      error?.code
-
-    if (typeof errorMessage === 'string') {
-      if (
-        errorMessage.includes('invalid token') ||
-        errorMessage.includes('token expired')
-      ) {
-        if (isRefreshNow) {
-          return
-        }
-        isRefreshNow = true
-        store
-          .dispatch('AUTH_REFRESH_TOKEN')
-          .then(() => {
-            window.location.reload()
-          })
-          .catch(() => {
-            if (store.getters.isAuthenticated) {
-              store.dispatch('AUTH_LOGOUT')
-            }
-          })
-          .finally(() => {
-            isRefreshNow = false
-          })
-        return
-      }
-      // обработку вывода других ошибок
-      // смотри в обработчике window.addEventListener('unhandledrejection'
-    }
-    return Promise.reject(error)
-  }
-)
+initAxios(axios)
 
 store.commit('basic', { key: 'isGridView', value: isGridView })
 store.commit('SET_CLICK_OFFER', clickedOffer)
@@ -145,6 +85,14 @@ window.addEventListener('unhandledrejection', (event) => {
     } else {
       console.log('REST API Error (other)', { ...event.reason })
     }
+  } else if (event.reason) {
+    unautorizedApi.collectError(
+      store.state?.user?.user?.current_user_uid,
+      event.reason.message,
+      event.reason.fileName,
+      event.reason.lineNumber,
+      event.reason.columnNumber
+    )
   }
 })
 
@@ -156,22 +104,13 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   if (msg === 'NetworkError') {
     return
   }
-  if (!url) {
-    url = 'https://web'
-  }
-  const data = {
-    msg: msg,
-    url: url,
-    line: lineNo,
-    column: columnNo
-  }
-  if (axios.defaults.headers.common.Authorization) {
-    axios({
-      url: process.env.VUE_APP_LEADERTASK_API + 'api/v1/errors/front',
-      method: 'POST',
-      data: data
-    })
-  }
+  unautorizedApi.collectError(
+    store.state?.user?.user?.current_user_uid,
+    msg,
+    url,
+    lineNo,
+    columnNo
+  )
 }
 
 createApp(App)

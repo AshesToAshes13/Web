@@ -188,7 +188,7 @@
     <span
       v-if="text || title"
     >
-      {{ title && title + ' ' }} <span :class="{'font-bold': boldText}">{{ text }}</span>
+      {{ title && title + ' ' }} <span :class="{'font-bold': boldText}">{{ text || budget }}</span>
     </span>
     <slot />
   </div>
@@ -216,6 +216,10 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    budget: {
+      type: Number,
+      default: 0
     }
   },
   computed: {

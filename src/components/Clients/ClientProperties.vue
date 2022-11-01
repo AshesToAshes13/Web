@@ -1,5 +1,9 @@
 <template>
-  <div class="flex flex-col">
+  <ClientPropertiesSkeleton v-if="!propertiesIsLoaded" />
+  <div
+    v-else
+    class="flex flex-col"
+  >
     <div class="mb-[30px]">
       <div
         class="font-roboto leading-[19px] font-[400] text-[15px] text-[#606061] mb-[10px]"
@@ -135,10 +139,11 @@
 import * as CLIENTS from '@/store/actions/clients'
 import * as CORP_MEGAFON from '@/store/actions/integrations/corpoMegafonInt'
 import { stripPhoneNumber } from '@/helpers/functions'
+import ClientPropertiesSkeleton from '@/components/Clients/ClientPropertiesSkeleton'
 import contenteditable from 'vue-contenteditable'
 
 export default {
-  components: { contenteditable },
+  components: { contenteditable, ClientPropertiesSkeleton },
   props: {
     cards: {
       type: Array,
@@ -155,7 +160,8 @@ export default {
       },
       currentQuote: false,
       clientMessageInputValue: '',
-      disableButton: false
+      disableButton: false,
+      propertiesIsLoaded: false
     }
   },
   computed: {
@@ -191,11 +197,15 @@ export default {
     selectedClient (selectedClient) {
       if (selectedClient) {
         this.currClient = this.selectedClient
+        this.propertiesIsLoaded = true
       }
     }
   },
   mounted () {
-    this.currClient = { ...this.selectedClient }
+    if (this.selectedClient) {
+      this.currClient = { ...this.selectedClient }
+      this.propertiesIsLoaded = true
+    }
   },
   methods: {
     updateClient () {

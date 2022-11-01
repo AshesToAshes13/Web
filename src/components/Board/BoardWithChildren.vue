@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     subBoards () {
-      return this.currentBoard?.children
+      return this.currentBoard?.children ?? []
     },
     subBoardsCount () {
       return this.subBoards?.length ?? 0

@@ -194,6 +194,7 @@
       <TaskPropsChatMessages
         v-if="taskMessages?.length && status=='success' && (selectedTask?.has_msgs || selectedTask?.has_files)"
         id="content"
+        ref="content"
         :task-messages="taskMessages"
         :current-user-uid="user?.current_user_uid"
         :show-all-messages="showAllMessages"
@@ -351,6 +352,7 @@ export default {
       isEditableTaskName: false,
       showOnlyFiles: false,
       showConfirm: false,
+      blockSendMessage: false,
 
       currentAnswerMessageUid: '',
       taskMsg: '',
@@ -492,7 +494,9 @@ export default {
             // to refine
             this.selectedTask.status = TASK_STATUS.TASK_REFINE
           }
+          this.scrollToBottom()
         })
+      this.scrollToBottom()
     },
     deleteTask () {
       this.showConfirm = false
@@ -576,11 +580,8 @@ export default {
       this.selectedTask.name = taskName
     },
     scrollToBottom () {
-      // TODO: нужно переписать этот кусок
-      // не должен искать по имени класса - сделать ref или еще
-      // как-то по нормальному
       this.$nextTick(() => {
-        const messages = document.getElementsByClassName('messages')
+        const messages = this.$refs?.content?.$refs?.messages
         if (messages) {
           const lastMessage = messages[messages.length - 1]
           if (lastMessage) lastMessage.scrollIntoView(false)
@@ -627,6 +628,10 @@ export default {
       document.documentElement.style.setProperty('--task-props-static-height', parentHeight + 'px')
     },
     sendTaskMsg (msg) {
+      // запрещаем повторную отправку сообщения, пока не выполнится запрос
+      if (this.blockSendMessage === true) {
+        return
+      }
       let msgtask = msg || this.taskMsg
       msgtask = msgtask.trim()
       msgtask = msgtask.replaceAll('&', '&amp;')
@@ -645,6 +650,7 @@ export default {
         msg: msgtask
       }
       if (data.text) {
+        this.blockSendMessage = true
         this.$store.dispatch(CREATE_MESSAGE_REQUEST, data).then(
           resp => {
           // Answer last inspector message
@@ -668,6 +674,7 @@ export default {
             }
             this.scrollToBottom()
           })
+        this.blockSendMessage = false
       }
       this.currentAnswerMessageUid = ''
       this.taskMsg = ''

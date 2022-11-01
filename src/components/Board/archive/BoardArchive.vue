@@ -226,8 +226,7 @@ export default {
     this.$store.state.tasks.selectedTask = null
   },
   mounted () {
-    if (this.$store.state.boards.selectedBoard?.uid === this.boardUid && this.$store.state.cards) return
-    this.$store.dispatch(CARD.BOARD_CARDS_REQUEST, this.currentBoard.uid)
+    this.$store.dispatch(CARD.BOARD_ARCHIVE_CARDS_REQUEST, this.currentBoard.uid)
   },
   methods: {
     totalItem (cards) {

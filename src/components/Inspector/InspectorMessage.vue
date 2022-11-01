@@ -79,7 +79,7 @@
               style="padding: 4px 7px 4px 6px;"
               @click="selectProject(project)"
             >
-              <icon
+              <Icon
                 v-if="project.uid !== 'no_set'"
                 :path="projectIcon.path"
                 :width="18"
@@ -123,7 +123,7 @@
               style="padding: 4px 7px 4px 6px;"
               @click="selectTag(tag)"
             >
-              <icon
+              <Icon
                 v-if="tag.uid !== 'no_set'"
                 :path="tagIcon.path"
                 :width="18"
@@ -167,7 +167,7 @@
               :style="{ 'background-color': getValidBackColor(color.back_color) }"
               @click="selectColor(color)"
             >
-              <icon
+              <Icon
                 v-if="color.uid !== 'no_set'"
                 :style="{ 'color': getValidForeColor(color.fore_color) }"
                 :path="colorIcon.path"

@@ -69,11 +69,17 @@
         >
           {{ fileDateCreate }}
         </p>
-        <div class="group-hover:flex hidden justify-end">
-          <card-chat-message-options-pop-menu
+        <div
+          :ref="`message-file-icon-${fileUid}`"
+          class="group-hover:flex justify-end"
+          :class="{'hidden': !isShowMenu}"
+        >
+          <CardChatMessageOptionsPopMenu
             :can-delete="canDelete"
             @onQuoteMessage="$emit('onQuoteMessage')"
             @onDeleteMessage="$emit('onDeleteMessage')"
+            @openMenu="lockVisibility(fileUid)"
+            @closeMenu="unlockVisibility(fileUid)"
           >
             <div class="min-w-[30px] ml-2 min-h-[14px] flex cursor-pointer items-end justify-center">
               <svg
@@ -98,7 +104,7 @@
                 />
               </svg>
             </div>
-          </card-chat-message-options-pop-menu>
+          </CardChatMessageOptionsPopMenu>
         </div>
       </div>
     </div>
@@ -151,6 +157,7 @@ export default {
   data () {
     return {
       fileURL: '',
+      isShowMenu: false,
       fileIsDownloaded: false
     }
   },
@@ -166,6 +173,16 @@ export default {
           this.$refs.fileLink.click()
         })
       })
+    },
+    lockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = 'visible'
+      this.isShowMenu = true
+    },
+    unlockVisibility (messageUid) {
+      const icon = this.$refs[`message-file-icon-${messageUid}`]
+      icon.style.visibility = null
+      this.isShowMenu = false
     }
   }
 }

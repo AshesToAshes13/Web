@@ -462,9 +462,6 @@ export default {
     }
   },
   computed: {
-    visibleColumns () {
-      return this.storeCards.filter((column) => this.isColumnVisible(column))
-    },
     usersColumns () {
       return this.storeCards.filter((stage) => stage.UserStage === true)
     },
@@ -826,6 +823,9 @@ export default {
       )
     },
     selectCard (card) {
+      if (this.$store.state.cards.blockSelectCard === true) {
+        return
+      }
       if (this.$store.state.cards.selectedCardUid === card.uid) {
         return
       }

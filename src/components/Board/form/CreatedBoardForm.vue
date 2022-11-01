@@ -18,7 +18,7 @@
       >
         <h1
           :title="item.title"
-          class="mb-[15px] text-[30px] text-center text-[#777] shrink-0 w-[350px] min-h-[30px]"
+          class="mb-[15px] text-[20px] text-center text-[#777] shrink-0 w-[350px] min-h-[30px]"
           style="word-break: break-word"
           :class="{'truncate': isFrame}"
         >
@@ -94,7 +94,7 @@
     >
       <div class="flex justify-center items-center flex-col w-full rounded-[8px] bg-[#F9F9F9] p-[25px] shadow-2xl">
         <span>Форма успешно отправлена!</span>
-        <span v-if="item.redirectLink && !isFrame">{{ !linkIsText ? 'Сейчас Вы будете перенаправлены.' : item.redirectLink }}</span>
+        <span v-if="item.redirectLink">{{ !linkIsText ? 'Сейчас Вы будете перенаправлены.' : item.redirectLink }}</span>
       </div>
     </div>
   </div>

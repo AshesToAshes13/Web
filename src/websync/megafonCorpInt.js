@@ -32,7 +32,7 @@ export function updateMegafonIntegration (obj) {
 }
 
 export function addMegafonCallToClientChat (obj) {
-  if (obj.obj.phone === stripPhoneNumber(store.state.clients.selectedClient.phone)) {
+  if (obj.obj.phone === stripPhoneNumber(store.state.clients.selectedClient?.phone)) {
     store.commit(CLIENT_FILES_AND_MESSAGES.PUSH_CALL_HISTORY, [obj.obj])
     store.commit(CLIENT_FILES_AND_MESSAGES.MERGE_FILES_AND_MESSAGES)
   }

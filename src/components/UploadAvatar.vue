@@ -2,7 +2,7 @@
   <Overlay>
     <div class="rounded-xl shadow-lg p-[24px] bg-white z-50 flex w-[900px]">
       <div class="grow max-h-[500px] w-[710px]">
-        <cropper
+        <Cropper
           background-class="bg-transparent"
           :stencil-props="{
             aspectRatio: 1

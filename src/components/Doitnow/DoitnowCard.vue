@@ -24,7 +24,7 @@
           v-if="cardBudget"
           title="Бюджет:"
           icon="budget"
-          :text="cardBudget"
+          :budget="cardBudget"
         />
         <DoitnowBadge
           v-if="currentBoard?.name"
@@ -113,6 +113,7 @@
         @click="nextTask"
       />
       <DoitnowRightButtonContact
+        v-if="canEdit"
         :title="contactButtonTitle"
         @changeContact="onChangeClient"
       />
@@ -123,21 +124,25 @@
         @click="onCallClient"
       />
       <DoitnowRightButton
+        v-if="canEdit"
         title="Архивировать: успех"
         icon="archive"
         @click="onSetSuccess"
       />
       <DoitnowRightButton
+        v-if="canEdit"
         title="Архивировать: отказ"
         icon="archive"
         @click="onSetReject"
       />
       <DoitnowRightButton
+        v-if="canEdit"
         title="Установить бюджет"
         icon="budget"
         @click="clickCardBudget"
       />
       <DoitnowRightButton
+        v-if="canEdit"
         title="Переместить"
         icon="move"
         @click="onMove"

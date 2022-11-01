@@ -101,8 +101,11 @@
         placeholder="Ссылка для редиректа"
         type="text"
       >
+      <p class="text-gray-500 text-[11px] mb-1">
+        * Если ввести ссылку (начинается с http), то вместо вывода уведомления будет произведён редирект
+      </p>
       <p class="text-gray-500 text-[11px] mb-3">
-        * если ввести ссылку (начинается с http), то вместо вывода уведомления будет произведён редирект
+        * Редирект не будет работать если вставить форму как HTML код
       </p>
       <input
         v-model="form.privacy_policy_href"
@@ -120,7 +123,7 @@
           {{ error }}
         </p>
       </template>
-      <jb-button
+      <JbButton
         color="login"
         class="w-full rounded-lg text-sm"
         label="Сохранить форму"
@@ -137,6 +140,9 @@
           class="bg-white p-3 leading-[50px] rounded-[8px]"
           v-text="iframeHtml"
         />
+        <p class="text-gray-500 mt-3">
+          в HTML-код не работает редирект
+        </p>
         <button
           class="mt-3 focus:ring min-w-[90px] focus:outline-none flex cursor-pointer whitespace-nowrap justify-center items-center duration-150 px-[12px] py-[10px] rounded-md bg-[#ff9123] text-white text-[13px] leading-[15px] font-medium font-roboto"
           @click="copyIframeHtml"

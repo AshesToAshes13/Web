@@ -66,7 +66,7 @@
         Для чего нужны проекты?
       </p>
       <div class="flex items-center mt-10">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -78,7 +78,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -90,7 +90,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -102,7 +102,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -114,7 +114,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -144,7 +144,7 @@
         Для чего нужны метки?
       </p>
       <div class="flex items-center mt-10">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -156,7 +156,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -168,7 +168,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -180,7 +180,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -210,7 +210,7 @@
         Для чего нужны цвета?
       </p>
       <div class="flex items-center mt-10">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -222,7 +222,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -234,7 +234,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"
@@ -246,7 +246,7 @@
         </p>
       </div>
       <div class="flex items-center mt-3">
-        <icon
+        <Icon
           :path="ready.path"
           :width="ready.width"
           :height="ready.height"

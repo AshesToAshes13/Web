@@ -1,5 +1,8 @@
 <template>
-  <PopMenu>
+  <PopMenu
+    @openMenu="openMenu"
+    @closeMenu="closeMenu"
+  >
     <slot />
     <template #menu>
       <PopMenuItem
@@ -8,6 +11,7 @@
       >
         Ответить
       </PopMenuItem>
+
       <PopMenuItem
         v-if="isShowNewCover"
         icon="copy"
@@ -48,7 +52,7 @@ export default {
       default: false
     }
   },
-  emits: ['onQuoteMessage', 'onDeleteMessage', 'onNewCardCover'],
+  emits: ['onQuoteMessage', 'onDeleteMessage', 'onNewCardCover', 'openMenu', 'closeMenu'],
   methods: {
     onQuoteMessage () {
       this.$emit('onQuoteMessage')
@@ -58,6 +62,12 @@ export default {
     },
     onNewCardCover () {
       this.$emit('onNewCardCover')
+    },
+    openMenu () {
+      this.$emit('openMenu')
+    },
+    closeMenu () {
+      this.$emit('closeMenu')
     }
   }
 }

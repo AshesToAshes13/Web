@@ -1,5 +1,5 @@
 <template>
-  <overlay
+  <Overlay
     v-show="value"
     @overlay-click="cancel"
   >
@@ -53,7 +53,7 @@
         <span class="mt-3">Осталось символов: {{ symbolsRemain }}</span>
       </div>
     </CardComponent>
-  </overlay>
+  </Overlay>
 </template>
 
 <script>

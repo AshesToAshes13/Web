@@ -290,7 +290,6 @@
 
 <script>
 import treeview from 'vue3-treeview'
-// import onBoarding from '@/components/onBoarding/onBoarding.vue'
 import TaskStatus from '@/components/TasksList/TaskStatus.vue'
 import EmptyTasksListPics from '@/components/TasksList/EmptyTasksListPics.vue'
 import ModalBoxDelete from './Common/ModalBoxDelete.vue'

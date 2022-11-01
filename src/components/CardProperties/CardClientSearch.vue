@@ -48,7 +48,7 @@
       maxlength="100"
       type="text"
       class="w-full font-roboto text-[14px] leading-[16px] border-0 focus:ring-0 p-0"
-      @keyup.enter="sendSearchRequest"
+      @input="debounceSearch"
       @keydown.esc.stop
       @keyup.esc="closeSearch"
       @blur="onBlurSearchInput"
@@ -80,16 +80,10 @@ export default {
   emits: ['search', 'eraseSearch'],
   data: () => ({
     showSearchBar: false,
-    searchText: ''
+    searchText: '',
+    debounce: null
   }),
   methods: {
-    sendSearchRequest () {
-      if (!this.searchText) {
-        this.closeSearch()
-        return
-      }
-      this.$emit('search', this.searchText)
-    },
     onBlurSearchInput () {
       if (!this.searchText) {
         this.closeSearch()
@@ -111,6 +105,16 @@ export default {
       this.searchText = ''
       this.showSearchBar = false
       this.$emit('eraseSearch')
+    },
+    debounceSearch () {
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(() => {
+        if (!this.searchText) {
+          this.closeSearch()
+          return
+        }
+        this.$emit('search', this.searchText)
+      }, 600)
     }
   }
 }

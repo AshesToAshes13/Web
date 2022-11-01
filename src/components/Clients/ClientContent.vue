@@ -7,7 +7,7 @@
       />
     </div>
     <div class="grow flex flex-col px-[25px] pt-[30px] pb-[10px] border-l w-full border-[rgba(0,0,0,.1)]">
-      <p class="font-[700] font-[18px] text-[#424242] mb-[30px]">
+      <p class="font-[700] text-[18px] text-[#424242] mb-[30px]">
         Комментарии
       </p>
       <div
@@ -18,7 +18,7 @@
         <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
           v-if="shouldntShowSkeletonMsg"
-          class="!pb-[20px]"
+          class="!pb-[20px] pr-[5px]"
           :messages="messages"
           :current-user-uid="user.current_user_uid"
           :employees="employees"
@@ -64,6 +64,8 @@ import { uuidv4 } from '@/helpers/functions'
 import { REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages'
 import { GET_CLIENT } from '@/store/actions/clients'
+import * as CORP_YANDEX from '@/store/actions/integrations/corpoYandexInt'
+import * as PERSONAL_YANDEX from '@/store/actions/integrations/personalYandexInt'
 
 export default {
   components: { ClientMessageInput, ClientMessageQuoteUnderInput, ClientChat, MessageSkeleton, ClientProperties },
@@ -104,10 +106,18 @@ export default {
       return this.$store.state.corpYandexIntegration.isIntegrated
     },
     showSkeletonMsg () {
-      return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
+      if (this.isYandexIntegrated) {
+        return this.cardsStatus === 'loading' || this.messagesStatus === 'loading' || !this.yandexIntegrationStatus
+      } else {
+        return this.cardsStatus === 'loading' || this.messagesStatus === 'loading'
+      }
     },
     shouldntShowSkeletonMsg () {
-      return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
+      if (this.isYandexIntegrated) {
+        return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading' && this.yandexIntegrationStatus
+      } else {
+        return this.cardsStatus !== 'loading' && this.messagesStatus !== 'loading'
+      }
     },
     corpMsgsLoading () {
       return this.$store.getters.isCorpLoaded
@@ -119,7 +129,11 @@ export default {
       return this.$store.getters.isPersonalLoaded
     },
     yandexIntegrationStatus () {
-      return (this.corpYandexIntegration || this.personalYandexIntegration) && (this.corpMsgsLoading || this.personalMsgsLoading)
+      console.log(this.corpMsgsLoading || this.personalMsgsLoading)
+      return this.corpMsgsLoading || this.personalMsgsLoading
+    },
+    isYandexIntegrated () {
+      return this.corpYandexIntegration || this.personalYandexIntegration
     },
     clientMessages () { return this.$store.state.clientfilesandmessages.messages },
     canAddFiles () { return !this.$store.getters.isLicenseExpired },
@@ -139,6 +153,10 @@ export default {
   },
   unmounted () {
     this.$store.commit(CLIENTS.SELECT_CLIENT, null)
+    this.$store.commit(CORP_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH)
+    this.$store.commit(CORP_YANDEX.YANDEX_SEND_TO_US_REFRESH)
+    this.$store.commit(PERSONAL_YANDEX.YANDEX_SEND_FROM_US_END_REFRESH)
+    this.$store.commit(PERSONAL_YANDEX.YANDEX_SEND_TO_US_REFRESH)
   },
   methods: {
     setCurrentQuote (quote) {
@@ -237,6 +255,7 @@ export default {
       this.$store.commit('addClientMessages', uploadingFiles)
       this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST, data).then(() => {
         if (this.selectedClient) this.selectedClient.has_files = true
+        this.scrollDown()
       })
     },
     isFilePreloadable (fileExtension) {

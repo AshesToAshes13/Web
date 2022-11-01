@@ -8,7 +8,7 @@
       <div
         class="flex flex-none px-[12px] pt-[8px]"
       >
-        <icon
+        <Icon
           :path="listView.path"
           :width="listView.width"
           :height="listView.height"
@@ -20,7 +20,7 @@
           }"
           @click="updateGridView(false)"
         />
-        <icon
+        <Icon
           :path="gridView.path"
           :width="gridView.width"
           :height="gridView.height"

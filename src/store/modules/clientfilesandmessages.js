@@ -295,8 +295,32 @@ const mutations = {
   [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_SUCCESS]: (state) => {
     state.cards.status = 'success'
   },
+  [CLIENT_FILES_AND_MESSAGES.REMOVE_MESSAGE_FROM_CARD]: (state, uid) => {
+    for (let i = 0; i < state.cards.messages[0].length; i++) {
+      if (state.cards.messages[0][i].uid === uid) {
+        state.cards.messages[0][i].deleted = 1
+      }
+    }
+  },
   [CLIENT_FILES_AND_MESSAGES.SET_CLIENT_CARDS]: (state, data) => {
     state.cards.cards = data
+  },
+  [CLIENT_FILES_AND_MESSAGES.ADD_UPDATE_CLIENT_CARD]: (state, card) => {
+    state.cards.cards = [...state.cards.cards, card]
+  },
+  [CLIENT_FILES_AND_MESSAGES.UPDATE_CLIENT_CARD_NAME]: (state, card) => {
+    state.cards.cards.forEach(oneCard => {
+      if (oneCard.uid === card.uid) {
+        oneCard.name = card.name
+        return card
+      }
+      return card
+    })
+  },
+  [CLIENT_FILES_AND_MESSAGES.DELETE_UPDATE_CLIENT_CARD]: (state, cardUid) => {
+    state.cards.cards = state.cards.cards.filter(oneCard =>
+      oneCard.uid !== cardUid
+    )
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
     state.messages = state.messages.filter((message) => !message.is_uploading)
@@ -323,6 +347,9 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES]: (state, commit, resp) => {
     state.messages = []
+  },
+  [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MESSAGES_SUCCESS]: (state, obj) => {
+    state.cards.messages[0].push(obj)
   },
   [CLIENT_FILES_AND_MESSAGES.CLIENT_CARDS_MERGE_FILES]: (state, resp) => {
     const messages = resp[0]
