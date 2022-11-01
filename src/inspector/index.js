@@ -71,6 +71,18 @@ export function initInspectorSocket (force = false) {
         uid_board: router.currentRoute.value.params.board_id
       }
       socket.send(JSON.stringify(data))
+
+      if (
+        store.state.isPropertiesMobileExpanded &&
+        store.state.cards.selectedCardUid
+      ) {
+        const data = {
+          uid_user: user.value.current_user_uid,
+          uid_board: router.currentRoute.value.params.board_id,
+          uid_card: store.state.cards.selectedCardUid
+        }
+        socket.send(JSON.stringify(data))
+      }
     }
 
     console.log('inspector connected success')
