@@ -251,7 +251,6 @@
           </div>
         </div>
       </div>
-      <pre>{{ blockSendMessage }}</pre>
       <CardMessageInput
         v-model="taskMsg"
         class="mt-[8px]"
