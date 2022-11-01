@@ -54,7 +54,7 @@
         >
         <iframe
           v-else
-          :src="`https://www.youtube.com/embed/Jx-TBirC_Cc?autoplay=1`"
+          :src="`https://www.youtube.com/embed/6_-c2MS70wk?autoplay=1`"
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
