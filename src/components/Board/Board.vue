@@ -462,9 +462,6 @@ export default {
     }
   },
   computed: {
-    visibleColumns () {
-      return this.storeCards.filter((column) => this.isColumnVisible(column))
-    },
     usersColumns () {
       return this.storeCards.filter((stage) => stage.UserStage === true)
     },
