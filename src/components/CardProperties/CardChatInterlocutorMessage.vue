@@ -20,10 +20,17 @@
       >
         {{ getMessageTimeString(message.date_create) }}
       </p>
-      <div class="self-end group-hover:flex hidden">
+      <div
+        :ref="`message-icon-${message.uid}`"
+        class="self-end group-hover:flex"
+        :class="{'hidden': !isShowMenu}"
+      >
         <CardChatMessageOptionsPopMenu
+          :message-uid="message.uid"
           :can-delete="false"
           @onQuoteMessage="onQuoteMessage"
+          @openMenu="lockVisibility(message.uid)"
+          @closeMenu="unlockVisibility(message.uid)"
         >
           <div class="min-w-[30px] min-h-[16px] flex cursor-pointer items-end justify-center w-full">
             <svg
@@ -70,6 +77,11 @@ export default {
     }
   },
   emits: ['onQuoteMessage'],
+  data () {
+    return {
+      isShowMenu: false
+    }
+  },
   methods: {
     getMessageTimeString (dateCreate) {
       if (!dateCreate) return ''
@@ -85,6 +97,16 @@ export default {
     },
     onQuoteMessage () {
       this.$emit('onQuoteMessage', this.message)
+    },
+    lockVisibility (messageUid) {
+      const icon = this.$refs[`message-icon-${messageUid}`]
+      icon.style.visibility = 'visible'
+      this.isShowMenu = true
+    },
+    unlockVisibility (messageUid) {
+      const icon = this.$refs[`message-icon-${messageUid}`]
+      icon.style.visibility = null
+      this.isShowMenu = false
     }
   }
 }
