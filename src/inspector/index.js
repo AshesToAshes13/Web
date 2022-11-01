@@ -67,7 +67,7 @@ export function initInspectorSocket (force = false) {
     ) {
       const data = {
         type: 'boardOnline',
-        uid_user: store.state.user.user.current_user_uid,
+        uid_user: user.value.current_user_uid,
         uid_board: router.currentRoute.value.params.board_id
       }
       socket.send(JSON.stringify(data))
