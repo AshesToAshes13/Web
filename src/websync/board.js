@@ -39,8 +39,11 @@ export function removeBoard (obj) {
 }
 
 export function addBoard (obj) {
+  // ищем поддсоку в доске, если ее нет(условие 46 строка), то добавляем в навигатов
+  const subBoardCurrentBoard = store.state.boards?.boards[router.currentRoute.value.params?.board_id]?.children.find(board => board.uid === obj.uid)
+
   store.commit(BOARD.PUSH_BOARD, [obj])
-  if (store.state.navigator.navigator.new_private_boards[1].items.findIndex(board => board.uid === obj.uid) === -1) {
+  if (store.state.navigator.navigator.new_private_boards[1].items.findIndex(board => board.uid === obj.uid) === -1 && !subBoardCurrentBoard) {
     store.commit(NAVIGATOR.NAVIGATOR_PUSH_COMMON_BOARD, obj)
   }
 }
