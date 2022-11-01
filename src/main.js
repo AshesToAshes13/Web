@@ -1,4 +1,5 @@
 import initAxios from '@/services/axios/init.js'
+import unautorizedApi from '@/services/unauthorizedApiService.js'
 import axios from 'axios'
 import Notifications, { notify } from 'notiwind'
 import { createApp } from 'vue'
@@ -84,6 +85,14 @@ window.addEventListener('unhandledrejection', (event) => {
     } else {
       console.log('REST API Error (other)', { ...event.reason })
     }
+  } else if (event.reason) {
+    unautorizedApi.collectError(
+      store.state?.user?.user?.current_user_uid,
+      event.reason.message,
+      event.reason.fileName,
+      event.reason.lineNumber,
+      event.reason.columnNumber
+    )
   }
 })
 
@@ -95,22 +104,13 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   if (msg === 'NetworkError') {
     return
   }
-  if (!url) {
-    url = 'https://web'
-  }
-  const data = {
-    msg: msg,
-    url: url,
-    line: lineNo,
-    column: columnNo
-  }
-  if (axios.defaults.headers.common.Authorization) {
-    axios({
-      url: process.env.VUE_APP_LEADERTASK_API + 'api/v1/errors/front',
-      method: 'POST',
-      data: data
-    })
-  }
+  unautorizedApi.collectError(
+    store.state?.user?.user?.current_user_uid,
+    msg,
+    url,
+    lineNo,
+    columnNo
+  )
 }
 
 createApp(App)
