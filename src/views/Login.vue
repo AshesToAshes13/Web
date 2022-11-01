@@ -46,7 +46,7 @@
       >
         {{ form.emailErrorMessage }}
       </p>
-      <jb-button
+      <JbButton
         v-if="form.showCheckButton"
         class="w-full rounded-lg text-sm"
         color="login"
@@ -63,7 +63,7 @@
           :callback="googleCallback"
           popup-type="TOKEN"
         >
-          <jb-button
+          <JbButton
             class="w-full rounded-lg text-sm"
             color="white"
             :icon="'google'"
@@ -93,7 +93,7 @@
           >
             {{ form.errorMessage }}
           </p>
-          <jb-button
+          <JbButton
             type="submit"
             class="w-full rounded-lg text-sm"
             color="login"
