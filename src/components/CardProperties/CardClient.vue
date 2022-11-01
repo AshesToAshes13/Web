@@ -198,7 +198,6 @@ import * as CLIENTS from '@/store/actions/clients'
 import Popper from 'vue3-popper'
 import CardClientSearch from '@/components/CardProperties/CardClientSearch.vue'
 import ModalBoxAddClient from '@/components/Clients/ModalBoxAddClient.vue'
-import { debounceFn } from '@/helpers/functions'
 
 export default {
   components: {
@@ -280,19 +279,17 @@ export default {
       this.searchResult = 'Найдите контакт по имени, email или номеру телефона'
     },
     searchClients (text) {
-      debounceFn(() => {
-        const data = {
-          organization: this.user?.owner_email,
-          page: 1,
-          search: text
+      const data = {
+        organization: this.user?.owner_email,
+        page: 1,
+        search: text
+      }
+      this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then((res) => {
+        this.searchText = text
+        if (res.data.clients.length === 0) {
+          this.searchResult = 'Контакт не найден'
         }
-        this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then((res) => {
-          this.searchText = text
-          if (res.data.clients.length === 0) {
-            this.searchResult = 'Контакт не найден'
-          }
-        })
-      }, 1000)()
+      })
     },
     checkIfEmailInString (text) {
       const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
