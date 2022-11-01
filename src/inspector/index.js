@@ -77,6 +77,7 @@ export function initInspectorSocket (force = false) {
         store.state.cards.selectedCardUid
       ) {
         const data = {
+          type: 'cardOnline',
           uid_user: user.value.current_user_uid,
           uid_board: router.currentRoute.value.params.board_id,
           uid_card: store.state.cards.selectedCardUid
