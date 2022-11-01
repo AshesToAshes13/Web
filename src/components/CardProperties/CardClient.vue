@@ -287,7 +287,6 @@ export default {
           search: text
         }
         this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then((res) => {
-          console.log(res.data.clients.length)
           this.searchText = text
           if (res.data.clients.length === 0) {
             this.searchResult = 'Контакт не найден'
