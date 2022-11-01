@@ -74,7 +74,7 @@
           class="group-hover:flex justify-end"
           :class="{'hidden': !isShowMenu}"
         >
-          <card-chat-message-options-pop-menu
+          <CardChatMessageOptionsPopMenu
             :can-delete="canDelete"
             @onQuoteMessage="$emit('onQuoteMessage')"
             @onDeleteMessage="$emit('onDeleteMessage')"
@@ -104,7 +104,7 @@
                 />
               </svg>
             </div>
-          </card-chat-message-options-pop-menu>
+          </CardChatMessageOptionsPopMenu>
         </div>
       </div>
     </div>

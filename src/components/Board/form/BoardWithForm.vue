@@ -120,7 +120,7 @@
           {{ error }}
         </p>
       </template>
-      <jb-button
+      <JbButton
         color="login"
         class="w-full rounded-lg text-sm"
         label="Сохранить форму"

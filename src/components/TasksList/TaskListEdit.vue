@@ -38,7 +38,7 @@
       :disabled="disabled"
       @blur="blur"
     >
-    <control-icon
+    <ControlIcon
       v-if="icon"
       :icon="icon"
       :class="iconClass"

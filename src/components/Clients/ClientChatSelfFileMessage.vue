@@ -70,8 +70,8 @@ export default {
   <div
     class="bg-[#F4F5F7] py-[10px] px-[12px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] float-right relative max-w-[300px] group"
   >
-    <card-chat-deleted-message-content v-if="message.deleted" />
-    <image-preloader
+    <CardChatDeletedMessageContent v-if="message.deleted" />
+    <ImagePreloader
       v-else-if="FileIsImage"
       :file-uid="message.uid"
       :file-extension="fileExtension"
@@ -82,7 +82,7 @@ export default {
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
-    <audio-preloader
+    <AudioPreloader
       v-else-if="FileIsAudio"
       :file-uid="message.uid"
       :file-extension="fileExtension"
@@ -92,7 +92,7 @@ export default {
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
-    <doc-preloader
+    <DocPreloader
       v-else-if="FileIsDoc"
       :file-uid="message.uid"
       :file-name="message.file_name"
@@ -104,7 +104,7 @@ export default {
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
-    <movie-preloader
+    <MoviePreloader
       v-else-if="FileIsMovie"
       :file-uid="message.uid"
       :file-extension="fileExtension"
@@ -115,7 +115,7 @@ export default {
       @onQuoteMessage="setCurrentQuote"
       @onDeleteMessage="deleteFile"
     />
-    <file-preloader
+    <FilePreloader
       v-else
       :file-uid="message.uid"
       :file-extension="fileExtension"
