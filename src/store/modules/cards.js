@@ -78,6 +78,28 @@ const actions = {
         })
     })
   },
+  [CARD.BOARD_ARCHIVE_CARDS_REQUEST]: ({ commit, rootState }, boardUid) => {
+    commit('abortCardsAbortController')
+    const cardsAbortController = new AbortController()
+    commit('InitCardsAbortController', cardsAbortController)
+    return new Promise((resolve, reject) => {
+      commit(CARD.BOARD_CARDS_REQUEST)
+      const url =
+        process.env.VUE_APP_INSPECTOR_API + 'cards?archive=1&uid=' + boardUid
+      axios({ url: url, method: 'GET', signal: cardsAbortController.signal })
+        .then((resp) => {
+          if (resp) {
+            resp.boardUid = boardUid
+            resp.rootState = rootState
+            commit(CARD.BOARD_CARDS_SUCCESS, resp)
+          }
+          resolve(resp)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  },
   [CARD.PUBLIC_BOARD_CARDS_REQUEST]: ({ commit, rootState }, boardUid) => {
     commit('abortCardsAbortController')
     const cardsAbortController = new AbortController()
@@ -140,7 +162,8 @@ const actions = {
   },
   [CARD.MOVE_CARD]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
-      let url = process.env.VUE_APP_INSPECTOR_API + 'cards/stage?uid=' + data.uid
+      let url =
+        process.env.VUE_APP_INSPECTOR_API + 'cards/stage?uid=' + data.uid
       url = url + '&stage=' + data.stageUid
       if (data.newOrder !== undefined) url = url + '&order=' + data.newOrder
       axios({ url: url, method: 'PATCH' })
