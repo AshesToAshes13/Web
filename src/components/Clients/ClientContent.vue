@@ -18,7 +18,7 @@
         <MessageSkeleton v-if="showSkeletonMsg" />
         <ClientChat
           v-if="shouldntShowSkeletonMsg"
-          class="!pb-[20px]"
+          class="!pb-[20px] pr-[5px]"
           :messages="messages"
           :current-user-uid="user.current_user_uid"
           :employees="employees"
