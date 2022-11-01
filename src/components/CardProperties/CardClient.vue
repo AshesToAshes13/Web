@@ -268,8 +268,11 @@ export default {
     requestClients () {
       if (this.cardEmail) {
         this.searchClients(this.cardEmail)
-      } else if (this.cardPhone) {
-        this.searchClients(this.cardPhone)
+        if (this.searchResult === 'Контакт не найден') {
+          if (this.cardPhone) {
+            this.searchClients(this.cardPhone)
+          }
+        }
       } else {
         this.$store.commit(CLIENTS.SET_CLIENTS, [])
       }
@@ -283,9 +286,13 @@ export default {
           page: 1,
           search: text
         }
-        this.$store.dispatch(CLIENTS.GET_CLIENTS, data)
-        this.searchText = text
-        this.searchResult = 'Контакт не найден'
+        this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then((res) => {
+          console.log(res.data.clients.length)
+          this.searchText = text
+          if (res.data.clients.length === 0) {
+            this.searchResult = 'Контакт не найден'
+          }
+        })
       }, 1000)()
     },
     checkIfEmailInString (text) {
