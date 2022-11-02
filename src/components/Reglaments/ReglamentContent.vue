@@ -412,6 +412,9 @@ export default {
         uidUser: this.user.current_user_uid
       }
       console.log(this.user.current_user_uid)
+      const reglaments = this.$store.state.navigator.navigator.reglaments
+      const index = reglaments.items.findIndex(item => item.uid === this.reglament.uid)
+      if (index !== -1) reglaments.items[index].is_passed = 0
       this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
     dateToLabelFormatForComment (calendarDate) {

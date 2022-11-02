@@ -515,6 +515,9 @@ export default {
         uidReglament: this.reglament.uid,
         uidUser: this.user.current_user_uid
       }
+      const reglaments = this.$store.state.navigator.navigator.reglaments
+      const index = reglaments.items.findIndex(item => item.uid === this.reglament.uid)
+      if (index !== -1) reglaments.items[index].is_passed = 0
       this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
     editorName (email) {
@@ -664,7 +667,7 @@ export default {
       reglament.name = this.currName.trim()
       reglament.department_uid = this.currDep
       reglament.editors = [...this.currEditors]
-
+      console.log(reglament)
       this.saveContentStatus = 0
       this.saveReglament(reglament).then(() => {
         this.saveContentStatus = 1
@@ -679,6 +682,7 @@ export default {
           this.showSaveModal = false
         }
         this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date())
+        reglament.is_passed = 0
         reglament.last_comment_text = this.$store.state.reglaments.lastCommentText
         reglament.last_comment_date = this.$store.state.reglaments.lastCommentDate
       }).catch(() => {
