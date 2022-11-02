@@ -6,7 +6,7 @@
     :breadcrumbs="breadcrumbs"
   >
     <div
-      v-if="onlineUsers?.length"
+      v-if="onlineUsers?.length && currentBoard"
       class="flex -space-x-1.5"
     >
       <div
@@ -23,10 +23,11 @@
       </div>
     </div>
     <NavBarSearch
+      v-if="currentBoard"
       @change="onSearch"
     />
     <NavBarButtonsBoard
-      v-if="boardUid"
+      v-if="boardUid && currentBoard"
       :board-uid="boardUid"
       @popNavBar="popNavBar"
     />
@@ -68,6 +69,9 @@ export default {
     },
     boards () {
       return this.$store.state.boards.boards
+    },
+    currentBoard () {
+      return this.boards[this.boardUid]
     },
     breadcrumbs () {
       let board = this.boards[this.boardUid]
