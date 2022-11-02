@@ -9,18 +9,12 @@
       v-if="onlineUsers?.length && currentBoard"
       class="flex -space-x-1.5"
     >
-      <div
+      <NavBarBoardsOnline
         v-for="user in onlineUsers"
         :key="user"
         class="w-[32px] h-[32px] p-[1px] bg-blue-300 rounded-full"
-      >
-        <img
-          :title="user.name"
-          class="w-[30px] h-[30px] rounded-full"
-          :alt="user.name"
-          :src="user.fotolink"
-        >
-      </div>
+        :user="user"
+      />
     </div>
     <NavBarSearch
       v-if="currentBoard"
@@ -35,17 +29,19 @@
 </template>
 
 <script>
-import NavBarButtonsBoard from '@/components/Navbar/NavBarButtonsBoard.vue'
+import NavBarButtonsBoard from '@/components/Navbar/nav_boards/NavBarButtonsBoard.vue'
 import NavBarSearch from '@/components/Navbar/NavBarSearch.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
 import * as BOARD from '@/store/actions/boards'
+import NavBarBoardsOnline from './NavBarBoardsOnline.vue'
 
 export default {
   components: {
     NavBarButtonsBoard,
     NavBarSearch,
-    NavBar
+    NavBar,
+    NavBarBoardsOnline
   },
   props: {
     boardUid: {
