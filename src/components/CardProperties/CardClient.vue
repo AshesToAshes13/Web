@@ -297,9 +297,11 @@ export default {
       return regex.exec(text) ? regex.exec(text)[0] : ''
     },
     checkIfPhoneInString (text) {
-      const regex = /(\+7|8)[- _]*\(?[- _]*(\d{3}[- _]*\)?([- _]*\d){7}|\d\d[- _]*\d\d[- _]*\)?([- _]*\d){6})/g
+      const regex = /(\+7|8|7)[- _]*\(?[- _]*(\d{3}[- _]*\)?([- _]*\d){7}|\d\d[- _]*\d\d[- _]*\)?([- _]*\d){6})/g
       const exected = regex.exec(text)
-      return exected ? exected[0] : ''
+      const tenNumberRegex = /\d{10}/
+      const exected2 = tenNumberRegex.exec(text)
+      return exected ? exected[0] : exected2 ? '+7' + exected2[0] : ''
     },
     showModalAddClient () {
       this.showAddClient = true
