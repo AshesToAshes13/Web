@@ -5,6 +5,7 @@ import {
   removeUserToken,
   setUserToken
 } from '@/services/axios/authorization.js'
+import unautorizedApi from '@/services/unauthorizedApiService.js'
 import { RESET_CLIENT_STATE } from '@/store/actions/clients'
 import { RESET_COLOR_STATE } from '@/store/actions/colors'
 import { RESET_CORP_YANDEX_STATE } from '@/store/actions/integrations/corpoYandexInt'
@@ -44,17 +45,11 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
-      const uri =
-        process.env.VUE_APP_LEADERTASK_API +
-        'api/v1/users/auth?login=' +
-        data.email +
-        '&password=' +
-        encodeURIComponent(data.password) +
-        '&system=web&type_device=web'
-      axios({ url: uri, method: 'POST' })
+      unautorizedApi
+        .auth(data.email, data.password)
         .then((resp) => {
-          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
-          commit(AUTH_SUCCESS, resp)
+          setUserToken(axios, resp.access_token, resp.refresh_token)
+          commit(AUTH_SUCCESS, resp.access_token)
           resolve(resp)
         })
         .catch((err) => {
@@ -71,7 +66,7 @@ const actions = {
       axios({ url: uri, data: user, method: 'POST' })
         .then((resp) => {
           setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
-          commit(AUTH_SUCCESS, resp)
+          commit(AUTH_SUCCESS, resp.data.access_token)
           resolve(resp)
         })
         .catch((err) => {
@@ -81,14 +76,14 @@ const actions = {
         })
     })
   },
-  [GOOGLE_AUTH_REQUEST]: ({ commit }, user) => {
+  [GOOGLE_AUTH_REQUEST]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       commit(GOOGLE_AUTH_REQUEST)
-      const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/tokens/bygoogle'
-      axios({ url: uri, data: user, method: 'POST' })
+      unautorizedApi
+        .authByGoogle(data.token, data.cid)
         .then((resp) => {
-          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
-          commit(AUTH_SUCCESS, resp)
+          setUserToken(axios, resp.access_token, resp.refresh_token)
+          commit(AUTH_SUCCESS, resp.access_token)
           resolve(resp)
         })
         .catch((err) => {
@@ -175,9 +170,9 @@ const mutations = {
   [GOOGLE_AUTH_REQUEST]: (state) => {
     state.status = 'loading'
   },
-  [AUTH_SUCCESS]: (state, resp) => {
+  [AUTH_SUCCESS]: (state, accessToken) => {
     state.status = 'success'
-    state.token = resp.data.access_token
+    state.token = accessToken
     state.hasLoadedOnce = true
   },
   [AUTH_ERROR]: (state) => {

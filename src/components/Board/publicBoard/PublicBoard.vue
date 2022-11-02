@@ -146,6 +146,7 @@ import PublicBoardCard from '@/components/Board/publicBoard/PublicBoardCard.vue'
 import BoardSkeleton from '@/components/Board/skeletons/BoardSkeleton.vue'
 import * as BOARD from '@/store/actions/boards'
 import * as CARD from '@/store/actions/cards'
+import PopMenu from '@/components/Common/PopMenu.vue'
 
 export default {
   directives: {
@@ -154,7 +155,8 @@ export default {
   components: {
     BoardSkeleton,
     PublicBoardCard,
-    draggable
+    draggable,
+    PopMenu
   },
   props: {
     storeCards: {

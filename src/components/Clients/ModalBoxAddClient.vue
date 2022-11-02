@@ -143,7 +143,14 @@ export default {
     }
   },
   mounted () {
-    this.phone = this.cardPhone ? this.cardPhone : ''
+    if (this.cardPhone) {
+      if ((this.cardPhone.startsWith('8') || this.cardPhone.startsWith('7')) && this.cardPhone.length === 11) {
+        this.phone = this.cardPhone.substr(1)
+      }
+      if (this.cardPhone.startsWith('+7') && this.cardPhone.length === 12) {
+        this.phone = this.cardPhone.substr(2)
+      }
+    }
     this.email = this.cardEmail ? this.cardEmail : ''
   },
   methods: {
