@@ -66,7 +66,7 @@
           v-else
         >
           <div
-            v-if="!searchText && (cardPhone || cardEmail)"
+            v-if="!searchText && (cardPhone || cardEmail) && !clients.length"
             class="flex items-center mt-[16px] px-[6px] py-[4px] hover:bg-[#F4F5F7] rounded-[6px] cursor-pointer w-[300px]"
             @click="showModalAddClient"
           >
@@ -264,32 +264,33 @@ export default {
     onShowClients () {
       this.requestClients()
     },
-    requestClients () {
+    async requestClients () {
       if (this.cardEmail) {
-        this.searchClients(this.cardEmail)
-        if (this.searchResult === 'Контакт не найден') {
-          if (this.cardPhone) {
-            this.searchClients(this.cardPhone)
-          }
-        }
-      } else {
-        this.$store.commit(CLIENTS.SET_CLIENTS, [])
+        await this.searchClients(this.cardEmail)
+        this.searchText = ''
+        if (this.clients.length > 0) return
       }
-      this.searchText = ''
+
+      if (this.cardPhone) {
+        await this.searchClients(this.cardPhone)
+        this.searchText = ''
+        if (this.clients.length > 0) return
+      }
+
       this.searchResult = 'Найдите контакт по имени, email или номеру телефона'
+      this.$store.commit(CLIENTS.SET_CLIENTS, [])
     },
-    searchClients (text) {
+    async searchClients (text) {
       const data = {
         organization: this.user?.owner_email,
         page: 1,
         search: text
       }
-      this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then((res) => {
-        this.searchText = text
-        if (res.data.clients.length === 0) {
-          this.searchResult = 'Контакт не найден'
-        }
-      })
+      const res = await this.$store.dispatch(CLIENTS.GET_CLIENTS, data)
+      this.searchText = text
+      if (res.data.clients.length === 0) {
+        this.searchResult = 'Контакт не найден'
+      }
     },
     checkIfEmailInString (text) {
       const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
