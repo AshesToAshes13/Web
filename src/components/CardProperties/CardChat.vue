@@ -74,7 +74,7 @@
       />
       <!-- New creator -->
       <div
-        v-if="employees[message.uid_creator]"
+        v-if="employees[message.uid_creator] && (cardName || message.uid_client)"
         class="text-[13px] font-[500] text-[#747476] flex flex-row leading-[15px] tracking-wide mb-[6px]"
         :class="{ 'justify-start': !message.isMyMessage, 'justify-end': message.isMyMessage }"
       >
