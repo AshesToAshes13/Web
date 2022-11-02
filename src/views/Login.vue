@@ -289,22 +289,25 @@ export default {
     }
   },
   methods: {
+    onLogin () {
+      const slideNames = [
+        'doitnowstart',
+        'addEmployees',
+        'addAvatar',
+        'delegateTasks'
+      ]
+      slideNames.forEach(slideName => {
+        this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
+          name: slideName,
+          visible: false
+        })
+      })
+    },
     login () {
       this.$store.dispatch(AUTH_REQUEST, { email: this.form.email, password: this.form.password })
         .then(() => {
+          this.onLogin()
           this.$router.push('/doitnow')
-          const slideNames = [
-            'doitnowstart',
-            'addEmployees',
-            'addAvatar',
-            'delegateTasks'
-          ]
-          slideNames.forEach(slideName => {
-            this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
-              name: slideName,
-              visible: false
-            })
-          })
         })
         .catch(() => {
           this.form.showError = true
@@ -813,6 +816,26 @@ export default {
       }
       this.$store.dispatch(CLIENTS.ADD_NEW_CLIENT, clientToSend)
     },
+    onRegisterNewUser () {
+      window.ym(89796698, 'reachGoal', 'signup-new-web')
+      localStorage.removeItem('slides')
+      const slideNames = [
+        'doitnowstart',
+        'addEmployees',
+        'addAvatar',
+        'delegateTasks'
+      ]
+      slideNames.forEach(slideName => {
+        this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
+          name: slideName,
+          visible: true
+        })
+      })
+      this.$store.dispatch(USER_START_ONBOARDING).then(() => {
+        // демо-данные для новых пользователей
+        this.createDemoElementsAfterRegister()
+      })
+    },
     register () {
       if (!this.form.password || !this.form.username) { return }
       const date = new Date()
@@ -831,30 +854,12 @@ export default {
       }
       this.$store.dispatch(AUTH_REGISTER, data)
         .then(() => {
-          window.ym(89796698, 'reachGoal', 'signup-new-web')
-          localStorage.removeItem('slides')
-          const slideNames = [
-            'doitnowstart',
-            'addEmployees',
-            'addAvatar',
-            'delegateTasks'
-          ]
-          slideNames.forEach(slideName => {
-            this.$store.commit(DOITNOW.SLIDES_CHANGE_VISIBLE, {
-              name: slideName,
-              visible: true
-            })
-          })
-          this.$store.dispatch(USER_START_ONBOARDING).then(() => {
-          // демо-данные для новых пользователей
-            this.createDemoElementsAfterRegister()
-          })
+          this.onRegisterNewUser()
+          this.$router.push('/doitnow')
         })
         .catch(() => {
           this.form.showError = true
           this.form.errorMessage = 'Unknown error'
-        }).finally(() => {
-          this.$router.push('/doitnow')
         })
     },
     pad2 (n) {
@@ -970,21 +975,18 @@ export default {
     googleCallback (response) {
       localStorage.removeItem('slides')
       console.log('Handle the response', response)
-      const cid = localStorage.getItem('cid') ?? 'webnew'
       const data = {
         token: response.access_token,
-        system: 'web',
-        language: 'russian',
-        type_device: 'mobile',
-        cid: cid
+        cid: localStorage.getItem('cid')
       }
       this.$store.dispatch(GOOGLE_AUTH_REQUEST, data)
         .then((resp) => {
-          if (resp?.data?.is_new_user) {
-            window.ym(89796698, 'reachGoal', 'signup-new-web')
+          if (resp?.is_new_user) {
+            this.onRegisterNewUser()
+          } else {
+            this.onLogin()
           }
-          this.$router.push('/')
-          this.$store.dispatch(USER_START_ONBOARDING)
+          this.$router.push('/doitnow')
         })
         .catch(() => {
           this.form.showError = true

@@ -76,14 +76,14 @@ const actions = {
         })
     })
   },
-  [GOOGLE_AUTH_REQUEST]: ({ commit }, user) => {
+  [GOOGLE_AUTH_REQUEST]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       commit(GOOGLE_AUTH_REQUEST)
-      const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/tokens/bygoogle'
-      axios({ url: uri, data: user, method: 'POST' })
+      unautorizedApi
+        .authByGoogle(data.token, data.cid)
         .then((resp) => {
-          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
-          commit(AUTH_SUCCESS, resp.data.access_token)
+          setUserToken(axios, resp.access_token, resp.refresh_token)
+          commit(AUTH_SUCCESS, resp.access_token)
           resolve(resp)
         })
         .catch((err) => {

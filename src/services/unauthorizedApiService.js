@@ -30,6 +30,17 @@ class UnautorizedApi {
     )
     return res.data
   }
+
+  async authByGoogle (token, cid) {
+    const res = await axios.post(`${url}api/v1/tokens/bygoogle`, {
+      token: token,
+      system: 'web',
+      language: 'russian',
+      type_device: 'web',
+      cid: cid || 'webnew'
+    })
+    return res.data
+  }
 }
 
 const unautorizedApi = new UnautorizedApi()
