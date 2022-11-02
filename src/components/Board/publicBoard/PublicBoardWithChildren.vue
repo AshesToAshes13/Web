@@ -1,11 +1,22 @@
 <template>
   <div class="h-screen overflow-hidden mx-[20px]">
     <div class="gap-[10px] font-roboto text-[16px] font-medium text-[#4C4C4D] text-center mt-3">
-      <span>Доска: {{ boardName }}</span>
+      <div
+        v-if="boardName"
+      >
+        <span>Доска: {{ boardName }}</span>
+      </div>
+      <div
+        v-else-if="!boardName && !isLoading"
+      >
+        <h1 class="text-3xl text-gray-600 font-bold mb-5">
+          Нет доступа к доске
+        </h1>
+      </div>
     </div>
     <div
       v-if="showEmptyMessage === true"
-      class="gap-[10px] flex justify-center font-roboto text-[40px] mt-[350px] font-medium text-[#4C4C4D] text-center mt-3"
+      class="gap-[10px] flex justify-center font-roboto text-[40px] mt-[350px] font-medium text-[#4C4C4D] text-center"
     >
       <span class="bg-white rounded-[12px] px-[50px] py-[30px]">
         В этой доске еще нет контента.
@@ -45,7 +56,8 @@ export default {
     return {
       showAddBoard: false,
       showBoardsLimit: false,
-      showEmptyMessage: false
+      showEmptyMessage: false,
+      isLoading: false
     }
   },
   computed: {
@@ -57,6 +69,9 @@ export default {
     },
     boardName () {
       return this.$store.state.cards.currentBoard?.data?.name
+    },
+    currentBoard () {
+      return this.$store.state.boards.boards[this.boardUid]
     }
   },
   watch: {
@@ -72,13 +87,19 @@ export default {
   methods: {
     loadBoard () {
       this.showEmptyMessage = false
+      this.isLoading = true
       this.$store.dispatch(BOARD.GET_BOARD_REQUEST, this.boardUid).then((res) => {
         if (res.data.stages.length === 0) {
           this.showEmptyMessage = true
         }
+        this.isLoading = false
         this.$store.state.cards.currentBoard = res
         this.$store.dispatch(CARD.PUBLIC_BOARD_CARDS_REQUEST, this.boardUid)
       })
+        .catch(() => {
+          this.isLoading = false
+          console.log('Ошибка: Нет доступа к доске')
+        })
     }
   }
 }
