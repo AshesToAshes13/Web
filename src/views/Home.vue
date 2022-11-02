@@ -190,7 +190,7 @@ export default {
       this.$store.dispatch(USER_REQUEST)
         .then(resp => {
           this.getNavigator()
-          this.getIntegrations()
+          // this.getIntegrations()
         })
     },
     getNavigator () {

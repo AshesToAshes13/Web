@@ -267,15 +267,15 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.PARSE_YANDEX_MAIL]: (state, data) => {
     for (let i = 0; i < data.length; i++) {
-      if (data[i].html.lastIndexOf('--')) {
-        data[i].html = data[i].html.slice(0, data[i].html.lastIndexOf('--'))
+      if (data[i].content.lastIndexOf('--')) {
+        data[i].content = data[i].content.slice(0, data[i].content.lastIndexOf('--'))
       }
       if (!state.messages.find(msg => msg.yandexId === data[i].messageId)) {
         state.messages.push({
           date_create: data[i].date,
-          msg: data[i].html,
+          msg: data[i].content,
           type: 'yandex',
-          email_creator: data[i].from.value[0].address,
+          email_creator: data[i].from,
           subject: data[i].subject,
           yandexId: data[i].messageId,
           uid: uuidv4(),
