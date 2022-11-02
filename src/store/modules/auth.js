@@ -59,14 +59,14 @@ const actions = {
         })
     })
   },
-  [AUTH_REGISTER]: ({ commit }, user) => {
+  [AUTH_REGISTER]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REGISTER)
-      const uri = process.env.VUE_APP_LEADERTASK_API + 'api/v1/users/new'
-      axios({ url: uri, data: user, method: 'POST' })
+      unautorizedApi
+        .register(data.email, data.password, data.name, data.phone, data.cid)
         .then((resp) => {
-          setUserToken(axios, resp.data.access_token, resp.data.refresh_token)
-          commit(AUTH_SUCCESS, resp.data.access_token)
+          setUserToken(axios, resp.access_token, resp.refresh_token)
+          commit(AUTH_SUCCESS, resp.access_token)
           resolve(resp)
         })
         .catch((err) => {

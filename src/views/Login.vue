@@ -813,20 +813,13 @@ export default {
       })
     },
     register () {
-      if (!this.form.password || !this.form.username) { return }
-      const date = new Date()
-      const timezone = date.getTimezoneOffset() / 60 * (-1)
-      const cid = localStorage.getItem('cid') ?? 'webnew'
+      if (!this.form.password || !this.form.username) return
       const data = {
         email: this.form.email,
         password: this.form.password,
         name: this.form.username,
-        phone: this.form.phone.replace(/[^a-zA-Z0-9+]/g, ''),
-        timezone: timezone,
-        system: 'web',
-        cid: cid,
-        language: 'russian',
-        type_device: 'mobile'
+        phone: this.form.phone,
+        cid: localStorage.getItem('cid')
       }
       this.$store.dispatch(AUTH_REGISTER, data)
         .then(() => {
