@@ -6,27 +6,22 @@
     :breadcrumbs="breadcrumbs"
   >
     <div
-      v-if="onlineUsers?.length"
+      v-if="onlineUsers?.length && currentBoard"
       class="flex -space-x-1.5"
     >
-      <div
+      <NavBarBoardsOnline
         v-for="user in onlineUsers"
         :key="user"
         class="w-[32px] h-[32px] p-[1px] bg-blue-300 rounded-full"
-      >
-        <img
-          :title="user.name"
-          class="w-[30px] h-[30px] rounded-full"
-          :alt="user.name"
-          :src="user.fotolink"
-        >
-      </div>
+        :user="user"
+      />
     </div>
     <NavBarSearch
+      v-if="currentBoard"
       @change="onSearch"
     />
     <NavBarButtonsBoard
-      v-if="boardUid"
+      v-if="boardUid && currentBoard"
       :board-uid="boardUid"
       @popNavBar="popNavBar"
     />
@@ -34,17 +29,19 @@
 </template>
 
 <script>
-import NavBarButtonsBoard from '@/components/Navbar/NavBarButtonsBoard.vue'
+import NavBarButtonsBoard from '@/components/Navbar/nav_boards/NavBarButtonsBoard.vue'
 import NavBarSearch from '@/components/Navbar/NavBarSearch.vue'
 import NavBar from '@/components/Navbar/NavBar.vue'
 
 import * as BOARD from '@/store/actions/boards'
+import NavBarBoardsOnline from './NavBarBoardsOnline.vue'
 
 export default {
   components: {
     NavBarButtonsBoard,
     NavBarSearch,
-    NavBar
+    NavBar,
+    NavBarBoardsOnline
   },
   props: {
     boardUid: {
@@ -69,9 +66,17 @@ export default {
     boards () {
       return this.$store.state.boards.boards
     },
+    currentBoard () {
+      return this.boards[this.boardUid]
+    },
     breadcrumbs () {
       let board = this.boards[this.boardUid]
-      if (!board) return [{ name: 'Доска не найдена', selected: true }]
+      if (!board) {
+        // если не удалось найти доску - говорим об этом в заголовке страницы
+        document.title = 'Доска не найдена — Leadertask 2.0'
+
+        return [{ name: 'Доска не найдена', selected: true }]
+      }
 
       const arrResult = [
         { name: board.name, selected: true } // на самого себя нажать нельзя по этому не добавляем to

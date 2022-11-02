@@ -22,6 +22,25 @@ class UnautorizedApi {
       } catch (e) {}
     }
   }
+
+  async auth (email, password) {
+    const encodedPassword = encodeURIComponent(password)
+    const res = await axios.post(
+      `${url}api/v1/users/auth?login=${email}&password=${encodedPassword}&system=web&type_device=web`
+    )
+    return res.data
+  }
+
+  async authByGoogle (token, cid) {
+    const res = await axios.post(`${url}api/v1/tokens/bygoogle`, {
+      token: token,
+      system: 'web',
+      language: 'russian',
+      type_device: 'web',
+      cid: cid || 'webnew'
+    })
+    return res.data
+  }
 }
 
 const unautorizedApi = new UnautorizedApi()

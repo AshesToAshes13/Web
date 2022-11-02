@@ -324,6 +324,7 @@ const mutations = {
   },
   [CLIENT_FILES_AND_MESSAGES.CREATE_FILES_REQUEST]: (state, data) => {
     state.messages = state.messages.filter((message) => !message.is_uploading)
+    data.forEach(file => { file.clientFile = true })
     state.messages = state.messages.concat(data)
   },
   [CLIENT_FILES_AND_MESSAGES.FILES_REQUEST]: state => {

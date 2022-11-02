@@ -52,7 +52,7 @@
 
 <script>
 import { sendInspectorMessage } from '@/inspector'
-import NavBarBoards from '@/components/Navbar/NavBarBoards.vue'
+import NavBarBoards from '@/components/Navbar/nav_boards/NavBarBoards.vue'
 import BoardModalBoxBoardsLimit from '@/components/Board/modalboxes/BoardModalBoxBoardsLimit.vue'
 import BoardBlocItem from '@/components/Board/BoardBlocItem.vue'
 import Board from '@/components/Board/Board.vue'
