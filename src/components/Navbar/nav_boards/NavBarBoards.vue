@@ -71,7 +71,12 @@ export default {
     },
     breadcrumbs () {
       let board = this.boards[this.boardUid]
-      if (!board) return [{ name: 'Доска не найдена', selected: true }]
+      if (!board) {
+        // если не удалось найти доску - говорим об этом в заголовке страницы
+        document.title = 'Доска не найдена — Leadertask 2.0'
+
+        return [{ name: 'Доска не найдена', selected: true }]
+      }
 
       const arrResult = [
         { name: board.name, selected: true } // на самого себя нажать нельзя по этому не добавляем to
