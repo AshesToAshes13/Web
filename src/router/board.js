@@ -5,7 +5,10 @@ export default [
   {
     path: '/board/:board_id/public',
     name: 'publicBoardWithChildren',
-    component: () => import('@/components/Board/publicBoard/PublicBoardWithChildren.vue')
+    component: () => import('@/components/Board/publicBoard/PublicBoardWithChildren.vue'),
+    meta: {
+      title: 'Доска'
+    }
   },
   {
     meta: {
