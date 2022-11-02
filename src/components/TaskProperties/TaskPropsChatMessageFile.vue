@@ -315,7 +315,6 @@
           </div>
         </div>
         <div v-else>
-          {{ file.file_version }}
           <div
             v-if="!pics.includes(fileName.split('.').pop())"
             class="mt-2 text-right font-medium mb-2 flex relative"
