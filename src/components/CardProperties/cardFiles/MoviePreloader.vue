@@ -46,7 +46,14 @@
       </svg>
     </router-link>
     <div class="flex flex-col space-y-[2px] max-w-[240px]">
+      <p
+        v-if="isFileUploading"
+        class="text-[#4C4C4D] text-[13px] leading-[15px] font-[700] truncate"
+      >
+        {{ fileName }}
+      </p>
       <router-link
+        v-else
         class="text-[#4C4C4D] text-[13px] leading-[15px] font-[700] truncate"
         :to="{ name: routeFileName, params: { id: fileUid }, query: { type: 'video', format: fileExtension } }"
         target="_blank"
