@@ -22,6 +22,14 @@ class UnautorizedApi {
       } catch (e) {}
     }
   }
+
+  async auth (email, password) {
+    const encodedPassword = encodeURIComponent(password)
+    const res = await axios.post(
+      `${url}api/v1/users/auth?login=${email}&password=${encodedPassword}&system=web&type_device=web`
+    )
+    return res.data
+  }
 }
 
 const unautorizedApi = new UnautorizedApi()
