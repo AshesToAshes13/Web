@@ -76,7 +76,7 @@
 
               <!-- Origin message -->
               <div
-                v-if="message.type == 1 && message.shouldShowInspectorButtons"
+                v-if="message.type == 1 && message.shouldShowInspectorButtons && showInspectorAnswerButton === true"
                 class="flex space-x-[4px] mt-[10px]"
               >
                 <div
@@ -200,7 +200,8 @@ export default {
   data: () => {
     return {
       getInspectorMessage,
-      isKnownInspectorMessageType
+      isKnownInspectorMessageType,
+      showInspectorAnswerButton: true
     }
   },
   computed: {
@@ -260,6 +261,7 @@ export default {
     },
     answerInspectorMessage (message, answerType, answer) {
       if (message.performer_answer === null) {
+        this.showInspectorAnswerButton = false
         this.$store
           .dispatch(INSPECTOR.ANSWER_INSPECTOR_TASK, {
             id: message.id,

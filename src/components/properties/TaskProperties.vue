@@ -352,7 +352,6 @@ export default {
       isEditableTaskName: false,
       showOnlyFiles: false,
       showConfirm: false,
-      blockSendMessage: false,
 
       currentAnswerMessageUid: '',
       taskMsg: '',
@@ -628,10 +627,6 @@ export default {
       document.documentElement.style.setProperty('--task-props-static-height', parentHeight + 'px')
     },
     sendTaskMsg (msg) {
-      // запрещаем повторную отправку сообщения, пока не выполнится запрос
-      if (this.blockSendMessage === true) {
-        return
-      }
       let msgtask = msg || this.taskMsg
       msgtask = msgtask.trim()
       msgtask = msgtask.replaceAll('&', '&amp;')
@@ -650,7 +645,6 @@ export default {
         msg: msgtask
       }
       if (data.text) {
-        this.blockSendMessage = true
         this.$store.dispatch(CREATE_MESSAGE_REQUEST, data).then(
           resp => {
           // Answer last inspector message
@@ -674,7 +668,6 @@ export default {
             }
             this.scrollToBottom()
           })
-        this.blockSendMessage = false
       }
       this.currentAnswerMessageUid = ''
       this.taskMsg = ''
