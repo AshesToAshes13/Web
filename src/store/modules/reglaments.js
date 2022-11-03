@@ -146,7 +146,6 @@ const actions = {
         'deleteUserReglamentAnswers?uid_reglament=' +
         data.uidReglament +
         '&uid_user=' + data.uidUser
-      console.log(url)
       axios({ url: url, method: 'DELETE' })
         .then((resp) => {
           commit(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS)
@@ -253,6 +252,11 @@ const mutations = {
   },
   [REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS]: (state) => {
     state.contributors = []
+  },
+  [REGLAMENTS.UPDATE_ADD_USERS_REGLAMENT_PASSED]: (state, data) => {
+    if (!state.contributors.find(oneContributor => oneContributor.uid_user === data.uid_user)) {
+      state.contributors.push(data)
+    }
   },
   [REGLAMENTS.GET_USERS_REGLAMENT_ANSWERS]: (state, data) => {
     const contributors = data
