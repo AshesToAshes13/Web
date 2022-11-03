@@ -163,6 +163,10 @@ export default {
 
   methods: {
     loadFileFromInternet () {
+      if (this.isFileUploading) {
+        return
+      }
+
       const action = this.fileAction || FILE_REQUEST
       this.$store.dispatch(action, this.fileUid).then((resp) => {
         const imageBlob = new Blob([resp.data], { type: 'text/plain' })

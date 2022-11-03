@@ -420,6 +420,7 @@ export default {
       handler: function (val) {
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
         this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+        this.showClientModal = false
 
         if (this.isClientInCard) {
           this.getClientInCurrentCardAndFetchHisMessages()
