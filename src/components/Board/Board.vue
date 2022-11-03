@@ -889,12 +889,26 @@ export default {
       return Math.floor(maxOrder) + 1
     },
     moveSuccessCard (card) {
-      const successStage = 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67'
-      this.moveCard(card.uid, successStage, this.getNewMinCardsOrderAtColumn(successStage))
+      const data = {
+        cards: [{ uid: card.uid }],
+        boardTo: card.uid_board,
+        stageTo: 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67' // успех
+      }
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, data).then(res => {
+        this.closeProperties()
+        this.$store.state.cards.selectedCardUid = null
+      })
     },
     moveRejectCard (card) {
-      const rejectStage = 'e70af5e2-6108-4c02-9a7d-f4efee78d28c'
-      this.moveCard(card.uid, rejectStage, this.getNewMinCardsOrderAtColumn(rejectStage))
+      const data = {
+        cards: [{ uid: card.uid }],
+        boardTo: card.uid_board,
+        stageTo: 'e70af5e2-6108-4c02-9a7d-f4efee78d28c' // отказ
+      }
+      this.$store.dispatch(CARD.MOVE_ALL_CARDS, data).then(res => {
+        this.closeProperties()
+        this.$store.state.cards.selectedCardUid = null
+      })
     },
     onClickMoveCard (card) {
       this.showMoveCard = true

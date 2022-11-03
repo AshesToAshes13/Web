@@ -291,6 +291,11 @@ export default {
       return day + ' ' + month
     },
     getMessageTimeString (dateCreate) {
+      if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
+      if (dateCreate[dateCreate.length - 1] !== 'Z') {
+        dateCreate += 'Z'
+      }
       const date = new Date(dateCreate)
       return date.toLocaleString('default', {
         hour: 'numeric',
