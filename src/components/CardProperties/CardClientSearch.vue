@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!showSearchBar"
-    class="w-full flex gap-[5px] h-[40px] px-[8px] items-center cursor-pointer border-[1px] border-transparent text-[#7e7e80] hover:text-[#7e7e80]/75 bg-[#F4F5F7] rounded-[8px] hover:bg-[#F4F5F7]/70"
+    class="w-full flex gap-[5px] h-[40px] px-[8px] mb-[4px] items-center cursor-pointer border-[1px] border-transparent text-[#7e7e80] hover:text-[#7e7e80]/75 bg-[#F4F5F7] rounded-[8px] hover:bg-[#F4F5F7]/70"
     @click="onShowSearchBar"
   >
     <svg
@@ -25,7 +25,7 @@
   </div>
   <div
     v-else
-    class="w-full flex gap-[5px] items-center h-[40px] overflow-hidden px-[8px] text-[#4c4c4d] bg-white border-[1px] border-[#7E7E80] rounded-[10px]"
+    class="w-full flex gap-[5px] items-center h-[40px] mb-[4px] overflow-hidden px-[8px] text-[#4c4c4d] bg-white border-[1px] border-[#7E7E80] rounded-[10px]"
   >
     <svg
       class="flex-none"
