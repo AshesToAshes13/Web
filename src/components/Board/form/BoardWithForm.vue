@@ -126,7 +126,9 @@
       <JbButton
         color="login"
         class="w-full rounded-lg text-sm"
-        label="Сохранить форму"
+        :disabled="disableSaveButton"
+        :class="{'opacity-[0.5] cursor-default': disableSaveButton}"
+        :label="saveButtonLabel"
         @click="clickSaveForm"
       />
     </form>
@@ -235,6 +237,7 @@ export default {
         privacy_policy_href: ''
       },
       showParams: false,
+      disableSaveButton: false,
       formIsLoaded: false,
       errors: {
         inputs: [],
@@ -255,6 +258,12 @@ export default {
     },
     currentLocation () {
       return window.location.origin
+    },
+    saveButtonLabel () {
+      if (this.disableSaveButton === true) {
+        return 'Сохранение...'
+      }
+      return 'Сохранить форму'
     }
   },
   mounted () {
@@ -316,6 +325,11 @@ export default {
       console.log(this.$store.state.boardforms.boardForm)
       this.findIframeHeight()
       this.showParams = true
+      this.disableSaveButton = true
+
+      setTimeout(() => {
+        this.disableSaveButton = false
+      }, 3000)
     },
     copyIframeHtml () {
       navigator.clipboard.writeText(this.iframeHtml)
