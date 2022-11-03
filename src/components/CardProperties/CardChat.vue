@@ -74,6 +74,7 @@
       />
       <!-- New creator -->
       <div
+        v-if="isChangedCreator(index)"
         class="text-[13px] font-[500] text-[#747476] flex flex-row leading-[15px] tracking-wide mb-[6px]"
         :class="{ 'justify-start': !message.isMyMessage, 'justify-end': message.isMyMessage }"
       >
@@ -95,12 +96,15 @@
         </span>
         <span class="w-auto overflow-hidden h-[15px] inline-block text-ellipsis whitespace-nowrap">
           {{ cardName && cardName + ' | ' }}
-          <span>
+          <span
+            v-if="message.uid_client"
+          >
             {{ message.uid_client ? selectedCard?.client_name : '' }}
           </span>
           <span
             v-if="isChangedCreator(index)"
             class="text-[#4C4C4D]"
+            :class="{'ml-[7px]': message.uid_client }"
           >
             {{ employees[message.uid_creator].name }}
           </span>
