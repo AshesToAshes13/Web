@@ -416,7 +416,6 @@ const mutations = {
     Object.assign(state, getDefaultState())
   },
   [REGLAMENTS.SET_REGLAMENT_COMMENTS]: (state, data) => {
-    console.log(data, 'data')
     if (data.length === 0) {
       state.reglaments.lastCommentDate = ''
     } else {
