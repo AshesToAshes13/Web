@@ -11,48 +11,48 @@ export default [
         title: 'Помощь'
       }
     },
-    // {
-    //   path: 'integrations',
-    //   name: 'integrations',
-    //   component: () => import('@/components/Settings/Integrations.vue'),
-    //   meta: {
-    //     title: 'Интеграции'
-    //   }
-    // },
-    // ...prefixRoutes(':integrations_name', Home, [
-    //   {
-    //     path: 'corporationYandexMail',
-    //     name: 'corporationYandexMail',
-    //     component: () => import('@/components/Integrations/CorpoIntegrationsYandex.vue'),
-    //     meta: {
-    //       title: 'корп. Яндекс интеграция'
-    //     }
-    //   },
-    //   {
-    //     path: 'corporateMegafon',
-    //     name: 'corporateMegafon',
-    //     component: () => import('@/components/Integrations/CoproIntegrationsMegafon.vue'),
-    //     meta: {
-    //       title: 'Мегафон интеграция'
-    //     }
-    //   },
-    //   {
-    //     path: 'personalYandexMail',
-    //     name: 'personalYandexMail',
-    //     component: () => import('@/components/Integrations/PersonalIntegrationsYandex.vue'),
-    //     meta: {
-    //       title: 'перс. Яндекс интеграция'
-    //     }
-    //   },
-    //   {
-    //     path: 'personalTelegram',
-    //     name: 'personalTelegram',
-    //     component: () => import('@/components/Integrations/PersonalIntegrationsTelegram.vue'),
-    //     meta: {
-    //       title: 'перс. Телеграм интеграция'
-    //     }
-    //   }
-    // ]),
+    {
+      path: 'integrations',
+      name: 'integrations',
+      component: () => import('@/components/Settings/Integrations.vue'),
+      meta: {
+        title: 'Интеграции'
+      }
+    },
+    ...prefixRoutes(':integrations_name', Home, [
+      {
+        path: 'corporationYandexMail',
+        name: 'corporationYandexMail',
+        component: () => import('@/components/Integrations/CorpoIntegrationsYandex.vue'),
+        meta: {
+          title: 'корп. Яндекс интеграция'
+        }
+      },
+      {
+        path: 'corporateMegafon',
+        name: 'corporateMegafon',
+        component: () => import('@/components/Integrations/CoproIntegrationsMegafon.vue'),
+        meta: {
+          title: 'Мегафон интеграция'
+        }
+      },
+      {
+        path: 'personalYandexMail',
+        name: 'personalYandexMail',
+        component: () => import('@/components/Integrations/PersonalIntegrationsYandex.vue'),
+        meta: {
+          title: 'перс. Яндекс интеграция'
+        }
+      },
+      {
+        path: 'personalTelegram',
+        name: 'personalTelegram',
+        component: () => import('@/components/Integrations/PersonalIntegrationsTelegram.vue'),
+        meta: {
+          title: 'перс. Телеграм интеграция'
+        }
+      }
+    ]),
     {
       path: 'tarif',
       name: 'tarif',
