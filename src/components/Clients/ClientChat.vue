@@ -94,7 +94,7 @@
           class="py-[10px] px-[15px] flex rounded-t-[12px] mb-[5px] w-[55%]"
         />
       </div>
-      <div :class="{'float-right': message.uid_creator === currentUserUid, 'float-left': message.uid_creator !== currentUserUid}">
+      <div :class="{'justify-start': message.uid_creator === currentUserUid, 'justify-end': message.uid_creator !== currentUserUid}">
         <ClientChatQuoteMessage
           v-if="message.hasQuote"
           class="mb-[5px]"
