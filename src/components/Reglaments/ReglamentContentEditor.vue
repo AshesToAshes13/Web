@@ -667,7 +667,6 @@ export default {
       reglament.name = this.currName.trim()
       reglament.department_uid = this.currDep
       reglament.editors = [...this.currEditors]
-      console.log(reglament)
       this.saveContentStatus = 0
       this.saveReglament(reglament).then(() => {
         this.saveContentStatus = 1

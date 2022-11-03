@@ -193,6 +193,7 @@ const actions = {
       axios({ url: url, method: 'GET' })
         .then((resp) => {
           resolve(resp)
+          commit(REGLAMENTS.SET_REGLAMENT_COMMENTS, resp.data)
         })
         .catch((err) => {
           reject(err)
@@ -413,6 +414,15 @@ const mutations = {
   },
   [REGLAMENTS.RESET_REGLAMENTS_STATE]: (state) => {
     Object.assign(state, getDefaultState())
+  },
+  [REGLAMENTS.SET_REGLAMENT_COMMENTS]: (state, data) => {
+    console.log(data, 'data')
+    if (data.length === 0) {
+      state.reglaments.lastCommentDate = ''
+    } else {
+      state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date(data[0].comment_date))
+      state.reglaments.lastCommentText = data[0].comment
+    }
   },
   RemoveReglamentByUid: (state, reglamentUid) => {
     delete state.reglaments[reglamentUid]
