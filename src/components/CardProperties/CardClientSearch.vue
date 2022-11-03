@@ -49,6 +49,7 @@
       type="text"
       class="w-full font-roboto text-[14px] leading-[16px] border-0 focus:ring-0 p-0"
       @input="debounceSearch"
+      @keydown.enter="debounceSearch"
       @keydown.esc.stop
       @keyup.esc="closeSearch"
       @blur="onBlurSearchInput"
