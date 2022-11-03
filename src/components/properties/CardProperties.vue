@@ -442,11 +442,11 @@ export default {
       return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
-      this.$store.state.cards.blockSelectCard = true
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const index in items) {
         const item = items[index]
         if (item.kind === 'file') {
+          this.$store.state.cards.blockSelectCard = true
           const blob = item.getAsFile()
           const formData = new FormData()
           formData.append('files', blob)
