@@ -18,5 +18,8 @@ export function deleteReglament (obj) {
 
 export function updateReglament (obj) {
   store.commit(NAVIGATOR.NAVIGATOR_UPDATE_REGLAMENT, obj.obj)
+  if (!obj.obj.contributors.length && router.currentRoute.value.params.id === obj.obj.uid) {
+    store.commit(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS)
+  }
   store.commit(REGLAMENTS.CHANGE_REGLAMENT, obj.obj)
 }
