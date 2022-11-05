@@ -49,7 +49,8 @@ const actions = {
             const preparedMessages = resp.data.msgs.map((message) => {
               return {
                 ...message,
-                uid_card: card.uid
+                uid_card: card.uid,
+                type: 'card'
               }
             })
             resolve(preparedMessages)

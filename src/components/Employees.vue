@@ -156,7 +156,7 @@
       >
         <template
           v-for="userValue in value.items"
-          :key="userValue.uid"
+          :key="userValue"
         >
           <ListBlocItem
             :title="userValue.name"

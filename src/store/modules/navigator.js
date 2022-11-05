@@ -715,6 +715,11 @@ const mutations = {
         }
       }
     }
+    for (let i = 0; i < state.navigator.emps.items.length; i++) {
+      if (state.navigator.emps.items[i].uid === employee.uid) {
+        state.navigator.emps.items.splice(i, 1)
+      }
+    }
   },
   [NAVIGATOR_REMOVE_TAG]: (state, tag) => {
     // removing wihtout mutation even on root level
