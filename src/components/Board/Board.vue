@@ -290,7 +290,7 @@
                     :card="element"
                     :show-date="board?.show_date !== 0 ?? false"
                     :read-only="isReadOnlyBoard"
-                    :selected="$store.state.cards.selectedCardUid === element.uid"
+                    :selected="selectedCardUid === element.uid"
                     :color="colorCard(column.Color)"
                     :color-dots="colorCard(column.Color, 0.8)"
                     class="mt-2"
@@ -464,6 +464,9 @@ export default {
   computed: {
     usersColumns () {
       return this.storeCards.filter((stage) => stage.UserStage === true)
+    },
+    selectedCardUid () {
+      return this.$store.state.cards.selectedCardUid
     },
     selectedColumnName () {
       return this.selectedColumn?.Name ?? ''
@@ -826,7 +829,7 @@ export default {
       if (this.$store.state.cards.blockSelectCard === true) {
         return
       }
-      if (this.$store.state.cards.selectedCardUid === card.uid) {
+      if (this.selectedCardUid === card.uid) {
         return
       }
       this.$store.commit(CARD.SELECT_CARD, card.uid)

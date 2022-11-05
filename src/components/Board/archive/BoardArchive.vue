@@ -119,7 +119,7 @@
                 :data-card-id="card.uid"
                 :card="card"
                 :show-date="currentBoard?.show_date !== 0 ?? false"
-                :selected="$store.state.cards.selectedCardUid === card.uid"
+                :selected="selectedCardUid === card.uid"
                 :color="colorCard(column.Color)"
                 :color-dots="colorCard(column.Color, 0.8)"
                 class="mt-2"
@@ -162,6 +162,9 @@ export default {
     },
     boardUid () {
       return this.$route.params.board_id
+    },
+    selectedCardUid () {
+      return this.$store.state.cards.selectedCardUid
     },
     currentBoard () {
       return this.$store.state.boards.boards[this.boardUid]
@@ -320,7 +323,7 @@ export default {
       return this.hexToRgb(color, 20, opacity)
     },
     selectCard (card) {
-      if (this.$store.state.cards.selectedCardUid === card.uid) {
+      if (this.selectedCardUid === card.uid) {
         return
       }
       this.$store.commit(CARD.SELECT_CARD, card.uid)
@@ -389,7 +392,6 @@ export default {
     closeProperties () {
       this.$store.dispatch('asidePropertiesToggle', false)
       this.$store.commit(CARD.SELECT_CARD, '')
-      console.log('this.$store.state.cards.selectedCardUid -->', this.$store.state.cards.selectedCardUid)
     },
     handleCardsScroll (event, columnUid, cardsLength) {
       const { scrollTop, offsetHeight, scrollHeight } = event.target

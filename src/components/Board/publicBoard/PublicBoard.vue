@@ -86,7 +86,6 @@
                   :card="element"
                   :show-date="board?.show_date !== 0 ?? false"
                   :read-only="isReadOnlyBoard"
-                  :selected="$store.state.cards.selectedCardUid === element.uid"
                   :color="colorCard(column.Color)"
                   :color-dots="colorCard(column.Color, 0.8)"
                   class="mt-2"
