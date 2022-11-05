@@ -176,6 +176,11 @@
             {{ form.errorMessage }}
           </p>
 
+          <PrivatePolicyCheckbox
+            :checked="policyChecked"
+            @toggleChecked="policyChecked = !policyChecked"
+          />
+
           <JbButton
             type="submit"
             color="login"
@@ -195,6 +200,7 @@ import unautorizedApi from '@/services/unauthorizedApiService.js'
 import { mdiEmailOutline, mdiEyeOutline, mdiEyeOffOutline, mdiAccountOutline, mdiArrowRight, mdiCheckBold, mdiChevronLeft, mdiPhoneOutline } from '@mdi/js'
 import FullScreenSection from '@/components/FullScreenSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
+import PrivatePolicyCheckbox from '@/components/PrivatePolicyCheckbox.vue'
 import Field from '@/components/Field.vue'
 import Icon from '@/components/Icon.vue'
 import { uuidv4 } from '@/helpers/functions'
@@ -225,7 +231,8 @@ export default {
     Field,
     Icon,
     Control,
-    JbButton
+    JbButton,
+    PrivatePolicyCheckbox
   },
   data () {
     return {
@@ -262,7 +269,8 @@ export default {
       showValues: {
         showRegisterInputsValue: false,
         showLoginInputsValue: false
-      }
+      },
+      policyChecked: false
     }
   },
   computed: {
@@ -285,7 +293,7 @@ export default {
       return (!this.form.username && this.form.usernameTouched) || (!this.form.password && this.form.passwordTouched)
     },
     allFieldsAreValid () {
-      return !this.ifSpaceInPassword && !this.ifEmptyFields && this.validatePassword && this.validatePhone && this.validateName
+      return !this.ifSpaceInPassword && !this.ifEmptyFields && this.validatePassword && this.validatePhone && this.validateName && this.policyChecked
     }
   },
   methods: {
