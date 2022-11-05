@@ -23,7 +23,7 @@
         :class="{ 'justify-start': !isMyMessage(message), 'justify-end': isMyMessage(message) }"
       >
         <div
-          v-if="message.uid_card"
+          v-if="message.type === 'card'"
           class="flex flex-row text-[#7E7E80] mt-[12px] text-[13px] leading-[15px] tracking-wide mb-[6px]"
         >
           <div>
