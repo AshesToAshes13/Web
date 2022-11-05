@@ -102,6 +102,7 @@
         />
         <ClientChatInterlocutorMessage
           v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
+          class="float-left"
           :message="message"
           :should-show-options="shouldShowOptions(message)"
           :employee="employees[message.uid_creator]"
@@ -109,6 +110,7 @@
         />
         <ClientChatInterlocutorFileMessage
           v-if="!message.isMyMessage && message.isFile"
+          class="float-left"
           :message="message"
           :employee="employees[message.uid_creator]"
           @onQuoteMessage="setCurrentQuote"
@@ -116,6 +118,7 @@
 
         <ClientChatSelfMessage
           v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
+          class="float-right"
           :message="message"
           :employee="employees[message.uid_creator]"
           :should-show-options="shouldShowOptions(message)"
@@ -124,6 +127,7 @@
         />
         <ClientChatSelfFileMessage
           v-if="message.isMyMessage && message.isFile"
+          class="float-right"
           :message="message"
           :employee="employees[message.uid_creator]"
           @onQuoteMessage="setCurrentQuote"

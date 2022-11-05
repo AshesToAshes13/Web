@@ -68,7 +68,7 @@ export default {
 </script>
 <template>
   <div
-    class="bg-[#F4F5F7] py-[10px] px-[12px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] float-right relative max-w-[300px] group"
+    class="bg-[#F4F5F7] py-[10px] px-[12px] rounded-t-[12px] rounded-bl-[12px] mb-[5px] relative max-w-[300px] group"
   >
     <CardChatDeletedMessageContent v-if="message.deleted" />
     <ImagePreloader

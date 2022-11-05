@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-[#FCEBEB] py-[12px] px-[12px] rounded-t-[12px] rounded-br-[12px] mb-[5px] float-left max-w-[300px] group"
+    class="bg-[#FCEBEB] py-[12px] px-[12px] rounded-t-[12px] rounded-br-[12px] mb-[5px] max-w-[300px] group"
   >
     <CardChatDeletedMessageContent v-if="message.deleted" />
     <ImagePreloader
