@@ -106,7 +106,7 @@
             />
           </div>
           <QuillEditor
-            v-if="reglamentContent.length && !isTesting"
+            v-if="reglamentContent?.length && !isTesting"
             :key="reglamentContent"
             v-model:content="reglamentContent"
             content-type="html"
@@ -192,7 +192,7 @@
   <!-- Режим прохождение теста -->
   <ReglamentTest
     v-if="isTesting"
-    :reglament="reglament"
+    :reglament="currReglament"
     @exitTestingMode="isTesting = false"
   />
 </template>
@@ -245,9 +245,6 @@ export default {
       } else {
         return 'Дата последнего изменения: ' + this.$store.state.reglaments.lastCommentDate
       }
-    },
-    reglament () {
-      return this.currReglament
     },
     currReglament () {
       return this.$store.state.reglaments.reglaments[this.$route.params.id]
@@ -370,15 +367,7 @@ export default {
       }
     } catch (e) {}
 
-    this.$store.dispatch(REGLAMENTS.GET_REGLAMENT_COMMENTS, this.$route.params.id).then((res) => {
-      if (res.data.length === 0) {
-        this.$store.state.reglaments.lastCommentDate = ''
-      } else {
-        this.$store.state.reglaments.lastCommentDate = this.dateToLabelFormatForComment(new Date(res.data[0].comment_date))
-        this.$store.state.reglaments.lastCommentText = res.data[0].comment
-      }
-    })
-    console.log(this.reglament)
+    this.$store.dispatch(REGLAMENTS.GET_REGLAMENT_COMMENTS, this.$route.params.id)
   },
   methods: {
     setEdit () {
@@ -408,10 +397,12 @@ export default {
     },
     clearContributors () {
       const data = {
-        uidReglament: this.reglament.uid,
+        uidReglament: this.currReglament.uid,
         uidUser: this.user.current_user_uid
       }
-      console.log(this.user.current_user_uid)
+      const reglaments = this.$store.state.navigator.navigator.reglaments
+      const index = reglaments.items.findIndex(item => item.uid === this.currReglament.uid)
+      if (index !== -1) reglaments.items[index].is_passed = 0
       this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
     dateToLabelFormatForComment (calendarDate) {

@@ -31,6 +31,23 @@ class UnautorizedApi {
     return res.data
   }
 
+  async register (email, password, username, phone, cid) {
+    const date = new Date()
+    const timezone = (date.getTimezoneOffset() / 60) * -1
+    const res = await axios.post(`${url}api/v1/users/new`, {
+      email: email,
+      password: password,
+      name: username,
+      phone: phone.replace(/[^a-zA-Z0-9+]/g, ''),
+      timezone: timezone,
+      system: 'web',
+      cid: cid || 'webnew',
+      language: 'russian',
+      type_device: 'web'
+    })
+    return res.data
+  }
+
   async authByGoogle (token, cid) {
     const res = await axios.post(`${url}api/v1/tokens/bygoogle`, {
       token: token,

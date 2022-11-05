@@ -122,7 +122,8 @@
     <div class="flex items-start justify-between">
       <div class="w-full">
         <p
-          class="text-[#424242] font-['Roboto'] mt-[-15px] text-[14px] leading-[18px] font-medium tracking-[.02em] break-words"
+          class="text-[#424242] font-['Roboto'] mt-[-15px] text-[14px] leading-[18px] font-medium tracking-[.02em]"
+          style="word-break: break-word;"
         >
           {{ card.name }}
         </p>

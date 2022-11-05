@@ -48,18 +48,22 @@ export default function processCreate (obj) {
       break
     case TYPES.TYPE_OBJECT_PROJECT:
       if (obj.obj.email_creator !== currentUserEmail()) {
-        showNotify(
-          {
-            uid: obj.uid_json,
-            group: 'top',
-            title: 'Новый проект',
-            obj: obj,
-            text: obj.obj.name
-          },
-          isNotificationSoundOn()
-        )
+        const isProjectExists = Object.keys(store.state.projects.projects).includes(obj.obj.uid)
+        console.log(obj.obj)
+        if (isProjectExists === false) {
+          showNotify(
+            {
+              uid: obj.uid_json,
+              group: 'top',
+              title: 'Новый проект',
+              obj: obj,
+              text: obj.obj.name
+            },
+            isNotificationSoundOn()
+          )
+        }
+        createProject(obj)
       }
-      createProject(obj)
       break
     case TYPES.TYPE_OBJECT_TASK:
       if (

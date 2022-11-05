@@ -47,7 +47,6 @@
                 <tr
                   v-for="client in clients"
                   :key="client?.uid"
-                  :class="client?.uid === selectedClient?.uid ? 'bg-[#F4F5F7]' : ''"
                   @click.stop="showClientProperties(client)"
                 >
                   <td>
@@ -127,9 +126,6 @@ export default {
     clients () {
       return this.$store.state.clients.clients
     },
-    selectedClient () {
-      return this.$store.state.clients.selectedClient
-    },
     paging () {
       return this.$store.state.clients.paging
     },
@@ -147,15 +143,6 @@ export default {
     },
     currentSearchRouter () {
       return this.$route.query.search || ''
-    },
-    isCorpYandexIntegrated () {
-      return this.$store.state.corpYandexIntegration.isIntegrated
-    },
-    isPersonalYandexIntegrated () {
-      return this.$store.state.personalYandexIntegration.isIntegrated
-    },
-    isCorpMegafonIntegrated () {
-      return this.$store.state.corpMegafonIntegration.isIntegrated
     },
     showLimitMessage () {
       const tarif = this.$store.state.user.user.tarif
@@ -188,7 +175,7 @@ export default {
         page: this.currentPage
       }
       if (this.currentSearchRouter && !(this.$store.state.user.user.tarif === 'free' || this.$store.getters.isLicenseExpired)) {
-        data.search = this.currentSearchRouter
+        data.search = this.checkNumberAndTransform(this.currentSearchRouter)
       }
       await this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then(() => {
         this.wasLoaded = true
@@ -204,6 +191,18 @@ export default {
     },
     searchClients (text) {
       this.$router.push({ path: '/clients', query: { search: text } })
+    },
+    checkNumberAndTransform (text) {
+      if (isNaN(+text)) return text
+      if (text.length === 11 && (text.startsWith('7') || text.startsWith('8'))) {
+        const num = text.split('')
+        num[0] = '+7'
+        text = num.join('')
+      }
+      if (text.length === 10) {
+        text = '+7' + text
+      }
+      return text
     },
     showClientProperties (client) {
       this.$store.commit(CLIENTS.SELECT_CLIENT, client)

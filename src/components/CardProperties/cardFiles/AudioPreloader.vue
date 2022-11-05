@@ -41,6 +41,7 @@
     {{ fileName }}
   </p>
   <p
+    v-if="!isShowMenu"
     class="leading-[13px] text-[11px] font-[700] text-right mt-[8px] group-hover:hidden min-w-[30px]"
     style="color: rgba(0, 0, 0, 0.4);"
   >
@@ -48,8 +49,8 @@
   </p>
   <div
     :ref="`message-file-icon-${fileUid}`"
-    class="group-hover:flex justify-end"
-    :class="{'hidden': !isShowMenu}"
+    class="justify-end"
+    :class="{'hidden group-hover:flex': !isShowMenu, 'flex': isShowMenu}"
   >
     <CardChatMessageOptionsPopMenu
       :can-delete="canDelete"

@@ -1,6 +1,10 @@
+import { computed } from 'vue'
 import store from '@/store/index.js'
 import * as CLIENTS from '@/store/actions/clients.js'
+import { CHANGE_CARD_UID_CLIENT } from '@/store/actions/cards'
 import router from '@/router'
+
+const selectedCard = computed(() => store.getters.selectedCard)
 
 function helperFuncUpdate () {
   if (router.currentRoute.value.path === '/clients') {
@@ -23,9 +27,28 @@ export function removeClient (obj) {
   if (router.currentRoute.value.params.client_id === obj) {
     router.push('/clients')
   }
-  store.commit(CLIENTS.REMOVE_CLIENT, obj.obj)
+  store.commit(CLIENTS.REMOVE_CLIENT, obj)
+
+  if (obj.obj === selectedCard.value.isClientInCard) {
+    selectedCard.value.uid_client = ''
+    selectedCard.value.client_name = ''
+    store.dispatch(CHANGE_CARD_UID_CLIENT, selectedCard)
+  }
 
   helperFuncUpdate()
+
+  if (store.state.cards.cards.length) {
+    // Удаляем клиента с карточек
+    const cards = store.state.cards.cards
+    for (let i = 1; i < cards.length - 2; i++) {
+      cards[i].cards.forEach(card => {
+        if (card.uid_client === obj) {
+          card.uid_client = ''
+          card.client_name = ''
+        }
+      })
+    }
+  }
 }
 
 export function updateClient (obj) {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-[10px] px-[15px] rounded-t-[12px] bg-[#FCEBEB] rounded-br-[12px] mb-[5px] float-left max-w-[300px] group"
+    class="py-[10px] px-[15px] rounded-t-[12px] bg-[#FCEBEB] rounded-br-[12px] mb-[5px] max-w-[300px] group"
   >
     <ClientChatDeletedMsg
       v-if="message.deleted"
@@ -19,6 +19,7 @@
           {{ message.msg }}
         </span>
         <p
+          v-if="!isShowMenu"
           :class="{ 'group-hover:hidden' : shouldShowOptions }"
           class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
           style="color: rgba(0, 0, 0, 0.4);"
@@ -28,8 +29,8 @@
       </div>
       <div
         :ref="`message-client-icon-${message.uid}`"
-        class="self-end group-hover:flex"
-        :class="{'hidden': !isShowMenu}"
+        class="self-end"
+        :class="{'hidden group-hover:flex': !isShowMenu, 'flex': isShowMenu}"
       >
         <ClientChatMessageOptionsPopMenu
           v-if="shouldShowOptions"

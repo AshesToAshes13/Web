@@ -393,20 +393,20 @@ export default {
         new_password: newPassword
       }
       if (isFieldNotEmptyAndRight) {
-        this.$store.dispatch(AUTH_CHANGE_PASSWORD, data).then(() => {
-          this.showEditpassword = false
-          this.oldPassword = ''
-          this.newPassword = ''
-          this.confirmNewPassword = ''
-        })
-
-        this.$store.dispatch(AUTH_CHANGE_PASSWORD, data).catch((err) => {
-          this.invalidOldPassword = err.error
-          this.oldPassword = ''
-          this.confirmNewPassword = ''
-          this.showEditpassword = true
-          this.emptyOldPass = false
-        })
+        this.$store.dispatch(AUTH_CHANGE_PASSWORD, data)
+          .then(() => {
+            this.showEditpassword = false
+            this.oldPassword = ''
+            this.newPassword = ''
+            this.confirmNewPassword = ''
+          })
+          .catch((err) => {
+            this.invalidOldPassword = err.error
+            this.oldPassword = ''
+            this.confirmNewPassword = ''
+            this.showEditpassword = true
+            this.emptyOldPass = false
+          })
       } else if (this.newPassword !== this.confirmNewPassword) {
         this.newPassError = true
       }

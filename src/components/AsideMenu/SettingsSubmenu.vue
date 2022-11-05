@@ -151,7 +151,7 @@
           </svg>
         </SubmenuListItem>
       </router-link>
-      <!-- <router-link
+      <router-link
         v-slot="{ isActive }"
         to="/settings/integrations"
       >
@@ -175,7 +175,7 @@
             />
           </svg>
         </SubmenuListItem>
-      </router-link> -->
+      </router-link>
     </div>
   </div>
 </template>

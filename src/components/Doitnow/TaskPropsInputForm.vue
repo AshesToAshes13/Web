@@ -98,6 +98,7 @@ export default {
       msgtask = this.taskMsg.replaceAll('<', '&lt;')
       msgtask = this.taskMsg.replaceAll('>', '&gt;')
       this.$emit('sendTaskMsg', msgtask)
+      this.taskMsg = ''
     },
     createTaskFile (event) {
       this.files = event.target.files ? event.target.files : event.dataTransfer.files

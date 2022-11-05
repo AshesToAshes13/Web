@@ -7,6 +7,11 @@ export function uuidv4 () {
   )
 }
 
+export function isFilePreloadable (fileExtension) {
+  const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
+  return preloadableFiles.includes(fileExtension)
+}
+
 export function getNavstackPath (tree, uid) {
   if (tree.uid === uid) {
     return [

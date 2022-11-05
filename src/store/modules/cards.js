@@ -334,7 +334,7 @@ const actions = {
   },
   [CARD.MOVE_ALL_CARDS]: ({ commit }, data) => {
     return new Promise((resolve, reject) => {
-      const url = `${process.env.VUE_APP_LEADERTASK_API}/api/v1/cards/move?uid_board=${data.boardTo}&uid_stage=${data.stageTo}&place=up`
+      const url = `${process.env.VUE_APP_INSPECTOR_API}cards/move?uid_board=${data.boardTo}&uid_stage=${data.stageTo}&place=up`
       axios({ url, method: 'PATCH', data: { cards: data.cards } })
         .then((resp) => {
           resp.data.forEach((card) => {

@@ -12,9 +12,13 @@ export function createCardMessage (obj) {
 
   if (shouldAddMsgToClient.length) {
     obj.obj.uid_client = shouldAddMsgToClient[0].uid_client
+    obj.obj.uid_card = obj.uid_card
     // дата с вебсинка приходит без Z, из-за чего сообщение может появиться в любом месте чата
-    if (!obj.obj.date_create.includes('Z')) {
+    if (!obj.obj.date_create.includes('Z') && !('file_name' in obj.obj && !obj.obj?.cardfile)) {
       obj.obj.date_create += 'Z'
+    }
+    if ('file_name' in obj.obj && !obj.obj?.cardfile) {
+      obj.obj.cardfile = true
     }
     store.commit('CLIENT_CARDS_MESSAGES_SUCCESS', obj.obj)
   }

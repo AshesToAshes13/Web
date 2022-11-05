@@ -16,6 +16,9 @@ export function deleteReglamentAnswer (obj) {
 
 export function updateReglamentAnswer (obj) {
   if (shouldDoAnything(obj.obj.uid_reglament)) {
+    if (obj.obj.is_passed && router.currentRoute.value.params.id === obj.obj.uid_reglament) {
+      store.commit(REGLAMENT.UPDATE_ADD_USERS_REGLAMENT_PASSED, obj.obj)
+    }
     store.commit(REGLAMENT.REGLAMENT_UPDATE_ANSWER_NAME, obj.obj)
   }
 }
