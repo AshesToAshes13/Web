@@ -33,7 +33,7 @@ import {
   DELETE_MESSAGE_REQUEST
 } from '@/store/actions/cardfilesandmessages'
 import CardMessageInput from '@/components/CardProperties/CardMessageInput'
-import { uuidv4 } from '@/helpers/functions'
+import { uuidv4, isFilePreloadable } from '@/helpers/functions'
 import CardMessageQuoteUnderInput from '@/components/CardProperties/CardMessageQuoteUnderInput'
 import DoitnowChatInCard from './DoitnowChatInCard.vue'
 
@@ -152,7 +152,7 @@ export default {
         // проверяем если файл не нуждается в прелоуде, тогда добавляем его псевдоданные
         // чтобы отобразить, что файл / файлы загружаются
         const fileExtension = file?.name?.split('.')?.pop()?.toLowerCase()
-        if (!this.isFilePreloadable(fileExtension)) {
+        if (!isFilePreloadable(fileExtension)) {
           uploadingFiles.push({
             uid: uuidv4(),
             uid_creator: this.userUid,
@@ -188,10 +188,6 @@ export default {
           this.$store.dispatch(CREATE_FILES_REQUEST, data)
         }
       }
-    },
-    isFilePreloadable (fileExtension) {
-      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
-      return preloadableFiles.includes(fileExtension)
     }
   }
 }

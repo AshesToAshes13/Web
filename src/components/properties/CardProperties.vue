@@ -259,7 +259,7 @@ import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton.vue'
 import PropsButtonClose from '@/components/Common/PropsButtonClose.vue'
 import * as CARD from '@/store/actions/cards'
 import TaskPropertiesModalBoxFileSizeLimit from '@/components/TaskProperties/TaskPropertiesModalBoxFileSizeLimit.vue'
-import { uuidv4 } from '@/helpers/functions'
+import { uuidv4, isFilePreloadable } from '@/helpers/functions'
 import ClientModal from '@/components/Clients/ClientModal'
 import * as CLIENTS from '@/store/actions/clients'
 import CardClientInfo from '../CardProperties/CardClientInfo.vue'
@@ -438,10 +438,6 @@ export default {
     clickShowClientModal () {
       this.showClientModal = true
     },
-    isFilePreloadable (fileExtension) {
-      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mp3', 'wav']
-      return preloadableFiles.includes(fileExtension)
-    },
     onPasteEvent (e) {
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const index in items) {
@@ -556,7 +552,7 @@ export default {
         // проверяем если файл не нуждается в прелоуде, тогда добавляем его псевдоданные
         // чтобы отобразить, что файл / файлы загружаются
         const fileExtension = file?.name?.split('.')?.pop()?.toLowerCase()
-        if (!this.isFilePreloadable(fileExtension)) {
+        if (!isFilePreloadable(fileExtension)) {
           uploadingFiles.push({
             uid: uuidv4(),
             uid_creator: this.user.current_user_uid,
