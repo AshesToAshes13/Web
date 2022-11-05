@@ -99,7 +99,7 @@
           </PopMenuItem>
         </router-link>
         <PopMenuItem
-          v-if="$store.state.boards.publicBoard === 0 && canEditBoard"
+          v-if="!isBoardPublic && canEditBoard"
           @click="setPublicBoard"
         >
           <svg
@@ -141,7 +141,7 @@
           Сделать доску публичной
         </PopMenuItem>
         <PopMenuItem
-          v-if="$store.state.boards.publicBoard === 1 && canEditBoard"
+          v-if="isBoardPublic && canEditBoard"
           @click="removePublicBoard"
         >
           <svg
@@ -183,7 +183,7 @@
           Сделать доску приватной
         </PopMenuItem>
         <PopMenuItem
-          v-if="$store.state.boards.publicBoard === 1"
+          v-if="isBoardPublic"
           @click="copyPublicBoardLink"
         >
           <svg
@@ -334,6 +334,9 @@ export default {
     },
     isFilterSet () {
       return this.showOnlyMyCreatedCards || this.showOnlyCardsWhereIAmResponsible || this.showOnlyCardsWithNoResponsible
+    },
+    isBoardPublic () {
+      return this.$store.state.boards.publicBoard === 1
     }
   },
   mounted () {
