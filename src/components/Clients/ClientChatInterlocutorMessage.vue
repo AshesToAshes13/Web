@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-[10px] px-[15px] rounded-t-[12px] bg-[#FCEBEB] rounded-br-[12px] mb-[5px] float-left max-w-[300px] group"
+    class="py-[10px] px-[15px] rounded-t-[12px] bg-[#FCEBEB] rounded-br-[12px] mb-[5px] max-w-[300px] group"
   >
     <ClientChatDeletedMsg
       v-if="message.deleted"
