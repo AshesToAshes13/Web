@@ -30,7 +30,6 @@
         <PublicBoard
           :store-cards="storeCards"
           :board="currentBoard"
-          :show-archive="showArchive"
         />
       </div>
     </div>
@@ -46,16 +45,8 @@ export default {
   components: {
     PublicBoard
   },
-  props: {
-    showArchive: {
-      type: Boolean,
-      default: false
-    }
-  },
   data () {
     return {
-      showAddBoard: false,
-      showBoardsLimit: false,
       showEmptyMessage: false,
       isLoading: false
     }
