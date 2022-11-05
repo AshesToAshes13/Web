@@ -6,7 +6,7 @@
   >
     <div class="flex flex-col">
       <div
-        v-if="$store.state.reglaments.hideSaveParams === false"
+        v-if="hideSaveParams === false"
         class="flex gap-[10px] items-center cursor-pointer mb-4"
         @click="toggleEmployes"
       >
@@ -111,6 +111,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    hideSaveParams () {
+      return this.$store.state.reglaments.hideSaveParams
     }
   },
   methods: {

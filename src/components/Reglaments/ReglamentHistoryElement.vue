@@ -127,7 +127,7 @@
           <p
             class="ml-1 text-[11px] leading-[14px] whitespace-nowrap"
           >
-            {{ EmployeeNameOrEmail }}
+            {{ employeeNameOrEmail }}
           </p>
         </div>
       </div>
@@ -154,7 +154,7 @@ export default {
     employees () {
       return this.$store.state.employees.employees
     },
-    EmployeeNameOrEmail () {
+    employeeNameOrEmail () {
       return this.employees[this.uidEmployee].name ?? this.employees[this.uidEmployee].email
     }
   },

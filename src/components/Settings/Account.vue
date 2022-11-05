@@ -113,8 +113,8 @@
           <div class="pr-2">
             <span class="circle-image">
               <img
-                v-if="$store.state.user.user?.foto_link"
-                :src="$store.state.user.user?.foto_link"
+                v-if="user?.foto_link"
+                :src="user?.foto_link"
                 class="rounded-[27px] content-center object-cover"
               >
             </span>
@@ -145,7 +145,7 @@
           {{ tarifText }}
         </p>
         <p
-          v-if="$store.state.user.user?.date_expired"
+          v-if="user?.date_expired"
           class="text-sm landing-4 mt-1 font-normal text-[#606061]"
         >
           <a
@@ -155,14 +155,14 @@
                 !isLicenseExpired
             "
           >Лицензия истекает {{ getDateExpired() }} (дней:
-            {{ $store.state.user.user?.days_left ?? 0 }})</a>
+            {{ user?.days_left ?? 0 }})</a>
           <a
             v-if="user.tarif === 'free' || isLicenseExpired"
           >Обновите тарифный план ЛидерТаск для неограниченных возможностей</a>
           <a
             v-if="user.tarif === 'trial'"
           >Мы активировали Вам пробную версию, в которой доступны 100% функций
-            ЛидерТаск (дней: {{ $store.state.user.user?.days_left ?? 0 }})</a>
+            ЛидерТаск (дней: {{ user?.days_left ?? 0 }})</a>
         </p>
         <div class="mt-2">
           <router-link to="/settings/tarif">
@@ -180,7 +180,7 @@
           </p>
           <form class="mb-2">
             <div class="text-sm landing-4 font-normal text-[#606061]">
-              {{ $store.state.user.user?.current_user_name ?? '' }}
+              {{ user?.current_user_name ?? '' }}
             </div>
             <button
               type="button"
@@ -219,7 +219,7 @@
               contenteditable="false"
               class="text-[14px] landing-[13px] text-[#606061]"
             >
-              {{ $store.state.user.user?.current_user_email }}
+              {{ user?.current_user_email }}
             </div>
           </div>
           <div class="mb-2 mt-6">

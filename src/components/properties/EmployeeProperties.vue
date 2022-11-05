@@ -13,13 +13,13 @@
         <PropsButtonMenu />
         <template #menu>
           <PopMenuItem
-            v-if="$store?.state?.user?.user?.owner_email === $store?.state?.user?.user?.current_user_email && selectedEmployee.type === 3"
+            v-if="user?.owner_email === user?.current_user_email && selectedEmployee.type === 3"
             @click="setAdmin()"
           >
             Назначить администратором
           </PopMenuItem>
           <PopMenuItem
-            v-if="$store?.state?.user?.user?.owner_email === $store?.state?.user?.user?.current_user_email && selectedEmployee.type === 2"
+            v-if="user?.owner_email === user?.current_user_email && selectedEmployee.type === 2"
             icon="delete"
             @click="removeAdmin()"
           >
@@ -194,6 +194,9 @@ export default {
     }
   },
   computed: {
+    user () {
+      return this.$store.state.user.user
+    },
     selectedEmployee () {
       return this.$store.state.employees.selectedEmployee
     },

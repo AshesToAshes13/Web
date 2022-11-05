@@ -50,7 +50,7 @@
             to="/tasks/overdue"
           >
             <SubmenuListItem
-              v-if="$store.state.navigator?.navigator?.settings.nav_show_overdue"
+              v-if="showOverdue"
               :selected="isActive"
               title="Просроченные"
               @click="closeMenu"
@@ -285,6 +285,9 @@ export default {
     },
     isAsideMobileExpanded () {
       return this.$store.state.isAsideMobileExpanded
+    },
+    showOverdue () {
+      return this.$store.state.navigator?.navigator?.settings.nav_show_overdue
     },
     isPropertiesMobileExpanded () {
       return this.$store.state.isPropertiesMobileExpanded
