@@ -19,6 +19,7 @@
           {{ message.msg }}
         </span>
         <p
+          v-if="!isShowMenu"
           :class="{ 'group-hover:hidden' : shouldShowOptions }"
           class="text-right font-[700] leading-[14px] text-[11px] self-end min-w-[30px]"
           style="color: rgba(0, 0, 0, 0.4);"
@@ -28,8 +29,8 @@
       </div>
       <div
         :ref="`message-client-icon-${message.uid}`"
-        class="self-end group-hover:flex"
-        :class="{'hidden': !isShowMenu}"
+        class="self-end"
+        :class="{'hidden group-hover:flex': !isShowMenu, 'flex': isShowMenu}"
       >
         <ClientChatMessageOptionsPopMenu
           v-if="shouldShowOptions"
