@@ -4,6 +4,7 @@
       <div class="hover-svg-fill flex justify-between items-center">
         <span class="font-medium text-[16px]">{{ currentClient.name }}</span>
         <svg
+          v-if="canEdit"
           width="14"
           height="16"
           viewBox="0 0 14 16"
@@ -70,6 +71,10 @@ export default {
     currentClient: {
       type: Object,
       default: () => {}
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['clickShowClientModalEmit', 'removeClientFromCardEmit'],

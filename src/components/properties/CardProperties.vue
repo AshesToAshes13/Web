@@ -154,6 +154,7 @@
       <CardClientInfo
         v-if="isClientInCard && !showClientSkeleton"
         :current-client="clientInCard"
+        :can-edit="canEdit"
         @clickShowClientModalEmit="clickShowClientModal"
         @removeClientFromCardEmit="removeClientFromCard"
       />
