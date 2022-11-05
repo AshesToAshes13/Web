@@ -60,7 +60,7 @@ import MessageSkeleton from '@/components/TaskProperties/MessageSkeleton'
 import ClientProperties from '@/components/Clients/ClientProperties'
 import * as CLIENTS from '@/store/actions/clients'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
-import { uuidv4 } from '@/helpers/functions'
+import { uuidv4, isFilePreloadable } from '@/helpers/functions'
 import { REFRESH_FILES } from '@/store/actions/cardfilesandmessages'
 import { GET_CLIENT_CARDS, REFRESH_CARDS } from '@/store/actions/clientfilesandmessages'
 import { GET_CLIENT } from '@/store/actions/clients'
@@ -231,7 +231,7 @@ export default {
         // проверяем если файл не нуждается в прелоуде, тогда добавляем его псевдоданные
         // чтобы отобразить, что файл / файлы загружаются
         const fileExtension = file?.name?.split('.')?.pop()?.toLowerCase()
-        if (!this.isFilePreloadable(fileExtension)) {
+        if (!isFilePreloadable(fileExtension)) {
           uploadingFiles.push({
             uid: uuidv4(),
             uid_creator: this.user.current_user_uid,
@@ -257,10 +257,6 @@ export default {
         if (this.selectedClient) this.selectedClient.has_files = true
         this.scrollDown()
       })
-    },
-    isFilePreloadable (fileExtension) {
-      const preloadableFiles = ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif', 'mov', 'mp4', 'mp3', 'wav']
-      return preloadableFiles.includes(fileExtension)
     },
     onPasteEvent (e) {
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
