@@ -210,11 +210,11 @@ export default {
     },
     getCardName (uidCard) {
       let cardName
-      for (let i = 0; i < this.cards.length; i++) {
-        if (this.cards[i].uid === uidCard) {
-          cardName = this.cards[i].name
+      this.cards.forEach((card) => {
+        if (card.uid === uidCard) {
+          cardName = card.name
         }
-      }
+      })
       return cardName
     },
     getMessageTimeString (dateCreate) {
