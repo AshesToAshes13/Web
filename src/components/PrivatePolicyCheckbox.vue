@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .policy input {
   appearance: none;
   width: 0;
