@@ -188,7 +188,7 @@ export default {
         page: this.currentPage
       }
       if (this.currentSearchRouter && !(this.$store.state.user.user.tarif === 'free' || this.$store.getters.isLicenseExpired)) {
-        data.search = this.currentSearchRouter
+        data.search = this.checkNumberAndTransform(this.currentSearchRouter)
       }
       await this.$store.dispatch(CLIENTS.GET_CLIENTS, data).then(() => {
         this.wasLoaded = true
@@ -204,6 +204,23 @@ export default {
     },
     searchClients (text) {
       this.$router.push({ path: '/clients', query: { search: text } })
+    },
+    checkNumberAndTransform (text) {
+      if (isNaN(+text)) {
+        return text
+      }
+
+      if (text.length === 11 && (text.startsWith('7') || text.startsWith('8'))) {
+        const num = text.split('')
+        num[0] = '+7'
+        text = num.join('')
+      }
+
+      if (text.length === 10) {
+        text = '+7' + text
+      }
+
+      return text
     },
     showClientProperties (client) {
       this.$store.commit(CLIENTS.SELECT_CLIENT, client)
