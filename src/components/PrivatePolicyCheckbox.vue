@@ -20,7 +20,16 @@
         />
       </svg>
     </span>
-    <p class="leading-[17px]">Продолжая я принимаю <a href="https://www.leadertask.ru/offer">Условия использования</a> и <a href="https://www.leadertask.ru/privacy-policy">Политику конфиденциальности</a></p>
+    <p class="leading-[17px]">
+      Продолжая я принимаю
+      <a
+        href="https://www.leadertask.ru/offer"
+        target="_blank"
+      >Условия использования</a> и <a
+        href="https://www.leadertask.ru/privacy-policy"
+        target="_blank"
+      >Политику конфиденциальности</a>
+    </p>
   </label>
 </template>
 
