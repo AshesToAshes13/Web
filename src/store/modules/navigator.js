@@ -474,8 +474,10 @@ const mutations = {
       // отдел поменялся - перемещаем сотрудника
       const indexEmp = empsOld.items.findIndex((emp) => emp.uid === data.uidEmp)
       const [emp] = empsOld.items.splice(indexEmp, 1)
-      empsNew.items.push(emp)
-      emp.uid_dep = empsNew.dep.uid || '00000000-0000-0000-0000-000000000000'
+      if (emp) {
+        empsNew.items.push(emp)
+        emp.uid_dep = empsNew?.dep.uid || '00000000-0000-0000-0000-000000000000'
+      }
     }
   },
   [NAVIGATOR_PUSH_PROJECT]: (state, projects) => {
