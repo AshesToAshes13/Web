@@ -29,5 +29,34 @@ export function updateTask (obj) {
     if (router?.currentRoute?.value?.name === 'tasksUnread') return
     //
     store.commit('REMOVE_TASK', obj.obj.uid)
+
+    // websync для задач в очереди
+
+    let typeOfSort
+
+    if (store.state.doitnow.unreadTasks.find((task) => task.uid === obj.obj.uid)) {
+      typeOfSort = 'unread'
+    } else if (store.state.doitnow.todayTasks.find((task) => task.uid === obj.obj.uid)) {
+      typeOfSort = 'today'
+    } else if (store.state.doitnow.readyTasks.find((task) => task.uid === obj.obj.uid)) {
+      typeOfSort = 'ready'
+    }
+
+    console.log('unread index', store.state.doitnow.unreadTasks.findIndex((task) => task.uid === obj.obj.uid))
+    console.log('type of sort', typeOfSort)
+
+    // проверяем, нашёл ли он задачу
+    if (typeOfSort) {
+      if (typeOfSort === 'unread') {
+        const indexOfTask = store.state.doitnow.unreadTasks.findIndex((task) => task.uid === obj.obj.uid)
+        store.state.doitnow.unreadTasks[indexOfTask] = obj.obj
+      } else if (typeOfSort === 'today') {
+        const indexOfTask = store.state.doitnow.todayTasks.findIndex((task) => task.uid === obj.obj.uid)
+        store.state.doitnow.todayTasks[indexOfTask] = obj.obj
+      } else if (typeOfSort === 'ready') {
+        const indexOfTask = store.state.doitnow.readyTasks.findIndex((task) => task.uid === obj.obj.uid)
+        store.state.doitnow.readyTasks[indexOfTask] = obj.obj
+      }
+    }
   }
 }
