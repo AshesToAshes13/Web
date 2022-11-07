@@ -73,6 +73,8 @@
           </p>
         </template>
         <button
+          :disabled="blockRepeatSending"
+          :class="{'cursor-default opacity-[0.5]': blockRepeatSending === true}"
           class="focus:ring min-w-[90px] focus:outline-none cursor-pointer whitespace-nowrap justify-center duration-150 px-[12px] py-[10px] rounded-md bg-[#ff9123] text-white text-[13px] leading-[15px] font-medium font-roboto block truncate"
           @click="submitForm"
         >
@@ -132,7 +134,8 @@ export default {
       },
       formIsLoaded: false,
       errors: [],
-      inputsValidateError: false
+      inputsValidateError: false,
+      blockRepeatSending: false
     }
   },
   computed: {
@@ -191,6 +194,7 @@ export default {
         title: this.getFormTitle(),
         comment
       }
+      this.blockRepeatSending = true
       this.$store.dispatch(BOARD.SEND_BOARD_FORM_REQUEST, data).then(() => {
         console.log('send success')
         if (this.item.redirectLink.length > 0) {
