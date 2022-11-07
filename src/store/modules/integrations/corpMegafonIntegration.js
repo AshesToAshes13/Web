@@ -48,9 +48,9 @@ const actions = {
             return
           }
           commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
-            atsKey: data.atsKey,
-            crmKey: data.crmKey,
-            atsLink: atsLink,
+            atsKey: resp.data.integration.atsKey,
+            crmKey: resp.data.integration.crmKey,
+            atsLink: resp.integration.atsLink,
             megafonUsers: []
           })
           resolve(resp)
@@ -81,9 +81,9 @@ const actions = {
             return
           }
           commit(CORP_MEGAFON.SET_MEGAFON_INTEGRATION, {
-            atsKey: data.atsKey,
-            crmKey: data.crmKey,
-            atsLink: atsLink,
+            atsKey: resp.data.integration.atsKey,
+            crmKey: resp.data.integration.crmKey,
+            atsLink: resp.integration.atsLink,
             megafonUsers: data.megafonUsers
           })
           resolve(resp)
@@ -114,13 +114,13 @@ const actions = {
   },
   [CORP_MEGAFON.MEGAFON_CHECK_INTEGRATION]: (
     { commit, dispatch },
-    organizationEmail
+    ownerUid
   ) => {
     return new Promise((resolve, reject) => {
       const url =
         process.env.VUE_APP_INSPECTOR_API +
         'megafon/integrations/' +
-        organizationEmail
+        ownerUid
       axios({ url: url, method: 'GET', timeout: 1000 * 10 })
         .then((resp) => {
           if (!Object.keys(resp.data.integration).length) {
