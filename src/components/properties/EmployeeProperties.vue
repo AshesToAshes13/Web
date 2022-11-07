@@ -144,7 +144,7 @@
       <router-link
         v-for="reglament in openedReglaments"
         :key="reglament.uid"
-        :to="{ name: 'currentReglament', params: { id: reglament.uid } }"
+        :to="'/reglaments/' + reglament?.uid"
         class="w-full h-[34px] flex items-center border-[2px] px-2 mb-1 rounded cursor-pointer"
       >
         <span class="grow font-roboto text-[13px] leading-[20px] font-medium text-[#4c4c4d] overflow-hidden truncate">
