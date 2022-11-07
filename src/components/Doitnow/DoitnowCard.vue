@@ -193,10 +193,6 @@ export default {
     linkify
   },
   props: {
-    card: {
-      type: Object,
-      default: () => ({})
-    },
     isAnimationDoitnow: {
       type: Boolean,
       default: false
@@ -205,18 +201,29 @@ export default {
   emits: ['next'],
   data () {
     return {
-      title: this.card.name || '',
-      comment: this.card.comment || '',
-      clientUid: this.card.uid_client || '',
       showChangeCardBudget: false,
-      showMoveCard: false,
-      clientInCard: null
+      showMoveCard: false
     }
   },
   computed: {
     user () {
       const userEmail = this.card?.user?.toLowerCase() || ''
       return this.$store.state.employees.employeesByEmail[userEmail]
+    },
+    title () {
+      return this.card.name || ''
+    },
+    card () {
+      return this.$store.state.doitnow.cards[0]
+    },
+    comment () {
+      return this.card.comment || ''
+    },
+    clientInCard () {
+      return this.$store.state.doitnow.clientInCard
+    },
+    clientUid () {
+      return this.card.uid_client || ''
     },
     showCallButton () {
       return this.clientPhone && this.$store.getters.isMegafonCanCall
@@ -305,7 +312,7 @@ export default {
       this.$store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
       if (this.isClientInCard) {
         this.$store.dispatch(CLIENTS.GET_CLIENT, this.clientUid).then((resp) => {
-          this.clientInCard = resp?.data || null
+          this.$store.state.doitnow.clientInCard = resp?.data || null
           this.$store.state.cards.clientInCard = resp.data || null
           if (this.clientInCard?.uid) {
             console.log('load contact', this.clientInCard)
@@ -321,11 +328,11 @@ export default {
             this.$store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data)
           }
         }).catch((err) => {
-          this.clientInCard = null
+          this.$store.state.doitnow.clientInCard = null
           throw err
         })
       } else {
-        this.clientInCard = null
+        this.$store.state.doitnow.clientInCard = null
       }
     },
     onPostpone (date) {
@@ -348,7 +355,7 @@ export default {
     changeComment (text) {
       const data = { cardUid: this.card.uid, comment: text }
       this.$store.dispatch(CHANGE_CARD_COMMENT, data)
-      this.comment = text
+      this.$store.state.doitnow.cards[0].comment = text
     },
     onPasteEvent (e) {
       const items = (e.clipboardData || e.originalEvent.clipboardData).items
@@ -367,8 +374,8 @@ export default {
       }
     },
     onChangeClient (contact) {
-      this.clientUid = contact?.uid || ''
-      this.clientInCard = contact
+      this.$store.state.doitnow.cards[0].uid_client = contact?.uid || ''
+      this.$store.state.doitnow.clientInCard = contact
       this.$store.dispatch(
         CHANGE_CARD_UID_CLIENT, {
           ...this.card,

@@ -63,10 +63,12 @@ export function removeCard (uid) {
     store.commit(CARD.SELECT_CARD, '')
   }
   store.commit(DELETE_CARD, uid)
+  // удаление карточки из очереди
   store.commit(DOITNOW.DELETE_CARD, uid)
 }
 
 export function updateCard (obj) {
+  const currentUserEmail = store.state.user.user.current_user_email
   const isUpdateCard =
     router.currentRoute.value.name === 'clientPage' &&
     obj.obj.uid_client === store.state.clients.selectedClient.uid
@@ -77,6 +79,20 @@ export function updateCard (obj) {
     store.state.clientfilesandmessages.cards.cards.find(
       (property) => property.uid === obj.obj.uid
     )
+  const card = obj.obj
+  const index = store.state.doitnow.cards.findIndex((doitnowCard) => doitnowCard.uid === obj.obj.uid)
+  // добавление карточки в очередь(приходит вебсинк на обновление карточки тк ставим ответственного)
+  if (index === -1 && card.user === currentUserEmail && (card.uid_stage !== 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67' || card.uid_stage !== 'e70af5e2-6108-4c02-9a7d-f4efee78d28c')) {
+    store.state.doitnow.cards.push(obj.obj)
+  }
+  if (index !== -1) {
+    // обновление карточки в очереди
+    store.state.doitnow.cards[index] = obj.obj
+    // удаляем карточку из очереди если сняли ответственного или переместили карточку в архив
+    if (card.user !== currentUserEmail || card.uid_stage === 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67' || card.uid_stage === 'e70af5e2-6108-4c02-9a7d-f4efee78d28c') {
+      store.commit(DOITNOW.DELETE_CARD, card.uid)
+    }
+  }
 
   if (isUpdateCard) {
     updateClientCard(obj)

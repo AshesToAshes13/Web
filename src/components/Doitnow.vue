@@ -43,7 +43,6 @@
           />
           <DoitnowCard
             v-else-if="isCard"
-            :card="firstTask"
             :is-animation-doitnow="isAnimationDoitnow"
             @next="nextTask"
           />

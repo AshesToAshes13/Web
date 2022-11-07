@@ -18,6 +18,7 @@ const getDefaultState = () => {
     status: '',
     reglaments: [],
     cards: [],
+    clientInCard: null,
     unreadTasks: [],
     todayTasks: [],
     readyTasks: [],
