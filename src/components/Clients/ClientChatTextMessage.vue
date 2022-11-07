@@ -1,13 +1,13 @@
 <template>
   <div
-    class="py-[10px] px-[15px] rounded-t-[12px] bg-[#FCEBEB] rounded-br-[12px] mb-[5px] max-w-[300px] group"
+    class="py-[10px] px-[15px] rounded-t-[12px]  mb-[5px] w-fit group"
   >
     <ClientChatDeletedMsg
       v-if="message.deleted"
     />
     <div
       v-else
-      class="flex"
+      class="flex break-words"
     >
       <div
         class="flex"
@@ -34,12 +34,13 @@
       >
         <ClientChatMessageOptionsPopMenu
           v-if="shouldShowOptions"
-          :can-delete="false"
-          @onQuoteMessage="onQuoteMessage"
+          :can-delete="canDelete"
+          @onQuoteMessage="$emit('onQuoteMessage', message)"
+          @onDeleteMessage="$emit('onDeleteMessage', message)"
           @openMenu="lockVisibility(message.uid)"
           @closeMenu="unlockVisibility(message.uid)"
         >
-          <div class="min-w-[30px] min-h-[16px] flex cursor-pointer items-end justify-center w-full">
+          <div class="min-w-[30px] min-h-[16px] flex cursor-pointer items-end justify-center">
             <svg
               width="14"
               height="4"
@@ -67,7 +68,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import ClientChatMessageOptionsPopMenu from '@/components/Clients/ClientChatMessageOptionsPopMenu.vue'
 import ClientChatDeletedMsg from '@/components/Clients/ClientChatDeletedMsg.vue'
@@ -85,9 +85,13 @@ export default {
     shouldShowOptions: {
       type: Boolean,
       default: false
+    },
+    canDelete: {
+      type: Boolean,
+      default: false
     }
   },
-  emits: ['onQuoteMessage'],
+  emits: ['onQuoteMessage', 'onDeleteMessage'],
   data () {
     return {
       isShowMenu: false
@@ -105,9 +109,6 @@ export default {
         hour: 'numeric',
         minute: 'numeric'
       })
-    },
-    onQuoteMessage () {
-      this.$emit('onQuoteMessage', this.message)
     },
     lockVisibility (messageUid) {
       const icon = this.$refs[`message-client-icon-${messageUid}`]
