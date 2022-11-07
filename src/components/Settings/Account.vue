@@ -178,7 +178,7 @@
             </form>
           </div>
           <button
-            class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061] w-[155px] h-[48px]"
+            class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061] w-[155px] h-[48px] whitespace-nowrap"
             @click="logout"
           >
             Выйти из аккаунта
