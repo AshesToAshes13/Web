@@ -3,6 +3,7 @@ import * as CARD from '@/store/actions/cards'
 import * as DOITNOW from '@/store/actions/doitnow.js'
 import { CHANGE_CARD, DELETE_CARD } from '@/store/actions/cards'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
+import * as CLIENTS from '@/store/actions/clients'
 import store from '@/store/index.js'
 import { computed } from 'vue'
 
@@ -88,6 +89,29 @@ export function updateCard (obj) {
   if (index !== -1) {
     // обновление карточки в очереди
     store.state.doitnow.cards[index] = obj.obj
+    // вебсинк клиента в карточке
+    if (obj.obj.uid_client) {
+      store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_MESSAGES)
+      store.commit(CLIENT_FILES_AND_MESSAGES.REFRESH_FILES)
+      store.dispatch(CLIENTS.GET_CLIENT, obj.obj.uid_client).then((res) => {
+        store.state.doitnow.clientInCard = res.data
+        const data = {
+          clientUid: res.data.uid,
+          clientEmail: res.data.email,
+          clientPhone: res.data.phone,
+          crmKey: store.state.corpMegafonIntegration.crmKey,
+          corpYandexInt: store.state.corpYandexIntegration.isIntegrated,
+          personalYandexInt: store.state.personalYandexIntegration.isIntegrated,
+          megafonIntegration: store.state.corpMegafonIntegration.isIntegrated
+        }
+        store.dispatch(CLIENT_FILES_AND_MESSAGES.FETCH_FILES_AND_MESSAGES, data).catch((err) => {
+          console.log(err)
+          store.state.doitnow.clientInCard = {}
+        })
+      })
+    } else {
+      store.state.doitnow.clientInCard = {}
+    }
     // удаляем карточку из очереди если сняли ответственного или переместили карточку в архив
     if (card.user !== currentUserEmail || card.uid_stage === 'f98d6979-70ad-4dd5-b3f8-8cd95cb46c67' || card.uid_stage === 'e70af5e2-6108-4c02-9a7d-f4efee78d28c') {
       store.commit(DOITNOW.DELETE_CARD, card.uid)
