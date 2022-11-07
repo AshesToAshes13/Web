@@ -9,3 +9,7 @@ export const RESET_DOITNOW_STATE = 'RESET_DOITNOW_STATE'
 // слайды
 
 export const SLIDES_CHANGE_VISIBLE = 'SLIDES_CHANGE_VISIBLE'
+
+// карточки
+
+export const DELETE_CARD = 'DELETE_CARD'

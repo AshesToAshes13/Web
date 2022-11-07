@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-[#FCEBEB] py-[12px] px-[12px] rounded-t-[12px] rounded-br-[12px] mb-[5px] max-w-[300px] group"
+    class="py-[12px] px-[12px] rounded-t-[12px] mb-[5px] max-w-[300px] group"
+    :class="`bg-[${bgColor}]`"
   >
     <CardChatDeletedMessageContent v-if="message.deleted" />
     <ImagePreloader
@@ -10,9 +11,10 @@
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
       :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
-      :can-delete="false"
-      preloader-color="#FCEBEB"
+      :preloader-color="bgColor"
+      :can-delete="canDelete"
       @onQuoteMessage="setCurrentQuote"
+      @onDeleteMessage="deleteFile"
     />
     <AudioPreloader
       v-else-if="FileIsAudio"
@@ -20,9 +22,10 @@
       :file-extension="fileExtension"
       :file-name="message.file_name"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :can-delete="false"
+      :can-delete="canDelete"
       :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
+      @onDeleteMessage="deleteFile"
     />
     <DocPreloader
       v-else-if="FileIsDoc"
@@ -31,9 +34,11 @@
       :file-extension="fileExtension"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :can-delete="false"
+      :can-delete="canDelete"
+      :is-file-uploading="message.is_uploading"
       :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
       @onQuoteMessage="setCurrentQuote"
+      @onDeleteMessage="deleteFile"
     />
     <MoviePreloader
       v-else-if="FileIsMovie"
@@ -42,9 +47,10 @@
       :file-extension="fileExtension"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
-      :can-delete="false"
+      :can-delete="canDelete"
       :route-file-name="!message.cardfile ? 'clientfile' : undefined"
       @onQuoteMessage="setCurrentQuote"
+      @onDeleteMessage="deleteFile"
     />
     <FilePreloader
       v-else
@@ -53,9 +59,11 @@
       :file-extension="fileExtension"
       :file-size="formatBytes(message.file_size)"
       :file-date-create="getMessageTimeString(message.date_create)"
+      :can-delete="canDelete"
+      :is-file-uploading="message.is_uploading"
       :file-action="!message.cardfile ? 'CLIENT_FILE_REQUEST' : undefined"
-      :can-delete="false"
       @onQuoteMessage="setCurrentQuote"
+      @onDeleteMessage="deleteFile"
     />
   </div>
 </template>
@@ -80,33 +88,45 @@ export default {
   props: {
     message: {
       type: Object,
-      default: () => {}
+      default: () => ({})
+    },
+    canDelete: {
+      type: Boolean,
+      default: false
+    },
+    bgColor: {
+      type: String,
+      default: '#F4F5F7'
     }
   },
-  emits: ['onQuoteMessage'],
+  emits: ['onQuoteMessage', 'onDeleteFile'],
   computed: {
     fileExtension () {
       const splittedValue = this.message.file_name.split('.')
       return splittedValue[splittedValue.length - 1].toLowerCase()
     },
     FileIsImage () {
-      return ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif'].includes(
-        this.fileExtension
-      )
+      return ['jpg', 'png', 'jpeg', 'git', 'bmp', 'gif'].includes(this.fileExtension)
     },
     FileIsMovie () {
       return ['mov', 'mp4'].includes(this.fileExtension)
     },
     FileIsDoc () {
-      return ['doc', 'docx', 'xls', 'xlsx', 'txt', 'pdf'].includes(
-        this.fileExtension
-      )
+      return ['doc', 'docx', 'xls', 'xlsx', 'txt', 'pdf'].includes(this.fileExtension)
     },
     FileIsAudio () {
       return ['mp3', 'wav'].includes(this.fileExtension)
     }
   },
   methods: {
+    setCurrentQuote () {
+      this.$emit('onQuoteMessage', this.message)
+    },
+
+    deleteFile () {
+      this.$emit('onDeleteFile', this.message.uid)
+    },
+
     formatBytes (bytes, decimals = 2) {
       if (bytes === 0) return '0 Bytes'
       const k = 1024
@@ -116,12 +136,9 @@ export default {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
     },
 
-    setCurrentQuote () {
-      this.$emit('onQuoteMessage', this.message)
-    },
-
     getMessageTimeString (dateCreate) {
       if (!dateCreate) return ''
+      // добавляем Z в конец, чтобы он посчитал что это UTC время
       const date = new Date(dateCreate)
       return date.toLocaleString('default', {
         hour: 'numeric',
@@ -131,5 +148,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

@@ -1,5 +1,6 @@
 import router from '@/router/index.js'
 import * as CARD from '@/store/actions/cards'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 import { CHANGE_CARD, DELETE_CARD } from '@/store/actions/cards'
 import * as CLIENT_FILES_AND_MESSAGES from '@/store/actions/clientfilesandmessages'
 import store from '@/store/index.js'
@@ -62,6 +63,7 @@ export function removeCard (uid) {
     store.commit(CARD.SELECT_CARD, '')
   }
   store.commit(DELETE_CARD, uid)
+  store.commit(DOITNOW.DELETE_CARD, uid)
 }
 
 export function updateCard (obj) {
