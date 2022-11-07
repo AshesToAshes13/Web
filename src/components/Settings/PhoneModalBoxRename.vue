@@ -89,10 +89,9 @@ export default {
       if (this.validatePhone === false) {
         return
       }
-      const phoneNumber = this.currentValue.replace(/[^a-zA-Z0-9+]/g, '')
+      const phoneNumber = '+7' + this.$refs.inputValue.dataset.maskRawValue
       if (this.show) {
         this.$emit('save', phoneNumber)
-        this.showLengthError = false
       }
     }
   }

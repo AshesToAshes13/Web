@@ -26,6 +26,7 @@
       <p>
         <span class="mb-1">Телефон</span>
         <input
+          ref="phone"
           v-model="phone"
           v-maska="'+7 (###) ###-##-##'"
           type="text"
@@ -166,7 +167,7 @@ export default {
         const data = {
           uid: uuidv4(),
           name: this.name,
-          phone: this.phone.replace(/[^a-zA-Z0-9+]/g, ''),
+          phone: '+7' + this.$refs.phone.dataset.maskRawValue,
           email: this.email,
           comment: this.comment,
           date_create: new Date().toLocaleString()
