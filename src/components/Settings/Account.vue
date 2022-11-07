@@ -17,7 +17,7 @@
     v-if="showEditphone"
     :show="showEditphone"
     title="Введите новый номер телефона"
-    :value="userPhone()"
+    :value="userPhone"
     @cancel="showEditphone = false"
     @save="changeUserPhone"
   />
@@ -148,27 +148,10 @@
             :user-name="user?.current_user_name"
             @showEditnameModalEmit="showEditnameModal"
           />
-          <div class="mt-6">
-            <p class="text-base font-medium mb-2 text-[#4C4C4D]">
-              Телефон
-            </p>
-            <form class="mb-2">
-              <div class="text-sm landing-4 font-normal text-[#606061]">
-                {{ userPhone() }}
-              </div>
-              <button
-                type="button"
-                class="mt-2 text-[14px] landing-[13px] text-[#007BE5]"
-                @click="showEditphone = true"
-              >
-                {{
-                  userPhone().length
-                    ? 'Изменить номер телефона'
-                    : 'Добавить номер телефона'
-                }}
-              </button>
-            </form>
-          </div>
+          <AccountPhone
+            :user-phone="userPhone"
+            @showEditPhoneModalEmit="showEditPhoneModal"
+          />
           <div class="mb-2 mt-6">
             <p class="text-base font-medium mb-2 text-[#4C4C4D]">
               Email
@@ -222,6 +205,7 @@ import * as TASK from '@/store/actions/tasks.js'
 import * as DOITNOW from '@/store/actions/doitnow.js'
 import AccountTarif from '../Account/AccountTarif.vue'
 import AccountName from '../Account/AccountName.vue'
+import AccountPhone from '../Account/AccountPhone.vue'
 
 export default {
   components: {
@@ -231,7 +215,8 @@ export default {
     PhoneModalBoxRename,
     NavBar,
     AccountTarif,
-    AccountName
+    AccountName,
+    AccountPhone
   },
   emits: ['AccLogout'],
   data () {
@@ -287,6 +272,14 @@ export default {
         { year: 'numeric', month: 'numeric', day: 'numeric' }
       )
       return dateExpired
+    },
+    userPhone () {
+      const phone = this.$store.state.user.user?.current_user_phone ?? ''
+      const index = phone.lastIndexOf(' ("')
+      if (index !== -1) {
+        return phone.slice(0, index)
+      }
+      return phone
     }
   },
   methods: {
@@ -319,6 +312,9 @@ export default {
     },
     showEditnameModal () {
       this.showEditname = true
+    },
+    showEditPhoneModal () {
+      this.showEditphone = true
     },
     changeUserPhoto (event) {
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
@@ -406,15 +402,6 @@ export default {
     userName () {
       const name = this.$store.state.user.user.current_user_name ?? ''
       return name
-    },
-
-    userPhone () {
-      const phone = this.$store.state.user.user?.current_user_phone ?? ''
-      const index = phone.lastIndexOf(' ("')
-      if (index !== -1) {
-        return phone.slice(0, index)
-      }
-      return phone
     }
   }
 }
