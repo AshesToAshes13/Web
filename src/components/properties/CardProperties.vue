@@ -140,6 +140,7 @@
           @changeClient="onChangeClient"
         />
         <CardSetDate
+          :can-edit="canEdit"
           :date-time="selectedCard?.date_reminder"
           :date-text="cardDateReminderText"
           @changeDates="onChangeDates"
