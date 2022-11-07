@@ -16,7 +16,7 @@
             user.tarif !== 'trial' &&
             !isLicenseExpired
         "
-      >Лицензия истекает {{ getDateExpired() }} (дней:
+      >Лицензия истекает {{ getDateExpired }} (дней:
         {{ user?.days_left ?? 0 }})</a>
       <a
         v-if="user.tarif === 'free' || isLicenseExpired"
@@ -52,12 +52,10 @@ export default {
     user: {
       type: Object,
       default: () => {}
-    }
-  },
-  emits: ['getDateExpiredEmit'],
-  methods: {
-    getDateExpired () {
-      this.$emit('getDateExpiredEmit')
+    },
+    getDateExpired: {
+      type: String,
+      default: () => {}
     }
   }
 }

@@ -141,7 +141,7 @@
           :tarif-text="tarifText"
           :user="user"
           :is-license-expired="isLicenseExpired"
-          @getDateExpiredEmit="getDateExpired"
+          :get-date-expired="getDateExpired"
         />
         <div class="mt-6">
           <p class="text-base font-medium mb-2 text-[#4C4C4D]">
@@ -283,12 +283,6 @@ export default {
         default:
           return this.user?.tarif
       }
-    }
-  },
-  methods: {
-    logout () {
-      this.$store.commit(TASK.REMOVE_ALL_TAGS)
-      this.$store.dispatch(AUTH_LOGOUT)
     },
     getDateExpired () {
       if (!this.user?.date_expired) return true
@@ -302,6 +296,12 @@ export default {
         { year: 'numeric', month: 'numeric', day: 'numeric' }
       )
       return dateExpired
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.commit(TASK.REMOVE_ALL_TAGS)
+      this.$store.dispatch(AUTH_LOGOUT)
     },
     startOnBoarding () {
       this.$store.dispatch(USER_START_ONBOARDING)
