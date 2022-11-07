@@ -175,6 +175,12 @@ const mutations = {
   },
   [DOITNOW.RESET_DOITNOW_STATE]: (state) => {
     Object.assign(state, getDefaultState())
+  },
+
+  [DOITNOW.DELETE_CARD]: (state, uid) => {
+    if (state.cards[0].uid === uid) {
+      state.cards.shift()
+    }
   }
 }
 
