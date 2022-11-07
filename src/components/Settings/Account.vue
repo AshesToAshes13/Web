@@ -107,35 +107,10 @@
   />
   <div class="overscroll-auto bg-white p-2 rounded-lg mt-1 pt-6">
     <div class="flex pb-3">
-      <form class="text-left w-40">
-        <div class="text-center mb-3 mr-5">
-          <div class="pr-2">
-            <span class="circle-image">
-              <img
-                v-if="user?.foto_link"
-                :src="user?.foto_link"
-                class="rounded-[27px] content-center object-cover"
-              >
-            </span>
-          </div>
-          <div>
-            <input
-              id="iconfile"
-              type="file"
-              class="hidden"
-              accept="image/png, image/jpeg"
-              @change="changeUserPhoto"
-            >
-            <label
-              for="iconfile"
-              class="text-[14px] mr-3 justify-center cursor-pointer text-[#606061]"
-            >
-              Изменить фото
-            </label>
-            <br>
-          </div>
-        </div>
-      </form>
+      <AccountPhoto
+        :user-photo="user?.foto_link"
+        @changeUserPhotoEmit="changeUserPhoto"
+      />
       <div class="text-left">
         <AccountTarif
           :tarif-text="tarifText"
@@ -204,6 +179,7 @@ import * as DOITNOW from '@/store/actions/doitnow.js'
 import AccountTarif from '../Account/AccountTarif.vue'
 import AccountName from '../Account/AccountName.vue'
 import AccountPhone from '../Account/AccountPhone.vue'
+import AccountPhoto from '../Account/AccountPhoto.vue'
 
 export default {
   components: {
@@ -214,7 +190,8 @@ export default {
     NavBar,
     AccountTarif,
     AccountName,
-    AccountPhone
+    AccountPhone,
+    AccountPhoto
   },
   emits: ['AccLogout'],
   data () {
@@ -404,14 +381,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.circle-image {
-  display: inline-block;
-  border-radius: 10px;
-}
-.circle-image img {
-  width: 106px;
-  height: 106px;
-}
-</style>
