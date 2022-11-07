@@ -5,6 +5,7 @@
     append-to-body="true"
     trigger="hover"
     placement="bottom"
+    :disabled="!canEdit"
     @open:popper="onShowCalendar"
   >
     <template
@@ -239,7 +240,8 @@
       </div>
     </template>
     <div
-      class="rounded-[6px] text-[12px] px-[8px] py-[5px] font-[500] text-[#575758] flex bg-[#F4F5F7] cursor-pointer relative float-left dark:bg-gray-800 dark:text-gray-100 project-hover-close"
+      class="rounded-[6px] text-[12px] px-[8px] py-[5px] font-[500] text-[#575758] flex bg-[#F4F5F7] relative float-left dark:bg-gray-800 dark:text-gray-100 project-hover-close"
+      :class="{'cursor-pointer': canEdit}"
     >
       <span
         v-if="dateText !== ''"
@@ -344,6 +346,7 @@
         </button>
         <span>{{ dateText }}</span>
         <button
+          v-if="canEdit"
           class="btn-close-popover"
           @click.stop="resetCalendar"
         >
@@ -489,6 +492,10 @@ export default {
     dateText: {
       type: String,
       default: ''
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['changeDates'],
@@ -496,7 +503,6 @@ export default {
     datePickerDate: new Date(),
     date: null,
     time: '',
-    canEdit: true,
     showTimeSelector: false
   }),
   computed: {
