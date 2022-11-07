@@ -42,38 +42,25 @@ export default {
   computed: {
     showQuestion () {
       // правильные ответы
-      const creatorAnswers = []
+      const creatorAnswers = this.question.answers.filter(answ => answ.is_right)
       // ответы пользователя
-      const userAnswers = []
-      let shouldShow = creatorAnswers.length
-      for (let i = 0; i < this.question.answers.length; i++) {
-        if (this.question.answers[i].is_right) {
-          creatorAnswers.push(this.question.answers[i])
-        }
-        if (this.question.answers[i].selected) {
-          userAnswers.push(this.question.answers[i])
-        }
-      }
+      const userAnswers = this.question.answers.filter(answ => answ.selected)
+
       // проверяем совпадают ли элементы в массивах
-      if (userAnswers.length === 0) {
-        shouldShow = true
-        return shouldShow
-      }
+      if (userAnswers.length === 0) return true
+
       // Если в вопросе больше одного ответа
       if (creatorAnswers.length > 1) {
-        shouldShow = this.checkMultiQuestion(creatorAnswers, userAnswers)
-        return shouldShow
+        return this.checkMultiQuestion(creatorAnswers, userAnswers)
       }
       for (let i = 0; i < userAnswers.length; i++) {
-        if (userAnswers[i]?.uid === creatorAnswers[i]?.uid) {
-          shouldShow = false
-        } else {
-          shouldShow = true
-          return shouldShow
+        if (userAnswers[i]?.uid !== creatorAnswers[i]?.uid) {
+          return true
         }
       }
-      return shouldShow
+      return false
     }
+
   },
   methods: {
     checkMultiQuestion (creatorAnswers, userAnswers) {
