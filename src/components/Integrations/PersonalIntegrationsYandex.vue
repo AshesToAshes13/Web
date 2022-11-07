@@ -56,7 +56,7 @@
           title="YouTube video player"
           allow="accelerometer;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] w-[650px] h-[360px]"
+          class="border-[3px] rounded-xl border-[#2E2E2E] mt-[35px] max-w-[650px] h-[360px]"
         />
       </div>
       <div
