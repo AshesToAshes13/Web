@@ -17,7 +17,7 @@
     v-if="showEditphone"
     :show="showEditphone"
     title="Введите новый номер телефона"
-    :value="userPhone()"
+    :value="userPhone"
     @cancel="showEditphone = false"
     @save="changeUserPhone"
   />
@@ -107,35 +107,10 @@
   />
   <div class="overscroll-auto bg-white p-2 rounded-lg mt-1 pt-6">
     <div class="flex pb-3">
-      <form class="text-left w-40">
-        <div class="text-center mb-3 mr-5">
-          <div class="pr-2">
-            <span class="circle-image">
-              <img
-                v-if="user?.foto_link"
-                :src="user?.foto_link"
-                class="rounded-[27px] content-center object-cover"
-              >
-            </span>
-          </div>
-          <div>
-            <input
-              id="iconfile"
-              type="file"
-              class="hidden"
-              accept="image/png, image/jpeg"
-              @change="changeUserPhoto"
-            >
-            <label
-              for="iconfile"
-              class="text-[14px] mr-3 justify-center cursor-pointer text-[#606061]"
-            >
-              Изменить фото
-            </label>
-            <br>
-          </div>
-        </div>
-      </form>
+      <AccountPhoto
+        :user-photo="user?.foto_link"
+        @changeUserPhotoEmit="changeUserPhoto"
+      />
       <div class="text-left">
         <AccountTarif
           :tarif-text="tarifText"
@@ -143,33 +118,16 @@
           :is-license-expired="isLicenseExpired"
           :get-date-expired="getDateExpired"
         />
-        <div class="mt-6">
+        <div class="mt-[24px] flex flex-col gap-[24px] mb-[8px]">
           <AccountName
             :user-name="user?.current_user_name"
             @showEditnameModalEmit="showEditnameModal"
           />
-          <div class="mt-6">
-            <p class="text-base font-medium mb-2 text-[#4C4C4D]">
-              Телефон
-            </p>
-            <form class="mb-2">
-              <div class="text-sm landing-4 font-normal text-[#606061]">
-                {{ userPhone() }}
-              </div>
-              <button
-                type="button"
-                class="mt-2 text-[14px] landing-[13px] text-[#007BE5]"
-                @click="showEditphone = true"
-              >
-                {{
-                  userPhone().length
-                    ? 'Изменить номер телефона'
-                    : 'Добавить номер телефона'
-                }}
-              </button>
-            </form>
-          </div>
-          <div class="mb-2 mt-6">
+          <AccountPhone
+            :user-phone="userPhone"
+            @showEditPhoneModalEmit="showEditPhoneModal"
+          />
+          <div>
             <p class="text-base font-medium mb-2 text-[#4C4C4D]">
               Email
             </p>
@@ -180,7 +138,7 @@
               {{ user?.current_user_email }}
             </div>
           </div>
-          <div class="mb-2 mt-6">
+          <div>
             <form>
               <p class="text-base font-medium mb-2 text-[#4C4C4D]">
                 Пароль
@@ -194,14 +152,12 @@
               </button>
             </form>
           </div>
-          <div class="mb-2 mt-6">
-            <button
-              class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061]"
-              @click="logout"
-            >
-              Выйти из аккаунта
-            </button>
-          </div>
+          <button
+            class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061] w-[155px] h-[48px] whitespace-nowrap"
+            @click="logout"
+          >
+            Выйти из аккаунта
+          </button>
         </div>
       </div>
     </div>
@@ -222,6 +178,8 @@ import * as TASK from '@/store/actions/tasks.js'
 import * as DOITNOW from '@/store/actions/doitnow.js'
 import AccountTarif from '../Account/AccountTarif.vue'
 import AccountName from '../Account/AccountName.vue'
+import AccountPhone from '../Account/AccountPhone.vue'
+import AccountPhoto from '../Account/AccountPhoto.vue'
 
 export default {
   components: {
@@ -231,7 +189,9 @@ export default {
     PhoneModalBoxRename,
     NavBar,
     AccountTarif,
-    AccountName
+    AccountName,
+    AccountPhone,
+    AccountPhoto
   },
   emits: ['AccLogout'],
   data () {
@@ -287,6 +247,14 @@ export default {
         { year: 'numeric', month: 'numeric', day: 'numeric' }
       )
       return dateExpired
+    },
+    userPhone () {
+      const phone = this.$store.state.user.user?.current_user_phone ?? ''
+      const index = phone.lastIndexOf(' ("')
+      if (index !== -1) {
+        return phone.slice(0, index)
+      }
+      return phone
     }
   },
   methods: {
@@ -319,6 +287,9 @@ export default {
     },
     showEditnameModal () {
       this.showEditname = true
+    },
+    showEditPhoneModal () {
+      this.showEditphone = true
     },
     changeUserPhoto (event) {
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
@@ -406,27 +377,7 @@ export default {
     userName () {
       const name = this.$store.state.user.user.current_user_name ?? ''
       return name
-    },
-
-    userPhone () {
-      const phone = this.$store.state.user.user?.current_user_phone ?? ''
-      const index = phone.lastIndexOf(' ("')
-      if (index !== -1) {
-        return phone.slice(0, index)
-      }
-      return phone
     }
   }
 }
 </script>
-
-<style scoped>
-.circle-image {
-  display: inline-block;
-  border-radius: 10px;
-}
-.circle-image img {
-  width: 106px;
-  height: 106px;
-}
-</style>

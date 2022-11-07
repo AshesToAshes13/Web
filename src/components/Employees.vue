@@ -159,18 +159,18 @@
           :key="userValue"
         >
           <ListBlocItem
-            :title="userValue.name"
+            :title="userValue?.name"
             title-color="#4C4C4D"
-            :sub-title="userValue.email"
+            :sub-title="userValue?.email"
             sub-title-color="#606061"
             :right-icon="empIcon(userValue)"
-            :selected="selectedEmployee === userValue.email"
-            :is-online="isUserOnline(userValue.uid)"
+            :selected="selectedEmployee === userValue?.email"
+            :is-online="isUserOnline(userValue?.uid)"
             @click.stop="showUserProperties(userValue)"
           >
             <img
-              v-if="userValue.fotolink"
-              :src="userValue.fotolink"
+              v-if="userValue?.fotolink"
+              :src="userValue?.fotolink"
               class="rounded-[6px]"
               width="20"
               height="20"
@@ -379,9 +379,9 @@ export default {
       setLocalStorageItem('isGridView', value)
     },
     empIcon (user) {
-      if (user.type === 1) return 'cup'
-      if (user.type === 2) return 'star'
-      if (user.type === 4) return 'send'
+      if (user?.type === 1) return 'cup'
+      if (user?.type === 2) return 'star'
+      if (user?.type === 4) return 'send'
       return ''
     },
     showUserProperties (user) {
@@ -389,10 +389,10 @@ export default {
         this.$store.dispatch('asidePropertiesToggle', true)
       }
 
-      this.selectedEmployee = user.email
+      this.selectedEmployee = user?.email
 
       this.$store.commit('basic', { key: 'propertiesState', value: 'employee' })
-      this.$store.commit(EMPLOYEE.SELECT_EMPLOYEE, this.$store.state.employees.employees[user.uid])
+      this.$store.commit(EMPLOYEE.SELECT_EMPLOYEE, this.$store.state.employees.employees[user?.uid])
     },
     clickAddDep () {
       this.showAddDep = true

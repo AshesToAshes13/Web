@@ -13,13 +13,13 @@
         <PropsButtonMenu />
         <template #menu>
           <PopMenuItem
-            v-if="user?.owner_email === user?.current_user_email && selectedEmployee.type === 3"
+            v-if="user?.owner_email === user?.current_user_email && selectedEmployee?.type === 3"
             @click="setAdmin()"
           >
             Назначить администратором
           </PopMenuItem>
           <PopMenuItem
-            v-if="user?.owner_email === user?.current_user_email && selectedEmployee.type === 2"
+            v-if="user?.owner_email === user?.current_user_email && selectedEmployee?.type === 2"
             icon="delete"
             @click="removeAdmin()"
           >
@@ -144,7 +144,7 @@
       <router-link
         v-for="reglament in openedReglaments"
         :key="reglament.uid"
-        :to="{ name: 'currentReglament', params: { id: reglament.uid } }"
+        :to="'/reglaments/' + reglament?.uid"
         class="w-full h-[34px] flex items-center border-[2px] px-2 mb-1 rounded cursor-pointer"
       >
         <span class="grow font-roboto text-[13px] leading-[20px] font-medium text-[#4c4c4d] overflow-hidden truncate">
@@ -238,18 +238,18 @@ export default {
     },
     isSelectedEmployeeCurrentUser () {
       const user = this.$store.state.user.user
-      return user.current_user_uid === this.selectedEmployeeUid
+      return user?.current_user_uid === this.selectedEmployeeUid
     },
     isCanChangeDepartments () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       return userType === 1 || userType === 2
     },
     isCanDeleteEmp () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       const userAdmin = userType === 1 || userType === 2
       // текущий пользователь админ
       // тот которого удаляем не суперадмин
@@ -269,7 +269,7 @@ export default {
     openedReglaments () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       const userAdmin = userType === 1 || userType === 2
       if (!userAdmin) return []
       //
