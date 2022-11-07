@@ -10,6 +10,13 @@ export function createTask (obj) {
   if (shouldAddTaskIntoList(obj.obj)) {
     store.commit('ADD_TASK', obj.obj)
   }
+
+  // websync очереди
+  const currentUserUid = store.state.user.user.current_user_uid
+
+  if ((obj.obj.uid_customer === currentUserUid) || (obj.obj.uid_customer !== currentUserUid && obj.obj.uid_performer === currentUserUid)) {
+    store.state.doitnow.unreadTasks.unshift(obj.obj)
+  }
 }
 
 export function removeTask (uid) {

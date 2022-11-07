@@ -252,7 +252,7 @@ export default {
           this.$store.state.doitnow.greetingSlides = storeSlides.filter(slide => !!slide.visible && (new Date(slide.reminder) <= currDate))
         }
         // получаем задачи
-        const [tasksUnread, tasksOwerdue, tasksToday, tasksReady] = await this.$store.dispatch(TASK.DOITNOW_TASKS_REQUEST)
+        const [tasksUnread, tasksOverdue, tasksToday, tasksReady] = await this.$store.dispatch(TASK.DOITNOW_TASKS_REQUEST)
         const currentUserUid = this.user?.current_user_uid
         const unreadDelegateByMe = tasksUnread.filter(task => task.uid_customer === currentUserUid)
         const unreadDelegateToMe = tasksUnread.filter(task => task.uid_customer !== currentUserUid && task.uid_performer === currentUserUid)
@@ -265,7 +265,7 @@ export default {
         ]
         this.$store.state.doitnow.readyTasks = [...tasksReady]
         this.$store.state.doitnow.todayTasks = [
-          ...tasksOwerdue, // просроченные
+          ...tasksOverdue, // просроченные
           ...tasksToday // сегодня
         ]
       } catch (e) {
