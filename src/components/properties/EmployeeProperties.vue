@@ -238,18 +238,18 @@ export default {
     },
     isSelectedEmployeeCurrentUser () {
       const user = this.$store.state.user.user
-      return user.current_user_uid === this.selectedEmployeeUid
+      return user?.current_user_uid === this.selectedEmployeeUid
     },
     isCanChangeDepartments () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       return userType === 1 || userType === 2
     },
     isCanDeleteEmp () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       const userAdmin = userType === 1 || userType === 2
       // текущий пользователь админ
       // тот которого удаляем не суперадмин
@@ -269,7 +269,7 @@ export default {
     openedReglaments () {
       const employees = this.$store.state.employees.employees
       const user = this.$store.state.user.user
-      const userType = employees[user.current_user_uid].type
+      const userType = employees[user?.current_user_uid]?.type
       const userAdmin = userType === 1 || userType === 2
       if (!userAdmin) return []
       //
