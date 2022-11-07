@@ -106,7 +106,7 @@
             class="text-[#4C4C4D]"
             :class="{'ml-[7px]': message.uid_client }"
           >
-            {{ employees[message.uid_creator].name }}
+            {{ employees[message?.uid_creator]?.name }}
           </span>
         </span>
       </div>
