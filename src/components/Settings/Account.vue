@@ -33,7 +33,6 @@
   </ModalBox>
   <ModalBox
     v-if="showEditpassword"
-    :show="showEditpassword"
     title="Изменение пароля"
     ok="Сохранить"
     @ok="changeUserPassword"
