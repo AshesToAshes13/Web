@@ -1,5 +1,3 @@
-<!-- TODO: Переделать вёрстку с float на flex или грид, а то менять что-то - это мучение -->
-<!-- TODO: Вынести логику позиционирования сообщений в этот компонент. Компоненты ClientChatSelfMessage и т.д. не должны сами себе проставлять float -->
 <template>
   <div class="flex flex-col pb-[100px]">
     <div
@@ -94,42 +92,29 @@
           class="py-[10px] px-[15px] flex rounded-t-[12px] mb-[5px] w-[55%]"
         />
       </div>
-      <div :class="{'justify-start': message.uid_creator === currentUserUid, 'justify-end': message.uid_creator !== currentUserUid}">
+      <div
+        class="flex"
+        :class="{'justify-end': message.uid_creator === currentUserUid, 'justify-start': message.uid_creator !== currentUserUid}"
+      >
         <ClientChatQuoteMessage
           v-if="message.hasQuote"
           class="mb-[5px]"
           :quote-message-uid="message.uid_quote"
         />
-        <ClientChatInterlocutorMessage
-          v-if="!message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
-          class="float-left"
+        <ClientChatTextMessage
+          v-if="message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
+          :class="{'rounded-bl-[12px] bg-[#FCEBEB]': message.isMyMessage, 'bg-[#F4F5F7] rounded-br-[12px]': !message.isMyMessage}"
           :message="message"
-          :should-show-options="shouldShowOptions(message)"
-          :employee="employees[message.uid_creator]"
-          @onQuoteMessage="setCurrentQuote"
-        />
-        <ClientChatInterlocutorFileMessage
-          v-if="!message.isMyMessage && message.isFile"
-          class="float-left"
-          :message="message"
-          :employee="employees[message.uid_creator]"
-          @onQuoteMessage="setCurrentQuote"
-        />
-
-        <ClientChatSelfMessage
-          v-if="message.isMyMessage && message.isMessage && !showFilesOnly && message.type !== 'call' && message.type !== 'yandex'"
-          class="float-right"
-          :message="message"
-          :employee="employees[message.uid_creator]"
-          :should-show-options="shouldShowOptions(message)"
+          :can-delete="message.isMyMessage"
           @onDeleteMessage="onDeleteMessage"
           @onQuoteMessage="setCurrentQuote"
         />
-        <ClientChatSelfFileMessage
-          v-if="message.isMyMessage && message.isFile"
-          class="float-right"
+        <ClientChatFileMessage
+          v-if="message.isFile"
+          :class="{'rounded-bl-[12px] relative': message.isMyMessage, 'rounded-br-[12px]': !message.isMyMessage}"
+          :bg-color="message.isMyMessage ? '#FCEBEB' : '#F4F5F7'"
           :message="message"
-          :employee="employees[message.uid_creator]"
+          :can-delete="message.isMyMessage"
           @onQuoteMessage="setCurrentQuote"
           @onDeleteFile="deleteFile"
         />
@@ -141,22 +126,18 @@
 <script>
 import * as CLIENTS_CHAT from '@/store/actions/clientfilesandmessages.js'
 import ClientChatQuoteMessage from '@/components/Clients/ClientChatQuoteMessage.vue'
-import ClientChatInterlocutorMessage from '@/components/Clients/ClientChatInterlocutorMessage.vue'
-import ClientChatInterlocutorFileMessage from '@/components/Clients/ClientChatInterlocutorFileMessage.vue'
-import ClientChatSelfMessage from '@/components/Clients/ClientChatSelfMessage.vue'
-import ClientChatSelfFileMessage from '@/components/Clients/ClientChatSelfFileMessage.vue'
 import CardAndClientChatCallMessage from '@/components/CardProperties/CardAndClientChatCallMessage.vue'
 import ClientMailMessage from './ClientMailMessage.vue'
+import ClientChatTextMessage from './ClientChatTextMessage.vue'
+import ClientChatFileMessage from '@/components/Clients/ClientChatFileMessage.vue'
 
 export default {
   components: {
-    ClientChatInterlocutorMessage,
-    ClientChatInterlocutorFileMessage,
-    ClientChatSelfMessage,
     ClientChatQuoteMessage,
-    ClientChatSelfFileMessage,
     CardAndClientChatCallMessage,
-    ClientMailMessage
+    ClientMailMessage,
+    ClientChatTextMessage,
+    ClientChatFileMessage
   },
   props: {
     key: {
