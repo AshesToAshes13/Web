@@ -2,7 +2,7 @@ import store from '@/store/index.js'
 import * as REGLAMENT from '@/store/actions/reglaments'
 import router from '@/router'
 
-const shouldDoAnything = (reglamentUid) => router.currentRoute.value.fullPath === `/reglaments/${reglamentUid}`
+const shouldDoAnything = (reglamentUid) => router.currentRoute.value.params.id === reglamentUid
 
 export function createReglamentAnswer (obj) {
   if (shouldDoAnything(obj.obj.uid_reglament)) {

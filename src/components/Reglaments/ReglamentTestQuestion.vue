@@ -54,18 +54,8 @@ export default {
   emits: ['selectAnswer'],
   computed: {
     answerType () {
-      let count = 0
-      for (let i = 0; i < this.question.answers.length; i++) {
-        if (this.question.answers[i].is_right) {
-          count++
-        }
-      }
-      if (count > 1) {
-        return 'checkbox'
-      } else if (count === 1) {
-        return 'radio'
-      }
-      return null
+      const rightAnswers = this.question.answers.filter(answ => answ.is_right).length
+      return rightAnswers > 1 ? 'checkbox' : rightAnswers === 1 ? 'radio' : null
     }
   },
   methods: {

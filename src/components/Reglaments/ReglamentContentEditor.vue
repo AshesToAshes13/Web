@@ -251,7 +251,7 @@
           <ReglamentQuestion
             :ref="question.uid"
             :question="question"
-            :reglament="reglament"
+            :reglament="currReglament"
             @deleteQuestion="onDeleteQuestion"
             @deleteAnswer="deleteAnswer"
             @addQuestion="onAddQuestion"
@@ -401,9 +401,6 @@ export default {
     questions () {
       return this.$store?.state?.reglaments?.reglamentQuestions
     },
-    reglament () {
-      return this.currReglament
-    },
     currReglament () {
       return this.$store.state.reglaments.reglaments[this.$route.params.id]
     },
@@ -432,7 +429,10 @@ export default {
       return this.$store?.state?.reglaments?.contributors
     },
     contributorsInfo () {
-      return this.contributors.map((contributor) => {
+      return this.contributors.filter(contributor => {
+        const user = this.$store.state.employees.employees[contributor.uid_user]
+        return typeof user !== 'undefined'
+      }).map((contributor) => {
         const user = this.$store.state.employees.employees[contributor.uid_user]
         return {
           uid: contributor.uid_user,
@@ -512,11 +512,11 @@ export default {
     },
     clearContributors () {
       const data = {
-        uidReglament: this.reglament.uid,
+        uidReglament: this.currReglament.uid,
         uidUser: this.user.current_user_uid
       }
       const reglaments = this.$store.state.navigator.navigator.reglaments
-      const index = reglaments.items.findIndex(item => item.uid === this.reglament.uid)
+      const index = reglaments.items.findIndex(item => item.uid === this.currReglament.uid)
       if (index !== -1) reglaments.items[index].is_passed = 0
       this.$store.dispatch(REGLAMENTS.DELETE_USERS_REGLAMENT_ANSWERS, data)
     },
@@ -575,9 +575,9 @@ export default {
     checkEditor (email) {
       return this.currEditors.includes(email)
     },
-    saveReglament (reglament) {
-      if (!reglament.name.length) {
-        reglament.name = 'Регламент без названия'
+    saveReglament (currReglament) {
+      if (!currReglament.name.length) {
+        currReglament.name = 'Регламент без названия'
       }
 
       for (const question of this.questions) {
@@ -636,7 +636,7 @@ export default {
         })
       })
 
-      return this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, reglament)
+      return this.$store.dispatch(REGLAMENTS.UPDATE_REGLAMENT_REQUEST, this.currReglament)
     },
     clickSaveAndExitReglament () {
       if (this.validateReglamentQuestions()) return
@@ -743,7 +743,7 @@ export default {
     },
     removeReglament () {
       // копия регламента, нужна для NAVIGATOR_REMOVE_REGLAMENT, он при удалении регламента использовал greedSource.
-      const reglamentCopy = this.reglament
+      const reglamentCopy = this.currReglament
       this.buttonDisabled = true
       this.showConfirm = false
       this.$store.dispatch(REGLAMENTS.DELETE_REGLAMENT_REQUEST, this.currReglament.uid).then(() => {
