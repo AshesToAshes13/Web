@@ -115,9 +115,6 @@
           width: `${coverSize.x}px`
         }"
       />
-      <div v-else>
-&nbsp;
-      </div>
     </div>
     <div class="flex items-start justify-between">
       <div class="w-full">
@@ -130,7 +127,7 @@
       </div>
     </div>
     <div
-      v-if="showDate || cost || card.has_files || card.has_msgs || card.date_reminder || card.comment.length || card.client_name"
+      v-if="shouldShowCLient"
       class="flex justify-between mt-[20px]"
     >
       <div class="flex flex-wrap gap-1">
@@ -327,7 +324,7 @@
       </div>
       <!-- Иконки справа -->
       <div
-        v-if="card.has_files || card.has_msgs || card.date_reminder || card.comment.length"
+        v-if="shouldShowCardIcons"
         class="flex items-center"
       >
         <!-- Иконка файлов -->
@@ -391,8 +388,8 @@
       v-if="card.user"
       class="flex items-center"
       :class="{
-        'mt-2': showDate || cost || card.has_files || card.has_msgs || card.comment.length,
-        'mt-[20px]': !showDate && !cost && !card.has_files && !card.has_msgs || !card.comment.length
+        'mt-2': !shouldShowUserImage,
+        'mt-[20px]': shouldShowUserImage
       }"
     >
       <img
@@ -626,6 +623,28 @@ export default {
     },
     getEmpNameByEmail (userEmail) {
       return this.employeesByEmail[userEmail.toLowerCase()]?.name || userEmail
+    },
+    shouldShowCLient () {
+      return this.showDate ||
+        this.cost ||
+        this.card.has_files ||
+        this.card.has_msgs ||
+        this.card.date_reminder ||
+        this.card.comment.length ||
+        this.card.client_name
+    },
+    shouldShowCardIcons () {
+      return this.card.has_files ||
+        this.card.has_msgs ||
+        this.card.date_reminder ||
+        this.card.comment.length
+    },
+    shouldShowUserImage () {
+      return !this.showDate ||
+        !this.cost ||
+        !this.card.has_files ||
+        !this.card.has_msgs ||
+        !this.card.comment.length
     },
     lockVisibility (cardUid) {
       const icon = this.$refs[`card-icon-${cardUid}`]
