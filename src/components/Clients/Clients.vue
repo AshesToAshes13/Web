@@ -44,9 +44,11 @@
               </tr>
               <ClientsSkeleton v-if="status === 'loading'" />
               <template v-if="status === 'success' && wasLoaded">
-                <tr
+                <router-link
                   v-for="client in clients"
                   :key="client?.uid"
+                  class="link-row table-row"
+                  :to="`/clients/${client?.uid}`"
                   @click.stop="showClientProperties(client)"
                 >
                   <td>
@@ -77,7 +79,7 @@
                       </span>
                     </div>
                   </td>
-                </tr>
+                </router-link>
               </template>
             </table>
           </div>
@@ -206,7 +208,6 @@ export default {
     },
     showClientProperties (client) {
       this.$store.commit(CLIENTS.SELECT_CLIENT, client)
-      this.$router.push(`/clients/${client.uid}`)
     },
     clickAddClient () {
       this.showAddClient = true
@@ -267,11 +268,11 @@ tr:first-child th:not(:last-child){
 
 /*Стили для контентной части*/
 
-tr:not(:first-child) {
+.link-row:not(:first-child) {
   @apply min-h-[58px] align-top
 }
 
-tr:not(:first-child) td {
+.link-row:not(:first-child) td {
   @apply border-b-2 border-[#e6e6e6] pl-[14px] font-normal text-[13px] max-w-[400px]
 }
 
@@ -280,12 +281,12 @@ tr:not(:first-child) td {
 }
 
 /*Стили для первого контентного элемента (отступ сверху)*/
-tr:nth-child(2) {
+.link-row:nth-child(2) {
   @apply min-h-[74px]
 }
 
 /*Стили наведения курсора мыши*/
-tr:not(:first-child):hover {
+.link-row:not(:first-child):hover {
   @apply bg-[#f4f5f7] cursor-pointer
 }
 
