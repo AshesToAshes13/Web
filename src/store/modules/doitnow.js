@@ -173,6 +173,16 @@ const mutations = {
       }
     }
   },
+
+  [DOITNOW.DELETE_TASK]: (state, uid) => {
+    if (state.todayTasks[0].uid === uid) {
+      state.todayTasks.shift()
+    } else if (state.unreadTasks[0].uid === uid) {
+      state.unreadTasks.shift()
+    } else if (state.readyTasks[0].uid === uid) {
+      state.readyTasks.shift()
+    }
+  },
   [DOITNOW.RESET_DOITNOW_STATE]: (state) => {
     Object.assign(state, getDefaultState())
   },

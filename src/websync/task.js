@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import router from '@/router/index.js'
 import { NAVIGATOR_UPDATE_ASSIGNMENTS } from '@/store/actions/navigator'
+import * as DOITNOW from '@/store/actions/doitnow.js'
 import store from '@/store/index.js'
 import { shouldAddTaskIntoList } from './utils'
 
@@ -16,6 +17,8 @@ export function removeTask (uid) {
     store.dispatch('asidePropertiesToggle', false)
   }
   store.dispatch(NAVIGATOR_UPDATE_ASSIGNMENTS)
+
+  store.commit(DOITNOW.DELETE_TASK, uid)
   store.commit('REMOVE_TASK', uid)
 }
 
@@ -32,31 +35,15 @@ export function updateTask (obj) {
 
     // websync для задач в очереди
 
-    let typeOfSort
-
     if (store.state.doitnow.unreadTasks.find((task) => task.uid === obj.obj.uid)) {
-      typeOfSort = 'unread'
+      const indexOfTask = store.state.doitnow.unreadTasks.findIndex((task) => task.uid === obj.obj.uid)
+      store.state.doitnow.unreadTasks[indexOfTask] = obj.obj
     } else if (store.state.doitnow.todayTasks.find((task) => task.uid === obj.obj.uid)) {
-      typeOfSort = 'today'
+      const indexOfTask = store.state.doitnow.todayTasks.findIndex((task) => task.uid === obj.obj.uid)
+      store.state.doitnow.todayTasks[indexOfTask] = obj.obj
     } else if (store.state.doitnow.readyTasks.find((task) => task.uid === obj.obj.uid)) {
-      typeOfSort = 'ready'
-    }
-
-    console.log('unread index', store.state.doitnow.unreadTasks.findIndex((task) => task.uid === obj.obj.uid))
-    console.log('type of sort', typeOfSort)
-
-    // проверяем, нашёл ли он задачу
-    if (typeOfSort) {
-      if (typeOfSort === 'unread') {
-        const indexOfTask = store.state.doitnow.unreadTasks.findIndex((task) => task.uid === obj.obj.uid)
-        store.state.doitnow.unreadTasks[indexOfTask] = obj.obj
-      } else if (typeOfSort === 'today') {
-        const indexOfTask = store.state.doitnow.todayTasks.findIndex((task) => task.uid === obj.obj.uid)
-        store.state.doitnow.todayTasks[indexOfTask] = obj.obj
-      } else if (typeOfSort === 'ready') {
-        const indexOfTask = store.state.doitnow.readyTasks.findIndex((task) => task.uid === obj.obj.uid)
-        store.state.doitnow.readyTasks[indexOfTask] = obj.obj
-      }
+      const indexOfTask = store.state.doitnow.readyTasks.findIndex((task) => task.uid === obj.obj.uid)
+      store.state.doitnow.readyTasks[indexOfTask] = obj.obj
     }
   }
 }

@@ -13,3 +13,7 @@ export const SLIDES_CHANGE_VISIBLE = 'SLIDES_CHANGE_VISIBLE'
 // карточки
 
 export const DELETE_CARD = 'DELETE_CARD'
+
+// задачи
+
+export const DELETE_TASK = 'DOITNOW_DELETE_TASK'
