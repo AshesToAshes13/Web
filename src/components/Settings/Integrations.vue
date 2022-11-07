@@ -143,7 +143,6 @@ export default {
   },
   computed: {
     isGridView () {
-      setLocalStorageItem('isGridView', true)
       return this.$store.state.isGridView
     },
     isPropertiesMobileExpanded () {

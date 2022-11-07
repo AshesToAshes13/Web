@@ -134,7 +134,6 @@ export default {
       return this.$store.getters.sortedNavigator.new_private_projects
     },
     isGridView () {
-      setLocalStorageItem('isGridView', true)
       return this.$store.state.isGridView
     },
     isPropertiesMobileExpanded () {
@@ -185,9 +184,6 @@ export default {
         return access
       }, [])
     }
-  },
-  created () {
-    setLocalStorageItem('isGridView', true)
   },
   methods: {
     updateGridView (value) {

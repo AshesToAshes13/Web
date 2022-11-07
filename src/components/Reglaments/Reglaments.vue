@@ -174,7 +174,6 @@ export default {
       return this.$store.getters.sortedNavigator.reglaments?.items
     },
     isGridView () {
-      setLocalStorageItem('isGridView', true)
       return this.$store.state.isGridView
     },
     isPropertiesMobileExpanded () {
@@ -235,9 +234,6 @@ export default {
     isReglamentsLoaded () {
       return this.$store.state.reglaments.isLoaded
     }
-  },
-  created () {
-    setLocalStorageItem('isGridView', true)
   },
   methods: {
     tryToLoadReglaments () {
