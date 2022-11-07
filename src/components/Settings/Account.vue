@@ -143,7 +143,7 @@
           :is-license-expired="isLicenseExpired"
           :get-date-expired="getDateExpired"
         />
-        <div class="mt-6">
+        <div class="mt-[24px] flex flex-col gap-[24px] mb-[8px]">
           <AccountName
             :user-name="user?.current_user_name"
             @showEditnameModalEmit="showEditnameModal"
@@ -152,7 +152,7 @@
             :user-phone="userPhone"
             @showEditPhoneModalEmit="showEditPhoneModal"
           />
-          <div class="mb-2 mt-6">
+          <div>
             <p class="text-base font-medium mb-2 text-[#4C4C4D]">
               Email
             </p>
@@ -163,7 +163,7 @@
               {{ user?.current_user_email }}
             </div>
           </div>
-          <div class="mb-2 mt-6">
+          <div>
             <form>
               <p class="text-base font-medium mb-2 text-[#4C4C4D]">
                 Пароль
@@ -177,14 +177,12 @@
               </button>
             </form>
           </div>
-          <div class="mb-2 mt-6">
-            <button
-              class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061]"
-              @click="logout"
-            >
-              Выйти из аккаунта
-            </button>
-          </div>
+          <button
+            class="bg-[#F4F5F7] px-[16px] py-[12px] rounded-[6px] text-[14px] text-[#606061] w-[155px] h-[48px]"
+            @click="logout"
+          >
+            Выйти из аккаунта
+          </button>
         </div>
       </div>
     </div>

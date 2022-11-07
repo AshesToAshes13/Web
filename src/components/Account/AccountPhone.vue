@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6">
+  <div>
     <p class="text-base font-medium mb-2 text-[#4C4C4D]">
       Телефон
     </p>
