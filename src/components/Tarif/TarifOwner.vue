@@ -21,7 +21,7 @@
         </svg>
       </span>
       <span class="text-sm text-[#606061]">
-        {{ user?.owner_title }}
+        {{ ownerTitle }}
       </span>
     </div>
   </div>
@@ -45,7 +45,7 @@
         </svg>
       </span>
       <span class="text-sm text-[#606061]">
-        {{ user?.owner_email }}
+        {{ ownerEmail }}
       </span>
     </div>
   </div>
@@ -53,9 +53,13 @@
 <script>
 export default {
   props: {
-    user: {
-      type: Object,
-      default: () => {}
+    ownerEmail: {
+      type: String,
+      default: null
+    },
+    ownerTitle: {
+      type: String,
+      default: null
     }
   }
 }
