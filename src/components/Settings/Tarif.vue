@@ -82,17 +82,12 @@
         <span class="text-sm">{{ user?.total_mb }} MB ({{ user?.percent_mb }}%)</span>
       </div>
     </div>
-    <form
-      class="mt-[12px] mb-[12px]"
-      action="https://www.leadertask.ru/alpha"
+    <a
+      :href="`https://www.leadertask.ru/alpha?luid=${user.owner_uid}`"
+      class="text-[14px] text-[#606061] py-[12px] px-[16px] rounded-[6px] border-[1px] border-[#FF9123]"
     >
-      <button
-        type="submit"
-        class="text-[14px] text-[#606061] py-[12px] px-[16px] rounded-[6px] border-[1px] border-[#FF9123]"
-      >
-        {{ tarifButtonTitle }}
-      </button>
-    </form>
+      {{ tarifButtonTitle }}
+    </a>
   </form>
 </template>
 
