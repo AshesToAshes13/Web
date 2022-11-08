@@ -206,10 +206,6 @@ export default {
     if (this.selectedClient) {
       this.currClient = { ...this.selectedClient }
       this.propertiesIsLoaded = true
-      this.cards.forEach(card => {
-        // this.$store.state.boards.boards[card.uid_board].name === '' ? this.boardName = 'Скрытая доска' : this.boardName = this.$store.state.boards.boards[card.uid_board].name
-        // console.log(this.$store.state.boards.boards[card.uid_board])
-      })
     }
   },
   methods: {
@@ -231,10 +227,6 @@ export default {
       setTimeout(() => {
         this.disableButton = false
       }, 2000)
-    },
-    setUpBoardName (card) {
-      return 123
-      // $store.state.boards.boards[card.uid_board].name !== undefined ? boardName : $store.state.boards.boards[card.uid_board].name
     }
   }
 }
