@@ -24,7 +24,8 @@
     </p>
     <!-- Владелец тарифа -->
     <TarifOwner
-      :user="user"
+      :owner-email="user?.owner_email"
+      :owner-title="user?.owner_title"
     />
     <div class="mt-[36px]">
       <p class="text-base font-medium text-[#4C4C4D]">
