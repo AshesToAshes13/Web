@@ -129,7 +129,7 @@
               fill="#606061"
             />
           </svg>
-          <span class="text-[#575758] text-[12px] font-[500] truncate">{{ card.name }}</span>
+          <span class="text-[#575758] text-[12px] font-[500] truncate">{{ boardName }}: {{ card.name }}</span>
         </div>
       </div>
     </div>
@@ -161,7 +161,8 @@ export default {
       currentQuote: false,
       clientMessageInputValue: '',
       disableButton: false,
-      propertiesIsLoaded: false
+      propertiesIsLoaded: false,
+      boardName: ''
     }
   },
   computed: {
@@ -205,6 +206,9 @@ export default {
     if (this.selectedClient) {
       this.currClient = { ...this.selectedClient }
       this.propertiesIsLoaded = true
+      this.cards.forEach(card => {
+        this.boardName = this.$store.state.boards.boards[card.uid_board].name
+      })
     }
   },
   methods: {
