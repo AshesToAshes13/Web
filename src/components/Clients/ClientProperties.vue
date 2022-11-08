@@ -129,7 +129,8 @@
               fill="#606061"
             />
           </svg>
-          <span class="text-[#575758] text-[12px] font-[500] truncate">{{ boardName }}: {{ card.name }}</span>
+          <span class="text-[#575758] text-[12px] font-[500] truncate">
+            {{ $store.state.boards.boards[card.uid_board] === undefined ? 'Скрытая доска' : $store.state.boards.boards[card.uid_board].name }}: {{ card.name }}</span>
         </div>
       </div>
     </div>
@@ -161,8 +162,7 @@ export default {
       currentQuote: false,
       clientMessageInputValue: '',
       disableButton: false,
-      propertiesIsLoaded: false,
-      boardName: ''
+      propertiesIsLoaded: false
     }
   },
   computed: {
@@ -207,7 +207,8 @@ export default {
       this.currClient = { ...this.selectedClient }
       this.propertiesIsLoaded = true
       this.cards.forEach(card => {
-        this.boardName = this.$store.state.boards.boards[card.uid_board].name
+        // this.$store.state.boards.boards[card.uid_board].name === '' ? this.boardName = 'Скрытая доска' : this.boardName = this.$store.state.boards.boards[card.uid_board].name
+        // console.log(this.$store.state.boards.boards[card.uid_board])
       })
     }
   },
@@ -230,6 +231,10 @@ export default {
       setTimeout(() => {
         this.disableButton = false
       }, 2000)
+    },
+    setUpBoardName (card) {
+      return 123
+      // $store.state.boards.boards[card.uid_board].name !== undefined ? boardName : $store.state.boards.boards[card.uid_board].name
     }
   }
 }
