@@ -36,40 +36,51 @@ export default {
 }
 </script>
 <template>
-  <aside
-    id="aside-right"
-    class="bg-[#f4f5f7] w-[388px] fixed top-0 h-full transition-position z-[1]"
-    :class="{ 'block right-0': isPropertiesMobileExpanded, 'hidden -right-[388px]': !isPropertiesMobileExpanded}"
-  >
-    <!-- серый отступ в 8px слева, чтобы когда панель налетала на белый элемент она не сливалась -->
-    <div class="bg-white pt-[20px] px-[20px] ml-[8px] min-h-full h-auto w-[380px]">
-      <TaskProperties
-        v-if="propertiesState == 'task'"
-      />
-      <CardProperties
-        v-if="propertiesState == 'card'"
-      />
-      <ProjectProperties
-        v-if="propertiesState == 'project'"
-      />
-      <BoardProperties
-        v-if="propertiesState == 'board'"
-      />
-      <ColorProperties
-        v-if="propertiesState == 'color'"
-      />
-      <TagProperties
-        v-if="propertiesState == 'tag'"
-      />
-      <EmployeeProperties
-        v-if="propertiesState == 'employee'"
-      />
-    </div>
-  </aside>
+  <Transition name="left-slide">
+    <aside
+      id="aside-right"
+      class="bg-[#f4f5f7] w-[388px] fixed top-0 right-0 h-full transition-position z-[1]"
+      v-if="isPropertiesMobileExpanded"
+    >
+      <!-- серый отступ в 8px слева, чтобы когда панель налетала на белый элемент она не сливалась -->
+      <div class="bg-white pt-[20px] px-[20px] ml-[8px] min-h-full h-auto w-[380px]">
+        <TaskProperties
+          v-if="propertiesState == 'task'"
+        />
+        <CardProperties
+          v-if="propertiesState == 'card'"
+        />
+        <ProjectProperties
+          v-if="propertiesState == 'project'"
+        />
+        <BoardProperties
+          v-if="propertiesState == 'board'"
+        />
+        <ColorProperties
+          v-if="propertiesState == 'color'"
+        />
+        <TagProperties
+          v-if="propertiesState == 'tag'"
+        />
+        <EmployeeProperties
+          v-if="propertiesState == 'employee'"
+        />
+      </div>
+    </aside>
+  </Transition>
 </template>
 <style scoped>
 #aside-right {
   overflow-x: hidden;
   scrollbar-width: none;
+}
+.left-slide-enter-active,
+.left-slide-leave-active {
+  transition: all 250ms ease;
+}
+
+.left-slide-enter-from,
+.left-slide-leave-to {
+  transform: translateX(388px);
 }
 </style>

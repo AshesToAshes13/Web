@@ -754,6 +754,6 @@ export default {
 
 <style scoped>
 #card-prop-content::-webkit-scrollbar {
-  width: 0;
+  width: 10px;
 }
 </style>
